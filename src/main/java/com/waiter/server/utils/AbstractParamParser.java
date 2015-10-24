@@ -29,9 +29,13 @@ public abstract class AbstractParamParser implements IParamParser {
     }
 
     public int getInt(String key) {
+        return getInt(key, 0);
+    }
+
+    public int getInt(String key, int def) {
         String value = get(key);
-        if (value == null)
-            return 0;
+        if (value == null || value.isEmpty())
+            return def;
         return Integer.parseInt(value);
     }
 

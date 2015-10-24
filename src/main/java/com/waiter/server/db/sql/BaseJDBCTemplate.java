@@ -1,6 +1,8 @@
 package com.waiter.server.db.sql;
 
+import com.waiter.server.commons.entities.City;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -8,6 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -98,6 +101,16 @@ public class BaseJDBCTemplate {
 
         public void setSecondColumn(String secondColumn) {
             this.secondColumn = secondColumn;
+        }
+    }
+
+    protected static class CityMapper implements RowMapper {
+
+        @Override
+        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+            City city = new City();
+            city.setName(rs.getString("name"));
+            return city;
         }
     }
 

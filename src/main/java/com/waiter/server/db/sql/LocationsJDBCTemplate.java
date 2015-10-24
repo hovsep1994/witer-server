@@ -1,0 +1,47 @@
+package com.waiter.server.db.sql;
+
+import com.waiter.server.commons.entities.City;
+import com.waiter.server.commons.entities.Country;
+import com.waiter.server.db.LocationsDAO;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+
+import javax.sql.DataSource;
+import java.util.List;
+
+/**
+ * @author shahenpoghosyan
+ */
+public class LocationsJDBCTemplate extends BaseJDBCTemplate implements LocationsDAO {
+
+
+    public LocationsJDBCTemplate(DataSource dataSource) {
+        super(dataSource);
+    }
+
+    @Override
+    public List<Country> getAllCountries() {
+        String sql = "SELECT * FROM countries ";
+        return jdbcTemplateObject.query(sql, new MapSqlParameterSource(), new BeanPropertyRowMapper(Country.class));
+    }
+
+    public List<City> searchCities(String nameQuery, String countryCode, int limit) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        StringBuilder sql = new StringBuilder().append("SELECT name FROM cities ")
+                .append("WHERE country_code=:country_code ");
+            params.addValue("country_code", countryCode);
+        if (nameQuery != null && !nameQuery.isEmpty()) {
+                sql.append("AND name LIKE :query ");
+            params.addValue("query", nameQuery + "%");
+        }
+        sql.append("ORDER BY population DESC ");
+        if(limit > 0) {
+            sql.append("LIMIT :limit");
+        }
+        params.addValue("limit", limit);
+        return jdbcTemplateObject.query(sql.toString(), params, new CityMapper());
+
+    }
+
+
+}

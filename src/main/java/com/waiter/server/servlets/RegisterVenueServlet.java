@@ -38,10 +38,10 @@ public class RegisterVenueServlet extends BaseServlet {
         VenueJDBCTemplate venueJDBCTemplate = (VenueJDBCTemplate) context.getBean("venueJDBCTemplate");
         IResponseWriter<Venue> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new BaseParser(req);
-        String name = paramParser.get(NAME);
-        String email = paramParser.get(EMAIL);
 
         try {
+            String name = paramParser.get(NAME);
+            String email = paramParser.get(EMAIL);
             if (checkRequiredFields(name, email) && isValidEmail(email)) {
                 throw new APIException(SC_BAD_REQUEST,
                         new APIError(WRONG_REQUEST, "Wrong request parameters. "));

@@ -10,9 +10,10 @@ import java.util.Date;
  */
 public interface IParamParser {
 
-    public String get(String key);
-    public String getString(String key, String def);
-    public boolean getBoolean(String key, boolean def);
-    public int getInt(String key);
-    public Date getDate(String key) throws ParseException;
+    String get(String key);
+    String getString(String key, String def);
+    boolean getBoolean(String key, boolean def);
+    int getInt(String key);
+    int getInt(String key, int def);
+    Date getDate(String key) throws ParseException;
 }
