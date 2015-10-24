@@ -21,7 +21,7 @@ public class GetVenueServlet extends BaseServlet {
             throws ServletException, IOException {
 
         IResponseWriter<Venue> writer = new JsonResponseWriter<>(resp.getWriter());
-        writer.writeResponse(new Venue().setName("resp"));
+        writer.writeResponse(new Venue().createVenue().setName("resp"));
 
 
     }

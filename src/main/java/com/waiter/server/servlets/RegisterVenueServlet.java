@@ -46,7 +46,7 @@ public class RegisterVenueServlet extends BaseServlet {
                 throw new APIException(SC_BAD_REQUEST,
                         new APIError(WRONG_REQUEST, "Wrong request parameters. "));
             }
-            Venue venue = new Venue().setName(name).setOwnerEmail(email)
+            Venue venue = new Venue().createVenue().setName(name).setOwnerEmail(email)
                     .setCode(UUID.randomUUID().toString());
             venueJDBCTemplate.create(venue);
             writer.writeResponse(venue);

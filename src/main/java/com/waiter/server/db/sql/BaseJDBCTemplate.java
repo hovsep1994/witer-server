@@ -20,12 +20,17 @@ import java.util.List;
 public class BaseJDBCTemplate {
 
     protected static final String DELIMITER_SPACE = " ";
+    protected static final String ID = "id";
     protected static final String NAME = "name";
     protected static final String CODE = "code";
     protected static final String EMAIL = "email";
+    protected static final String PHONE = "phone";
     protected static final String TAGS = "tags";
     protected static final String IMAGE = "image";
     protected static final String MENU_ID = "menu_id";
+    protected static final String GROUP_ID = "group_id";
+    protected static final String DESCRIPTION = "description";
+    protected static final String PRICE = "price";
 
     protected DataSource dataSource;
     protected NamedParameterJdbcTemplate jdbcTemplateObject;
@@ -66,25 +71,29 @@ public class BaseJDBCTemplate {
 
     protected enum MappingTable {
 
-        GROUP_TAG_MAP("group_tag_map", "group_id", "tag_id");
+        COMPANY_VENUE_MAP("company_venue_map","company_id","venue_id"),
+        MENU_GROUP_MAP("menu_group_map","menu_id","group_id"),
+        GROUP_TAG_MAP("group_tag_map", "group_id", "tag_id"),
+        GROUP_PRODUCT_MAP("group_product_map","group_id","product_id"),
+        PRODUCT_TAG_MAP("product_tag_map","product_id","tag_id");
 
-        private String name;
+        private String tableName;
         private String firstColumn;
         private String secondColumn;
 
-        MappingTable(String name, String firstColumn, String secondColumn) {
-            this.name = name;
+        MappingTable(String tableName, String firstColumn, String secondColumn) {
+            this.tableName = tableName;
             this.firstColumn = firstColumn;
             this.secondColumn = secondColumn;
         }
 
 
         public String getName() {
-            return name;
+            return tableName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setName(String tableName) {
+            this.tableName = tableName;
         }
 
         public String getFirstColumn() {
