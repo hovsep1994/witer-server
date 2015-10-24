@@ -21,11 +21,13 @@ public class GroupJDBCTemplate extends BaseJDBCTemplate implements GroupDAO{
         String sql = new StringBuilder("INSERT INTO groups (name, image, menu_id) )")
                 .append("VALUES (:name, :image, :menu_id)")
                 .toString();
+
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue(NAME, group.getName());
         params.addValue(IMAGE, group.getImage());
         params.addValue(MENU_ID, group.getMenu().getId());
         int groupId = insertAndGetId(sql, params);
+
         if(groupId != -1 && group.getTags() != null) {
             insertGroupTags(group);
         }
