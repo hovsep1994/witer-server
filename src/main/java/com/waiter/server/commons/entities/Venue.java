@@ -1,58 +1,44 @@
 package com.waiter.server.commons.entities;
 
-/**
- * Created by shahenpoghosyan on 6/25/15.
- */
 public class Venue {
-
     private int id;
-    private String code;
-    private String name;
-    private boolean validated;
-    private String ownerEmail;
-
-    public int getId() {
-        return id;
-    }
-
+    private int companyId;
+    private Location location;
+    private Menu menu;
+    
     public Venue setId(int id) {
         this.id = id;
         return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Venue setName(String name) {
-        this.name = name;
+    public Venue setCompanyId(int companyId) {
+        this.companyId = companyId;
         return this;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public Venue setCode(String code) {
-        this.code = code;
+    public Venue setLocation(Location location) {
+        this.location = location;
         return this;
     }
 
-    public boolean isValidated() {
-        return validated;
-    }
-
-    public Venue setValidated(boolean validated) {
-        this.validated = validated;
+    public Venue setMenu(Menu menu) {
+        this.menu = menu;
         return this;
     }
 
-    public String getOwnerEmail() {
-        return ownerEmail;
+    public int getId() {
+        return id;
     }
 
-    public Venue setOwnerEmail(String ownerEmail) {
-        this.ownerEmail = ownerEmail;
-        return this;
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public Menu getMenu() {
+        return menu;
     }
 }
