@@ -22,21 +22,28 @@
     LocationsJDBCTemplate locationJDBCTemplate = (LocationsJDBCTemplate) context.getBean("locationJDBCTemplate");
 %>
 <form name="venue" >
-    <input class="reg_input" name="venueName" type="text" style="margin-bottom: 3px; display: block" /> <br>
+
+    <label>Name: </label>
+    <input class="reg_input" name="venueName" type="text" /> <br>
+    <label>Email: </label>
     <input class="reg_input" name="ownerEmail" type="email" /> <br>
+    <label>Password: </label>
     <input class="reg_input" name="password" type="password" /> <br>
+    <label>Repeat password: </label>
     <input class="reg_input" name="repeatPassword" type="password"> <br>
+    <label>Country: </label>
     <select id="country" class="reg_input" name = "venueCountry" >
         <option value="" disabled selected>Select Country</option>
         <% for (Country country : locationJDBCTemplate.getAllCountries()) {
             System.out.println(country); %>
         <option value="<%=country.getCode()%>" ><%=country.getName()%></option>
         <% } %>
-    </select>
+    </select> <br>
+    <label>City: </label>
     <input id="city" class="reg_input" list="cities_data" name="city" />
     <datalist id="cities_data" >
         <option>Armenia</option>
-    </datalist>
+    </datalist> <br>
     <input class="reg_input" name="venueSubmit" type="submit">
 </form>
 </body>
