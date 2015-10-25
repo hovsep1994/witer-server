@@ -1,4 +1,4 @@
-package com.waiter.server.utils;
+package com.waiter.server.utils.paramparser;
 
 /**
  * @author by Shahen

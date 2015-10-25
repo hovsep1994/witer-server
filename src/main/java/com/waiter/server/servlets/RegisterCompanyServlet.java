@@ -3,13 +3,11 @@ package com.waiter.server.servlets;
 import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.Company;
-import com.waiter.server.commons.entities.Venue;
 import com.waiter.server.db.sql.CompanyJDBCTemplate;
-import com.waiter.server.db.sql.VenueJDBCTemplate;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
-import com.waiter.server.utils.BaseParser;
-import com.waiter.server.utils.IParamParser;
+import com.waiter.server.utils.paramparser.BaseParser;
+import com.waiter.server.utils.paramparser.IParamParser;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
@@ -17,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 
 import static com.waiter.server.utils.FieldValidator.*;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;

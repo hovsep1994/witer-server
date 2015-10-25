@@ -1,7 +1,8 @@
-package com.waiter.server.utils;
+package com.waiter.server.utils.paramparser;
 
 import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
+import com.waiter.server.utils.PhotoSaver;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;

@@ -1,7 +1,5 @@
 package com.waiter.server.servlets;
 
-import com.waiter.server.utils.IParamParser;
-
 import javax.servlet.http.HttpServlet;
 
 /**

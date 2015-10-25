@@ -5,8 +5,8 @@ import com.waiter.server.db.LocationsDAO;
 import com.waiter.server.db.sql.LocationsJDBCTemplate;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
-import com.waiter.server.utils.BaseParser;
-import com.waiter.server.utils.IParamParser;
+import com.waiter.server.utils.paramparser.BaseParser;
+import com.waiter.server.utils.paramparser.IParamParser;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
