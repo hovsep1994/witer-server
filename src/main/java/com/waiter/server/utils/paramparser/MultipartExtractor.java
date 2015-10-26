@@ -29,7 +29,7 @@ public class MultipartExtractor {
     private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
 
     private ServletFileUpload upload;
-    private List<FileItem> photos;
+    private List<FileItem> files;
     private HttpServletRequest request;
     private Map<String, String> fields;
 
@@ -48,7 +48,7 @@ public class MultipartExtractor {
         upload.setFileSizeMax(MAX_FILE_SIZE);
         upload.setSizeMax(MAX_REQUEST_SIZE);
 
-        photos = new LinkedList<>();
+        files = new LinkedList<>();
         fields = new HashMap<>(10);
 
         try {
@@ -57,7 +57,7 @@ public class MultipartExtractor {
             while (iter.hasNext()) {
                 FileItem item = iter.next();
                 if (!item.isFormField()) {
-                    photos.add(item);
+                    files.add(item);
                 } else {
                     fields.put(item.getFieldName(), item.getString());
                 }
@@ -68,9 +68,9 @@ public class MultipartExtractor {
         }
     }
 
-    public String savePhoto(String name) throws IOException {
-        PhotoSaver saver = new PhotoSaver(photos.get(0), name);
-        return saver.savePhoto();
+    public FileItem getFile() {
+        if(files.size() == 0) return null;
+        return files.get(0);
     }
 
     public String get(String key) {
