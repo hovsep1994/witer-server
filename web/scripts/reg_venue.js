@@ -33,7 +33,8 @@ $(document).ready(function () {
                 }
             })
         }
-        if($('#city').val().length == 1) {
+
+        if ($('#city').val().length == 1) {
             searchCities($('#country').find('option:selected').val(), $('#city').val());
         }
 
@@ -71,7 +72,7 @@ $(document).ready(function () {
         geocoder.geocode({'address': combined}, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
-                if(!marker) {
+                if (!marker) {
                     marker = new google.maps.Marker({
                         map: map,
                         position: results[0].geometry.location,
@@ -79,13 +80,35 @@ $(document).ready(function () {
                     });
                 }
                 marker.setPosition(results[0].geometry.location);
-            } else {
-                //todo remove alert
-                alert("Geocode was not successful for the following reason: " + status);
-                if(marker) {
-                    marker.setMap(null);
-                }
+                marker.addListener("mouseup", function () {
+                    geocoder.geocode({'location': marker.position}, function (results, status) {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            initFields(results);
+                        }
+                    });
+                });
+            } else if (marker) {
+                marker.setMap(null);
+            }
+
+        });
+    }
+
+    function initFields(geocoderResults) {
+        var components = geocoderResults[0].address_components;
+        var street = '';
+        var streetNumber = '';
+        components.forEach(function(component) {
+            if(component.types.indexOf("country") >= 0) {
+                $('#country').val(component.short_name);
+            } else if(component.types.indexOf("locality") >= 0) {
+                $('#city').val(component.long_name);
+            } else if (component.types.indexOf("route") >= 0) {
+                street = component.short_name;
+            } else if (component.types.indexOf("street_number") >= 0) {
+                streetNumber = component.long_name;
             }
         });
+        $("#address").val(streetNumber + " " + street);
     }
 });

@@ -42,8 +42,7 @@
     <label>Country: </label>
     <select id="country" class="reg_input" name="venueCountry">
         <option value="" disabled selected>Select Country</option>
-        <% for (Country country : locationJDBCTemplate.getAllCountries()) {
-            System.out.println(country); %>
+        <% for (Country country : locationJDBCTemplate.getAllCountries()) { %>
         <option value="<%=country.getCode()%>"><%=country.getName()%>
         </option>
         <% } %>
