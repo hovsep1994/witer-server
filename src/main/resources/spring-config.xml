@@ -11,6 +11,9 @@
         <property name="password" value="password"/>
     </bean>
 
+    <bean id="companyJDBCTemplate" class="com.waiter.server.db.sql.CompanyJDBCTemplate">
+        <constructor-arg ref="dataSource" />
+    </bean>
     <bean id="venueJDBCTemplate" class="com.waiter.server.db.sql.VenueJDBCTemplate">
         <constructor-arg ref="dataSource" />
     </bean>

@@ -8,6 +8,7 @@ import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.BaseParser;
 import com.waiter.server.utils.paramparser.IParamParser;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
@@ -15,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 
 import static com.waiter.server.utils.FieldValidator.*;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
@@ -26,7 +28,7 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
  */
 public class RegisterCompanyServlet extends BaseServlet {
 
-    private static final Logger LOG = Logger.getLogger(RegisterCompanyServlet.class);
+    private static final Logger logger = Logger.getLogger(RegisterCompanyServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -41,21 +43,25 @@ public class RegisterCompanyServlet extends BaseServlet {
             String name = paramParser.get(NAME);
             String email = paramParser.get(EMAIL);
             String phone = paramParser.get(PHONE);
-            if (checkRequiredFields(name, email) && isValidEmail(email)) {
+            String password = paramParser.get(PASSWORD);
+            logger.debug(name + " " + email + " " + password);
+            if (!validRequiredFields(name, email, password) || !isValidEmail(email)) {
                 throw new APIException(SC_BAD_REQUEST,
                         new APIError(WRONG_REQUEST, "Wrong request parameters. "));
             }
             Company company = new Company()
                     .setName(name)
                     .setMail(email)
-                    .setPhone(phone);
+                    .setPhone(phone)
+                    .setPassword(DigestUtils.sha1Hex(password))
+                    .setToken(UUID.randomUUID().toString());
             companyJDBCTemplate.create(company);
             writer.writeResponse(company);
         } catch (APIException e) {
-            LOG.error(e.getError(), e);
+            logger.error(e.getError(), e);
             writer.writeError(e.getError());
         } catch (Exception e) {
-            LOG.error("something went wrong when adding tag to user. ", e);
+            logger.error("something went wrong when adding tag to user. ", e);
             resp.sendError(SC_INTERNAL_SERVER_ERROR, "Internal server error");
         }
     }

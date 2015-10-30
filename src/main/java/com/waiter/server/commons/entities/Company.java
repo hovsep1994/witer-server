@@ -11,8 +11,29 @@ public class Company {
     private String name;
     private String mail;
     private String phone;
-    private Menu menu;
+    private String password;
+    private String token;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Company setPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public Company setToken(String token) {
+        this.token = token;
+        return this;
+    }
+
     private List<Venue> venues;
+    private List<Menu> menus;
 
     public Company setId(int id) {
         this.id = id;
@@ -26,11 +47,6 @@ public class Company {
 
     public Company setMail(String mail) {
         this.mail = mail;
-        return this;
-    }
-
-    public Company setMenu(Menu menu) {
-        this.menu = menu;
         return this;
     }
 
@@ -60,13 +76,16 @@ public class Company {
         return phone;
     }
 
-    public Menu getMenu() {
-        return menu;
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public Company setMenus(List<Menu> menus) {
+        this.menus = menus;
+        return this;
     }
 
     public List<Venue> getVenues() {
         return venues;
     }
-
-
 }

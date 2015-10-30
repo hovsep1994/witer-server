@@ -23,6 +23,8 @@ public class BaseJDBCTemplate {
     protected static final String ID = "id";
     protected static final String NAME = "name";
     protected static final String CODE = "code";
+    protected static final String PASSWORD = "password";
+    protected static final String TOKEN = "token";
     protected static final String EMAIL = "email";
     protected static final String PHONE = "phone";
     protected static final String TAGS = "tags";

@@ -15,12 +15,22 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>addVenue</servlet-name>
+        <jsp-file>/add_venue.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addVenue</servlet-name>
+        <url-pattern>/venues/add</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
         <servlet-name>register</servlet-name>
         <servlet-class>com.waiter.server.servlets.RegisterCompanyServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>register</servlet-name>
-        <url-pattern>/venues/register</url-pattern>
+        <url-pattern>/companies/register</url-pattern>
     </servlet-mapping>
 
     <servlet>

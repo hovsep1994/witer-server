@@ -21,15 +21,16 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
 
     @Override
     public int create(Company company) {
-        String sql = new StringBuilder("INSERT INTO company (name, email, phone, menu_id) )")
-                .append("VALUES (:name, :email, :phone, :menu_id)")
+        String sql = new StringBuilder("INSERT INTO company (name, email, phone, password, token)")
+                .append(" VALUES (:name, :email, :phone, :password, :token)")
                 .toString();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue(NAME, company.getName());
         params.addValue(EMAIL, company.getMail());
         params.addValue(PHONE, company.getPhone());
-        params.addValue(MENU_ID, company.getMenu().getId());
+        params.addValue(PASSWORD, company.getPassword());
+        params.addValue(TOKEN, company.getToken());
 
         return insertAndGetId(sql, params);
     }

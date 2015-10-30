@@ -7,7 +7,7 @@ import org.apache.commons.validator.routines.EmailValidator;
  */
 public class FieldValidator {
 
-    public static boolean checkRequiredFields(String... fields) {
+    public static boolean validRequiredFields(String... fields) {
         for(String field : fields) {
             if(field == null || field.trim().isEmpty())
                 return false;
