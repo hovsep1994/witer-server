@@ -67,5 +67,4 @@ public class Location {
     public String getZip() {
         return zip;
     }
-
 }

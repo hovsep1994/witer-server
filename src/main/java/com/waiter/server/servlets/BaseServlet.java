@@ -11,6 +11,7 @@ public class BaseServlet extends HttpServlet {
 
     protected static final String CONTEXT = "springContext";
     protected static final String NAME = "name";
+    protected static final String IMAGE = "image";
     protected static final String EMAIL = "email";
     protected static final String PHONE = "phone";
     protected static final String PASSWORD = "password";

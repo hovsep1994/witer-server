@@ -50,4 +50,42 @@
         <servlet-name>cities</servlet-name>
         <url-pattern>/api/cities</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getMenu</servlet-name>
+        <servlet-class>com.waiter.server.servlets.GetMenuServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getMenu</servlet-name>
+        <url-pattern>/getMenu</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>createGroup</servlet-name>
+        <servlet-class>com.waiter.server.servlets.CreateGroupServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>createGroup</servlet-name>
+        <url-pattern>/createGroup</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>getProductsByGroup</servlet-name>
+        <servlet-class>com.waiter.server.servlets.GetProductsByGroupServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getProductsByGroup</servlet-name>
+        <url-pattern>/getProductsByGroup</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getGroup</servlet-name>
+        <servlet-class>com.waiter.server.servlets.GetGroupServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getGroup</servlet-name>
+        <url-pattern>/getGroup</url-pattern>
+    </servlet-mapping>
+
 </web-app>

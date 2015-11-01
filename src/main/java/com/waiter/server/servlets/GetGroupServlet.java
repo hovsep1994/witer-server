@@ -1,13 +1,9 @@
 package com.waiter.server.servlets;
 
-import com.waiter.server.commons.APIError;
-import com.waiter.server.commons.APIException;
-import com.waiter.server.commons.entities.Company;
 import com.waiter.server.commons.entities.Group;
-import com.waiter.server.commons.entities.Menu;
-import com.waiter.server.commons.entities.Tag;
-import com.waiter.server.db.sql.CompanyJDBCTemplate;
+import com.waiter.server.commons.entities.Product;
 import com.waiter.server.db.sql.GroupJDBCTemplate;
+import com.waiter.server.db.sql.ProductJDBTemplate;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.BaseParser;
@@ -24,14 +20,13 @@ import java.util.List;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
- * @author shahenpoghosyan
+ * Created by Admin on 10/28/2015.
  */
-public class CreateGroupServlet extends BaseServlet {
-
-    private static final Logger LOG = Logger.getLogger(CreateGroupServlet.class);
+public class GetGroupServlet extends BaseServlet {
+    private static final Logger LOG = Logger.getLogger(GetMenuServlet.class);
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
@@ -40,21 +35,17 @@ public class CreateGroupServlet extends BaseServlet {
         IParamParser paramParser = new BaseParser(req);
 
         try {
-            String name = paramParser.get(NAME);
-            List<String> tags = paramParser.getList("tags");
-            int menu_id = paramParser.getInt("menu_id");
-
-            Group group = new Group()
-                    .setName(name)
-                    .setTags(Tag.parseTags(tags))
-                    .setMenu(new Menu().setId(menu_id));
-
-            groupJDBCTemplate.create(group);
-            writer.writeResponse(group);
+            int group_id = paramParser.getInt("group_id", 1);
+            if (group_id == -1) {
+                resp.getWriter().write("No menu with id " + group_id);
+            } else {
+                Group group = groupJDBCTemplate.get(group_id);
+                LOG.info(group.toString());
+                writer.writeResponse(group);
+            }
         } catch (Exception e) {
             LOG.error("something went wrong when adding tag to user. ", e);
             resp.sendError(SC_INTERNAL_SERVER_ERROR, "Internal server error");
         }
     }
-
 }

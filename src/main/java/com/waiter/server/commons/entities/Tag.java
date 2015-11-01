@@ -1,6 +1,7 @@
 package com.waiter.server.commons.entities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -9,6 +10,13 @@ import java.util.List;
 public class Tag {
     private int id;
     private String name;
+
+    public Tag() {
+    }
+
+    public Tag(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;
@@ -34,5 +42,28 @@ public class Tag {
             list.add(tag.getName());
         }
         return list;
+    }
+
+    public static List<Tag> parseTags(List<String> tags) {
+        List<Tag> tagList = new ArrayList<>(tags.size());
+        for (String t : tags) {
+            tagList.add(new Tag(t));
+        }
+        return tagList;
+    }
+
+    public static List<Tag> parseTags(String tags) {
+        if(tags == null) {
+            return new ArrayList<>();
+        }
+        return parseTags(Arrays.asList(tags.split(",")));
+    }
+
+    public static String[] getNamesArray(List<Tag> tags) {
+        String strings[] = new String[tags.size()];
+        for (int i = 0; i < tags.size(); i++) {
+            strings[i] = tags.get(i).getName();
+        }
+        return strings;
     }
 }

@@ -5,6 +5,7 @@ import org.apache.commons.fileupload.FileItem;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author by Shahen
@@ -23,4 +24,5 @@ public interface IParamParser {
     Date getDate(String key) throws ParseException;
     boolean isFileExists();
     FileItem getFile();
+    List getList(String key);
 }

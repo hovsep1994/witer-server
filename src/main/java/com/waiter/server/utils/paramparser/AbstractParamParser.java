@@ -2,7 +2,9 @@ package com.waiter.server.utils.paramparser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author by Shahen
@@ -39,6 +41,13 @@ public abstract class AbstractParamParser implements IParamParser {
         return Integer.parseInt(value);
     }
 
+    public String getString(String key, String def) {
+        String value = get(key);
+        if(value == null) {
+            return def;
+        }
+        return value;
+    }
     @Override
     public long getLong(String key) {
         return Long.valueOf(get(key));
@@ -56,12 +65,12 @@ public abstract class AbstractParamParser implements IParamParser {
     public double getDouble(String key) {
         return Double.valueOf(get(key));
     }
-
-    public String getString(String key, String def) {
+    @Override
+    public List getList(String key) {
         String value = get(key);
-        if(value == null) {
-            return def;
+        if (value == null) {
+            return null;
         }
-        return value;
+        return Arrays.asList(value.split(","));
     }
 }

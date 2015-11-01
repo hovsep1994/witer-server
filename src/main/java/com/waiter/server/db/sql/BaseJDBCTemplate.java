@@ -1,6 +1,9 @@
 package com.waiter.server.db.sql;
 
 import com.waiter.server.commons.entities.City;
+import com.waiter.server.commons.entities.Group;
+import com.waiter.server.commons.entities.Product;
+import com.waiter.server.commons.entities.Tag;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -122,6 +125,22 @@ public class BaseJDBCTemplate {
             City city = new City();
             city.setName(rs.getString("name"));
             return city;
+        }
+    }
+
+    protected static class ProductMapper implements RowMapper {
+        @Override
+        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Product product = new Product()
+                    .setId(rs.getInt(ID))
+                    .setName(rs.getString(NAME))
+                    .setImage(rs.getString(IMAGE))
+                    .setGroup(new Group().setId(rs.getInt("group_id")))
+                    .setDescription(rs.getString(DESCRIPTION))
+                    .setPrice(rs.getDouble(PRICE))
+                    .setTags(Tag.parseTags(rs.getString("product_tags")));
+
+            return product;
         }
     }
 

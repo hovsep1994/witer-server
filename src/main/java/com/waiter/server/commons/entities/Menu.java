@@ -36,4 +36,13 @@ public class Menu {
         this.id = id;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "id=" + id +
+                ", venue=" + venue +
+                ", groups=" + groups +
+                '}';
+    }
 }

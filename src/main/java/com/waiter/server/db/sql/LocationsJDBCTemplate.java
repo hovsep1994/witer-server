@@ -27,15 +27,18 @@ public class LocationsJDBCTemplate extends BaseJDBCTemplate implements Locations
 
     public List<City> searchCities(String nameQuery, String countryCode, int limit) {
         MapSqlParameterSource params = new MapSqlParameterSource();
-        StringBuilder sql = new StringBuilder().append("SELECT name FROM cities ")
+        StringBuilder sql = new StringBuilder()
+                .append("SELECT name FROM cities ")
                 .append("WHERE country_code=:country_code ");
-            params.addValue("country_code", countryCode);
+
+        params.addValue("country_code", countryCode);
+
         if (nameQuery != null && !nameQuery.isEmpty()) {
-                sql.append("AND name LIKE :query ");
+            sql.append("AND name LIKE :query ");
             params.addValue("query", nameQuery + "%");
         }
         sql.append("ORDER BY population DESC ");
-        if(limit > 0) {
+        if (limit > 0) {
             sql.append("LIMIT :limit");
         }
         params.addValue("limit", limit);

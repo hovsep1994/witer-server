@@ -67,4 +67,16 @@ public class Group {
         this.menu = menu;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", products=" + products +
+                ", tags=" + tags +
+                ", menu=" + menu +
+                '}';
+    }
 }
