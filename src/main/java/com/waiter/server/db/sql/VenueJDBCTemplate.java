@@ -31,17 +31,15 @@ public class VenueJDBCTemplate extends BaseJDBCTemplate implements VenueDAO {
                 .toString();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
-
         Location location = venue.getLocation();
-
         params.addValue("country", location.getCountry());
         params.addValue("city", location.getCity());
         params.addValue("street", location.getStreet());
         params.addValue("zip", location.getZip());
-        params.addValue("latitude", location.getLatLng()[0]);
-        params.addValue("longitude", location.getLatLng()[1]);
-
-        params.addValue("menu_id", venue.getMenu().getId());
+        params.addValue("latitude", location.getLatitude());
+        params.addValue("longitude", location.getLongitude());
+        Long menuId = venue.getMenu() != null ? venue.getMenu().getId() : null;
+        params.addValue("menu_id", menuId);
 
         return insertAndGetId(sql, params);
     }

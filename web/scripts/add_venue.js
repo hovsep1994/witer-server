@@ -14,9 +14,29 @@ function initMap() {
 }
 
 $(document).ready(function () {
+
+    $("#add_venue_form").on('submit', function(e) {
+        e.preventDefault();
+        var country = $('#country').find('option:selected').text();
+        var city = $('#city').val();
+        var address = $('#address').val();
+        var latitude = marker.position.lat;
+        var longitude = marker.position.lng;
+        $.post("/api/venues/add", {
+            country: country,
+            city: city,
+            address: address,
+            latitude: latitude,
+            longitude: longitude
+        }, function(data) {
+            console.log(data)
+        })
+    });
+
+
     $('#city').on("input", function (e) {
         function searchCities(countryCode, query) {
-            $.get("/cities", {
+            $.get("/api/cities", {
                 countryCode: countryCode,
                 query: query,
                 limit: 10

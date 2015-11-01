@@ -17,6 +17,9 @@ public interface IParamParser {
     boolean getBoolean(String key, boolean def);
     int getInt(String key);
     int getInt(String key, int def);
+    long getLong(String key);
+    long getLong(String key, long def);
+    double getDouble(String key);
     Date getDate(String key) throws ParseException;
     boolean isFileExists();
     FileItem getFile();

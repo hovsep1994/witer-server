@@ -11,7 +11,26 @@ public class Location {
     private String city;
     private String street;
     private String zip;
-    private double[] latLng = new double[2];
+    private double latitude;
+    private double longitude;
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public Location setLongitude(double longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public Location setLatitude(double latitude) {
+        this.latitude = latitude;
+        return this;
+    }
 
     public Location setCountry(String country) {
         this.country = country;
@@ -33,11 +52,6 @@ public class Location {
         return this;
     }
 
-    public Location setLatLng(double[] latLng) {
-        this.latLng = latLng;
-        return this;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -54,7 +68,4 @@ public class Location {
         return zip;
     }
 
-    public double[] getLatLng() {
-        return latLng;
-    }
 }

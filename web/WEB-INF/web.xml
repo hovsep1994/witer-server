@@ -30,7 +30,16 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>register</servlet-name>
-        <url-pattern>/companies/register</url-pattern>
+        <url-pattern>/api/companies/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>apiAddVeneu</servlet-name>
+        <servlet-class>com.waiter.server.servlets.AddVenueServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>apiAddVeneu</servlet-name>
+        <url-pattern>/api/venues/add</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -39,6 +48,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>cities</servlet-name>
-        <url-pattern>/cities</url-pattern>
+        <url-pattern>/api/cities</url-pattern>
     </servlet-mapping>
 </web-app>

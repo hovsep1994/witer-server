@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ParserFactory {
 
-    IParamParser newParser(HttpServletRequest request) {
+    public IParamParser newParser(HttpServletRequest request) {
         if (!ServletFileUpload.isMultipartContent(request)) {
             try {
                 return new MultipartParser(request);

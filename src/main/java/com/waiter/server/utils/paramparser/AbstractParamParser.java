@@ -39,6 +39,24 @@ public abstract class AbstractParamParser implements IParamParser {
         return Integer.parseInt(value);
     }
 
+    @Override
+    public long getLong(String key) {
+        return Long.valueOf(get(key));
+    }
+
+    @Override
+    public long getLong(String key, long def) {
+        String value = get(key);
+        if (value == null || value.isEmpty())
+            return def;
+        return Long.parseLong(value);
+    }
+
+    @Override
+    public double getDouble(String key) {
+        return Double.valueOf(get(key));
+    }
+
     public String getString(String key, String def) {
         String value = get(key);
         if(value == null) {

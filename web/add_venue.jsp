@@ -27,7 +27,7 @@
     LocationsJDBCTemplate locationJDBCTemplate = (LocationsJDBCTemplate) context.getBean("locationJDBCTemplate");
 %>
 
-<form name="company_reg">
+<form id="add_venue_form" name="company_reg">
     <label for="country">Country: </label>
     <select id="country" class="reg_input" name="venueCountry">
         <option value="" disabled selected>Select Country</option>

@@ -6,7 +6,7 @@ import java.util.List;
  * @author shahenpoghosyan
  */
 public class Menu {
-    private int id;
+    private long id;
     private Venue venue;
     private List<Group> groups;
 
@@ -28,11 +28,11 @@ public class Menu {
         return this;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public Menu setId(int id) {
+    public Menu setId(long id) {
         this.id = id;
         return this;
     }
