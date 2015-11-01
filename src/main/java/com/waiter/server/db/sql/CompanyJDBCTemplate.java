@@ -21,7 +21,7 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
 
     @Override
     public int create(Company company) {
-        String sql = new StringBuilder("INSERT INTO company (name, email, phone, password, token)")
+        String sql = new StringBuilder("INSERT INTO companies (name, email, phone, password, token)")
                 .append(" VALUES (:name, :email, :phone, :password, :token)")
                 .toString();
 
@@ -38,7 +38,7 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
     @Override
     public Company get(int id) {
         String sql = new StringBuilder()
-                .append("SELECT * FROM company ")
+                .append("SELECT * FROM companies ")
                 .toString();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue(ID, id);
@@ -49,7 +49,7 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
     @Override
     public List<Company> search(String s) {
         String sql = new StringBuilder()
-                .append("SELECT * FROM company ")
+                .append("SELECT * FROM companies ")
                 .append("name LIKE '%" + s + "%'")
                 .toString();
         MapSqlParameterSource params = new MapSqlParameterSource();
