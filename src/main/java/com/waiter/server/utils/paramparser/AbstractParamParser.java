@@ -65,8 +65,9 @@ public abstract class AbstractParamParser implements IParamParser {
     public double getDouble(String key) {
         return Double.valueOf(get(key));
     }
+
     @Override
-    public List getList(String key) {
+    public List<String> getList(String key) {
         String value = get(key);
         if (value == null) {
             return null;

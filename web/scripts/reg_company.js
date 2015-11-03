@@ -17,10 +17,17 @@ $(document).ready(function () {
             console.log(data)
             var response = JSON.parse(data);
             if(response.success) {
-                alert("success");
+                var date = new Date();
+                date.setDate(new Date().getDate() + 60);
+                setCookie("ckey", response.response.token, date);
+                window.location.href = "/venues/add";
             } else {
                 alert("error: " + response.error.message)
             }
         })
     });
+
+    function setCookie(name, value, expireDate) {
+        document.cookie = name + "=" + value + ";expires=" + expireDate.toUTCString() + ";path=/"
+    }
 });

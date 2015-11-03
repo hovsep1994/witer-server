@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 public class BaseServlet extends HttpServlet {
 
     protected static final String CONTEXT = "springContext";
+    protected static final String KEY = "key";
     protected static final String NAME = "name";
     protected static final String IMAGE = "image";
     protected static final String EMAIL = "email";

@@ -24,5 +24,5 @@ public interface IParamParser {
     Date getDate(String key) throws ParseException;
     boolean isFileExists();
     FileItem getFile();
-    List getList(String key);
+    List<String> getList(String key);
 }

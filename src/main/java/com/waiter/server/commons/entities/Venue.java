@@ -2,11 +2,21 @@ package com.waiter.server.commons.entities;
 
 public class Venue {
     private int id;
+    private Company company;
     private Location location;
     private Menu menu;
 
     public Venue setId(int id) {
         this.id = id;
+        return this;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public Venue setCompany(Company company) {
+        this.company = company;
         return this;
     }
 

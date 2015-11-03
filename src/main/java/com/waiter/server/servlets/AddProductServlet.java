@@ -16,6 +16,7 @@ import com.waiter.server.utils.PhotoSaver;
 import com.waiter.server.utils.paramparser.BaseParser;
 import com.waiter.server.utils.paramparser.IParamParser;
 import com.waiter.server.utils.paramparser.MultipartParser;
+import com.waiter.server.utils.paramparser.ParserFactory;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
@@ -44,12 +45,7 @@ public class AddProductServlet extends BaseServlet {
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
         ProductDAO productJDBTemplate = (ProductJDBTemplate) context.getBean("productJDBTemplate");
         IResponseWriter<Product> writer = new JsonResponseWriter<>(resp.getWriter());
-        IParamParser paramParser = null;
-        try {
-            paramParser = new MultipartParser(req);
-        } catch (APIException e) {
-            e.printStackTrace();
-        }
+        IParamParser paramParser = new ParserFactory().newParser(req);
 
         try {
             String name = paramParser.get("name");

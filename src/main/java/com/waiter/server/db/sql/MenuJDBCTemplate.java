@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.waiter.server.db.sql.CompanyJDBCTemplate.CompanyRowMapper;
+
 /**
  * Created by Admin on 10/24/2015.
  */
@@ -76,7 +78,7 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
     static Menu getMenu(ResultSet rs) throws SQLException {
         Menu menu = new Menu()
                 .setId(rs.getInt(ID))
-                .setCompany(CompanyJDBCTemplate.getCompany(rs));
+                .setCompany(new CompanyRowMapper().getCompany(rs));
 
         List<Group> groups = new ArrayList<>();
         do {

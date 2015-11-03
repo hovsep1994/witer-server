@@ -27,7 +27,8 @@ $(document).ready(function () {
             city: city,
             address: address,
             latitude: latitude,
-            longitude: longitude
+            longitude: longitude,
+            key: getCookie("ckey")
         }, function(data) {
             console.log(data)
         })
@@ -130,5 +131,11 @@ $(document).ready(function () {
             }
         });
         $("#address").val(streetNumber + " " + street);
+    }
+
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
     }
 });

@@ -21,7 +21,7 @@ import java.sql.SQLException;
  */
 public class VenueJDBCTemplate extends BaseJDBCTemplate implements VenueDAO {
 
-    private static final Logger LOG = Logger.getLogger(VenueJDBCTemplate.class);
+    private static final Logger logger = Logger.getLogger(VenueJDBCTemplate.class);
 
 
     public VenueJDBCTemplate(DataSource dataSource) {
@@ -30,8 +30,8 @@ public class VenueJDBCTemplate extends BaseJDBCTemplate implements VenueDAO {
 
     public int create(Venue venue) {
         String sql = new StringBuilder()
-                .append(" INSERT INTO venues (country, city, street, zip, latitude, longitude, menu_id)")
-                .append(" VALUES (:country, :city, :street, :zip, :latitude, :longitude, :menu_id)")
+                .append(" INSERT INTO venues (country, city, street, zip, latitude, longitude, menu_id, company_id)")
+                .append(" VALUES (:country, :city, :street, :zip, :latitude, :longitude, :menu_id, :company_id)")
                 .toString();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -42,6 +42,7 @@ public class VenueJDBCTemplate extends BaseJDBCTemplate implements VenueDAO {
         params.addValue("zip", location.getZip());
         params.addValue("latitude", location.getLatitude());
         params.addValue("longitude", location.getLongitude());
+        params.addValue("company_id", venue.getCompany().getId());
         Long menuId = venue.getMenu() != null ? venue.getMenu().getId() : null;
         params.addValue("menu_id", menuId);
 
