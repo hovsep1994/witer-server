@@ -42,7 +42,7 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
     @Override
     public Company get(int id) {
         String sql = new StringBuilder()
-                .append("SELECT * FROM companies ")
+                .append("SELECT * FROM companies AS c ")
                 .toString();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue(ID, id);
@@ -77,15 +77,17 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
     }
 
     private static class CompanyRowMapper implements RowMapper {
-
         @Override
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Company company = new Company()
-                    .setId(rs.getInt(ID))
-                    .setName(rs.getString(NAME))
-                    .setMail(rs.getString(EMAIL))
-                    .setPhone(rs.getString(PHONE));
-            return company;
+            return getCompany(rs);
         }
+    }
+
+    static Company getCompany(ResultSet rs) throws SQLException {
+        return new Company()
+                .setId(rs.getInt("c.id"))
+                .setName(rs.getString("c.name"))
+                .setMail(rs.getString("c.email"))
+                .setPhone(rs.getString("c.phone"));
     }
 }

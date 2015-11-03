@@ -28,10 +28,8 @@ public class SearchCitiesServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        ApplicationContext context = (ApplicationContext) getServletContext().
-                getAttribute(CONTEXT);
-        LocationsDAO locationJDBCTemplate = (LocationsJDBCTemplate)
-                context.getBean("locationJDBCTemplate");
+        ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
+        LocationsDAO locationJDBCTemplate = (LocationsJDBCTemplate) context.getBean("locationJDBCTemplate");
         IResponseWriter<City> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new BaseParser(req);
 

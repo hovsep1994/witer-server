@@ -46,5 +46,4 @@ public class LocationsJDBCTemplate extends BaseJDBCTemplate implements Locations
 
     }
 
-
 }

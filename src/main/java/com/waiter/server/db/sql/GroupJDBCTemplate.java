@@ -29,8 +29,9 @@ public class GroupJDBCTemplate extends BaseJDBCTemplate implements GroupDAO {
 
     @Override
     public int create(Group group) {
-        String sql = new StringBuilder("INSERT INTO groups (name, image, menu_id) )")
-                .append("VALUES (:name, :image, :menu_id)")
+        String sql = new StringBuilder()
+                .append(" INSERT INTO groups (name, image, menu_id)")
+                .append(" VALUES (:name, :image, :menu_id)")
                 .toString();
 
         MapSqlParameterSource params = new MapSqlParameterSource();

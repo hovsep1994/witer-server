@@ -77,10 +77,7 @@ public class BaseJDBCTemplate {
 
     protected enum MappingTable {
 
-        COMPANY_VENUE_MAP("company_venue_map","company_id","venue_id"),
-        MENU_GROUP_MAP("menu_group_map","menu_id","group_id"),
         GROUP_TAG_MAP("group_tag_map", "group_id", "tag_id"),
-        GROUP_PRODUCT_MAP("group_product_map","group_id","product_id"),
         PRODUCT_TAG_MAP("product_tag_map","product_id","tag_id");
 
         private String tableName;
@@ -129,20 +126,5 @@ public class BaseJDBCTemplate {
         }
     }
 
-    protected static class ProductMapper implements RowMapper {
-        @Override
-        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Product product = new Product()
-                    .setId(rs.getInt(ID))
-                    .setName(rs.getString(NAME))
-                    .setImage(rs.getString(IMAGE))
-                    .setGroup(new Group().setId(rs.getInt("group_id")))
-                    .setDescription(rs.getString(DESCRIPTION))
-                    .setPrice(rs.getDouble(PRICE))
-                    .setTags(Tag.parseTags(rs.getString("product_tags")));
-
-            return product;
-        }
-    }
 
 }

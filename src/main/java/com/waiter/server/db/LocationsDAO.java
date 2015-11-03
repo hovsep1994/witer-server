@@ -5,9 +5,6 @@ import com.waiter.server.commons.entities.Country;
 
 import java.util.List;
 
-/**
- * @author shahenpoghosyan
- */
 public interface LocationsDAO {
 
     List<Country> getAllCountries();

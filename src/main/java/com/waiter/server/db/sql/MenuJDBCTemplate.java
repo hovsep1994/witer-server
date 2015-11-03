@@ -25,10 +25,15 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
 
     @Override
     public int create(Menu menu) {
-        String sql = new StringBuilder("INSERT INTO menu )")
+        String sql = new StringBuilder()
+                .append(" INSERT INTO menu )")
+                .append(" (name, company_id)")
+                .append(" VALUES (:name, :company_id)")
                 .toString();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("name", menu.getName());
+        params.addValue("company_id", menu.getCompany().getId());
 
         return insertAndGetId(sql, params);
     }
@@ -37,7 +42,7 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
     public Menu get(int id) {
         String sql = new StringBuilder()
                 .append(" SELECT")
-                .append(" m.id, m.name, m.venue_id,")
+                .append(" m.id, m.name, m.company_id,")
                 .append(" g.id, g.name, g.image,")
                 .append(" gtm.group_id, gtm.tag_id,")
                 .append(" GROUP_CONCAT(gt.name) AS group_tags,")
@@ -50,6 +55,7 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
                 .append(" INNER JOIN products AS p ON (p.group_id = g.id)")
                 .append(" LEFT JOIN product_tag_map AS ptm ON (p.id = ptm.product_id)")
                 .append(" LEFT JOIN tags AS pt ON (pt.id = ptm.tag_id)")
+                .append(" LEFT JOIN companies AS c ON (c.id = m.company_id)")
                 .append(" WHERE m.id = '" + id + "'")
                 .append(" GROUP BY g.id, p.id")
                 .toString();
@@ -68,9 +74,10 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
     }
 
     static Menu getMenu(ResultSet rs) throws SQLException {
-        Menu menu = new Menu();
-        menu.setId(rs.getInt(ID));
-        menu.setVenue(new Venue());
+        Menu menu = new Menu()
+                .setId(rs.getInt(ID))
+                .setCompany(CompanyJDBCTemplate.getCompany(rs));
+
         List<Group> groups = new ArrayList<>();
         do {
             groups.add(GroupJDBCTemplate.getGroup(rs));

@@ -78,4 +78,17 @@ public class Product {
     public List<Tag> getTags() {
         return tags;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", group=" + group +
+                ", tags=" + tags +
+                '}';
+    }
 }

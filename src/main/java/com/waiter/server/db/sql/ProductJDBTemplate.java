@@ -23,8 +23,9 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
 
     @Override
     public int create(Product product) {
-        String sql = new StringBuilder("INSERT INTO groups (name, image, price, description, group_id) )")
-                .append("VALUES (:name, :image, :price, :description, :group_id)")
+        String sql = new StringBuilder()
+                .append(" INSERT INTO products (name, image, price, description, group_id)")
+                .append(" VALUES (:name, :image, :price, :description, :group_id)")
                 .toString();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -65,6 +66,36 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
     @Override
     public Product get(int id) {
         return null;
+    }
+
+    @Override
+    public List<Product> search(String query, int limit) {
+        if (query == null || query.isEmpty()) return null;
+
+        StringBuilder sql = new StringBuilder()
+                .append(" SELECT")
+                .append(" p.id, p.name, p.image, p.price, p.description, p.group_id,")
+                .append(" ptm.product_id, ptm.tag_id, ")
+                .append(" GROUP_CONCAT(t.name) AS product_tags")
+                .append(" FROM products AS p")
+                .append(" LEFT JOIN product_tag_map AS ptm ON (p.id = ptm.product_id)")
+                .append(" LEFT JOIN tags AS t ON (t.id = ptm.tag_id)")
+                .append(" WHERE p.name = '" + query + "%'");
+
+        if (limit > 0) {
+            sql.append(" LIMIT " + limit);
+        }
+        sql.append(" GROUP BY p.id");
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+
+        List<Product> products = jdbcTemplateObject.query(sql.toString(), parameterSource, new ProductMapper());
+
+        if (products.size() == 0) {
+
+        }
+
+        return products;
     }
 
     private void insertGroupTags(Product product) {

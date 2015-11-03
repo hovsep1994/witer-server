@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-           version="3.0">
+         version="3.0">
 
     <servlet>
         <servlet-name>home</servlet-name>
@@ -30,7 +30,6 @@
         <servlet-name>email_validation</servlet-name>
         <url-pattern>/companies/email/validation</url-pattern>
     </servlet-mapping>
-
 
     <servlet>
         <servlet-name>register</servlet-name>
@@ -60,23 +59,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>getMenu</servlet-name>
+        <servlet-name>apiGetMenu</servlet-name>
         <servlet-class>com.waiter.server.servlets.GetMenuServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>getMenu</servlet-name>
-        <url-pattern>/getMenu</url-pattern>
+        <servlet-name>apiGetMenu</servlet-name>
+        <url-pattern>/api/menus/get</url-pattern>
     </servlet-mapping>
-
-    <servlet>
-        <servlet-name>createGroup</servlet-name>
-        <servlet-class>com.waiter.server.servlets.CreateGroupServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>createGroup</servlet-name>
-        <url-pattern>/createGroup</url-pattern>
-    </servlet-mapping>
-
 
     <servlet>
         <servlet-name>getProductsByGroup</servlet-name>
@@ -84,7 +73,16 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>getProductsByGroup</servlet-name>
-        <url-pattern>/getProductsByGroup</url-pattern>
+        <url-pattern>/api/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addProduct</servlet-name>
+        <servlet-class>com.waiter.server.servlets.AddProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addProduct</servlet-name>
+        <url-pattern>/api/product/add</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -93,7 +91,25 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>getGroup</servlet-name>
-        <url-pattern>/getGroup</url-pattern>
+        <url-pattern>/api/groups</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addGroup</servlet-name>
+        <servlet-class>com.waiter.server.servlets.AddGroupServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addGroup</servlet-name>
+        <url-pattern>/api/group/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>getVenueById</servlet-name>
+        <servlet-class>com.waiter.server.servlets.GetVenueByIdServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getVenueById</servlet-name>
+        <url-pattern>/api/venue</url-pattern>
     </servlet-mapping>
 
 </web-app>

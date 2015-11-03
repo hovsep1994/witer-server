@@ -66,4 +66,12 @@ public class Tag {
         }
         return strings;
     }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

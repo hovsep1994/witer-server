@@ -35,7 +35,7 @@ public class GetGroupServlet extends BaseServlet {
         IParamParser paramParser = new BaseParser(req);
 
         try {
-            int group_id = paramParser.getInt("group_id", 1);
+            int group_id = paramParser.getInt("group_id", -1);
             if (group_id == -1) {
                 resp.getWriter().write("No menu with id " + group_id);
             } else {

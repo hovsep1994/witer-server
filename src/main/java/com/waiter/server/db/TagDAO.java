@@ -4,9 +4,6 @@ import com.waiter.server.commons.entities.Tag;
 
 import java.util.List;
 
-/**
- * @author shahenpoghosyan
- */
 public interface TagDAO {
     void batchInsert(List<Tag> tags);
     List<Integer> insertAndGetIds(List<Tag> tags);

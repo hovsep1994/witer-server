@@ -7,7 +7,8 @@ import java.util.List;
  */
 public class Menu {
     private long id;
-    private Venue venue;
+    private String name;
+    private Company company;
     private List<Group> groups;
 
     public List<Group> getGroups() {
@@ -19,17 +20,26 @@ public class Menu {
         return this;
     }
 
-    public Venue getVenue() {
-        return venue;
+    public Menu setName(String name) {
+        this.name = name;
+        return this;
     }
 
-    public Menu setVenue(Venue venue) {
-        this.venue = venue;
+    public Menu setCompany(Company company) {
+        this.company = company;
         return this;
+    }
+
+    public Company getCompany() {
+        return company;
     }
 
     public long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Menu setId(long id) {
@@ -37,12 +47,4 @@ public class Menu {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "Menu{" +
-                "id=" + id +
-                ", venue=" + venue +
-                ", groups=" + groups +
-                '}';
-    }
 }
