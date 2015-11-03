@@ -12,6 +12,8 @@ public class BaseParser extends AbstractParamParser {
 
     private HttpServletRequest request;
 
+
+
     public BaseParser(HttpServletRequest request) {
         this.request = request;
     }
