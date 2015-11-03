@@ -2,6 +2,7 @@ package com.waiter.server.db.sql;
 
 import com.waiter.server.commons.entities.Company;
 import com.waiter.server.db.CompanyDAO;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -15,14 +16,15 @@ import java.util.List;
  */
 public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO {
 
+
     public CompanyJDBCTemplate(DataSource dataSource) {
         super(dataSource);
     }
 
     @Override
     public int create(Company company) {
-        String sql = new StringBuilder("INSERT INTO companies (name, email, phone, password, token)")
-                .append(" VALUES (:name, :email, :phone, :password, :token)")
+        String sql = new StringBuilder("INSERT INTO companies (name, email, phone, password, token, hash)")
+                .append(" VALUES (:name, :email, :phone, :password, :token, :hash)")
                 .toString();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -31,9 +33,11 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
         params.addValue(PHONE, company.getPhone());
         params.addValue(PASSWORD, company.getPassword());
         params.addValue(TOKEN, company.getToken());
+        params.addValue(HASH, company.getHash());
 
         return insertAndGetId(sql, params);
     }
+
 
     @Override
     public Company get(int id) {
@@ -57,7 +61,23 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
         return companyList;
     }
 
+    @Override
+    public boolean validateEmail(String hash) {
+        String sql = new StringBuilder()
+                .append("SELECT * FROM companies WHERE hash=:hash") //todo select only id
+                .toString();
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue(HASH, hash);
+        try {
+            jdbcTemplateObject.queryForObject(sql, params, new CompanyRowMapper());
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
+    }
+
     private static class CompanyRowMapper implements RowMapper {
+
         @Override
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
             Company company = new Company()

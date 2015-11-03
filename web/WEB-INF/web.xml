@@ -22,6 +22,14 @@
         <servlet-name>addVenue</servlet-name>
         <url-pattern>/venues/add</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>email_validation</servlet-name>
+        <jsp-file>/validate_email.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>email_validation</servlet-name>
+        <url-pattern>/companies/email/validation</url-pattern>
+    </servlet-mapping>
 
 
     <servlet>

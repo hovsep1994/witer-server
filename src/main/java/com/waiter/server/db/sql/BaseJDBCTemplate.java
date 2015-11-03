@@ -36,6 +36,7 @@ public class BaseJDBCTemplate {
     protected static final String GROUP_ID = "group_id";
     protected static final String DESCRIPTION = "description";
     protected static final String PRICE = "price";
+    protected static final String HASH = "hash";
 
     protected DataSource dataSource;
     protected NamedParameterJdbcTemplate jdbcTemplateObject;

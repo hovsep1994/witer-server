@@ -9,7 +9,7 @@ $(document).ready(function () {
         var email = $('#companyEmail').val();
         var password = $('#companyPassword').val();
         console.log(password);
-        $.post("/companies/register", {
+        $.post("/api/companies/register", {
             email: email,
             name: name,
             password: password

@@ -13,6 +13,7 @@ public class Company {
     private String phone;
     private String password;
     private String token;
+    private String hash;
     private List<Menu> menus;
     private List<Venue> venues;
     
@@ -86,6 +87,15 @@ public class Company {
 
     public List<Venue> getVenues() {
         return venues;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public Company setHash(String hash) {
+        this.hash = hash;
+        return this;
     }
 
 

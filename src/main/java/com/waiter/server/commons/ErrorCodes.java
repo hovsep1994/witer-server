@@ -15,4 +15,5 @@ public class ErrorCodes {
     public static final int PHOTO_NOT_FOUND = 316;
     public static final int EVENT_NOT_FOUND = 326;
     public static final int WRONG_REQUEST = 234;
+    public static final int WRONG_VERIFICATION_HASH = 128;
 }
