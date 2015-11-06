@@ -25,6 +25,7 @@ public class BaseServlet extends HttpServlet {
     protected static final String LIMIT = "limit";
     protected static final String ADDRESS = "address";
     protected static final String MENU_ID = "menu_id";
+    protected static final String LOGIN = "login";
 
     protected final ParserFactory parserFactory = new ParserFactory();
 
