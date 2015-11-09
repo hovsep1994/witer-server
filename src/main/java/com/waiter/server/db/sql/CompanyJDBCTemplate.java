@@ -103,16 +103,11 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
     @Override
     public boolean validateEmail(String hash) {
         String sql = new StringBuilder()
-                .append("SELECT * FROM companies AS c WHERE hash=:hash") //todo select only id
+                .append("UPDATE companies SET validated=1 WHERE hash=:hash")
                 .toString();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue(HASH, hash);
-        try {
-            jdbcTemplateObject.queryForObject(sql, params, new CompanyRowMapper());
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
-        }
+        return jdbcTemplateObject.update(sql, params) != 0;
     }
 
     static class CompanyRowMapper implements RowMapper {

@@ -42,6 +42,18 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>add_menu</servlet-name>
+        <jsp-file>/add_menu.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>add_menu</servlet-name>
+        <url-pattern>/menus/add</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!-- API CALLS -->
+    <servlet>
         <servlet-name>register</servlet-name>
         <servlet-class>com.waiter.server.servlets.RegisterCompanyServlet</servlet-class>
     </servlet>
@@ -129,6 +141,15 @@
     <servlet-mapping>
         <servlet-name>getVenueById</servlet-name>
         <url-pattern>/api/venue</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>api_add_menu</servlet-name>
+        <servlet-class>com.waiter.server.servlets.AddMenuServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>api_add_menu</servlet-name>
+        <url-pattern>/api/menus/add</url-pattern>
     </servlet-mapping>
 
 </web-app>

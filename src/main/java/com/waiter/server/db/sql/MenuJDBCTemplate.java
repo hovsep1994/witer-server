@@ -1,9 +1,6 @@
 package com.waiter.server.db.sql;
 
-import com.waiter.server.commons.entities.Group;
-import com.waiter.server.commons.entities.Menu;
-import com.waiter.server.commons.entities.Product;
-import com.waiter.server.commons.entities.Venue;
+import com.waiter.server.commons.entities.*;
 import com.waiter.server.db.MenuDAO;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,6 +16,7 @@ import static com.waiter.server.db.sql.CompanyJDBCTemplate.CompanyRowMapper;
 /**
  * Created by Admin on 10/24/2015.
  */
+@SuppressWarnings("unchecked")
 public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
 
     public MenuJDBCTemplate(DataSource dataSource) {
@@ -28,7 +26,7 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
     @Override
     public int create(Menu menu) {
         String sql = new StringBuilder()
-                .append(" INSERT INTO menu )")
+                .append(" INSERT INTO menus ")
                 .append(" (name, company_id)")
                 .append(" VALUES (:name, :company_id)")
                 .toString();
@@ -68,10 +66,31 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
         return menu;
     }
 
+    @Override
+    public List<Menu> getCompanyMenus(int companyId) {
+        String sql = new StringBuilder().append("SELECT m.id, m.name, m.company_id ")
+                .append("FROM menus AS m ")
+                .append("WHERE m.company_id = ")
+                .append(companyId).toString();
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+
+        return jdbcTemplateObject.query(sql, parameterSource, new MenuNameMaper());
+    }
+
     private static class MenuMapper implements RowMapper {
         @Override
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
             return getMenu(rs);
+        }
+    }
+
+    private static class MenuNameMaper implements RowMapper {
+        @Override
+        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Menu()
+                    .setId(rs.getInt("m.id"))
+                    .setName(rs.getString("m.name"))
+                    .setCompany(new Company().setId(rs.getInt("m.company_id")));
         }
     }
 

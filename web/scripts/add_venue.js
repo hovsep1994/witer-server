@@ -22,6 +22,7 @@ $(document).ready(function () {
         var address = $('#address').val();
         var latitude = marker.position.lat;
         var longitude = marker.position.lng;
+        var menuId = $('#menu').find('option:selected').val();
         var companyKey = getCookie("ckey");
         $.post("/api/venues/add", {
             country: country,
@@ -29,6 +30,7 @@ $(document).ready(function () {
             address: address,
             latitude: latitude,
             longitude: longitude,
+            menu_id: menuId,
             key: companyKey
         }, function(data) {
             console.log(data)
