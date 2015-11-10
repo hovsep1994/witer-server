@@ -11,6 +11,7 @@ import com.waiter.server.utils.PhotoSaver;
 import com.waiter.server.utils.paramparser.BaseParser;
 import com.waiter.server.utils.paramparser.IParamParser;
 import com.waiter.server.utils.paramparser.MultipartParser;
+import com.waiter.server.utils.paramparser.ParserFactory;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
@@ -24,43 +25,38 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 public class AddGroupServlet extends BaseServlet {
 
-    private static final Logger LOG = Logger.getLogger(AddGroupServlet.class);
+    private static final Logger logger = Logger.getLogger(AddGroupServlet.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
         GroupJDBCTemplate groupJDBCTemplate = (GroupJDBCTemplate) context.getBean("groupJDBCTemplate");
         IResponseWriter<Group> writer = new JsonResponseWriter<>(resp.getWriter());
-        IParamParser paramParser = null;
-        try {
-            paramParser = new MultipartParser(req);
-        } catch (APIException e) {
-            e.printStackTrace();
-        }
+        IParamParser paramParser = parserFactory.newParser(req);
 
         try {
             String name = paramParser.get("name");
             List<String> tags = paramParser.getList("tags");
-            int menu_id = paramParser.getInt("menu_id");
-            String image_path = "";
+            int menuId = paramParser.getInt("menu_id");
+            String imagePath = "";
 
             if (paramParser.isFileExists()) {
-                PhotoSaver photoSaver = new PhotoSaver(paramParser.getFile(), name);
-                image_path = photoSaver.savePhoto();
+                PhotoSaver photoSaver = new PhotoSaver(paramParser.getFile(), "group_" + name + "_" + menuId);
+                imagePath = photoSaver.savePhoto();
             }
 
             Group group = new Group()
                     .setName(name)
-                    .setImage(image_path)
+                    .setImage(imagePath)
                     .setTags(Tag.parseTags(tags))
-                    .setMenu(new Menu().setId(menu_id));
+                    .setMenu(new Menu().setId(menuId));
 
             groupJDBCTemplate.create(group);
             writer.writeResponse(group);
         } catch (Exception e) {
-            LOG.error("something went wrong when adding tag to user. ", e);
+            logger.error("something went wrong when adding tag to user. ", e);
             resp.sendError(SC_INTERNAL_SERVER_ERROR, "Internal server error");
         }
     }

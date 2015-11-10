@@ -18,7 +18,7 @@ import java.io.IOException;
 public class PhotoSaver {
 
     private static final Logger LOG = Logger.getLogger(PhotoSaver.class);
-    private static final String UPLOAD_DIRECTORY = "/home/shahen/web/upload/";
+    private static final String UPLOAD_DIRECTORY = "/Users/shahenpoghosyan/static/";
     private static final String PATH = "http://localhost:8080/photos/";
     private static final String ORIGINALS_PATH = "originals";
     private static final String DELIMITER_DOT = ".";
@@ -27,6 +27,13 @@ public class PhotoSaver {
         File uploadDir = new File(UPLOAD_DIRECTORY);
         if (!uploadDir.exists()) {
             uploadDir.mkdir();
+        }
+        for(int size : DEFAULT_SIZES) {
+            File sizeDir = new File(new StringBuilder(UPLOAD_DIRECTORY).append(size)
+                    .append(File.separator).toString());
+            if (!sizeDir.exists()) {
+                sizeDir.mkdir();
+            }
         }
     }
     private FileItem photo;
