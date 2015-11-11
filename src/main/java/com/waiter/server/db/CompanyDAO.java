@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface CompanyDAO {
     int create(Company company);
+    Company login(String login, String password) throws APIException;
     Company authenticate(String key) throws APIException;
     Company get(int id);
     List<Company> search(String s);

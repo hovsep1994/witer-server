@@ -49,6 +49,8 @@ public class AddVenueServlet extends BaseServlet {
             double longitude = paramParser.getDouble(LONGITUDE);
             long menuId = paramParser.getLong(MENU_ID, 0);
 
+            logger.debug("key: " + key);
+
             Company company = companyDAO.authenticate(key);
             if (!validRequiredFields(countryCode, city, address))
                 throw new APIException(SC_BAD_REQUEST,

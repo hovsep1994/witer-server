@@ -4,6 +4,7 @@ import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.Company;
 import com.waiter.server.db.CompanyDAO;
+import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -21,6 +22,7 @@ import static com.waiter.server.commons.ErrorCodes.FAILED_AUTHENTICATION;
  */
 public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO {
 
+    private static final Logger logger = Logger.getLogger(CompanyJDBCTemplate.class);
 
     public CompanyJDBCTemplate(DataSource dataSource) {
         super(dataSource);
@@ -56,6 +58,23 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
     }
 
     @Override
+    public Company login(String login, String password) throws APIException {
+        String sql = new StringBuilder()
+                .append("SELECT * FROM companies AS c WHERE email=:email AND password=:password") //todo select only id
+                .toString();
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue(EMAIL, login);
+        params.addValue(PASSWORD, password);
+        logger.debug("email: " + login + ", password: " + password);
+        try {
+            return (Company) jdbcTemplateObject.queryForObject(sql, params, new CompanyRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            throw new APIException(SC_UNAUTHORIZED,
+                    new APIError(FAILED_AUTHENTICATION, "Provided login and password does not match. "));
+        }
+    }
+
+    @Override
     public Company authenticate(String key) throws APIException {
         String sql = new StringBuilder()
                 .append("SELECT * FROM companies AS c WHERE token=:token") //todo select only id
@@ -84,16 +103,11 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
     @Override
     public boolean validateEmail(String hash) {
         String sql = new StringBuilder()
-                .append("SELECT * FROM companies AS c WHERE hash=:hash") //todo select only id
+                .append("UPDATE companies SET validated=1 WHERE hash=:hash")
                 .toString();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue(HASH, hash);
-        try {
-            jdbcTemplateObject.queryForObject(sql, params, new CompanyRowMapper());
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
-        }
+        return jdbcTemplateObject.update(sql, params) != 0;
     }
 
     static class CompanyRowMapper implements RowMapper {
@@ -108,7 +122,8 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
                     .setId(rs.getInt("c.id"))
                     .setName(rs.getString("c.name"))
                     .setMail(rs.getString("c.email"))
-                    .setPhone(rs.getString("c.phone"));
+                    .setPhone(rs.getString("c.phone"))
+                    .setToken(rs.getString("c.token"));
         }
     }
 }

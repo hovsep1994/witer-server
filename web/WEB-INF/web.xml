@@ -15,6 +15,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>login</servlet-name>
+        <jsp-file>/login.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>addVenue</servlet-name>
         <jsp-file>/add_venue.jsp</jsp-file>
     </servlet>
@@ -22,6 +31,7 @@
         <servlet-name>addVenue</servlet-name>
         <url-pattern>/venues/add</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>email_validation</servlet-name>
         <jsp-file>/validate_email.jsp</jsp-file>
@@ -32,12 +42,33 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>add_menu</servlet-name>
+        <jsp-file>/add_menu.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>add_menu</servlet-name>
+        <url-pattern>/menus/add</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!-- API CALLS -->
+    <servlet>
         <servlet-name>register</servlet-name>
         <servlet-class>com.waiter.server.servlets.RegisterCompanyServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>register</servlet-name>
         <url-pattern>/api/companies/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>apiLogin</servlet-name>
+        <servlet-class>com.waiter.server.servlets.LoginCompanyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>apiLogin</servlet-name>
+        <url-pattern>/api/companies/signin</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -110,6 +141,15 @@
     <servlet-mapping>
         <servlet-name>getVenueById</servlet-name>
         <url-pattern>/api/venue</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>api_add_menu</servlet-name>
+        <servlet-class>com.waiter.server.servlets.AddMenuServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>api_add_menu</servlet-name>
+        <url-pattern>/api/menus/add</url-pattern>
     </servlet-mapping>
 
     <servlet>

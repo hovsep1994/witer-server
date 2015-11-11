@@ -22,13 +22,16 @@ $(document).ready(function () {
         var address = $('#address').val();
         var latitude = marker.position.lat;
         var longitude = marker.position.lng;
+        var menuId = $('#menu').find('option:selected').val();
+        var companyKey = getCookie("ckey");
         $.post("/api/venues/add", {
             country: country,
             city: city,
             address: address,
             latitude: latitude,
             longitude: longitude,
-            key: getCookie("ckey")
+            menu_id: menuId,
+            key: companyKey
         }, function(data) {
             console.log(data)
         })
@@ -135,6 +138,7 @@ $(document).ready(function () {
 
     function getCookie(name) {
         var value = "; " + document.cookie;
+        console.log("valodik: " + document.cookie);
         var parts = value.split("; " + name + "=");
         if (parts.length == 2) return parts.pop().split(";").shift();
     }

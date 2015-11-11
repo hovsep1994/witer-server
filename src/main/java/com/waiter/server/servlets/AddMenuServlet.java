@@ -6,6 +6,7 @@ import com.waiter.server.commons.entities.Company;
 import com.waiter.server.commons.entities.Location;
 import com.waiter.server.commons.entities.Menu;
 import com.waiter.server.commons.entities.Venue;
+import com.waiter.server.db.CompanyDAO;
 import com.waiter.server.db.MenuDAO;
 import com.waiter.server.db.VenueDAO;
 import com.waiter.server.db.sql.MenuJDBCTemplate;
@@ -38,24 +39,24 @@ public class AddMenuServlet extends BaseServlet {
             throws ServletException, IOException {
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
         MenuDAO menuJDBCTemplate = (MenuJDBCTemplate) context.getBean("menuJDBCTemplate");
+        CompanyDAO companyDAO = (CompanyDAO) context.getBean("companyJDBCTemplate");
         IResponseWriter<Menu> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = parserFactory.newParser(req);
         try {
-            String name = paramParser.get("name");
-            int company_id = paramParser.getInt("company_id");
+            String name = paramParser.get(NAME);
+            String key = paramParser.getString(KEY, "");
+            Company company = companyDAO.authenticate(key);
 
             if (!validRequiredFields(name))
                 throw new APIException(SC_BAD_REQUEST,
                         new APIError(WRONG_REQUEST, "Wrong request parameters. "));
 
             Menu menu = new Menu().setName(name);
-            if (company_id != 0) {
-                menu.setCompany(new Company().setId(company_id));
-            }
+            menu.setCompany(company);
             int id = menuJDBCTemplate.create(menu);
             writer.writeResponse(menu.setId(id));
         } catch (APIException e) {
-            logger.error(e.getError(), e);
+            logger.debug(e.getError(), e);
             writer.writeError(e.getError());
         } catch (Exception e) {
             logger.error("something went wrong when adding tag to user. ", e);

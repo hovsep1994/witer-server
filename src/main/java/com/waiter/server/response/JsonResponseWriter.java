@@ -46,7 +46,6 @@ public class JsonResponseWriter<T> implements IResponseWriter<T>, Closeable {
     public void writeResponse(T response) throws IOException {
         writer.write("{\"success\": true");
         if (response != null) {
-            LOG.debug("response" + response);
             writer.write(", \"response\": " + mapper.writeValueAsString(response));
         }
         writer.write("}");
