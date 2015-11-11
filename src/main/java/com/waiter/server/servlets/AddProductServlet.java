@@ -39,7 +39,7 @@ public class AddProductServlet extends BaseServlet {
     private static final Logger LOG = Logger.getLogger(AddProductServlet.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
@@ -49,6 +49,9 @@ public class AddProductServlet extends BaseServlet {
 
         try {
             String name = paramParser.get("name");
+            String language = paramParser.getString("language", "unknown");
+            String type = paramParser.getString("type", "main");
+
             String description = paramParser.get("description");
             List<String> tags = paramParser.getList("tags");
             double price = paramParser.getDouble("price");
@@ -74,7 +77,7 @@ public class AddProductServlet extends BaseServlet {
 
             LOG.info(product.toString());
 
-            productJDBTemplate.create(product);
+            productJDBTemplate.create(product, language, type);
             writer.writeResponse(product);
         } catch (Exception e) {
             LOG.error("something went wrong when adding tag to user. ", e);

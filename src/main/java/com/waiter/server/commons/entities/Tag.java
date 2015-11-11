@@ -45,6 +45,7 @@ public class Tag {
     }
 
     public static List<Tag> parseTags(List<String> tags) {
+        if(tags == null) return null;
         List<Tag> tagList = new ArrayList<>(tags.size());
         for (String t : tags) {
             tagList.add(new Tag(t));

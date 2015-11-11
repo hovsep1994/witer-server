@@ -112,4 +112,22 @@
         <url-pattern>/api/venue</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>getVenues</servlet-name>
+        <servlet-class>com.waiter.server.servlets.GetVenuesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>getVenues</servlet-name>
+        <url-pattern>/api/venues</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>searchProducts</servlet-name>
+        <servlet-class>com.waiter.server.servlets.SearchProductsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>searchProducts</servlet-name>
+        <url-pattern>/api/products/search</url-pattern>
+    </servlet-mapping>
+
 </web-app>

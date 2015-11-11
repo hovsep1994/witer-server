@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by shahenpoghosyan on 7/14/15.
@@ -79,6 +80,46 @@ public class VenueJDBCTemplate extends BaseJDBCTemplate implements VenueDAO {
         return venue;
     }
 
+    @Override
+    public List<Venue> get(String name, double lat, double lon) {
+
+        StringBuilder sql = new StringBuilder()
+                .append(" SELECT ")
+                .append(" v.id, v.country, v.city, v.street, v.zip, v.latitude, v.longitude, v.company_id,")
+                .append(" c.id, c.name")
+                .append(" FROM venues AS v")
+                .append(" INNER JOIN companies AS c ON (v.company_id = c.id)")
+                .append(" WHERE ABS(v.latitude - " + lat + ") < '" + DISTANCE / DEG + "'")
+                .append(" AND ABS(v.longitude - " + lon + ") < '" + DISTANCE / (Math.cos(Math.toRadians(lat)) * DEG) + "'");
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+
+        if (name != null && !name.isEmpty()) {
+            sql.append(" AND MATCH(c.name) AGAINST(:name IN BOOLEAN MODE) ");
+            params.addValue(NAME, name + "*");
+        }
+
+        sql.append(" ORDER BY SQRT(POW(v.latitude - " + lat + ",2) + POW(v.longitude - " + lon + ", 2) )");
+
+        List<Venue> venues = jdbcTemplateObject.query(sql.toString(), params, new VenueMapperWithoutMenu());
+        return venues;
+    }
+
+    private static class VenueMapperWithoutMenu implements RowMapper {
+        @Override
+        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Location location = new Location()
+                    .setCity(rs.getString("v.city"))
+                    .setCountry(rs.getString("v.country"))
+                    .setStreet(rs.getString("v.street"))
+                    .setLatitude(rs.getDouble("v.latitude"))
+                    .setLongitude(rs.getDouble("v.longitude"))
+                    .setZip(rs.getString("v.zip"));
+
+            return new Venue().setLocation(location);
+        }
+    }
+
     private static class VenueMapper implements RowMapper {
         @Override
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -100,5 +141,4 @@ public class VenueJDBCTemplate extends BaseJDBCTemplate implements VenueDAO {
                 .setLocation(location);
         return venue;
     }
-
 }

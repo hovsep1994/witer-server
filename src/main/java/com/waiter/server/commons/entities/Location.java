@@ -1,7 +1,5 @@
 package com.waiter.server.commons.entities;
 
-import java.util.Arrays;
-
 /**
  * Created by Admin on 10/20/2015.
  */

@@ -41,4 +41,14 @@ public class Venue {
     public Menu getMenu() {
         return menu;
     }
+
+    @Override
+    public String toString() {
+        return "Venue{" +
+                "id=" + id +
+                ", company=" + company +
+                ", location=" + location +
+                ", menu=" + menu +
+                '}';
+    }
 }
