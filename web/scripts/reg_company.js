@@ -8,7 +8,7 @@ $(document).ready(function () {
         var name = $('#companyName').val();
         var email = $('#companyEmail').val();
         var password = $('#companyPassword').val();
-        $.post("/api/companies/register", {
+        $.post("../api/companies/register", {
             email: email,
             name: name,
             password: password
@@ -31,7 +31,7 @@ $(document).ready(function () {
         var email = $('#companyLogin').val();
         var password = $('#companyPassword').val();
         console.log(password);
-        $.post("/api/companies/signin", {
+        $.post("../api/companies/signin", {
             login: email,
             password: password
         }, function(data) {

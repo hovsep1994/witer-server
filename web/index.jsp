@@ -22,9 +22,9 @@
     <input type="submit" name="companySubmit" value="Submit">
 </form>
 
-<br><a href="/login">Login</a>
+<br><a href="login">Login</a>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/scripts/reg_company.js" type="text/javascript"></script>
+<script src="scripts/reg_company.js" type="text/javascript"></script>
 </body>
 </html>
