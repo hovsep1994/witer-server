@@ -95,7 +95,7 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
                 .append(" SUM(MATCH(pt.name)AGAINST(:query IN BOOLEAN MODE)) AS ptagsScore,")
                 .append(" SUM(MATCH(gt.name)AGAINST(:query IN BOOLEAN MODE)) AS gtagsScore,")
                 .append(" pn.product_id, pn.name, pn.language,")
-                .append(" p.id, p.name, p.image, p.price, p.description, p.group_id,")
+                .append(" p.id, p.image, p.price, p.description, p.group_id,")
                 .append(" ptm.product_id, ptm.tag_id,")
                 .append(" pt.id, pt.name,")
                 .append(" g.id, g.menu_id,")
@@ -146,7 +146,7 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
     static Product getProduct(ResultSet rs) throws SQLException {
         return new Product()
                 .setId(rs.getInt("p.id"))
-                .setName(rs.getString("p.name"))
+                .setName(rs.getString("pn.name"))
                 .setImage(rs.getString("p.image"))
                 .setGroup(new Group().setId(rs.getInt("p.group_id")))
                 .setDescription(rs.getString("p.description"))
