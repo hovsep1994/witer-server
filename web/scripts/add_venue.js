@@ -24,7 +24,7 @@ $(document).ready(function () {
         var longitude = marker.position.lng;
         var menuId = $('#menu').find('option:selected').val();
         var companyKey = getCookie("ckey");
-        $.post("/api/venues/add", {
+        $.post("../api/venues/add", {
             country: country,
             city: city,
             address: address,
@@ -40,7 +40,7 @@ $(document).ready(function () {
 
     $('#city').on("input", function (e) {
         function searchCities(countryCode, query) {
-            $.get("/api/cities", {
+            $.get("../api/cities", {
                 countryCode: countryCode,
                 query: query,
                 limit: 10

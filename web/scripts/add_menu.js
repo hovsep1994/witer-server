@@ -5,7 +5,7 @@ $(document).ready(function () {
     $("#add_menu_form").on('submit', function(e) {
         e.preventDefault();
         var menuName = $('#menuName').val();
-        $.post("/api/menus/add", {
+        $.post("../api/menus/add", {
             name: menuName,
             key: getCookie("ckey")
         }, function(data) {
@@ -40,7 +40,7 @@ $(document).ready(function () {
         fd.append('name', groupName);
         fd.append('menu_id', menuId);
 
-        xhr.open('post', '/api/group/add', true);
+        xhr.open('post', '../api/group/add', true);
         xhr.send(fd);
     });
 
