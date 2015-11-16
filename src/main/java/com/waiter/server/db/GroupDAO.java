@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface GroupDAO {
     int create(Group group);
+    void remove(int groupId);
+    void update(Group group);
     Group get(int id);
 }

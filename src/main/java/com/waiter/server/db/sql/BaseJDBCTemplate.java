@@ -78,6 +78,12 @@ public class BaseJDBCTemplate {
 
     }
 
+    void removeRow(int id, String table) {
+        String sql = new StringBuilder().append("DELETE FROM ").append(table)
+                .append(" WHERE id=").append(id).toString();
+        jdbcTemplateObject.update(sql, new MapSqlParameterSource());
+    }
+
     protected enum MappingTable {
 
         GROUP_TAG_MAP("group_tag_map", "group_id", "tag_id"),

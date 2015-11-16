@@ -47,6 +47,22 @@ public class GroupJDBCTemplate extends BaseJDBCTemplate implements GroupDAO {
     }
 
     @Override
+    public void remove(int groupId) {
+        removeRow(groupId, "groups");
+    }
+
+    @Override
+    public void update(Group group) {
+        String sql = new StringBuilder().append("UPDATE groups SET ")
+                .append("name=:name. image=:image")
+                .append(" WHERE id=").append(group.getId()).toString();
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue(NAME, group.getName());
+        params.addValue(IMAGE, group.getImage());
+        jdbcTemplateObject.update(sql, params);
+    }
+
+    @Override
     public Group get(int id) {
         String sql = new StringBuilder()
                 .append(" SELECT")

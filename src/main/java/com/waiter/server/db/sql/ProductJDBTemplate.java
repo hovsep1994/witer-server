@@ -60,6 +60,26 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
     }
 
     @Override
+    public void remove(int productId) {
+        removeRow(productId, "products");
+    }
+
+    @Override
+    public void update(Product product) {
+        String sql = new StringBuilder().append("UPDATE products SET ")
+                .append("image=:image, price=:price, ")
+                .append("description=:description, group_id=:groupId")
+                .append("WHERE id=").append(product.getId()).toString();
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue(IMAGE, product.getImage());
+        params.addValue(PRICE, product.getPrice());
+        params.addValue(DESCRIPTION, product.getDescription());
+        params.addValue(GROUP_ID, product.getGroup().getId());
+        jdbcTemplateObject.update(sql, params);
+    }
+
+    @Override
     public List<Product> getByGroup(int groupId) {
         String sql = new StringBuilder()
                 .append(" SELECT")
