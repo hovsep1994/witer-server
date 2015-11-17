@@ -4,6 +4,7 @@
 <%@ page import="com.waiter.server.utils.paramparser.IParamParser" %>
 <%@ page import="com.waiter.server.utils.paramparser.ParserFactory" %>
 <%@ page import="com.waiter.server.commons.APIException" %>
+<%@ page import="com.waiter.server.db.UserDAO" %>
 <%--
   Created by IntelliJ IDEA.
   User: shahenpoghosyan
@@ -20,10 +21,10 @@
 
 <%
   ApplicationContext context = (ApplicationContext) pageContext.getServletContext().getAttribute("springContext");
-  CompanyDAO companyDAO = (CompanyJDBCTemplate) context.getBean("companyJDBCTemplate");
+  UserDAO userDAO = (UserDAO) context.getBean("userJDBCTemplate");
   IParamParser paramParser = new ParserFactory().newParser(request);
   String hash = paramParser.getString("hash", "");
-  boolean validated = companyDAO.validateEmail(hash);
+  boolean validated = userDAO.validateEmail(hash);
   if(validated) {
     out.print("validated");
   } else {

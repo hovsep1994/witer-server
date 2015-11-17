@@ -30,10 +30,10 @@ $(document).ready(function () {
         })
     });
 
-    $("#login_company_form").on('submit', function(e) {
+    $("#login_user_form").on('submit', function(e) {
         e.preventDefault();
-        var email = $('#companyLogin').val();
-        var password = $('#companyPassword').val();
+        var email = $('#userLogin').val();
+        var password = $('#userPassword').val();
         console.log(password);
         $.post("../api/users/signin", {
             login: email,

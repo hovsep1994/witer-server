@@ -12,14 +12,14 @@
 </head>
 <body>
 
-<form name="company_login" id="login_company_form">
+<form name="user_login" id="login_user_form">
 
     <label>Email: </label>
-    <input id="companyLogin" class="reg_input" name="email" type="email"/> <br>
+    <input id="userLogin" class="reg_input" name="email" type="email"/> <br>
     <label>Password: </label>
-    <input id="companyPassword" class="reg_input" name="password" type="password"/> <br>
+    <input id="userPassword" class="reg_input" name="password" type="password"/> <br>
 
-    <input type="submit" name="companyLoginSubmit" value="Submit">
+    <input type="submit" name="userLoginSubmit" value="Submit">
 </form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

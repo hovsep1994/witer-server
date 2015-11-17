@@ -79,7 +79,7 @@ public class RegistrationServlet extends BaseServlet {
             public void run() {
                 try {
                     new MailClient().send(user.getEmail(), "Verify the mail",
-                            "http://localhost:8088/companies/email/validation?hash=" + user.getHash());
+                            "http://localhost:8088/users/email/validation?hash=" + user.getHash());
                 } catch (IOException e) {
                     logger.error("Error on sending mail. " + user);
                 }
