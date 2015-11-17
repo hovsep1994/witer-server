@@ -3,8 +3,8 @@ package com.waiter.server.servlets;
 import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.Company;
-import com.waiter.server.db.CompanyDAO;
-import com.waiter.server.db.sql.CompanyJDBCTemplate;
+import com.waiter.server.commons.entities.User;
+import com.waiter.server.db.UserDAO;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.MailClient;
@@ -30,9 +30,9 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 /**
  * Created by shahenpoghosyan on 7/14/15.
  */
-public class RegisterCompanyServlet extends BaseServlet {
+public class RegistrationServlet extends BaseServlet {
 
-    private static final Logger logger = Logger.getLogger(RegisterCompanyServlet.class);
+    private static final Logger logger = Logger.getLogger(RegistrationServlet.class);
     private static final Executor executor = Executors.newFixedThreadPool(3);
 
     @Override
@@ -40,30 +40,30 @@ public class RegisterCompanyServlet extends BaseServlet {
             throws ServletException, IOException {
 
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        CompanyDAO companyJDBCTemplate = (CompanyJDBCTemplate) context.getBean("companyJDBCTemplate");
-        IResponseWriter<Company> writer = new JsonResponseWriter<>(resp.getWriter());
+        UserDAO userDAO = (UserDAO) context.getBean("userJDBCTemplate");
+        IResponseWriter<User> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new BaseParser(req);
 
         try {
             String name = paramParser.get(NAME);
             String email = paramParser.get(EMAIL);
-            String phone = paramParser.get(PHONE);
             String password = paramParser.get(PASSWORD);
-            logger.debug(name + " " + email + " " + password);
-            if (!validRequiredFields(name, email, password) || !isValidEmail(email)) {
+            String phone = paramParser.get(COMPANY_PHONE);
+            String companyName = paramParser.get(COMPANY_NAME);
+            if (!validRequiredFields(name, email, password, companyName) || !isValidEmail(email)) {
                 throw new APIException(SC_BAD_REQUEST,
                         new APIError(WRONG_REQUEST, "Wrong request parameters. "));
             }
-            Company company = new Company()
+            User user = new User()
                     .setName(name)
-                    .setMail(email)
-                    .setPhone(phone)
+                    .setEmail(email)
                     .setPassword(DigestUtils.sha1Hex(password))
                     .setToken(UUID.randomUUID().toString())
-                    .setHash(DigestUtils.sha1Hex(UUID.randomUUID().toString()));
-            companyJDBCTemplate.create(company);
-            writer.writeResponse(company);
-            sendVerificationMail(company);
+                    .setHash(DigestUtils.sha1Hex(UUID.randomUUID().toString()))
+                    .setCompany(new Company().setName(companyName).setPhone(phone));
+            userDAO.create(user);
+            writer.writeResponse(user);
+            sendVerificationMail(user);
         } catch (APIException e) {
             logger.error(e.getError(), e);
             writer.writeError(e.getError());
@@ -73,15 +73,15 @@ public class RegisterCompanyServlet extends BaseServlet {
         }
     }
 
-    private void sendVerificationMail(final Company company) {
+    private void sendVerificationMail(final User user) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    new MailClient().send(company.getMail(), "Verify the mail",
-                            "http://localhost:8088/companies/email/validation?hash=" + company.getHash());
+                    new MailClient().send(user.getEmail(), "Verify the mail",
+                            "http://localhost:8088/companies/email/validation?hash=" + user.getHash());
                 } catch (IOException e) {
-                    logger.error("Error on sending mail. " + company);
+                    logger.error("Error on sending mail. " + user);
                 }
             }
         });

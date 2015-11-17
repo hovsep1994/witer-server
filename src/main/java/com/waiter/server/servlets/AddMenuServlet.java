@@ -2,12 +2,10 @@ package com.waiter.server.servlets;
 
 import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
-import com.waiter.server.commons.entities.Company;
-import com.waiter.server.commons.entities.Location;
-import com.waiter.server.commons.entities.Menu;
-import com.waiter.server.commons.entities.Venue;
+import com.waiter.server.commons.entities.*;
 import com.waiter.server.db.CompanyDAO;
 import com.waiter.server.db.MenuDAO;
+import com.waiter.server.db.UserDAO;
 import com.waiter.server.db.VenueDAO;
 import com.waiter.server.db.sql.MenuJDBCTemplate;
 import com.waiter.server.db.sql.VenueJDBCTemplate;
@@ -39,20 +37,20 @@ public class AddMenuServlet extends BaseServlet {
             throws ServletException, IOException {
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
         MenuDAO menuJDBCTemplate = (MenuJDBCTemplate) context.getBean("menuJDBCTemplate");
-        CompanyDAO companyDAO = (CompanyDAO) context.getBean("companyJDBCTemplate");
+        UserDAO userDAO = (UserDAO) context.getBean("userJDBCTemplate");
         IResponseWriter<Menu> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = parserFactory.newParser(req);
         try {
             String name = paramParser.get(NAME);
             String key = paramParser.getString(KEY, "");
-            Company company = companyDAO.authenticate(key);
+            User user = userDAO.authenticate(key);
 
             if (!validRequiredFields(name))
                 throw new APIException(SC_BAD_REQUEST,
                         new APIError(WRONG_REQUEST, "Wrong request parameters. "));
 
             Menu menu = new Menu().setName(name);
-            menu.setCompany(company);
+            menu.setCompany(user.getCompany());
             int id = menuJDBCTemplate.create(menu);
             writer.writeResponse(menu.setId(id));
         } catch (APIException e) {

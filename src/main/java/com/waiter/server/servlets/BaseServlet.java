@@ -14,7 +14,7 @@ public class BaseServlet extends HttpServlet {
     protected static final String NAME = "name";
     protected static final String IMAGE = "image";
     protected static final String EMAIL = "email";
-    protected static final String PHONE = "phone";
+    protected static final String COMPANY_PHONE = "companyPhone";
     protected static final String PASSWORD = "password";
     protected static final String QUERY = "query";
     protected static final String COUNTRY_CODE = "countryCode";
@@ -26,6 +26,7 @@ public class BaseServlet extends HttpServlet {
     protected static final String ADDRESS = "address";
     protected static final String MENU_ID = "menu_id";
     protected static final String LOGIN = "login";
+    protected static final String COMPANY_NAME = "companyName";
 
     protected final ParserFactory parserFactory = new ParserFactory();
 

@@ -5,13 +5,17 @@
 $(document).ready(function () {
     $("#reg_company_form").on('submit', function(e) {
         e.preventDefault();
-        var name = $('#companyName').val();
-        var email = $('#companyEmail').val();
-        var password = $('#companyPassword').val();
-        $.post("../api/companies/register", {
+        var name = $('#name').val();
+        var email = $('#email').val();
+        var password = $('#password').val();
+        var companyName = $('#companyName').val();
+        var companyPhone = $('#companyPhone').val();
+        $.post("../api/users/register", {
             email: email,
             name: name,
-            password: password
+            password: password,
+            companyName: companyName,
+            companyPhone: companyPhone
         }, function(data) {
             console.log(data)
             var response = JSON.parse(data);
@@ -31,7 +35,7 @@ $(document).ready(function () {
         var email = $('#companyLogin').val();
         var password = $('#companyPassword').val();
         console.log(password);
-        $.post("../api/companies/signin", {
+        $.post("../api/users/signin", {
             login: email,
             password: password
         }, function(data) {

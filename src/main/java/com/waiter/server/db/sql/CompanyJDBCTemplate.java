@@ -30,21 +30,16 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
 
     @Override
     public int create(Company company) {
-        String sql = new StringBuilder("INSERT INTO companies (name, email, phone, password, token, hash)")
-                .append(" VALUES (:name, :email, :phone, :password, :token, :hash)")
+        String sql = new StringBuilder("INSERT INTO companies (name, phone)")
+                .append(" VALUES (:name, :phone)")
                 .toString();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue(NAME, company.getName());
-        params.addValue(EMAIL, company.getMail());
         params.addValue(PHONE, company.getPhone());
-        params.addValue(PASSWORD, company.getPassword());
-        params.addValue(TOKEN, company.getToken());
-        params.addValue(HASH, company.getHash());
 
         return insertAndGetId(sql, params);
     }
-
 
     @Override
     public Company get(int id) {
@@ -58,38 +53,6 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
     }
 
     @Override
-    public Company login(String login, String password) throws APIException {
-        String sql = new StringBuilder()
-                .append("SELECT * FROM companies AS c WHERE email=:email AND password=:password") //todo select only id
-                .toString();
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue(EMAIL, login);
-        params.addValue(PASSWORD, password);
-        logger.debug("email: " + login + ", password: " + password);
-        try {
-            return (Company) jdbcTemplateObject.queryForObject(sql, params, new CompanyRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            throw new APIException(SC_UNAUTHORIZED,
-                    new APIError(FAILED_AUTHENTICATION, "Provided login and password does not match. "));
-        }
-    }
-
-    @Override
-    public Company authenticate(String key) throws APIException {
-        String sql = new StringBuilder()
-                .append("SELECT * FROM companies AS c WHERE token=:token") //todo select only id
-                .toString();
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue(TOKEN, key);
-        try {
-            return (Company) jdbcTemplateObject.queryForObject(sql, params, new CompanyRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            throw new APIException(SC_UNAUTHORIZED,
-                    new APIError(FAILED_AUTHENTICATION, "Company with this token doesn't exist. "));
-        }
-    }
-
-    @Override
     public List<Company> search(String s) {
         String sql = new StringBuilder()
                 .append("SELECT * FROM companies ")
@@ -98,16 +61,6 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
         MapSqlParameterSource params = new MapSqlParameterSource();
         List<Company> companyList = jdbcTemplateObject.queryForList(sql, params, Company.class);
         return companyList;
-    }
-
-    @Override
-    public boolean validateEmail(String hash) {
-        String sql = new StringBuilder()
-                .append("UPDATE companies SET validated=1 WHERE hash=:hash")
-                .toString();
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue(HASH, hash);
-        return jdbcTemplateObject.update(sql, params) != 0;
     }
 
     static class CompanyRowMapper implements RowMapper {
@@ -121,9 +74,7 @@ public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO 
             return new Company()
                     .setId(rs.getInt("c.id"))
                     .setName(rs.getString("c.name"))
-                    .setMail(rs.getString("c.email"))
-                    .setPhone(rs.getString("c.phone"))
-                    .setToken(rs.getString("c.token"));
+                    .setPhone(rs.getString("c.phone"));
         }
     }
 }

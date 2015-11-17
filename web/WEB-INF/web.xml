@@ -38,7 +38,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>email_validation</servlet-name>
-        <url-pattern>/companies/email/validation</url-pattern>
+        <url-pattern>/users/email/validation</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -55,20 +55,20 @@
     <!-- API CALLS -->
     <servlet>
         <servlet-name>register</servlet-name>
-        <servlet-class>com.waiter.server.servlets.RegisterCompanyServlet</servlet-class>
+        <servlet-class>com.waiter.server.servlets.RegistrationServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>register</servlet-name>
-        <url-pattern>/api/companies/register</url-pattern>
+        <url-pattern>/api/users/register</url-pattern>
     </servlet-mapping>
 
     <servlet>
         <servlet-name>apiLogin</servlet-name>
-        <servlet-class>com.waiter.server.servlets.LoginCompanyServlet</servlet-class>
+        <servlet-class>com.waiter.server.servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>apiLogin</servlet-name>
-        <url-pattern>/api/companies/signin</url-pattern>
+        <url-pattern>/api/users/signin</url-pattern>
     </servlet-mapping>
 
     <servlet>

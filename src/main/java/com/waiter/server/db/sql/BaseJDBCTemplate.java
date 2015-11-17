@@ -40,6 +40,7 @@ public class BaseJDBCTemplate {
     protected static final String DESCRIPTION = "description";
     protected static final String PRICE = "price";
     protected static final String HASH = "hash";
+    protected static final String COMPANY_ID = "company_id";
 
     protected DataSource dataSource;
     protected NamedParameterJdbcTemplate jdbcTemplateObject;

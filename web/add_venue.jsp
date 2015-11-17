@@ -4,9 +4,9 @@
 <%@ page import="com.waiter.server.db.MenuDAO" %>
 <%@ page import="com.waiter.server.db.sql.MenuJDBCTemplate" %>
 <%@ page import="com.waiter.server.commons.entities.Menu" %>
-<%@ page import="com.waiter.server.commons.entities.Company" %>
-<%@ page import="com.waiter.server.db.CompanyDAO" %>
 <%@ page import="static com.waiter.server.utils.ServletUtils.*" %>
+<%@ page import="com.waiter.server.db.UserDAO" %>
+<%@ page import="com.waiter.server.commons.entities.User" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -33,17 +33,17 @@
     ApplicationContext context = (ApplicationContext) pageContext.getServletContext().getAttribute("springContext");
     LocationsJDBCTemplate locationJDBCTemplate = (LocationsJDBCTemplate) context.getBean("locationJDBCTemplate");
     MenuDAO menuDAO = (MenuJDBCTemplate) context.getBean("menuJDBCTemplate");
-    CompanyDAO companyDAO = (CompanyDAO) context.getBean("companyJDBCTemplate");
+    UserDAO userDAO = (UserDAO) context.getBean("userJDBCTemplate");
 
     Cookie authCookie = getCookie("ckey", request);
-    Company company = companyDAO.authenticate(authCookie.getValue());
+    User user = userDAO.authenticate(authCookie.getValue());
 %>
 
 <form id="add_venue_form" name="company_reg">
     <label>Menu: </label>
     <select id="menu" class="reg_input" name="venueMenu">
         <option value="" disabled selected>Select Menu</option>
-        <% for (Menu menu : menuDAO.getCompanyMenus(company.getId())) { %>
+        <% for (Menu menu : menuDAO.getCompanyMenus(user.getCompany().getId())) { %>
         <option value="<%=menu.getId()%>"><%=menu.getName()%>
         </option>
         <% } %>
