@@ -2,6 +2,7 @@ package com.waiter.server.db.sql;
 
 import javax.sql.DataSource;
 
+import com.waiter.server.commons.entities.Company;
 import com.waiter.server.commons.entities.Location;
 import com.waiter.server.commons.entities.Venue;
 import com.waiter.server.db.VenueDAO;
@@ -116,7 +117,15 @@ public class VenueJDBCTemplate extends BaseJDBCTemplate implements VenueDAO {
                     .setLongitude(rs.getDouble("v.longitude"))
                     .setZip(rs.getString("v.zip"));
 
-            return new Venue().setLocation(location);
+            Company company = new Company()
+                    .setName(rs.getString("c.name"));
+
+            Venue venue = new Venue()
+                    .setId(rs.getInt("v.id"))
+                    .setLocation(location)
+                    .setCompany(company);
+
+            return venue;
         }
     }
 

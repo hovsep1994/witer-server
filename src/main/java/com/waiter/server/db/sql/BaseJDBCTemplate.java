@@ -22,6 +22,8 @@ import java.util.List;
  */
 public class BaseJDBCTemplate {
 
+
+
     protected static final double DISTANCE = 10;
     protected static final double DEG = 111;
 

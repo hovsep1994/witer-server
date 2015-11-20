@@ -24,7 +24,6 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
  */
 public class GetVenueByIdServlet extends BaseServlet {
     private static final Logger LOG = Logger.getLogger(GetVenueByIdServlet.class);
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
