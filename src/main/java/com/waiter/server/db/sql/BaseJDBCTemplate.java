@@ -62,7 +62,7 @@ public class BaseJDBCTemplate {
     public void insertMappings(MappingTable table, final int id, final List<Integer> ids) {
         String sql = new StringBuilder()
                 .append(" INSERT INTO ").append(table.getName())
-                .append(" (").append(table.getSecondColumn())
+                .append(" (").append(table.getFirstColumn())
                 .append(", ").append(table.getSecondColumn())
                 .append(") VALUES (?,?) ")
                 .toString();

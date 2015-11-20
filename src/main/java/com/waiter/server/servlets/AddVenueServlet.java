@@ -35,7 +35,7 @@ public class AddVenueServlet extends BaseServlet {
             throws ServletException, IOException {
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
         VenueDAO venueJDBCTemplate = (VenueJDBCTemplate) context.getBean("venueJDBCTemplate");
-        UserDAO userDAO = (UserDAO) context.getBean("companyJDBCTemplate");
+        UserDAO userDAO = (UserDAO) context.getBean("userJDBCTemplate");
         IResponseWriter<Venue> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = parserFactory.newParser(req);
         try {

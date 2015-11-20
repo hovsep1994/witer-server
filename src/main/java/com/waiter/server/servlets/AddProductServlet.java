@@ -2,10 +2,9 @@ package com.waiter.server.servlets;
 
 import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
-import com.waiter.server.commons.entities.Group;
-import com.waiter.server.commons.entities.Menu;
-import com.waiter.server.commons.entities.Product;
-import com.waiter.server.commons.entities.Tag;
+import com.waiter.server.commons.EntityType;
+import com.waiter.server.commons.TranslationType;
+import com.waiter.server.commons.entities.*;
 import com.waiter.server.db.ProductDAO;
 import com.waiter.server.db.sql.GroupJDBCTemplate;
 import com.waiter.server.db.sql.MenuJDBCTemplate;
@@ -47,9 +46,10 @@ public class AddProductServlet extends BaseServlet {
         IResponseWriter<Product> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new ParserFactory().newParser(req);
 
+        //todo add authentication
         try {
             String name = paramParser.get("name");
-            String language = paramParser.getString("language", "unknown");
+            String language = paramParser.get("language");
             String type = paramParser.getString("type", "main");
 
             String description = paramParser.get("description");
@@ -68,16 +68,18 @@ public class AddProductServlet extends BaseServlet {
                         new APIError(WRONG_REQUEST, "Wrong request parameters. "));
 
             Product product = new Product()
-                    .setName(name)
                     .setTags(Tag.parseTags(tags))
                     .setDescription(description)
                     .setPrice(price)
                     .setImage(image_path)
-                    .setGroup(new Group().setId(group_id));
+                    .setGroup(new Group().setId(group_id))
+                    .addName(new Name().setName(name)
+                            .setTranslationType(TranslationType.valueOf(type.toUpperCase()))
+                            .setEntityType(EntityType.PRODUCT).setLanguage(new Language(language)));
 
             LOG.info(product.toString());
 
-            productJDBTemplate.create(product, language, type);
+            productJDBTemplate.create(product);
             writer.writeResponse(product);
         } catch (Exception e) {
             LOG.error("something went wrong when adding tag to user. ", e);

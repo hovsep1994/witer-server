@@ -70,7 +70,7 @@
 </form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="scripts/add_venue.js" type="text/javascript"></script>
+<script src="../scripts/add_venue.js" type="text/javascript"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAW_hI04roTnEO08eq4tlKgNh4okOdMSTE&callback=initMap">
 </script>

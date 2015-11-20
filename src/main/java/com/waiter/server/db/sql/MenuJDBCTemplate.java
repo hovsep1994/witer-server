@@ -46,8 +46,9 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
                 .append(" g.id, g.name, g.image,")
                 .append(" gtm.group_id, gtm.tag_id,")
                 .append(" GROUP_CONCAT(gt.name) AS group_tags,")
-                .append(" p.id, p.name, p.image, p.price, p.group_id, p.description,")
+                .append(" p.id, p.image, p.price, p.group_id, p.description,")
                 .append(" GROUP_CONCAT(pt.name) AS product_tags")
+                .append(" n.name, n.entity_type, n.language")
                 .append(" FROM menus AS m")
                 .append(" LEFT JOIN groups AS g ON(g.menu_id = m.id)")
                 .append(" LEFT JOIN group_tag_map AS gtm ON (g.id = gtm.group_id)")
@@ -55,6 +56,7 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
                 .append(" INNER JOIN products AS p ON (p.group_id = g.id)")
                 .append(" LEFT JOIN product_tag_map AS ptm ON (p.id = ptm.product_id)")
                 .append(" LEFT JOIN tags AS pt ON (pt.id = ptm.tag_id)")
+                .append(" INNER JOIN names AS n ON n.entity_id=p.id AND n.entity_type='product'") //todo add groups also
                 .append(" LEFT JOIN companies AS c ON (c.id = m.company_id)")
                 .append(" WHERE m.id = '" + id + "'")
                 .append(" GROUP BY g.id, p.id")

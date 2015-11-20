@@ -1,8 +1,7 @@
 package com.waiter.server.db.sql;
 
-import com.waiter.server.commons.entities.Group;
-import com.waiter.server.commons.entities.Product;
-import com.waiter.server.commons.entities.Tag;
+import com.waiter.server.commons.entities.*;
+import com.waiter.server.db.NameDAO;
 import com.waiter.server.db.ProductDAO;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,20 +16,18 @@ import java.util.List;
  */
 public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
 
+    private NameDAO nameDAO;
+
     public ProductJDBTemplate(DataSource dataSource) {
         super(dataSource);
+        nameDAO = new NameJDBCTemplate(dataSource);
     }
 
     @Override
-    public int create(Product product, String language, String type) {
+    public int create(Product product) {
         String sql = new StringBuilder()
                 .append(" INSERT INTO products (image, price, description, group_id)")
                 .append(" VALUES (:image, :price, :description, :group_id)")
-                .toString();
-
-        String sqlName = new StringBuilder()
-                .append(" INSERT INTO product_names (name, language, product_id, type)")
-                .append(" VALUES (:name, :language, :product_id, :type)")
                 .toString();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -42,15 +39,7 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
 
         int productId = insertAndGetId(sql, params);
         if (productId != -1) {
-
-            MapSqlParameterSource paramsName = new MapSqlParameterSource();
-            paramsName.addValue(NAME, product.getName());
-            paramsName.addValue("product_id", productId);
-            paramsName.addValue("language", language);
-            paramsName.addValue("type", type);
-
-            insertAndGetId(sqlName, paramsName);
-
+            nameDAO.create(product.getNames().get(0).setEntityId(productId));
             if (product.getTags() != null) {
                 insertProductTags(product);
             }
@@ -156,22 +145,24 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
         insertMappings(MappingTable.PRODUCT_TAG_MAP, product.getId(), tagIds);
     }
 
-    private static class ProductMapper implements RowMapper {
+    public static class ProductMapper implements RowMapper {
         @Override
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
             return getProduct(rs);
         }
-    }
 
-    static Product getProduct(ResultSet rs) throws SQLException {
-        return new Product()
-                .setId(rs.getInt("p.id"))
-                .setName(rs.getString("pn.name"))
-                .setImage(rs.getString("p.image"))
-                .setGroup(new Group().setId(rs.getInt("p.group_id")))
-                .setDescription(rs.getString("p.description"))
-                .setPrice(rs.getDouble("p.price"))
-                .setTags(Tag.parseTags(rs.getString("product_tags")));
+        public Product getProduct(ResultSet rs) throws SQLException {
+            return new Product()
+                    .setId(rs.getInt("p.id"))
+                    .setName(new Name()
+                            .setLanguage(new Language(rs.getString("n.language")))
+                            .setName(rs.getString("n.name")))
+                    .setImage(rs.getString("p.image"))
+                    .setGroup(new Group().setId(rs.getInt("p.group_id")))
+                    .setDescription(rs.getString("p.description"))
+                    .setPrice(rs.getDouble("p.price"))
+                    .setTags(Tag.parseTags(rs.getString("product_tags")));
+        }
     }
 
 

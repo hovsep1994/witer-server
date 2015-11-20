@@ -4,7 +4,6 @@ import com.waiter.server.commons.entities.Group;
 import com.waiter.server.commons.entities.Product;
 import com.waiter.server.commons.entities.Tag;
 import com.waiter.server.db.GroupDAO;
-import com.waiter.server.servlets.GetMenuServlet;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.waiter.server.db.sql.ProductJDBTemplate.ProductMapper;
 
 /**
  * @author shahenpoghosyan
@@ -109,7 +110,7 @@ public class GroupJDBCTemplate extends BaseJDBCTemplate implements GroupDAO {
 
         List<Product> products = new ArrayList<>();
         do {
-            products.add(ProductJDBTemplate.getProduct(rs));
+            products.add(new ProductMapper().getProduct(rs));
         } while (rs.next());
         group.setProducts(products);
         return group;

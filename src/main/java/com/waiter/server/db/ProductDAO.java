@@ -5,7 +5,7 @@ import com.waiter.server.commons.entities.Product;
 import java.util.List;
 
 public interface ProductDAO {
-    int create(Product product, String language, String type);
+    int create(Product product);
     void remove(int productId);
     void update(Product product);
     List<Product> getByGroup(int groupId);

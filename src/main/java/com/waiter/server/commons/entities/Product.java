@@ -1,5 +1,6 @@
 package com.waiter.server.commons.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,10 +9,10 @@ import java.util.List;
 public class Product {
 
     private int id;
-    private String name;
     private String image;
     private String description;
     private double price;
+    private List<Name> names = new ArrayList<>();
     private Group group;
     private List<Tag> tags;
 
@@ -20,8 +21,23 @@ public class Product {
         return this;
     }
 
-    public Product setName(String name) {
-        this.name = name;
+    public List<Name> getNames() {
+        return names;
+    }
+
+    public Product setNames(List<Name> names) {
+        this.names = names;
+        return this;
+    }
+
+    public Product setName(Name name) {
+        names = new ArrayList<>();
+        names.add(name);
+        return this;
+    }
+
+    public Product addName(Name name) {
+        names.add(name);
         return this;
     }
 
@@ -55,10 +71,6 @@ public class Product {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getImage() {
         return image;
     }
@@ -83,7 +95,6 @@ public class Product {
     public String toString() {
         return "Product{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
