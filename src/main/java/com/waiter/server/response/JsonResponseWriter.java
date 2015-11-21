@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.entities.City;
+import com.waiter.server.commons.entities.Name;
 import com.waiter.server.response.serializers.CitySerializer;
+import com.waiter.server.response.serializers.NameSerializer;
 import com.waiter.server.utils.ResponseList;
 import org.apache.log4j.Logger;
 
@@ -26,6 +28,7 @@ public class JsonResponseWriter<T> implements IResponseWriter<T>, Closeable {
     static {
         SimpleModule simpleModule = new SimpleModule("MyModule", new Version(1, 0, 0, null));
         simpleModule.addSerializer(City.class, new CitySerializer());
+        simpleModule.addSerializer(Name.class, new NameSerializer());
         DEFAULT_MAPPER.registerModule(simpleModule);
         DEFAULT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }

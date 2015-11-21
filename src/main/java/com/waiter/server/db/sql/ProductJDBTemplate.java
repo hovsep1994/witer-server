@@ -39,7 +39,7 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
 
         int productId = insertAndGetId(sql, params);
         if (productId != -1) {
-            nameDAO.create(product.getNames().get(0).setEntityId(productId));
+            nameDAO.create(product.getName().setEntityId(productId));
             if (product.getTags() != null) {
                 insertProductTags(product);
             }

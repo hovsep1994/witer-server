@@ -21,8 +21,11 @@ public class Product {
         return this;
     }
 
-    public List<Name> getNames() {
-        return names;
+    public Name getName() {
+        if(names == null) {
+            return null;
+        }
+        return names.get(0);
     }
 
     public Product setNames(List<Name> names) {
