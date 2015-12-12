@@ -1,11 +1,8 @@
-package com.waiter.server.db.sql;
+package com.waiter.server.repository.sql;
 
-import com.waiter.server.commons.APIError;
-import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.Company;
-import com.waiter.server.db.CompanyDAO;
+import com.waiter.server.repository.CompanyDAO;
 import org.apache.log4j.Logger;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -14,19 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
-import static com.waiter.server.commons.ErrorCodes.FAILED_AUTHENTICATION;
-
 /**
  * Created by Admin on 10/24/2015.
  */
-public class CompanyJDBCTemplate extends BaseJDBCTemplate implements CompanyDAO {
+public class CompanyRepository extends BaseRepository implements CompanyDAO {
 
-    private static final Logger logger = Logger.getLogger(CompanyJDBCTemplate.class);
-
-    public CompanyJDBCTemplate(DataSource dataSource) {
-        super(dataSource);
-    }
+    private static final Logger logger = Logger.getLogger(CompanyRepository.class);
 
     @Override
     public int create(Company company) {

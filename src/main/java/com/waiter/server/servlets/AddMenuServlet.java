@@ -3,12 +3,9 @@ package com.waiter.server.servlets;
 import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.*;
-import com.waiter.server.db.CompanyDAO;
-import com.waiter.server.db.MenuDAO;
-import com.waiter.server.db.UserDAO;
-import com.waiter.server.db.VenueDAO;
-import com.waiter.server.db.sql.MenuJDBCTemplate;
-import com.waiter.server.db.sql.VenueJDBCTemplate;
+import com.waiter.server.repository.MenuDAO;
+import com.waiter.server.repository.UserDAO;
+import com.waiter.server.repository.sql.MenuRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.IParamParser;
@@ -36,7 +33,7 @@ public class AddMenuServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        MenuDAO menuJDBCTemplate = (MenuJDBCTemplate) context.getBean("menuJDBCTemplate");
+        MenuDAO menuJDBCTemplate = (MenuRepository) context.getBean("menuJDBCTemplate");
         UserDAO userDAO = (UserDAO) context.getBean("userJDBCTemplate");
         IResponseWriter<Menu> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = parserFactory.newParser(req);

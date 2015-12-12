@@ -3,10 +3,9 @@ package com.waiter.server.servlets;
 import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.*;
-import com.waiter.server.db.CompanyDAO;
-import com.waiter.server.db.UserDAO;
-import com.waiter.server.db.VenueDAO;
-import com.waiter.server.db.sql.VenueJDBCTemplate;
+import com.waiter.server.repository.UserDAO;
+import com.waiter.server.repository.VenueDAO;
+import com.waiter.server.repository.sql.VenueRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.IParamParser;
@@ -34,7 +33,7 @@ public class AddVenueServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        VenueDAO venueJDBCTemplate = (VenueJDBCTemplate) context.getBean("venueJDBCTemplate");
+        VenueDAO venueJDBCTemplate = (VenueRepository) context.getBean("venueJDBCTemplate");
         UserDAO userDAO = (UserDAO) context.getBean("userJDBCTemplate");
         IResponseWriter<Venue> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = parserFactory.newParser(req);

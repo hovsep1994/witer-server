@@ -1,7 +1,5 @@
 package com.waiter.server.servlets;
 
-import com.waiter.server.commons.entities.Group;
-import com.waiter.server.db.sql.GroupJDBCTemplate;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.BaseParser;

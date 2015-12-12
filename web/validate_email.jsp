@@ -1,10 +1,10 @@
 <%@ page import="org.springframework.context.ApplicationContext" %>
-<%@ page import="com.waiter.server.db.CompanyDAO" %>
-<%@ page import="com.waiter.server.db.sql.CompanyJDBCTemplate" %>
+<%@ page import="com.waiter.server.repository.CompanyDAO" %>
+<%@ page import="com.waiter.server.repository.sql.CompanyRepository" %>
 <%@ page import="com.waiter.server.utils.paramparser.IParamParser" %>
 <%@ page import="com.waiter.server.utils.paramparser.ParserFactory" %>
 <%@ page import="com.waiter.server.commons.APIException" %>
-<%@ page import="com.waiter.server.db.UserDAO" %>
+<%@ page import="com.waiter.server.repository.UserDAO" %>
 <%--
   Created by IntelliJ IDEA.
   User: shahenpoghosyan

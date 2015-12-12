@@ -1,17 +1,13 @@
 package com.waiter.server.servlets;
 
-import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.Group;
 import com.waiter.server.commons.entities.Menu;
 import com.waiter.server.commons.entities.Tag;
-import com.waiter.server.db.sql.GroupJDBCTemplate;
+import com.waiter.server.repository.sql.GroupRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.PhotoSaver;
-import com.waiter.server.utils.paramparser.BaseParser;
 import com.waiter.server.utils.paramparser.IParamParser;
-import com.waiter.server.utils.paramparser.MultipartParser;
-import com.waiter.server.utils.paramparser.ParserFactory;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
@@ -32,7 +28,7 @@ public class AddGroupServlet extends BaseServlet {
             throws ServletException, IOException {
 
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        GroupJDBCTemplate groupJDBCTemplate = (GroupJDBCTemplate) context.getBean("groupJDBCTemplate");
+        GroupRepository groupRepository = (GroupRepository) context.getBean("groupJDBCTemplate");
         IResponseWriter<Group> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = parserFactory.newParser(req);
 
@@ -53,7 +49,7 @@ public class AddGroupServlet extends BaseServlet {
                     .setTags(Tag.parseTags(tags))
                     .setMenu(new Menu().setId(menuId));
 
-            groupJDBCTemplate.create(group);
+            groupRepository.create(group);
             writer.writeResponse(group);
         } catch (Exception e) {
             logger.error("something went wrong when adding tag to user. ", e);

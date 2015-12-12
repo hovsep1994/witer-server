@@ -1,17 +1,15 @@
-package com.waiter.server.db.sql;
+package com.waiter.server.repository.sql;
 
 import com.waiter.server.commons.entities.City;
-import com.waiter.server.commons.entities.Group;
-import com.waiter.server.commons.entities.Product;
-import com.waiter.server.commons.entities.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,9 +18,8 @@ import java.util.List;
 /**
  * @author shahenpoghosyan
  */
-public class BaseJDBCTemplate {
-
-
+@Repository
+public class BaseRepository {
 
     protected static final double DISTANCE = 10;
     protected static final double DEG = 111;
@@ -44,13 +41,8 @@ public class BaseJDBCTemplate {
     protected static final String HASH = "hash";
     protected static final String COMPANY_ID = "company_id";
 
-    protected DataSource dataSource;
+    @Autowired
     protected NamedParameterJdbcTemplate jdbcTemplateObject;
-
-    public BaseJDBCTemplate(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.jdbcTemplateObject = new NamedParameterJdbcTemplate(this.dataSource);
-    }
 
     protected int insertAndGetId(String sql, MapSqlParameterSource params) {
         KeyHolder holder = new GeneratedKeyHolder();
@@ -87,7 +79,7 @@ public class BaseJDBCTemplate {
         jdbcTemplateObject.update(sql, new MapSqlParameterSource());
     }
 
-    protected enum MappingTable {
+    public enum MappingTable {
 
         GROUP_TAG_MAP("group_tag_map", "group_id", "tag_id"),
         PRODUCT_TAG_MAP("product_tag_map","product_id","tag_id");

@@ -1,9 +1,7 @@
 package com.waiter.server.servlets;
 
 import com.waiter.server.commons.entities.Group;
-import com.waiter.server.commons.entities.Product;
-import com.waiter.server.db.sql.GroupJDBCTemplate;
-import com.waiter.server.db.sql.ProductJDBTemplate;
+import com.waiter.server.repository.sql.GroupRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.BaseParser;
@@ -15,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
@@ -30,7 +27,7 @@ public class GetGroupServlet extends BaseServlet {
             throws ServletException, IOException {
 
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        GroupJDBCTemplate groupJDBCTemplate = (GroupJDBCTemplate) context.getBean("groupJDBCTemplate");
+        GroupRepository groupRepository = (GroupRepository) context.getBean("groupJDBCTemplate");
         IResponseWriter<Group> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new BaseParser(req);
 
@@ -39,7 +36,7 @@ public class GetGroupServlet extends BaseServlet {
             if (group_id == -1) {
                 resp.getWriter().write("No menu with id " + group_id);
             } else {
-                Group group = groupJDBCTemplate.get(group_id);
+                Group group = groupRepository.get(group_id);
                 LOG.info(group.toString());
                 writer.writeResponse(group);
             }

@@ -1,7 +1,7 @@
-package com.waiter.server.db.sql;
+package com.waiter.server.repository.sql;
 
 import com.waiter.server.commons.entities.Tag;
-import com.waiter.server.db.TagDAO;
+import com.waiter.server.repository.TagDAO;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * @author shahenpoghosyan
  */
-public class TagJDBCTemplate extends BaseJDBCTemplate implements TagDAO {
+public class TagRepository extends BaseRepository implements TagDAO {
 
-    public TagJDBCTemplate(DataSource dataSource) {
+    public TagRepository(DataSource dataSource) {
         super(dataSource);
     }
 

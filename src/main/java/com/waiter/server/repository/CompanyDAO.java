@@ -1,6 +1,5 @@
-package com.waiter.server.db;
+package com.waiter.server.repository;
 
-import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.Company;
 
 import java.util.List;

@@ -1,11 +1,8 @@
 package com.waiter.server.servlets;
 
-import com.waiter.server.commons.entities.City;
 import com.waiter.server.commons.entities.Product;
-import com.waiter.server.db.LocationsDAO;
-import com.waiter.server.db.ProductDAO;
-import com.waiter.server.db.sql.LocationsJDBCTemplate;
-import com.waiter.server.db.sql.ProductJDBTemplate;
+import com.waiter.server.repository.ProductDAO;
+import com.waiter.server.repository.sql.ProductRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.BaseParser;
@@ -32,7 +29,7 @@ public class SearchProductsServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        ProductDAO productDAO = (ProductJDBTemplate) context.getBean("productJDBTemplate");
+        ProductDAO productDAO = (ProductRepository) context.getBean("productJDBTemplate");
         IResponseWriter<Product> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new BaseParser(req);
 

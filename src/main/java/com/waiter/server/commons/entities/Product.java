@@ -22,7 +22,7 @@ public class Product {
     }
 
     public Name getName() {
-        if(names == null) {
+        if(names == null || names.size() == 0) {
             return null;
         }
         return names.get(0);

@@ -4,7 +4,7 @@ import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.Company;
 import com.waiter.server.commons.entities.User;
-import com.waiter.server.db.UserDAO;
+import com.waiter.server.repository.UserDAO;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.MailClient;

@@ -5,16 +5,12 @@ import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.EntityType;
 import com.waiter.server.commons.TranslationType;
 import com.waiter.server.commons.entities.*;
-import com.waiter.server.db.ProductDAO;
-import com.waiter.server.db.sql.GroupJDBCTemplate;
-import com.waiter.server.db.sql.MenuJDBCTemplate;
-import com.waiter.server.db.sql.ProductJDBTemplate;
+import com.waiter.server.repository.ProductDAO;
+import com.waiter.server.repository.sql.ProductRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.PhotoSaver;
-import com.waiter.server.utils.paramparser.BaseParser;
 import com.waiter.server.utils.paramparser.IParamParser;
-import com.waiter.server.utils.paramparser.MultipartParser;
 import com.waiter.server.utils.paramparser.ParserFactory;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -42,7 +38,7 @@ public class AddProductServlet extends BaseServlet {
             throws ServletException, IOException {
 
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        ProductDAO productJDBTemplate = (ProductJDBTemplate) context.getBean("productJDBTemplate");
+        ProductDAO productJDBTemplate = (ProductRepository) context.getBean("productJDBTemplate");
         IResponseWriter<Product> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new ParserFactory().newParser(req);
 

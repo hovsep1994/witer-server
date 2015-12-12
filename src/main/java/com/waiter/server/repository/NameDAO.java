@@ -1,4 +1,4 @@
-package com.waiter.server.db;
+package com.waiter.server.repository;
 
 import com.waiter.server.commons.entities.Name;
 
@@ -6,5 +6,5 @@ import com.waiter.server.commons.entities.Name;
  * @author shahenpoghosyan
  */
 public interface NameDAO {
-    int create(Name name);
+    Name create(Name name);
 }

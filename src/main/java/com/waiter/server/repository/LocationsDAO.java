@@ -1,4 +1,4 @@
-package com.waiter.server.db;
+package com.waiter.server.repository;
 
 import com.waiter.server.commons.entities.City;
 import com.waiter.server.commons.entities.Country;

@@ -49,6 +49,10 @@ public class PhotoSaver {
         LOG.debug("test: " + origImage.getWidth());
     }
 
+    public PhotoSaver
+
+
+
     public String savePhoto() throws IOException {
         try {
             storeOriginal();

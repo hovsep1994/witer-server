@@ -1,35 +1,27 @@
-package com.waiter.server.db.sql;
+package com.waiter.server.repository.sql;
 
-import com.waiter.server.commons.entities.Group;
-import com.waiter.server.commons.entities.Product;
-import com.waiter.server.commons.entities.Tag;
-import com.waiter.server.db.GroupDAO;
+import com.waiter.server.commons.entities.*;
+import com.waiter.server.repository.GroupDAO;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.waiter.server.db.sql.ProductJDBTemplate.ProductMapper;
+import static com.waiter.server.repository.sql.ProductRepository.ProductMapper;
 
 /**
  * @author shahenpoghosyan
  */
-public class GroupJDBCTemplate extends BaseJDBCTemplate implements GroupDAO {
+public class GroupRepository extends BaseRepository implements GroupDAO {
 
-    private static final Logger LOG = Logger.getLogger(GroupJDBCTemplate.class);
-
-
-    public GroupJDBCTemplate(DataSource dataSource) {
-        super(dataSource);
-    }
+    private static final Logger LOG = Logger.getLogger(GroupRepository.class);
 
     @Override
-    public int create(Group group) {
+    public Group create(Group group) {
         String sql = new StringBuilder()
                 .append(" INSERT INTO groups (name, image, menu_id)")
                 .append(" VALUES (:name, :image, :menu_id)")
@@ -40,11 +32,8 @@ public class GroupJDBCTemplate extends BaseJDBCTemplate implements GroupDAO {
         params.addValue(IMAGE, group.getImage());
         params.addValue(MENU_ID, group.getMenu().getId());
         int groupId = insertAndGetId(sql, params);
-
-        if (groupId != -1 && group.getTags() != null) {
-            insertGroupTags(group);
-        }
-        return groupId;
+        group.setId(groupId);
+        return group;
     }
 
     @Override
@@ -88,32 +77,28 @@ public class GroupJDBCTemplate extends BaseJDBCTemplate implements GroupDAO {
         return group;
     }
 
-    private void insertGroupTags(Group group) {
-        TagJDBCTemplate tagJDBCTemplate = new TagJDBCTemplate(dataSource);
-        List<Integer> tagIds = tagJDBCTemplate.insertAndGetIds(group.getTags());
-        insertMappings(MappingTable.GROUP_TAG_MAP, group.getId(), tagIds);
-    }
-
     private static class GroupMapper implements RowMapper {
         @Override
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
             return getGroup(rs);
         }
-    }
 
-    static Group getGroup(ResultSet rs) throws SQLException {
-        Group group = new Group()
-                .setId(rs.getInt(ID))
-                .setName(rs.getString(NAME))
-                .setImage(rs.getString(IMAGE))
-                .setTags(Tag.parseTags(rs.getString("group_tags")));
+        public Group getGroup(ResultSet rs) throws SQLException {
+            Group group = new Group()
+                    .setId(rs.getInt(ID))
+                    .setName(new Name()
+                            .setLanguage(new Language(rs.getString("n.language")))
+                            .setName(rs.getString("n.name")))
+                    .setImage(rs.getString(IMAGE))
+                    .setTags(Tag.parseTags(rs.getString("group_tags")));
 
-        List<Product> products = new ArrayList<>();
-        do {
-            products.add(new ProductMapper().getProduct(rs));
-        } while (rs.next());
-        group.setProducts(products);
-        return group;
+            List<Product> products = new ArrayList<>();
+            do {
+                products.add(new ProductMapper().getProduct(rs));
+            } while (rs.next());
+            group.setProducts(products);
+            return group;
+        }
     }
 
 }

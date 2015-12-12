@@ -1,8 +1,8 @@
 package com.waiter.server.servlets;
 
 import com.waiter.server.commons.entities.City;
-import com.waiter.server.db.LocationsDAO;
-import com.waiter.server.db.sql.LocationsJDBCTemplate;
+import com.waiter.server.repository.LocationsDAO;
+import com.waiter.server.repository.sql.LocationsRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.BaseParser;
@@ -29,7 +29,7 @@ public class SearchCitiesServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        LocationsDAO locationJDBCTemplate = (LocationsJDBCTemplate) context.getBean("locationJDBCTemplate");
+        LocationsDAO locationJDBCTemplate = (LocationsRepository) context.getBean("locationJDBCTemplate");
         IResponseWriter<City> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new BaseParser(req);
 

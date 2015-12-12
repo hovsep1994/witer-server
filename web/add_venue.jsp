@@ -1,11 +1,11 @@
 <%@ page import="com.waiter.server.commons.entities.Country" %>
 <%@ page import="org.springframework.context.ApplicationContext" %>
-<%@ page import="com.waiter.server.db.sql.LocationsJDBCTemplate" %>
-<%@ page import="com.waiter.server.db.MenuDAO" %>
-<%@ page import="com.waiter.server.db.sql.MenuJDBCTemplate" %>
+<%@ page import="com.waiter.server.repository.sql.LocationsRepository" %>
+<%@ page import="com.waiter.server.repository.MenuDAO" %>
+<%@ page import="com.waiter.server.repository.sql.MenuRepository" %>
 <%@ page import="com.waiter.server.commons.entities.Menu" %>
 <%@ page import="static com.waiter.server.utils.ServletUtils.*" %>
-<%@ page import="com.waiter.server.db.UserDAO" %>
+<%@ page import="com.waiter.server.repository.UserDAO" %>
 <%@ page import="com.waiter.server.commons.entities.User" %>
 
 <%--
@@ -31,8 +31,8 @@
 
 <%
     ApplicationContext context = (ApplicationContext) pageContext.getServletContext().getAttribute("springContext");
-    LocationsJDBCTemplate locationJDBCTemplate = (LocationsJDBCTemplate) context.getBean("locationJDBCTemplate");
-    MenuDAO menuDAO = (MenuJDBCTemplate) context.getBean("menuJDBCTemplate");
+    LocationsRepository locationJDBCTemplate = (LocationsRepository) context.getBean("locationJDBCTemplate");
+    MenuDAO menuDAO = (MenuRepository) context.getBean("menuJDBCTemplate");
     UserDAO userDAO = (UserDAO) context.getBean("userJDBCTemplate");
 
     Cookie authCookie = getCookie("ckey", request);

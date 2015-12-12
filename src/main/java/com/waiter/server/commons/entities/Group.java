@@ -1,5 +1,6 @@
 package com.waiter.server.commons.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
 public class Group {
 
     private int id;
-    private String name;
+    private List<Name> names = new ArrayList<>();
     private String image;
     private List<Product> products;
     private List<Tag> tags;
@@ -23,12 +24,21 @@ public class Group {
         return this;
     }
 
-    public String getName() {
-        return name;
+    public Name getName() {
+        if(names == null || names.size() == 0) {
+            return null;
+        }
+        return names.get(0);
     }
 
-    public Group setName(String name) {
-        this.name = name;
+    public Group setName(Name name) {
+        names = new ArrayList<>();
+        names.add(name);
+        return this;
+    }
+
+    public Group addName(Name name) {
+        names.add(name);
         return this;
     }
 
@@ -72,7 +82,6 @@ public class Group {
     public String toString() {
         return "Group{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
                 ", products=" + products +
                 ", tags=" + tags +

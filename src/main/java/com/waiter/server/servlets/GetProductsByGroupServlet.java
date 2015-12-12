@@ -1,9 +1,7 @@
 package com.waiter.server.servlets;
 
-import com.waiter.server.commons.entities.Menu;
 import com.waiter.server.commons.entities.Product;
-import com.waiter.server.db.sql.MenuJDBCTemplate;
-import com.waiter.server.db.sql.ProductJDBTemplate;
+import com.waiter.server.repository.sql.ProductRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.BaseParser;
@@ -30,7 +28,7 @@ public class GetProductsByGroupServlet extends BaseServlet {
             throws ServletException, IOException {
 
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        ProductJDBTemplate productJDBTemplate = (ProductJDBTemplate) context.getBean("productJDBTemplate");
+        ProductRepository productRepository = (ProductRepository) context.getBean("productJDBTemplate");
         IResponseWriter<List<Product>> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new BaseParser(req);
 
@@ -39,7 +37,7 @@ public class GetProductsByGroupServlet extends BaseServlet {
             if (group_id == -1) {
                 resp.getWriter().write("No menu with id " + group_id);
             } else {
-                List<Product> products = productJDBTemplate.getByGroup(group_id);
+                List<Product> products = productRepository.getByGroup(group_id);
                 LOG.info(products.toString());
                 writer.writeResponse(products);
             }

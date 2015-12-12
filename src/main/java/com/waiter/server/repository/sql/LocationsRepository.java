@@ -1,8 +1,8 @@
-package com.waiter.server.db.sql;
+package com.waiter.server.repository.sql;
 
 import com.waiter.server.commons.entities.City;
 import com.waiter.server.commons.entities.Country;
-import com.waiter.server.db.LocationsDAO;
+import com.waiter.server.repository.LocationsDAO;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * @author shahenpoghosyan
  */
-public class LocationsJDBCTemplate extends BaseJDBCTemplate implements LocationsDAO {
+public class LocationsRepository extends BaseRepository implements LocationsDAO {
 
 
-    public LocationsJDBCTemplate(DataSource dataSource) {
+    public LocationsRepository(DataSource dataSource) {
         super(dataSource);
     }
 

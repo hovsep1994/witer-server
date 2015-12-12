@@ -1,7 +1,7 @@
-package com.waiter.server.db.sql;
+package com.waiter.server.repository.sql;
 
 import com.waiter.server.commons.entities.*;
-import com.waiter.server.db.MenuDAO;
+import com.waiter.server.repository.MenuDAO;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -11,15 +11,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.waiter.server.db.sql.CompanyJDBCTemplate.CompanyRowMapper;
+import static com.waiter.server.repository.sql.CompanyRepository.CompanyRowMapper;
 
 /**
  * Created by Admin on 10/24/2015.
  */
 @SuppressWarnings("unchecked")
-public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
+public class MenuRepository extends BaseRepository implements MenuDAO {
 
-    public MenuJDBCTemplate(DataSource dataSource) {
+    public MenuRepository(DataSource dataSource) {
         super(dataSource);
     }
 
@@ -103,7 +103,7 @@ public class MenuJDBCTemplate extends BaseJDBCTemplate implements MenuDAO {
 
         List<Group> groups = new ArrayList<>();
         do {
-            groups.add(GroupJDBCTemplate.getGroup(rs));
+            groups.add(GroupRepository.getGroup(rs));
         } while (rs.next());
         menu.setGroups(groups);
 

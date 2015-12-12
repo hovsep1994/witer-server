@@ -1,18 +1,14 @@
-package com.waiter.server.db.sql;
+package com.waiter.server.repository.sql;
 
 import javax.sql.DataSource;
 
 import com.waiter.server.commons.entities.Company;
 import com.waiter.server.commons.entities.Location;
 import com.waiter.server.commons.entities.Venue;
-import com.waiter.server.db.VenueDAO;
+import com.waiter.server.repository.VenueDAO;
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,12 +17,12 @@ import java.util.List;
 /**
  * Created by shahenpoghosyan on 7/14/15.
  */
-public class VenueJDBCTemplate extends BaseJDBCTemplate implements VenueDAO {
+public class VenueRepository extends BaseRepository implements VenueDAO {
 
-    private static final Logger logger = Logger.getLogger(VenueJDBCTemplate.class);
+    private static final Logger logger = Logger.getLogger(VenueRepository.class);
 
 
-    public VenueJDBCTemplate(DataSource dataSource) {
+    public VenueRepository(DataSource dataSource) {
         super(dataSource);
     }
 
@@ -148,7 +144,7 @@ public class VenueJDBCTemplate extends BaseJDBCTemplate implements VenueDAO {
                 .setZip(rs.getString("v.zip"));
 
         Venue venue = new Venue()
-                .setMenu(MenuJDBCTemplate.getMenu(rs))
+                .setMenu(MenuRepository.getMenu(rs))
                 .setLocation(location);
         return venue;
     }

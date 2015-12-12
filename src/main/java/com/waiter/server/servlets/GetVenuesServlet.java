@@ -1,8 +1,8 @@
 package com.waiter.server.servlets;
 
 import com.waiter.server.commons.entities.Venue;
-import com.waiter.server.db.VenueDAO;
-import com.waiter.server.db.sql.VenueJDBCTemplate;
+import com.waiter.server.repository.VenueDAO;
+import com.waiter.server.repository.sql.VenueRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.BaseParser;
@@ -28,7 +28,7 @@ public class GetVenuesServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        VenueDAO venueDAO = (VenueJDBCTemplate) context.getBean("venueJDBCTemplate");
+        VenueDAO venueDAO = (VenueRepository) context.getBean("venueJDBCTemplate");
         IResponseWriter<List<Venue>> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new BaseParser(req);
 

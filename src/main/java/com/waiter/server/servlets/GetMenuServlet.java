@@ -1,7 +1,7 @@
 package com.waiter.server.servlets;
 
 import com.waiter.server.commons.entities.Menu;
-import com.waiter.server.db.sql.MenuJDBCTemplate;
+import com.waiter.server.repository.sql.MenuRepository;
 import com.waiter.server.response.IResponseWriter;
 import com.waiter.server.response.JsonResponseWriter;
 import com.waiter.server.utils.paramparser.BaseParser;
@@ -28,7 +28,7 @@ public class GetMenuServlet extends BaseServlet {
             throws ServletException, IOException {
 
         ApplicationContext context = (ApplicationContext) getServletContext().getAttribute(CONTEXT);
-        MenuJDBCTemplate menuJDBCTemplate = (MenuJDBCTemplate) context.getBean("menuJDBCTemplate");
+        MenuRepository menuJDBCTemplate = (MenuRepository) context.getBean("menuJDBCTemplate");
         IResponseWriter<Menu> writer = new JsonResponseWriter<>(resp.getWriter());
         IParamParser paramParser = new BaseParser(req);
 

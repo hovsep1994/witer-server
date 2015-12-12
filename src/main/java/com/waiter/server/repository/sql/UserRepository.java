@@ -1,11 +1,11 @@
-package com.waiter.server.db.sql;
+package com.waiter.server.repository.sql;
 
 import com.waiter.server.commons.APIError;
 import com.waiter.server.commons.APIException;
 import com.waiter.server.commons.entities.Company;
 import com.waiter.server.commons.entities.User;
-import com.waiter.server.db.CompanyDAO;
-import com.waiter.server.db.UserDAO;
+import com.waiter.server.repository.CompanyDAO;
+import com.waiter.server.repository.UserDAO;
 import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -22,14 +22,14 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 /**
  * @author shahenpoghosyan
  */
-public class UserJDBCTemplate extends BaseJDBCTemplate implements UserDAO {
+public class UserRepository extends BaseRepository implements UserDAO {
 
-    private static final Logger logger = Logger.getLogger(UserJDBCTemplate.class);
+    private static final Logger logger = Logger.getLogger(UserRepository.class);
     private CompanyDAO companyDAO;
 
-    public UserJDBCTemplate(DataSource dataSource) {
+    public UserRepository(DataSource dataSource) {
         super(dataSource);
-        companyDAO = new CompanyJDBCTemplate(dataSource);
+        companyDAO = new CompanyRepository(dataSource);
     }
 
     @Override

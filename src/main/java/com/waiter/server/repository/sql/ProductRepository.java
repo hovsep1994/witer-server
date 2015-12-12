@@ -1,8 +1,8 @@
-package com.waiter.server.db.sql;
+package com.waiter.server.repository.sql;
 
 import com.waiter.server.commons.entities.*;
-import com.waiter.server.db.NameDAO;
-import com.waiter.server.db.ProductDAO;
+import com.waiter.server.repository.NameDAO;
+import com.waiter.server.repository.ProductDAO;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -14,17 +14,10 @@ import java.util.List;
 /**
  * Created by Admin on 10/24/2015.
  */
-public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
-
-    private NameDAO nameDAO;
-
-    public ProductJDBTemplate(DataSource dataSource) {
-        super(dataSource);
-        nameDAO = new NameJDBCTemplate(dataSource);
-    }
+public class ProductRepository extends BaseRepository implements ProductDAO {
 
     @Override
-    public int create(Product product) {
+    public Product create(Product product) {
         String sql = new StringBuilder()
                 .append(" INSERT INTO products (image, price, description, group_id)")
                 .append(" VALUES (:image, :price, :description, :group_id)")
@@ -36,16 +29,9 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
         params.addValue(DESCRIPTION, product.getDescription());
         params.addValue(GROUP_ID, product.getGroup().getId());
 
-
         int productId = insertAndGetId(sql, params);
-        if (productId != -1) {
-            nameDAO.create(product.getName().setEntityId(productId));
-            if (product.getTags() != null) {
-                insertProductTags(product);
-            }
-        }
-
-        return productId;
+        product.setId(productId);
+        return product;
     }
 
     @Override
@@ -137,12 +123,6 @@ public class ProductJDBTemplate extends BaseJDBCTemplate implements ProductDAO {
         List<Product> products = jdbcTemplateObject.query(sql.toString(), params, new ProductMapper());
 
         return products;
-    }
-
-    private void insertProductTags(Product product) {
-        TagJDBCTemplate tagJDBCTemplate = new TagJDBCTemplate(dataSource);
-        List<Integer> tagIds = tagJDBCTemplate.insertAndGetIds(product.getTags());
-        insertMappings(MappingTable.PRODUCT_TAG_MAP, product.getId(), tagIds);
     }
 
     public static class ProductMapper implements RowMapper {

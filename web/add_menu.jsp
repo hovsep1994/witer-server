@@ -1,8 +1,8 @@
 <%@ page import="org.springframework.context.ApplicationContext" %>
 <%@ page import="static com.waiter.server.utils.ServletUtils.*" %>
-<%@ page import="com.waiter.server.db.MenuDAO" %>
-<%@ page import="com.waiter.server.db.CompanyDAO" %>
-<%@ page import="com.waiter.server.db.sql.MenuJDBCTemplate" %>
+<%@ page import="com.waiter.server.repository.MenuDAO" %>
+<%@ page import="com.waiter.server.repository.CompanyDAO" %>
+<%@ page import="com.waiter.server.repository.sql.MenuRepository" %>
 <%@ page import="com.waiter.server.commons.entities.Company" %>
 <%@ page import="com.waiter.server.commons.entities.Menu" %>
 <%--
@@ -22,7 +22,7 @@
 
 <%
     ApplicationContext context = (ApplicationContext) pageContext.getServletContext().getAttribute("springContext");
-    MenuDAO menuDAO = (MenuJDBCTemplate) context.getBean("menuJDBCTemplate");
+    MenuDAO menuDAO = (MenuRepository) context.getBean("menuJDBCTemplate");
     CompanyDAO companyDAO = (CompanyDAO) context.getBean("companyJDBCTemplate");
 
     Cookie authCookie = getCookie("ckey", request);
