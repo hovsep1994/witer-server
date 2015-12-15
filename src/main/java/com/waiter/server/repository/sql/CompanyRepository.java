@@ -19,7 +19,7 @@ public class CompanyRepository extends BaseRepository implements CompanyDAO {
     private static final Logger logger = Logger.getLogger(CompanyRepository.class);
 
     @Override
-    public int create(Company company) {
+    public Company create(Company company) {
         String sql = new StringBuilder("INSERT INTO companies (name, phone)")
                 .append(" VALUES (:name, :phone)")
                 .toString();
@@ -28,7 +28,8 @@ public class CompanyRepository extends BaseRepository implements CompanyDAO {
         params.addValue(NAME, company.getName());
         params.addValue(PHONE, company.getPhone());
 
-        return insertAndGetId(sql, params);
+        company.setId(insertAndGetId(sql, params));
+        return company;
     }
 
     @Override
