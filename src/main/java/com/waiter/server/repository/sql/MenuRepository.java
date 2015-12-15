@@ -19,10 +19,6 @@ import static com.waiter.server.repository.sql.CompanyRepository.CompanyRowMappe
 @SuppressWarnings("unchecked")
 public class MenuRepository extends BaseRepository implements MenuDAO {
 
-    public MenuRepository(DataSource dataSource) {
-        super(dataSource);
-    }
-
     @Override
     public int create(Menu menu) {
         String sql = new StringBuilder()
@@ -103,7 +99,7 @@ public class MenuRepository extends BaseRepository implements MenuDAO {
 
         List<Group> groups = new ArrayList<>();
         do {
-            groups.add(GroupRepository.getGroup(rs));
+            groups.add(new GroupRepository.GroupMapper().getGroup(rs));
         } while (rs.next());
         menu.setGroups(groups);
 

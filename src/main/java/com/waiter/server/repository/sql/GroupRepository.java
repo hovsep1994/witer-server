@@ -5,6 +5,7 @@ import com.waiter.server.repository.GroupDAO;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import static com.waiter.server.repository.sql.ProductRepository.ProductMapper;
 /**
  * @author shahenpoghosyan
  */
+@Repository
 public class GroupRepository extends BaseRepository implements GroupDAO {
 
     private static final Logger LOG = Logger.getLogger(GroupRepository.class);
@@ -77,7 +79,7 @@ public class GroupRepository extends BaseRepository implements GroupDAO {
         return group;
     }
 
-    private static class GroupMapper implements RowMapper {
+    public static class GroupMapper implements RowMapper {
         @Override
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
             return getGroup(rs);

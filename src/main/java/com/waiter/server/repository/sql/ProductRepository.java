@@ -5,6 +5,7 @@ import com.waiter.server.repository.NameDAO;
 import com.waiter.server.repository.ProductDAO;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by Admin on 10/24/2015.
  */
+@Repository
 public class ProductRepository extends BaseRepository implements ProductDAO {
 
     @Override

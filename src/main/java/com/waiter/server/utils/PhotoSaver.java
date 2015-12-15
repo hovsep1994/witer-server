@@ -22,13 +22,14 @@ public class PhotoSaver {
     private static final String PATH = "http://localhost:8080/photos/";
     private static final String ORIGINALS_PATH = "originals";
     private static final String DELIMITER_DOT = ".";
-    private static final int[] DEFAULT_SIZES = {60,120};
+    private static final int[] DEFAULT_SIZES = {60, 120};
+
     static {
         File uploadDir = new File(UPLOAD_DIRECTORY);
         if (!uploadDir.exists()) {
             uploadDir.mkdir();
         }
-        for(int size : DEFAULT_SIZES) {
+        for (int size : DEFAULT_SIZES) {
             File sizeDir = new File(new StringBuilder(UPLOAD_DIRECTORY).append(size)
                     .append(File.separator).toString());
             if (!sizeDir.exists()) {
@@ -36,6 +37,7 @@ public class PhotoSaver {
             }
         }
     }
+
     private FileItem photo;
     private String name;
     private String extension;
@@ -49,14 +51,10 @@ public class PhotoSaver {
         LOG.debug("test: " + origImage.getWidth());
     }
 
-    public PhotoSaver
-
-
-
     public String savePhoto() throws IOException {
         try {
             storeOriginal();
-            for(int size : DEFAULT_SIZES ) {
+            for (int size : DEFAULT_SIZES) {
                 resizeAndStore(size);
             }
         } catch (Exception e) {
@@ -82,13 +80,13 @@ public class PhotoSaver {
                 .append(extension).toString();
         LOG.debug("test: " + path + ", " + origImage.getHeight());
         ImageIO.write(origImage, extension, new File(path));
-        LOG.debug("test2: " );
+        LOG.debug("test2: ");
     }
 
     private BufferedImage resizePhoto(int newSize, BufferedImage image) {
-        int newHeight = image.getHeight() <= image.getWidth() ? newSize : (int)( (float)image.getHeight() / image.getWidth() * newSize);
-        int newWidth = image.getWidth() <= image.getHeight() ? newSize : (int)( (float)image.getWidth() / image.getHeight() * newSize);
-        LOG.debug("old size: " + image.getHeight() + ", " + image.getWidth() );
+        int newHeight = image.getHeight() <= image.getWidth() ? newSize : (int) ((float) image.getHeight() / image.getWidth() * newSize);
+        int newWidth = image.getWidth() <= image.getHeight() ? newSize : (int) ((float) image.getWidth() / image.getHeight() * newSize);
+        LOG.debug("old size: " + image.getHeight() + ", " + image.getWidth());
         LOG.debug("new size: " + newHeight + ", " + newWidth);
         return Scalr.resize(image, Scalr.Method.AUTOMATIC, newWidth, newHeight, new BufferedImageOp[0]);
     }

@@ -1,12 +1,14 @@
 package com.waiter.server.services.tag;
 
 import com.waiter.server.commons.entities.Tag;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author shahenpoghosyan
  */
+@Service
 public interface TagService {
 
     void batchInsert(List<Tag> tags);

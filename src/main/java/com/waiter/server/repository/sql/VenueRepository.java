@@ -21,11 +21,6 @@ public class VenueRepository extends BaseRepository implements VenueDAO {
 
     private static final Logger logger = Logger.getLogger(VenueRepository.class);
 
-
-    public VenueRepository(DataSource dataSource) {
-        super(dataSource);
-    }
-
     public int create(Venue venue) {
         String sql = new StringBuilder()
                 .append(" INSERT INTO venues (country, city, street, zip, latitude, longitude, menu_id, company_id)")

@@ -27,11 +27,6 @@ public class UserRepository extends BaseRepository implements UserDAO {
     private static final Logger logger = Logger.getLogger(UserRepository.class);
     private CompanyDAO companyDAO;
 
-    public UserRepository(DataSource dataSource) {
-        super(dataSource);
-        companyDAO = new CompanyRepository(dataSource);
-    }
-
     @Override
     public long create(User user) {
         String sql = new StringBuilder("INSERT INTO users (name, email, password, token, hash, company_id)")

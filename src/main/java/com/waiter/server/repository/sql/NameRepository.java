@@ -3,12 +3,14 @@ package com.waiter.server.repository.sql;
 import com.waiter.server.commons.entities.Name;
 import com.waiter.server.repository.NameDAO;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
 /**
  * @author shahenpoghosyan
  */
+@Repository
 public class NameRepository extends BaseRepository implements NameDAO {
 
     @Override

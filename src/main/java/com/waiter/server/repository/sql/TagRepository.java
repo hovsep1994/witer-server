@@ -4,6 +4,7 @@ import com.waiter.server.commons.entities.Tag;
 import com.waiter.server.repository.TagDAO;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -13,11 +14,8 @@ import java.util.List;
 /**
  * @author shahenpoghosyan
  */
+@Repository
 public class TagRepository extends BaseRepository implements TagDAO {
-
-    public TagRepository(DataSource dataSource) {
-        super(dataSource);
-    }
 
     @Override
     public void batchInsert(final List<Tag> tags) {

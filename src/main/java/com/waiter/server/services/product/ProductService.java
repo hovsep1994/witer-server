@@ -1,12 +1,14 @@
 package com.waiter.server.services.product;
 
 import com.waiter.server.commons.entities.Product;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author shahenpoghosyan
  */
+@Service
 public interface ProductService {
 
     Product create(Product product);

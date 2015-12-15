@@ -3,6 +3,7 @@ package com.waiter.server.api;
 import com.waiter.server.api.common.ResponseEntity;
 import com.waiter.server.commons.entities.Group;
 import com.waiter.server.services.group.GroupService;
+import com.waiter.server.services.group.impl.GroupServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

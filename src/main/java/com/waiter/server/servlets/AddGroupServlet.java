@@ -44,7 +44,7 @@ public class AddGroupServlet extends BaseServlet {
             }
 
             Group group = new Group()
-                    .setName(name)
+//                    .setName(name)
                     .setImage(imagePath)
                     .setTags(Tag.parseTags(tags))
                     .setMenu(new Menu().setId(menuId));

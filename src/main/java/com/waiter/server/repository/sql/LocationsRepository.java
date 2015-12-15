@@ -14,11 +14,6 @@ import java.util.List;
  */
 public class LocationsRepository extends BaseRepository implements LocationsDAO {
 
-
-    public LocationsRepository(DataSource dataSource) {
-        super(dataSource);
-    }
-
     @Override
     public List<Country> getAllCountries() {
         String sql = "SELECT * FROM countries ";

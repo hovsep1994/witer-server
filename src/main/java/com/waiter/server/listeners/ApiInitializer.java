@@ -21,9 +21,6 @@ public class ApiInitializer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         try {
-            ServletContext servletContext = event.getServletContext();
-            context = new ClassPathXmlApplicationContext("spring-config.xml");
-            servletContext.setAttribute("springContext", context);
         } catch (Exception e) {
             LOG.error("Error when starting app. ", e);
         }
