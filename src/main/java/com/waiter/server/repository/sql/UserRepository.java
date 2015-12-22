@@ -28,12 +28,12 @@ public class UserRepository extends BaseRepository implements UserDAO {
     private CompanyDAO companyDAO;
 
     @Override
-    public long create(User user) {
+    public User create(User user) {
         String sql = new StringBuilder("INSERT INTO users (name, email, password, token, hash, company_id)")
                 .append(" VALUES (:name, :email, :password, :token, :hash, :company_id)")
                 .toString();
 
-        int companyId = companyDAO.create(user.getCompany());
+        int companyId = companyDAO.create(user.getCompany()).getId();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue(NAME, user.getName());
@@ -43,7 +43,8 @@ public class UserRepository extends BaseRepository implements UserDAO {
         params.addValue(HASH, user.getHash());
         params.addValue(COMPANY_ID, companyId);
 
-        return insertAndGetId(sql, params);
+        user.setId(insertAndGetId(sql, params));
+        return user;
     }
 
     @Override

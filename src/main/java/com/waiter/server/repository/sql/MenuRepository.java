@@ -20,7 +20,7 @@ import static com.waiter.server.repository.sql.CompanyRepository.CompanyRowMappe
 public class MenuRepository extends BaseRepository implements MenuDAO {
 
     @Override
-    public int create(Menu menu) {
+    public Menu create(Menu menu) {
         String sql = new StringBuilder()
                 .append(" INSERT INTO menus ")
                 .append(" (name, company_id)")
@@ -30,8 +30,9 @@ public class MenuRepository extends BaseRepository implements MenuDAO {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("name", menu.getName());
         params.addValue("company_id", menu.getCompany().getId());
+        menu.setId(insertAndGetId(sql, params));
 
-        return insertAndGetId(sql, params);
+        return menu;
     }
 
     @Override

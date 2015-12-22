@@ -29,6 +29,15 @@ public class YandexTranslatorApiManager {
         return sender.getRequest(url, params);
     }
 
+    public JsonNode translate(String text, String langTo) throws IOException {
+        String url = new StringBuilder(host).append("/translate").toString();
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("key", API_KEY);
+        params.put("text", text);
+        params.put("lang", langTo);
+        return sender.getRequest(url, params);
+    }
+
     public JsonNode detectLanguage(String text) throws IOException {
         String url = new StringBuilder(host).append("/detect").toString();
         Map<String, String> params = new LinkedHashMap<>();
