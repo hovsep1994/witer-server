@@ -3,10 +3,9 @@ package com.waiter.server.api;
 import com.waiter.server.api.common.ResponseEntity;
 import com.waiter.server.commons.entities.Group;
 import com.waiter.server.services.group.GroupService;
-import com.waiter.server.services.group.impl.GroupServiceImpl;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author shahenpoghosyan
@@ -15,11 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/groups")
 public class GroupController {
 
+    private static final Logger logger = Logger.getLogger(GroupController.class);
+
     @Autowired
     private GroupService groupService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void create(@RequestPart("image") MultipartFile imagePart, @RequestPart("group") Group group) {
+    public void create(@RequestPart("group") Group group) {
         groupService.create(group); //TODO handle image
     }
 

@@ -2,20 +2,11 @@ package com.waiter.server.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 /**
  * @author shahenpoghosyan
  */
 public class MenukitApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        super.onStartup(servletContext);
-        servletContext.getServletRegistration("home").getMappings();
-
-    }
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -29,6 +20,6 @@ public class MenukitApplicationInitializer extends AbstractAnnotationConfigDispa
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] {"/api"};
+        return new String[] {"/api/*"};
     }
 }

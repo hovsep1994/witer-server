@@ -1,12 +1,13 @@
 package com.waiter.server.commons.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author shahenpoghosyan
  */
-public class Product {
+public class Product implements Serializable {
 
     private int id;
     private String image;

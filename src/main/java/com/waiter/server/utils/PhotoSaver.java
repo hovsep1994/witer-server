@@ -7,9 +7,9 @@ import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author by Shahen
@@ -38,49 +38,49 @@ public class PhotoSaver {
         }
     }
 
-    private FileItem photo;
-    private String name;
+    private String path;
     private String extension;
     private BufferedImage origImage;
 
     public PhotoSaver(FileItem photo, String name) throws IOException {
-        this.photo = photo;
-        this.name = name;
-        this.extension = FilenameUtils.getExtension(new File(photo.getName()).getName());
-        this.origImage = ImageIO.read(photo.getInputStream());
-        LOG.debug("test: " + origImage.getWidth());
+        this(photo.getInputStream(), name);
     }
 
-    public String savePhoto() throws IOException {
+    public PhotoSaver(InputStream stream, String path) throws IOException {
+        this.path = path;
+        this.extension = FilenameUtils.getExtension(path);
+        this.origImage = ImageIO.read(stream);
+    }
+
+    public String savePhoto(int[] sizes) throws IOException {
         try {
             storeOriginal();
-            for (int size : DEFAULT_SIZES) {
+            for (int size : sizes) {
                 resizeAndStore(size);
             }
         } catch (Exception e) {
             LOG.error("Error when storing photo: ", e);
             throw new IOException(e);
         }
-        return new StringBuilder().append(PATH).append(name).append(DELIMITER_DOT)
-                .append(extension).toString();
+        return new StringBuilder().append(PATH).append(path).toString();
+    }
+
+    public String savePhoto() throws IOException {
+        return savePhoto(DEFAULT_SIZES);
     }
 
     private void resizeAndStore(int size) throws IOException {
         String path = new StringBuilder().append(UPLOAD_DIRECTORY).append(size)
-                .append(File.separator).append(name).append(DELIMITER_DOT)
-                .append(extension).toString();
+                .append(this.path).toString();
 
         BufferedImage resizedImage = resizePhoto(size, origImage);
         ImageIO.write(resizedImage, extension, new File(path));
     }
 
     private void storeOriginal() throws IOException {
-        String path = new StringBuilder().append(UPLOAD_DIRECTORY).append(ORIGINALS_PATH)
-                .append(File.separator).append(name).append(DELIMITER_DOT)
-                .append(extension).toString();
-        LOG.debug("test: " + path + ", " + origImage.getHeight());
-        ImageIO.write(origImage, extension, new File(path));
-        LOG.debug("test2: ");
+        String fullPath = new StringBuilder().append(UPLOAD_DIRECTORY).append(ORIGINALS_PATH)
+                .append(File.separator).append(this.path).toString();
+        ImageIO.write(origImage, extension, new File(fullPath));
     }
 
     private BufferedImage resizePhoto(int newSize, BufferedImage image) {
@@ -88,6 +88,6 @@ public class PhotoSaver {
         int newWidth = image.getWidth() <= image.getHeight() ? newSize : (int) ((float) image.getWidth() / image.getHeight() * newSize);
         LOG.debug("old size: " + image.getHeight() + ", " + image.getWidth());
         LOG.debug("new size: " + newHeight + ", " + newWidth);
-        return Scalr.resize(image, Scalr.Method.AUTOMATIC, newWidth, newHeight, new BufferedImageOp[0]);
+        return Scalr.resize(image, Scalr.Method.AUTOMATIC, newWidth, newHeight);
     }
 }
