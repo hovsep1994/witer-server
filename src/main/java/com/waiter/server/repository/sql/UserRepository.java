@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
@@ -22,6 +23,7 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 /**
  * @author shahenpoghosyan
  */
+@Repository
 public class UserRepository extends BaseRepository implements UserDAO {
 
     private static final Logger logger = Logger.getLogger(UserRepository.class);

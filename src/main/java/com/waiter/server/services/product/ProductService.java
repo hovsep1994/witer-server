@@ -8,7 +8,6 @@ import java.util.List;
 /**
  * @author shahenpoghosyan
  */
-@Service
 public interface ProductService {
 
     Product create(Product product);

@@ -58,7 +58,7 @@ public class AddVenueServlet extends BaseServlet {
             if (menuId != 0) {
                 venue.setMenu(new Menu().setId(menuId));
             }
-            int id = venueJDBCTemplate.create(venue);
+            int id = venueJDBCTemplate.create(venue).getId();
             writer.writeResponse(venue.setId(id));
         } catch (APIException e) {
             logger.error(e.getError(), e);

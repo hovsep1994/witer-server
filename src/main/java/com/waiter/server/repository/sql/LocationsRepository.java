@@ -5,6 +5,7 @@ import com.waiter.server.commons.entities.Country;
 import com.waiter.server.repository.LocationsDAO;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * @author shahenpoghosyan
  */
+@Repository
 public class LocationsRepository extends BaseRepository implements LocationsDAO {
 
     @Override

@@ -4,6 +4,7 @@ import com.waiter.server.commons.entities.*;
 import com.waiter.server.repository.MenuDAO;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ import static com.waiter.server.repository.sql.CompanyRepository.CompanyRowMappe
  * Created by Admin on 10/24/2015.
  */
 @SuppressWarnings("unchecked")
+@Repository
 public class MenuRepository extends BaseRepository implements MenuDAO {
 
     @Override

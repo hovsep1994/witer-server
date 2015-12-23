@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 /**
  * @author shahenpoghosyan
  */
-@Service
 public interface GroupService {
 
     Group create(Group group);

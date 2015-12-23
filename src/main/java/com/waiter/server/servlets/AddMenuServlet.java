@@ -48,7 +48,7 @@ public class AddMenuServlet extends BaseServlet {
 
             Menu menu = new Menu().setName(name);
             menu.setCompany(user.getCompany());
-            int id = menuJDBCTemplate.create(menu);
+            int id = (int) menuJDBCTemplate.create(menu).getId();
             writer.writeResponse(menu.setId(id));
         } catch (APIException e) {
             logger.debug(e.getError(), e);

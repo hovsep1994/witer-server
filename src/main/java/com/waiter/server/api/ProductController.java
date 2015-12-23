@@ -32,4 +32,9 @@ public class ProductController {
     public ResponseEntity<Product> findOne(@PathVariable Long id) {
         return new ResponseEntity<>(productService.get(id));
     }
+
+    @RequestMapping(name = "heartbeat", method = RequestMethod.GET)
+    public ResponseEntity<String> heartbeat() {
+        return new ResponseEntity<>("ok");
+    }
 }

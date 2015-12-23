@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 /**
  * @author shahenpoghosyan
  */
-@Service
 public interface NameService {
     Name create(Name name);
 }
