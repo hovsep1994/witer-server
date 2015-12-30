@@ -1,9 +1,8 @@
 package com.waiter.server.services.location.impl;
 
-import com.waiter.server.commons.entities.City;
-import com.waiter.server.commons.entities.Country;
-import com.waiter.server.repository.sql.LocationsRepository;
 import com.waiter.server.services.location.LocationService;
+import com.waiter.server.services.location.model.City;
+import com.waiter.server.services.location.model.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -13,16 +12,16 @@ import java.util.List;
  */
 public class LocationServiceImpl implements LocationService {
 
-    @Autowired
-    private LocationsRepository locationsRepository;
-
-    @Override
-    public List<Country> getAllCountries() {
-        return locationsRepository.getAllCountries();
-    }
-
-    @Override
-    public List<City> searchCities(String nameQuery, String countryCode, int limit) {
-        return locationsRepository.searchCities(nameQuery, countryCode, limit);
-    }
+//    @Autowired
+//    private LocationsRepository locationsRepository;
+//
+//    @Override
+//    public List<Country> getAllCountries() {
+//        return locationsRepository.getAllCountries();
+//    }
+//
+//    @Override
+//    public List<City> searchCities(String nameQuery, String countryCode, int limit) {
+//        return locationsRepository.searchCities(nameQuery, countryCode, limit);
+//    }
 }

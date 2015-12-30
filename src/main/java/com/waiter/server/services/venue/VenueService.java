@@ -1,6 +1,7 @@
 package com.waiter.server.services.venue;
 
-import com.waiter.server.commons.entities.Venue;
+
+import com.waiter.server.services.venue.model.Venue;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface VenueService {
 
     Venue create(Venue venue);
 
-    Venue get(int id);
+    Venue get(Long id);
 
     List<Venue> get(String name, double lat, double lon);
 }

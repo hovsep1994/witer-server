@@ -1,7 +1,6 @@
 package com.waiter.server.services.group;
 
-import com.waiter.server.commons.entities.Group;
-import org.springframework.stereotype.Service;
+import com.waiter.server.services.group.model.Group;
 
 /**
  * @author shahenpoghosyan

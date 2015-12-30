@@ -1,6 +1,6 @@
 package com.waiter.server.services.company;
 
-import com.waiter.server.commons.entities.Company;
+import com.waiter.server.services.company.model.Company;
 
 import java.util.List;
 

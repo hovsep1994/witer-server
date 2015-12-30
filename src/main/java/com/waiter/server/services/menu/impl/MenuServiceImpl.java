@@ -1,8 +1,8 @@
 package com.waiter.server.services.menu.impl;
 
-import com.waiter.server.commons.entities.Menu;
-import com.waiter.server.repository.sql.MenuRepository;
+import com.waiter.server.persistence.core.repository.menu.MenuRepository;
 import com.waiter.server.services.menu.MenuService;
+import com.waiter.server.services.menu.model.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +21,17 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Menu create(Menu menu) {
-        return menuRepository.create(menu);
+        return menuRepository.save(menu);
     }
 
     @Override
     public Menu get(Long id) {
-        return menuRepository.get(id.intValue());
+        return menuRepository.findOne(id);
     }
 
     @Override
     public List<Menu> getCompanyMenus(Long companyId) {
-        return menuRepository.getCompanyMenus(companyId.intValue());
+        return menuRepository.findByCompanyId(companyId);
     }
 
 }

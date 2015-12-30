@@ -1,9 +1,9 @@
 package com.waiter.server.services.product.impl;
 
-import com.waiter.server.commons.entities.Product;
-import com.waiter.server.repository.sql.ProductRepository;
+import com.waiter.server.persistence.core.repository.product.ProductRepository;
 import com.waiter.server.services.name.NameService;
 import com.waiter.server.services.product.ProductService;
+import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
     @Autowired
     private NameService nameService;
+
     @Autowired
     private TagService tagService;
 
     @Override
     public Product create(Product product) {
-        Product p = productRepository.create(product);
-        nameService.create(p.getName());
+        Product p = productRepository.save(product);
+        nameService.create(p.getNames());
         if (p.getTags() != null) {
             tagService.batchInsert(p.getTags());
         }
@@ -35,22 +37,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void remove(Long productId) {
-        productRepository.remove(productId.intValue());
+        productRepository.delete(productId);
     }
 
     @Override
     public void update(Product product) {
-        productRepository.update(product);
+        productRepository.save(product);
     }
 
     @Override
     public List<Product> getByGroup(Long groupId) {
-        return productRepository.getByGroup(groupId.intValue());
+        return productRepository.findByGroupId(groupId);
     }
 
     @Override
     public Product get(Long id) {
-        return productRepository.get(id.intValue());
+        return productRepository.findOne(id);
     }
 
     @Override

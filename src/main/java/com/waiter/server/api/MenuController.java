@@ -1,8 +1,8 @@
 package com.waiter.server.api;
 
 import com.waiter.server.api.common.ResponseEntity;
-import com.waiter.server.commons.entities.Menu;
 import com.waiter.server.services.menu.MenuService;
+import com.waiter.server.services.menu.model.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

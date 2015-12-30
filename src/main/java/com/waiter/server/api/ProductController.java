@@ -1,10 +1,8 @@
 package com.waiter.server.api;
 
 import com.waiter.server.api.common.ResponseEntity;
-import com.waiter.server.commons.entities.Gallery;
-import com.waiter.server.commons.entities.Product;
-import com.waiter.server.services.gallery.GalleryService;
 import com.waiter.server.services.product.ProductService;
+import com.waiter.server.services.product.model.Product;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

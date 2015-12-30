@@ -1,6 +1,5 @@
 package com.waiter.server.services.gallery;
 
-import com.waiter.server.commons.entities.Gallery;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -11,5 +10,5 @@ import java.io.InputStream;
  */
 @Service
 public interface GalleryService {
-    Gallery save(Gallery gallery, InputStream imageStream) throws IOException;
+//    Gallery save(Gallery gallery, InputStream imageStream) throws IOException;
 }

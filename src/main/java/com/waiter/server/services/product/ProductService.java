@@ -1,7 +1,6 @@
 package com.waiter.server.services.product;
 
-import com.waiter.server.commons.entities.Product;
-import org.springframework.stereotype.Service;
+import com.waiter.server.services.product.model.Product;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.waiter.server.services.company.impl;
 
-import com.waiter.server.commons.entities.Company;
-import com.waiter.server.repository.sql.CompanyRepository;
+import com.waiter.server.persistence.core.repository.company.CompanyRepository;
 import com.waiter.server.services.company.CompanyService;
+import com.waiter.server.services.company.model.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +19,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company create(Company company) {
-        return companyRepository.create(company);
+        return companyRepository.save(company);
     }
 
     @Override
     public Company get(Long id) {
-        return companyRepository.get(id.intValue());
+        return companyRepository.findOne(id);
     }
 
     @Override
-    public List<Company> search(String s) {
-        return companyRepository.search(s);
+    public List<Company> search(String name) {
+        return companyRepository.findCompanyByName(name);
     }
 }

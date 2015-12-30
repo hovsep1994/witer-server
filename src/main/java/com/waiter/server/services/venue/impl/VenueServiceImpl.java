@@ -1,8 +1,8 @@
 package com.waiter.server.services.venue.impl;
 
-import com.waiter.server.commons.entities.Venue;
-import com.waiter.server.repository.VenueDAO;
+import com.waiter.server.persistence.core.repository.venue.VenueRepository;
 import com.waiter.server.services.venue.VenueService;
+import com.waiter.server.services.venue.model.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -13,20 +13,20 @@ import java.util.List;
 public class VenueServiceImpl implements VenueService {
 
     @Autowired
-    VenueDAO venueDAO;
+    VenueRepository venueRepository;
 
     @Override
     public Venue create(Venue venue) {
-        return venueDAO.create(venue);
+        return venueRepository.save(venue);
     }
 
     @Override
-    public Venue get(int id) {
-        return venueDAO.get(id);
+    public Venue get(Long id) {
+        return venueRepository.findOne(id);
     }
 
     @Override
     public List<Venue> get(String name, double lat, double lon) {
-        return venueDAO.get(name, lat, lon);
+        return venueRepository.findByName(name, lat, lon);
     }
 }

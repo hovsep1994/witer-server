@@ -13,7 +13,7 @@ import javax.sql.DataSource;
  * @author shahenpoghosyan
  */
 @Configuration
-@ComponentScan(basePackages="com.waiter.server.repository.sql")
+@ComponentScan(basePackages="com.waiter.server.persistence.core.repository.*")
 public class DataAccessConfig {
 
     @Autowired

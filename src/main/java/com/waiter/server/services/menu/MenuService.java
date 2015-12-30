@@ -1,6 +1,7 @@
 package com.waiter.server.services.menu;
 
-import com.waiter.server.commons.entities.Menu;
+
+import com.waiter.server.services.menu.model.Menu;
 
 import java.util.List;
 

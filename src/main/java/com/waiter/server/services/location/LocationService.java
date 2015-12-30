@@ -1,7 +1,7 @@
 package com.waiter.server.services.location;
 
-import com.waiter.server.commons.entities.City;
-import com.waiter.server.commons.entities.Country;
+import com.waiter.server.services.location.model.City;
+import com.waiter.server.services.location.model.Country;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface LocationService {
 
-    List<Country> getAllCountries();
-    List<City> searchCities(String nameQuery, String countryCode, int limit);
+//    List<Country> getAllCountries();
+//    List<City> searchCities(String nameQuery, String countryCode, int limit);
 }

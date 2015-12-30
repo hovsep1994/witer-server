@@ -1,7 +1,6 @@
 package com.waiter.server.services.tag;
 
-import com.waiter.server.commons.entities.Tag;
-import org.springframework.stereotype.Service;
+import com.waiter.server.services.tag.model.Tag;
 
 import java.util.List;
 
@@ -11,6 +10,8 @@ import java.util.List;
 public interface TagService {
 
     void batchInsert(List<Tag> tags);
+
     List<Integer> insertAndGetIds(List<Tag> tags);
+
     List<Integer> findTagIds(List<String> tags);
 }
