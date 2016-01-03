@@ -1,20 +1,24 @@
 package com.waiter.server.persistence.impl.product;
 
 import com.waiter.server.persistence.core.repository.product.ProductRepositoryCustom;
+import com.waiter.server.services.group.model.Group;
+import com.waiter.server.services.language.model.Language;
 import com.waiter.server.services.name.model.Name;
 import com.waiter.server.services.product.model.Product;
+import com.waiter.server.services.tag.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Admin on 1/3/2016.
  */
+@Component
 public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     @Autowired
@@ -58,28 +62,37 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .append(" gtagsScore DESC,")
                 .append(" SQRT(POW(v.latitude - " + lat + ",2) + POW(v.longitude - " + lon + ", 2) )");
 
-//        List<Product> products = jdbcTemplate.query(sql.toString(), new Object[]{query}, new ProductMapper());
+        List<Product> products = jdbcTemplate.query(sql.toString(), new Object[]{query}, new ProductMapper());
 
-        return new ArrayList<>();
+        return products;
     }
 
-//    public static class ProductMapper implements RowMapper {
-//        @Override
-//        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-//            return getProduct(rs);
-//        }
+    public static class ProductMapper implements RowMapper {
+        @Override
+        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return getProduct(rs);
+        }
 
-//        public Product getProduct(ResultSet rs) throws SQLException {
-//            return new Product()
-//                    .setId(rs.getInt("p.id"))
-//                    .setName(new Name()
-//                            .setLanguage(new Language(rs.getString("n.language")))
-//                            .setName(rs.getString("n.name")))
-//                    .setImage(rs.getString("p.image"))
-//                    .setGroup(new Group().setId(rs.getInt("p.group_id")))
-//                    .setDescription(rs.getString("p.description"))
-//                    .setPrice(rs.getDouble("p.price"))
-//                    .setTags(Tag.parseTags(rs.getString("product_tags")));
-//        }
-//    }
+        public Product getProduct(ResultSet rs) throws SQLException {
+            Product product = new Product();
+            product.setId(rs.getLong("p.id"));
+            product.setImage(rs.getString("p.image"));
+            product.setDescription(rs.getString("p.description"));
+            product.setPrice(rs.getDouble("p.price"));
+
+            List<Tag> tags = Tag.parseTags(rs.getString("product_tags"));
+            product.setTags(tags);
+
+            Name name = new Name();
+            Language language = new Language(rs.getString("n.language"));
+            name.setLanguage(language);
+            name.setName(rs.getString("n.name"));
+
+            Group group = new Group();
+            group.setId(rs.getLong("p.group_id"));
+            product.setGroup(group);
+
+            return product;
+        }
+    }
 }

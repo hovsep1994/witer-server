@@ -21,4 +21,36 @@ public class Name extends AbstractNamedEntityModel {
     private EntityType entityType;
     private TranslationType translationType;
 
+    public Language getLanguage() {
+
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+
+    public int getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
+    }
+
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
+
+    public TranslationType getTranslationType() {
+        return translationType;
+    }
+
+    public void setTranslationType(TranslationType translationType) {
+        this.translationType = translationType;
+    }
 }
