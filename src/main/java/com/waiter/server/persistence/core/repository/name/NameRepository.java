@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface NameRepository extends JpaRepository<Name, Long> {
 
-    List<Name> saveNames(List<Name> names);
+    List<Name> insertNames(List<Name> names);
 
 }

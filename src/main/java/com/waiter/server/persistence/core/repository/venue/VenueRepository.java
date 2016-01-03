@@ -2,6 +2,7 @@ package com.waiter.server.persistence.core.repository.venue;
 
 import com.waiter.server.services.venue.model.Venue;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,8 +12,5 @@ import java.util.List;
  */
 @Repository
 public interface VenueRepository extends JpaRepository<Venue, Long> {
-
-    //TODO need to write custom query
-    List<Venue> findByName(String name, double lat, double lon);
 
 }
