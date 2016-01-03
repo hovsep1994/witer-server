@@ -10,10 +10,7 @@ import java.util.List;
  * Created by Admin on 12/23/2015.
  */
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
 
     List<Product> findByGroupId(Long groupId);
-
-    //TODO need to write custom query
-    List<Product> search(String query, double lat, double lon);
 }

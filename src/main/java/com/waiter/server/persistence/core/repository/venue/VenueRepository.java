@@ -11,6 +11,6 @@ import java.util.List;
  * Created by Admin on 12/23/2015.
  */
 @Repository
-public interface VenueRepository extends JpaRepository<Venue, Long> {
+public interface VenueRepository extends JpaRepository<Venue, Long> ,VenueRepositoryCustom{
 
 }

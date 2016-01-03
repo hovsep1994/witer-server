@@ -13,7 +13,7 @@ import java.util.List;
 public class VenueServiceImpl implements VenueService {
 
     @Autowired
-    VenueRepository venueRepository;
+    private VenueRepository venueRepository;
 
     @Override
     public Venue create(Venue venue) {
