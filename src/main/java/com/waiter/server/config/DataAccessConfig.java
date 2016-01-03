@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -23,9 +24,8 @@ import java.util.Properties;
  * @author shahenpoghosyan
  */
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories("com.waiter.server.persistence.core.repository.*")
 @EnableTransactionManagement
-//@ComponentScan(basePackages = "com.waiter.server.persistence.core.repository.*")
 public class DataAccessConfig {
 
     @Autowired
@@ -50,7 +50,8 @@ public class DataAccessConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan(new String[]{"com.waiter.server.persistence.core.repository.*"});
+        em.setPackagesToScan("com.waiter.server.persistence.core.repository.*",
+                "com.waiter.server.services");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
