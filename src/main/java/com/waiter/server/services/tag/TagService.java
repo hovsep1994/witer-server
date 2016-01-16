@@ -9,9 +9,7 @@ import java.util.List;
  */
 public interface TagService {
 
-    void batchInsert(List<Tag> tags);
+    List<Long> insertAndGetIds(List<Tag> tags);
 
-    List<Integer> insertAndGetIds(List<Tag> tags);
-
-    List<Integer> findTagIds(List<String> tags);
+    List<Tag> findTagIds(List<String> tags);
 }

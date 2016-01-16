@@ -1,12 +1,16 @@
 package com.waiter.server.services.product.impl;
 
 import com.waiter.server.persistence.core.repository.product.ProductRepository;
+import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.name.NameService;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.TagService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -15,6 +19,8 @@ import java.util.List;
  */
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     @Autowired
     private ProductRepository productRepository;
@@ -27,12 +33,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product create(Product product) {
-        Product p = productRepository.save(product);
-        nameService.create(p.getNames());
-        if (p.getTags() != null) {
-            tagService.batchInsert(p.getTags());
-        }
-        return p;
+        Assert.notNull(product, "Product must not be null");
+        Product createdProduct = productRepository.save(product);
+        return createdProduct;
     }
 
     @Override
@@ -52,7 +55,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product get(Long id) {
-        return productRepository.findOne(id);
+        Assert.notNull(id, "id must not be null");
+        Product product = productRepository.findOne(id);
+        if (product == null) {
+            LOGGER.debug("Product with id -{} not found", id);
+            throw new ServiceRuntimeException("Product not found");
+        }
+        return product;
     }
 
     @Override

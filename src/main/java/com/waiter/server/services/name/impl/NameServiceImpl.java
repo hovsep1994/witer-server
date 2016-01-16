@@ -24,6 +24,6 @@ public class NameServiceImpl implements NameService{
 
     @Override
     public List<Name> create(List<Name> names) {
-        return nameRepository.insertNames(names);
+        return nameRepository.save(names);
     }
 }

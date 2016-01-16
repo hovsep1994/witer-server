@@ -1,15 +1,34 @@
 package com.waiter.server.services.location.model;
 
+import com.waiter.server.services.common.model.AbstractEntityModel;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * Created by Admin on 10/20/2015.
  */
-public class Location {
+@Entity
+@Table(name = "location")
+public class Location extends AbstractEntityModel {
 
+    @Column(name = "country")
     private String country;
+
+    @Column(name = "city")
     private String city;
+
+    @Column(name = "street")
     private String street;
+
+    @Column(name = "zip")
     private String zip;
+
+    @Column(name = "latitude")
     private double latitude;
+
+    @Column(name = "longitude")
     private double longitude;
 
     public double getLongitude() {

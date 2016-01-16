@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -22,11 +24,14 @@ import java.util.List;
 public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private EntityManager entityManager;
 
     @Override
     public List<Product> search(String query, double lat, double lon) {
-        if (query == null || query.isEmpty()) return null;
+        if (query == null || query.isEmpty()) {
+            return null;
+        }
+
         query = query.replaceAll("\\s", "* ");
 
         StringBuilder sql = new StringBuilder()
@@ -62,7 +67,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .append(" gtagsScore DESC,")
                 .append(" SQRT(POW(v.latitude - " + lat + ",2) + POW(v.longitude - " + lon + ", 2) )");
 
-        List<Product> products = jdbcTemplate.query(sql.toString(), new Object[]{query}, new ProductMapper());
+//        List<Product> products = entityManager.query(sql.toString(), new Object[]{query}, new ProductMapper());
+        Query nativeQuery = entityManager.createNativeQuery(sql.toString(), Product.class);
+        List<Product> products = nativeQuery.getResultList();
 
         return products;
     }

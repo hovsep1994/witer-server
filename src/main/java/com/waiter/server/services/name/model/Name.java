@@ -5,9 +5,7 @@ import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 import com.waiter.server.services.language.model.Language;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Admin on 12/23/2015.
@@ -16,13 +14,22 @@ import javax.persistence.Table;
 @Table(name = "name")
 public class Name extends AbstractNamedEntityModel {
 
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "language_id")
     private Language language;
+
+    @Column(name = "entity_id", nullable = false)
     private int entityId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "entity_type", nullable = false)
     private EntityType entityType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "translation_type", nullable = false)
     private TranslationType translationType;
 
     public Language getLanguage() {
-
         return language;
     }
 

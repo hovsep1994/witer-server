@@ -13,11 +13,14 @@ import java.util.List;
  * Created by Admin on 12/24/2015.
  */
 @Entity
-@Table(name = "tag", indexes = {@Index(name = "IDX_tag_name", columnList = "name")})
+@Table(name = "tag")
 public class Tag extends AbstractNamedEntityModel {
 
+    public Tag() {
+    }
+
     public Tag(String name) {
-        this.setName(name);
+        setName(name);
     }
 
     public static List<String> toStrings(List<Tag> tags) {

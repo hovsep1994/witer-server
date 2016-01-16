@@ -2,14 +2,13 @@ package com.waiter.server.services.gallery.model;
 
 import com.waiter.server.services.common.model.AbstractEntityModel;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * Created by Admin on 12/24/2015.
  */
+@Entity
+@Table(name = "gallery_image")
 public class GalleryImage extends AbstractEntityModel {
 
     @Column(name = "file_name", nullable = false)

@@ -3,7 +3,8 @@ package com.waiter.server.api;
 import com.waiter.server.api.common.ResponseEntity;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.model.Product;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import java.io.InputStream;
 @RequestMapping("/products")
 public class ProductController {
 
-    private static final Logger logger = Logger.getLogger(ProductController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     private ProductService productService;

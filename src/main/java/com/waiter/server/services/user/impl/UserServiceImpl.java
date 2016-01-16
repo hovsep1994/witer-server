@@ -5,11 +5,13 @@ import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.user.UserService;
 import com.waiter.server.services.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 /**
  * Created by Admin on 12/15/2015.
  */
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -21,12 +23,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(String login, String password) {
-        Assert.notNull(login, "login must nor be null");
+    public User login(String name, String password) {
+        Assert.notNull(name, "login must nor be null");
         Assert.notNull(password, "password must nor be null");
-        User user = userRepository.findByUsernameAndPassword(login, password);
+        User user = userRepository.findByNameAndPassword(name, password);
         if(user == null){
-            throw new ServiceRuntimeException("No user found with login " + login + " password " + password);
+            throw new ServiceRuntimeException("No user found with login " + name + " password " + password);
         }
         return user;
     }

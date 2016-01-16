@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -24,7 +26,7 @@ public class VenueRepositoryImpl implements VenueRepositoryCustom {
     private static final double DEG = 111;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private EntityManager entityManager;
 
     @Override
     public List<Venue> findByName(String name, double lat, double lon) {
@@ -48,7 +50,11 @@ public class VenueRepositoryImpl implements VenueRepositoryCustom {
         sql.append(" ORDER BY SQRT(POW(v.latitude - " + lat + ",2) + POW(v.longitude - " + lon + ", 2) )");
 
 //        List<Venue> venues = jdbcTemplate.query(sql.toString(), params, new VenueMapperWithoutMenu());
-        List<Venue> venues = jdbcTemplate.query(sql.toString(), new Object[]{name}, new VenueMapperWithoutMenu());
+//        List<Venue> venues = jdbcTemplate.query(sql.toString(), new Object[]{name}, new VenueMapperWithoutMenu());
+
+        Query query = entityManager.createNativeQuery(sql.toString(), Venue.class);
+        List<Venue> venues = query.getResultList();
+
         return venues;
     }
 
@@ -75,7 +81,7 @@ public class VenueRepositoryImpl implements VenueRepositoryCustom {
         }
     }
 
-    private void foo(){
+    private void foo() {
 
     }
 

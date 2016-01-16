@@ -26,13 +26,14 @@ public class Product extends AbstractNamedEntityModel {
     @Column(name = "price")
     private double price;
 
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)
     private Group group;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private List<Name> names ;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Name> names;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Tag> tags;
 
     public String getImage() {

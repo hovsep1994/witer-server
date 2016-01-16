@@ -3,16 +3,23 @@ package com.waiter.server.services.language.model;
 import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 
+import javax.persistence.*;
+
 /**
  * @author shahenpoghosyan
  */
+@Entity
+@Table(name = "language")
 public class Language extends AbstractNamedEntityModel {
+
+    @Column(name = "code")
     private String code;
-    private String name;
+
+    @Column(name = "nativeName")
     private String nativeName;
 
     public Language(String name) {
-        this.name = name;
+        setName(name);
     }
 
     public String getCode() {
@@ -21,16 +28,6 @@ public class Language extends AbstractNamedEntityModel {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getNativeName() {

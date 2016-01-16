@@ -15,16 +15,13 @@ import java.util.List;
 @Table(name = "company")
 public class Company extends AbstractNamedEntityModel {
 
-
     @Column(name = "phone")
     private String phone;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id")
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Menu> menus;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id")
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Venue> venues;
 
     public String getPhone() {
