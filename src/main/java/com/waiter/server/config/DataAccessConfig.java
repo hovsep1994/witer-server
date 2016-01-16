@@ -37,7 +37,7 @@ public class DataAccessConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUsername("root");
         dataSource.setPassword("password");
-        dataSource.setUrl("jdbc:mysql://localhost/WAITER");
+        dataSource.setUrl("jdbc:mysql://localhost/WAITER1");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         return dataSource;
     }
@@ -78,7 +78,7 @@ public class DataAccessConfig {
 
     Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
 //        properties.setProperty("javax.persistence.lock.timeout", "10000");
 //        properties.setProperty("hibernate.format_sql", "false");

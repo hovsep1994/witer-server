@@ -1,6 +1,5 @@
 package com.waiter.server.services.language.model;
 
-import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 
 import javax.persistence.*;
@@ -17,6 +16,10 @@ public class Language extends AbstractNamedEntityModel {
 
     @Column(name = "nativeName")
     private String nativeName;
+
+    public Language() {
+
+    }
 
     public Language(String name) {
         setName(name);

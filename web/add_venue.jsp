@@ -25,7 +25,7 @@
             width: 400px;
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="/styles/reg_venus.css">
+    <link rel="stylesheet" type="text/css" href="/styles/home.css">
 </head>
 <body>
 

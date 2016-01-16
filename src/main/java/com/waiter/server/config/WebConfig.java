@@ -9,6 +9,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages={ "com.waiter.server.api.*", "com.waiter.server.services.*.impl"})
+@ComponentScan(basePackages={ "com.waiter.server.api", "com.waiter.server.services.*.impl"})
 public class WebConfig {
 }

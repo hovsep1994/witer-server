@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Admin on 12/23/2015.
  */
 @Entity
-@Table(name = "group")
+@Table(name = "groups")
 public class Group extends AbstractEntityModel {
 
     @Column(name = "image")
