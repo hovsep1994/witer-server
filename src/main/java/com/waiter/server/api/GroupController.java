@@ -19,14 +19,14 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void create(@RequestPart("group") Group group) {
-        groupService.create(group); //TODO handle image
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Group> findOne(@PathVariable Long id) {
+    public ResponseEntity<Group> getGroupById(@PathVariable Long id) {
         return new ResponseEntity<>(groupService.get(id));
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity<Group> addGroup(Group group) {
+        Group createdGroup = groupService.create(group);
+        return new ResponseEntity<>(createdGroup);
+    }
 }

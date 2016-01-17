@@ -9,7 +9,7 @@ public interface UserService {
 
     User create(User user);
 
-    User login(String name, String password);
+    User findUserByNamePassword(String name, String password);
 
     User authenticate(String key);
 

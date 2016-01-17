@@ -15,14 +15,14 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void create(@RequestBody Menu menu) {
-        menuService.create(menu);
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Menu> findOne(@PathVariable Long id) {
         return new ResponseEntity<>(menuService.get(id));
     }
 
+    @RequestMapping(value = "/add}", method = RequestMethod.POST)
+    public ResponseEntity<Menu> createMenu(@RequestBody Menu menu) {
+        Menu createdMenu = menuService.create(menu);
+        return new ResponseEntity<>(createdMenu);
+    }
 }

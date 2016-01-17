@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(String name, String password) {
+    public User findUserByNamePassword(String name, String password) {
         Assert.notNull(name, "login must nor be null");
         Assert.notNull(password, "password must nor be null");
         User user = userRepository.findByNameAndPassword(name, password);

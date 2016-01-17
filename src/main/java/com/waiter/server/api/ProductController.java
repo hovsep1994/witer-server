@@ -3,12 +3,14 @@ package com.waiter.server.api;
 import com.waiter.server.api.common.ResponseEntity;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.model.Product;
+import com.waiter.server.services.product.model.ProductSearchParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author shahenpoghosyan
@@ -22,9 +24,10 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<Product> save(@RequestBody Product product) {
-        return new ResponseEntity<>(productService.create(product));
+        Product createdProduct = productService.create(product);
+        return new ResponseEntity<>(createdProduct);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -32,8 +35,9 @@ public class ProductController {
         return new ResponseEntity<>(productService.get(id));
     }
 
-    @RequestMapping(name = "heartbeat", method = RequestMethod.GET)
-    public ResponseEntity<String> heartbeat() {
-        return new ResponseEntity<>("ok");
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResponseEntity<List<Product>> search(@RequestBody ProductSearchParams productSearchParams) {
+        List<Product> products = productService.search(productSearchParams);
+        return new ResponseEntity<>(products);
     }
 }

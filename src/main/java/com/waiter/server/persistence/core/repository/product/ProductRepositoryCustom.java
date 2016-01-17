@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface ProductRepositoryCustom {
 
-    List<Product> search(String query, double lat, double lon);
+    List<Product> search(String name, double lat, double lon);
 
 }

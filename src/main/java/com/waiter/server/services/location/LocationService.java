@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface LocationService {
 
-//    List<Country> getAllCountries();
-//    List<City> searchCities(String nameQuery, String countryCode, int limit);
+    List<Country> getAllCountries();
+
+    List<City> searchCities(String name, String countryCode, int form, int to);
 }
