@@ -1,7 +1,7 @@
 package com.waiter.server.services.product;
 
 import com.waiter.server.services.product.model.Product;
-import com.waiter.server.services.product.model.ProductSearchParams;
+import com.waiter.server.services.product.dto.ProductSearchParameters;
 
 import java.util.List;
 
@@ -20,6 +20,6 @@ public interface ProductService {
 
     Product get(Long id);
 
-    List<Product> search(ProductSearchParams productSearchParams);
+    List<Product> search(ProductSearchParameters productSearchParams);
 
 }

@@ -11,7 +11,9 @@ import javax.persistence.*;
  * Created by Admin on 12/23/2015.
  */
 @Entity
-@Table(name = "name")
+@Table(name = "name", indexes = {
+        @Index(columnList = "name", name = "name_name_hidx")
+})
 public class Name extends AbstractNamedEntityModel {
 
     @OneToOne(optional = false, fetch = FetchType.EAGER)

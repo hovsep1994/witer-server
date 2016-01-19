@@ -1,5 +1,6 @@
 package com.waiter.server.persistence.core.repository.venue;
 
+import com.waiter.server.services.venue.dto.VenueSearchParameters;
 import com.waiter.server.services.venue.model.Venue;
 
 import java.util.List;
@@ -9,6 +10,5 @@ import java.util.List;
  */
 public interface VenueRepositoryCustom {
 
-    List<Venue> findByName(String name, double lat, double lon);
-
+    List<Venue> findBySearchParameters(VenueSearchParameters parameters);
 }

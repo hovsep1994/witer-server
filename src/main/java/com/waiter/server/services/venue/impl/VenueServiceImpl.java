@@ -1,10 +1,13 @@
 package com.waiter.server.services.venue.impl;
 
 import com.waiter.server.persistence.core.repository.venue.VenueRepository;
+import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.venue.VenueService;
+import com.waiter.server.services.venue.dto.VenueSearchParameters;
 import com.waiter.server.services.venue.model.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -23,12 +26,20 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public Venue get(Long id) {
-        return venueRepository.findOne(id);
+    public Venue getVenueById(Long id) {
+        Assert.notNull(id, "id must not be null");
+        Venue venue = venueRepository.findOne(id);
+
+        if (venue == null) {
+            throw new ServiceRuntimeException("Venue with id -" + id + " not found");
+        }
+
+        return venue;
     }
 
     @Override
-    public List<Venue> get(String name, double lat, double lon) {
-        return venueRepository.findByName(name, lat, lon);
+    public List<Venue> getVenuesBySearchParameters(VenueSearchParameters parameters) {
+        Assert.notNull(parameters, "parameters must not be null");
+        return venueRepository.findBySearchParameters(parameters);
     }
 }

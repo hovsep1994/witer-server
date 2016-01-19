@@ -5,7 +5,7 @@ import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.name.NameService;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.model.Product;
-import com.waiter.server.services.product.model.ProductSearchParams;
+import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.tag.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> search(ProductSearchParams params) {
+    public List<Product> search(ProductSearchParameters params) {
         List<Product> products = productRepository.search(
                 params.getName(), params.getLatitude(), params.getLongitude());
         return products;

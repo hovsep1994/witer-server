@@ -4,15 +4,17 @@ import com.waiter.server.persistence.core.repository.product.ProductRepositoryCu
 import com.waiter.server.services.group.model.Group;
 import com.waiter.server.services.language.model.Language;
 import com.waiter.server.services.name.model.Name;
+import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,8 +25,60 @@ import java.util.List;
 @Component
 public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
+    private static final double DISTANCE = 10;
+    private static final double DEG = 111;
+
+    private static final String PARAMETER_LATITUDE = "latitude";
+    private static final String PARAMETER_LONGITUDE = "longitude";
+    private static final String PARAMETER_NAME = "name";
+
     @Autowired
     private EntityManager entityManager;
+
+    public List<Product> findBySearchParameters(ProductSearchParameters parameters) {
+        Assert.notNull(parameters, "ProductSearchParameters must not be null");
+        Assert.notNull(parameters.getName(), "name must not be null");
+        final TypedQuery<Product> typedQuery = buildFindProductsTypedQuery(parameters, Product.class);
+
+        List<Product> products = typedQuery.getResultList();
+        return products;
+    }
+
+    private <T> TypedQuery<T> buildFindProductsTypedQuery(final ProductSearchParameters parameters,
+                                                        final Class<T> queryResultType) {
+        final String queryString = buildFindProductsQueryString(parameters);
+        // Create typed query
+        final TypedQuery<T> typedQuery = entityManager.createQuery(queryString, queryResultType);
+        // Set parameters
+        if (parameters.getName() != null && !parameters.getName().isEmpty()) {
+            typedQuery.setParameter(PARAMETER_NAME, parameters.getName());
+        }
+
+        typedQuery.setParameter(PARAMETER_LATITUDE, parameters.getLatitude());
+        typedQuery.setParameter(PARAMETER_LONGITUDE, parameters.getLongitude());
+
+        return typedQuery;
+    }
+
+    private String buildFindProductsQueryString(ProductSearchParameters parameters) {
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append(" SELECT p ");
+        queryBuilder.append(" FROM Product p ");
+        queryBuilder.append(" INNER JOIN p.company ");
+        queryBuilder.append(" LEFT JOIN p.location ");
+
+        queryBuilder.append(" WHERE ");
+        queryBuilder.append(" ABS(v.location.latitude - " + parameters.getLatitude() + ") < '" + DISTANCE / DEG + "'");
+        queryBuilder.append(" AND ABS(v.location.longitude - " + parameters.getLongitude() + ") < '" + DISTANCE / (Math.cos(Math.toRadians(parameters.getLatitude())) * DEG) + "'");
+
+        if (parameters.getName() != null && !parameters.getName().isEmpty()) {
+            queryBuilder.append(" AND MATCH(c.name) AGAINST(:" + PARAMETER_NAME + " IN BOOLEAN MODE) ");
+        }
+
+        queryBuilder.append(" ORDER BY SQRT(POW(v.latitude - :" + PARAMETER_LATITUDE + ",2) + POW(v.longitude - " + PARAMETER_LONGITUDE + ", 2) )");
+
+        return queryBuilder.toString();
+    }
 
     @Override
     public List<Product> search(String query, double lat, double lon) {

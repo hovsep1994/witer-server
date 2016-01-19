@@ -1,6 +1,7 @@
 package com.waiter.server.services.venue;
 
 
+import com.waiter.server.services.venue.dto.VenueSearchParameters;
 import com.waiter.server.services.venue.model.Venue;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface VenueService {
 
     Venue create(Venue venue);
 
-    Venue get(Long id);
+    Venue getVenueById(Long id);
 
-    List<Venue> get(String name, double lat, double lon);
+    List<Venue> getVenuesBySearchParameters(VenueSearchParameters parameters);
 }
