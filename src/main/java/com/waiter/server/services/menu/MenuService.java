@@ -15,4 +15,8 @@ public interface MenuService {
     Menu get(Long id);
 
     List<Menu> getCompanyMenus(Long companyId);
+
+    Menu update(Menu menu);
+
+    void remove(Long id);
 }

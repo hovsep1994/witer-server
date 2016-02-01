@@ -4,8 +4,8 @@ import com.waiter.server.persistence.core.repository.product.ProductRepository;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.name.NameService;
 import com.waiter.server.services.product.ProductService;
-import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
+import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,13 +46,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void update(Product product) {
-        productRepository.save(product);
+    public Product update(Product product) {
+        Assert.notNull(product, "product must not be null");
+        Assert.notNull(product.getId(), "product id must not be null");
+        /*
+         * checking does product with id exist
+         */
+        get(product.getId());
+        product.setUpdated(new Date());
+        Product updatedProduct = productRepository.save(product);
+        return updatedProduct;
     }
 
     @Override
     public List<Product> getByGroup(Long groupId) {
-        return productRepository.findByGroupId(groupId);
+        Assert.notNull(groupId, "group id must not be null");
+        List<Product> products = productRepository.findByGroupId(groupId);
+        return products;
     }
 
     @Override

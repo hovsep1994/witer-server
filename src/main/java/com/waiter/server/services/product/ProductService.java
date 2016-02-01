@@ -14,7 +14,7 @@ public interface ProductService {
 
     void remove(Long productId);
 
-    void update(Product product);
+    Product update(Product product);
 
     List<Product> getByGroup(Long groupId);
 
