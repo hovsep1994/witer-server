@@ -15,37 +15,45 @@
     <link rel="stylesheet" type="text/css" href="styles/commons.css">
 </head>
 <body>
-<%--<nav class="navbar navbar-default">--%>
-    <%--<div class="container-fluid">--%>
-        <%--<a class="navbar-brand" href="#">Brand</a>--%>
-    <%--</div>--%>
-<%--</nav>--%>
-<div class="container-fluid" >
+<%@ include file="header.jsp" %>
+<div class="home_main">
+    <div class="store_images">
+        <a href="">
+            <img src="styles/resources/istore.png" style="margin-right: 15px;"/>
+        </a>
+        <a href="">
+            <img src="styles/resources/google_play.png"/>
+        </a>
+    </div>
+
+</div>
+<div class="container-fluid desc">
     <div class="row">
-        <div class="col-sm-12">sada</div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc_cell" style="background-color:#1D1E22;">
+            With our smart search tool you can quickly find your preferred food.
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 desc_cell" style="background-color:#18191D;">
+            You can get restaurant's menu and information in any language.
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-xs desc_cell" style="background-color:#1D1E22;">
+            With our smart search tool you can quickly find your preferred food.
+        </div>
     </div>
-    <div class="row">
-        <div class="col-lg-4 col-sm-12 desc_cell" style="background-color:#1D1E22;">sada</div>
-        <div class="col-lg-4 col-sm-12 desc_cell" style="background-color:#18191D;">sada</div>
-        <div class="col-lg-4 col-sm-12 desc_cell" style="background-color:#1D1E22;">sada</div>
-    </div>
-    <div class="row footer">
-        <div class="col-sm-12">All Right Reserved. MenuKit.com</div>
-    </div>
+    <%@ include file="footer.jsp" %>
 </div>
 <%--<form name="company_reg" id="reg_company_form">--%>
-    <%--<label>Name: </label>--%>
-    <%--<input id="name" class="reg_input" name="name" type="text"/> <br>--%>
-    <%--<label>Email: </label>--%>
-    <%--<input id="email" class="reg_input" name="email" type="email"/> <br>--%>
-    <%--<label>Password: </label>--%>
-    <%--<input id="password" class="reg_input" name="password" type="password"/> <br> <br>--%>
+<%--<label>Name: </label>--%>
+<%--<input id="name" class="reg_input" name="name" type="text"/> <br>--%>
+<%--<label>Email: </label>--%>
+<%--<input id="email" class="reg_input" name="email" type="email"/> <br>--%>
+<%--<label>Password: </label>--%>
+<%--<input id="password" class="reg_input" name="password" type="password"/> <br> <br>--%>
 
-    <%--<label>Company Name: </label>--%>
-    <%--<input id="companyName" class="reg_input" name="companyName" type="text"/> <br>--%>
-    <%--<label>Company Phone: </label>--%>
-    <%--<input id="companyPhone" class="reg_input" name="companyPhone" type="text"/> <br>--%>
-    <%--<input type="submit" name="companySubmit" value="Submit">--%>
+<%--<label>Company Name: </label>--%>
+<%--<input id="companyName" class="reg_input" name="companyName" type="text"/> <br>--%>
+<%--<label>Company Phone: </label>--%>
+<%--<input id="companyPhone" class="reg_input" name="companyPhone" type="text"/> <br>--%>
+<%--<input type="submit" name="companySubmit" value="Submit">--%>
 <%--</form>--%>
 
 <%--<br><a href="login">Login</a>--%>

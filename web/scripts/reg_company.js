@@ -57,4 +57,5 @@ $(document).ready(function () {
     function setCookie(name, value, expireDate) {
         document.cookie = name + "=" + value + ";expires=" + expireDate.toUTCString() + ";path=/"
     }
+
 });

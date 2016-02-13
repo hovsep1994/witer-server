@@ -2,6 +2,7 @@ package com.waiter.server.services.filesystem.impl;
 
 import com.waiter.server.services.filesystem.FileSystemService;
 import com.waiter.server.utils.PhotoSaver;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,7 @@ import java.io.InputStream;
 /**
  * @author shahenpoghosyan
  */
+@Service
 public class FileSystemServiceImpl implements FileSystemService {
 
     @Override

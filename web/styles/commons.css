@@ -1,3 +1,7 @@
+a:hover {
+    text-decoration: none;
+}
+
 .footer {
     text-align: center;
     background-color: black;
@@ -5,4 +9,38 @@
     color: white;
     height: 50px;
     padding-top: 19px;
+}
+
+
+/* -------  navigation bar ----------- */
+.navbar_custom {
+    background-color: black;
+    height: 60px;
+}
+
+.brand {
+    font-size: 16px;
+    color: white;
+    margin-left: 20%;
+    margin-top: 15px;
+    display:inline-block;
+}
+
+.navbar_bussiness {
+    font-size: 11px;
+    color: #C3C3C4;
+    margin-top: 15px;
+    margin-left: 48%;
+    border-radius: 3px;
+    border: 1px solid #28B0C4;
+    display:inline-block;
+    padding: 4px 20px 4px 20px;
+}
+
+a.brand:hover {
+    color: white;
+}
+
+a.navbar_bussiness:hover {
+    color: #C3C3C4;
 }

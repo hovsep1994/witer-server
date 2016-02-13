@@ -8,7 +8,6 @@ import java.io.InputStream;
 /**
  * @author shahenpoghosyan
  */
-@Service
 public interface FileSystemService {
 
     String saveImage(String name, InputStream stream, int[] sizes) throws IOException;
