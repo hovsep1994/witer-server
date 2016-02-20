@@ -1,4 +1,4 @@
-package com.waiter.server.services.yandex.model;
+package com.waiter.server.services.translate.model;
 
 /**
  * Created by Admin on 1/17/2016.
