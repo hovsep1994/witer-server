@@ -14,14 +14,14 @@ import javax.persistence.*;
 @Table(name = "name", indexes = {
         @Index(columnList = "name", name = "name_name_hidx")
 })
-public class Name extends AbstractNamedEntityModel {
+public class Name extends AbstractEntityModel {
+
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @OneToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "language_id")
     private Language language;
-
-    @Column(name = "entity_id", nullable = false)
-    private int entityId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "entity_type", nullable = false)
@@ -31,20 +31,20 @@ public class Name extends AbstractNamedEntityModel {
     @Column(name = "translation_type", nullable = false)
     private TranslationType translationType;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Language getLanguage() {
         return language;
     }
 
     public void setLanguage(Language language) {
         this.language = language;
-    }
-
-    public int getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(int entityId) {
-        this.entityId = entityId;
     }
 
     public EntityType getEntityType() {
@@ -62,4 +62,5 @@ public class Name extends AbstractNamedEntityModel {
     public void setTranslationType(TranslationType translationType) {
         this.translationType = translationType;
     }
+
 }

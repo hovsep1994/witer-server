@@ -11,6 +11,10 @@ import javax.persistence.*;
 @Table(name = "gallery_image")
 public class GalleryImage extends AbstractEntityModel {
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "gallery_id", nullable = false)
+    private Gallery gallery;
+
     @Column(name = "file_name", nullable = false)
     private String fileName;
 
@@ -19,6 +23,14 @@ public class GalleryImage extends AbstractEntityModel {
 
     @Column(name = "gallery_image_type", nullable = false)
     private GalleryImageType galleryImageType;
+
+    public Gallery getGallery() {
+        return gallery;
+    }
+
+    public void setGallery(Gallery gallery) {
+        this.gallery = gallery;
+    }
 
     public String getFileName() {
         return fileName;
@@ -44,35 +56,4 @@ public class GalleryImage extends AbstractEntityModel {
         this.galleryImageType = galleryImageType;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        GalleryImage that = (GalleryImage) o;
-
-        if (fileName != null ? !fileName.equals(that.fileName) : that.fileName != null) return false;
-        if (imageType != that.imageType) return false;
-        return galleryImageType == that.galleryImageType;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (fileName != null ? fileName.hashCode() : 0);
-        result = 31 * result + (imageType != null ? imageType.hashCode() : 0);
-        result = 31 * result + (galleryImageType != null ? galleryImageType.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "GalleryImage{" +
-                "fileName='" + fileName + '\'' +
-                ", imageType=" + imageType +
-                ", galleryImageType=" + galleryImageType +
-                "} " + super.toString();
-    }
 }

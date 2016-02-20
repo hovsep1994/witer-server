@@ -1,7 +1,9 @@
 package com.waiter.server.services.tag.model;
 
+import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
@@ -14,13 +16,24 @@ import java.util.List;
  */
 @Entity
 @Table(name = "tag")
-public class Tag extends AbstractNamedEntityModel {
+public class Tag extends AbstractEntityModel {
+
+    @Column(name = "name", nullable = false)
+    private String name;
 
     public Tag() {
     }
 
     public Tag(String name) {
         setName(name);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public static List<String> toStrings(List<Tag> tags) {

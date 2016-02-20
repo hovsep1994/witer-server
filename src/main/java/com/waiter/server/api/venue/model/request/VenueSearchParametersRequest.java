@@ -1,12 +1,19 @@
-package com.waiter.server.services.venue.dto;
+package com.waiter.server.api.venue.model.request;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by Admin on 1/19/2016.
  */
-public class VenueSearchParameters {
+public class VenueSearchParametersRequest {
 
+    @JsonProperty(value = "name", required = false)
     private String name;
+
+    @JsonProperty(value = "name")
     private double latitude;
+
+    @JsonProperty(value = "name")
     private double longitude;
 
     public String getName() {
@@ -38,7 +45,7 @@ public class VenueSearchParameters {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        VenueSearchParameters that = (VenueSearchParameters) o;
+        VenueSearchParametersRequest that = (VenueSearchParametersRequest) o;
 
         if (Double.compare(that.latitude, latitude) != 0) return false;
         if (Double.compare(that.longitude, longitude) != 0) return false;

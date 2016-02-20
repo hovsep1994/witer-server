@@ -1,4 +1,4 @@
-package com.waiter.server.api;
+package com.waiter.server.api.product;
 
 import com.waiter.server.api.common.ResponseEntity;
 import com.waiter.server.services.product.ProductService;

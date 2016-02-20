@@ -34,7 +34,7 @@ public class VenueRepositoryImpl implements VenueRepositoryCustom {
     private EntityManager entityManager;
 
     public List<Venue> findBySearchParameters(VenueSearchParameters parameters) {
-        Assert.notNull(parameters, "VenueSearchParameters must not be null");
+        Assert.notNull(parameters, "VenueSearchParametersRequest must not be null");
         LOGGER.debug("Searching venues for parameters - {}", parameters);
         final TypedQuery<Venue> typedQuery = buildFindVenuesTypedQuery(parameters, Venue.class);
 

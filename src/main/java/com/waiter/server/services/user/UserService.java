@@ -1,5 +1,7 @@
 package com.waiter.server.services.user;
 
+import com.waiter.server.services.user.dto.UserDto;
+import com.waiter.server.services.user.model.SignUpStatus;
 import com.waiter.server.services.user.model.User;
 
 /**
@@ -7,7 +9,9 @@ import com.waiter.server.services.user.model.User;
  */
 public interface UserService {
 
-    User create(User user);
+    SignUpStatus signUp(UserDto userDto);
+
+    SignUpStatus validate(UserDto userDto);
 
     User findUserByNamePassword(String name, String password);
 

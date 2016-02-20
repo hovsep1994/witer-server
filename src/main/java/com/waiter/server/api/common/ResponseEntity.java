@@ -8,24 +8,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class ResponseEntity<T> {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private T reponse;
+    private T response;
     private String status;
 
     public ResponseEntity() {
-
     }
 
-    public ResponseEntity(T reponse) {
-        this.reponse = reponse;
+    public ResponseEntity(T response) {
+        this.response = response;
         this.status = "success";
     }
 
-    public T getReponse() {
-        return reponse;
+    public T getResponse() {
+        return response;
     }
 
-    public void setReponse(T reponse) {
-        this.reponse = reponse;
+    public void setResponse(T response) {
+        this.response = response;
     }
 
     public String getStatus() {

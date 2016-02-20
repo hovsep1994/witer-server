@@ -1,7 +1,8 @@
 package com.waiter.server.services.common.model;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import com.waiter.server.services.name.model.Name;
+
+import javax.persistence.*;
 
 /**
  * @author shahenpoghosyan
@@ -9,14 +10,15 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class AbstractNamedEntityModel extends AbstractEntityModel {
 
-    @Column(name = "name")
-    private String name;
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "name_id", nullable = false)
+    private Name name;
 
-    public String getName() {
+    public Name getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Name name) {
         this.name = name;
     }
 
@@ -29,7 +31,6 @@ public abstract class AbstractNamedEntityModel extends AbstractEntityModel {
         AbstractNamedEntityModel that = (AbstractNamedEntityModel) o;
 
         return !(name != null ? !name.equals(that.name) : that.name != null);
-
     }
 
     @Override

@@ -1,6 +1,7 @@
-package com.waiter.server.api;
+package com.waiter.server.api.menu;
 
 import com.waiter.server.api.common.ResponseEntity;
+import com.waiter.server.api.menu.model.request.AddMenuRequest;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,8 @@ public class MenuController {
     }
 
     @RequestMapping(value = "/add}", method = RequestMethod.POST)
-    public ResponseEntity<Menu> createMenu(@RequestBody Menu menu) {
+    public ResponseEntity<Menu> createMenu(@RequestBody AddMenuRequest addMenuRequest) {
+        Menu menu = new Menu();
         Menu createdMenu = menuService.create(menu);
         return new ResponseEntity<>(createdMenu);
     }
