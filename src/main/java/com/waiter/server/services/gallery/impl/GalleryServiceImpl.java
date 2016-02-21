@@ -22,7 +22,6 @@ import java.io.InputStream;
  */
 @Service
 public class GalleryServiceImpl implements GalleryService {
-
     @Autowired
     private GalleryRepository galleryRepository;
 
