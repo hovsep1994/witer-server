@@ -2,8 +2,7 @@ package com.waiter.server.persistence.impl.product;
 
 import com.waiter.server.persistence.core.repository.product.ProductRepositoryCustom;
 import com.waiter.server.services.group.model.Group;
-import com.waiter.server.services.language.model.Language;
-import com.waiter.server.services.name.model.Name;
+import com.waiter.server.services.name.model.NameTranslation;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
@@ -144,10 +143,10 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
             List<Tag> tags = Tag.parseTags(rs.getString("product_tags"));
             product.setTags(tags);
 
-            Name name = new Name();
-            Language language = new Language(rs.getString("n.language"));
-            name.setLanguage(language);
-            name.setName(rs.getString("n.name"));
+            NameTranslation nameTranslation = new NameTranslation();
+//            Language language = new Language(rs.getString("n.language"));
+//            nameTranslation.setLanguage(language);
+            nameTranslation.setName(rs.getString("n.nameTranslation"));
 
             Group group = new Group();
             group.setId(rs.getLong("p.group_id"));

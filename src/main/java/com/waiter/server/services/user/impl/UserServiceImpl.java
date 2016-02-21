@@ -1,11 +1,15 @@
 package com.waiter.server.services.user.impl;
 
 import com.waiter.server.persistence.core.repository.user.UserRepository;
+import com.waiter.server.services.common.exception.ErrorCode;
+import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.user.UserService;
 import com.waiter.server.services.user.dto.UserDto;
 import com.waiter.server.services.user.model.SignUpStatus;
 import com.waiter.server.services.user.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -16,14 +20,17 @@ import org.springframework.util.Assert;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public SignUpStatus signUp(UserDto userDto) {
-        SignUpStatus signUpStatus = validate(userDto);
-        if (signUpStatus != SignUpStatus.OK) {
-            return signUpStatus;
+    public SignUpStatus signUp(UserDto userDto) throws ServiceException {
+        if (checkExistanceByEmail(userDto.getEmail())) {
+            LOGGER.debug("User with email -{} exists", userDto.getEmail());
+            throw new ServiceException(ErrorCode.DUPLICATE_EMAIL,
+                    "User with email " + userDto.getEmail() + "exists");
         }
         User user = new User();
         userDto.convertToEntityModel(user);
@@ -32,8 +39,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SignUpStatus validate(UserDto userDto) {
-        if (userRepository.existsByEmail(userDto.getEmail())) {
+    public SignUpStatus validate(String email) {
+        if (checkExistanceByEmail(email)) {
             return SignUpStatus.EMAIL_EXISTS;
         }
         return SignUpStatus.OK;
@@ -64,5 +71,9 @@ public class UserServiceImpl implements UserService {
     public boolean validateEmail(String hash) {
         User user = userRepository.findUserByHash(hash);
         return user != null;
+    }
+
+    public boolean checkExistanceByEmail(String email) {
+        return userRepository.countByEmail(email) < 1;
     }
 }

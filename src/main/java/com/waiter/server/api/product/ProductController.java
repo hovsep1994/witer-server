@@ -26,17 +26,17 @@ public class ProductController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<Product> save(@RequestBody Product product) {
         Product createdProduct = productService.create(product);
-        return new ResponseEntity<>(createdProduct);
+        return ResponseEntity.forResponse(createdProduct);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Product> findOne(@PathVariable Long id) {
-        return new ResponseEntity<>(productService.get(id));
+        return ResponseEntity.forResponse(productService.get(id));
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity<List<Product>> search(@RequestBody ProductSearchParameters productSearchParams) {
         List<Product> products = productService.search(productSearchParams);
-        return new ResponseEntity<>(products);
+        return ResponseEntity.forResponse(products);
     }
 }

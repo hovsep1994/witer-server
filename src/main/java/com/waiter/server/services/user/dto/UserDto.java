@@ -6,7 +6,6 @@ import com.waiter.server.services.user.model.User;
 
 /**
  * User: hovsep
- * Company: SFL LLC
  * Date: 2/20/16
  * Time: 6:06 PM
  */
@@ -57,5 +56,38 @@ public class UserDto extends AbstractDtoModel<User>{
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserDto)) return false;
+
+        UserDto userDto = (UserDto) o;
+
+        if (name != null ? !name.equals(userDto.name) : userDto.name != null) return false;
+        if (email != null ? !email.equals(userDto.email) : userDto.email != null) return false;
+        if (password != null ? !password.equals(userDto.password) : userDto.password != null) return false;
+        return !(companyId != null ? !companyId.equals(userDto.companyId) : userDto.companyId != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (companyId != null ? companyId.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", companyId=" + companyId +
+                '}';
     }
 }

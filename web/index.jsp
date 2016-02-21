@@ -41,19 +41,19 @@
     </div>
     <%@ include file="footer.jsp" %>
 </div>
-<%--<form name="company_reg" id="reg_company_form">--%>
-<%--<label>Name: </label>--%>
-<%--<input id="name" class="reg_input" name="name" type="text"/> <br>--%>
+<%--<form nameTranslation="company_reg" id="reg_company_form">--%>
+<%--<label>NameTranslation: </label>--%>
+<%--<input id="nameTranslation" class="reg_input" nameTranslation="nameTranslation" type="text"/> <br>--%>
 <%--<label>Email: </label>--%>
-<%--<input id="email" class="reg_input" name="email" type="email"/> <br>--%>
+<%--<input id="email" class="reg_input" nameTranslation="email" type="email"/> <br>--%>
 <%--<label>Password: </label>--%>
-<%--<input id="password" class="reg_input" name="password" type="password"/> <br> <br>--%>
+<%--<input id="password" class="reg_input" nameTranslation="password" type="password"/> <br> <br>--%>
 
-<%--<label>Company Name: </label>--%>
-<%--<input id="companyName" class="reg_input" name="companyName" type="text"/> <br>--%>
+<%--<label>Company NameTranslation: </label>--%>
+<%--<input id="companyName" class="reg_input" nameTranslation="companyName" type="text"/> <br>--%>
 <%--<label>Company Phone: </label>--%>
-<%--<input id="companyPhone" class="reg_input" name="companyPhone" type="text"/> <br>--%>
-<%--<input type="submit" name="companySubmit" value="Submit">--%>
+<%--<input id="companyPhone" class="reg_input" nameTranslation="companyPhone" type="text"/> <br>--%>
+<%--<input type="submit" nameTranslation="companySubmit" value="Submit">--%>
 <%--</form>--%>
 
 <%--<br><a href="login">Login</a>--%>

@@ -1,6 +1,6 @@
 package com.waiter.server.services.common.model;
 
-import com.waiter.server.services.name.model.Name;
+import com.waiter.server.services.name.model.NameTranslation;
 
 import javax.persistence.*;
 
@@ -12,14 +12,14 @@ public abstract class AbstractNamedEntityModel extends AbstractEntityModel {
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "name_id", nullable = false)
-    private Name name;
+    private NameTranslation nameTranslation;
 
-    public Name getName() {
-        return name;
+    public NameTranslation getNameTranslation() {
+        return nameTranslation;
     }
 
-    public void setName(Name name) {
-        this.name = name;
+    public void setNameTranslation(NameTranslation nameTranslation) {
+        this.nameTranslation = nameTranslation;
     }
 
     @Override
@@ -30,20 +30,20 @@ public abstract class AbstractNamedEntityModel extends AbstractEntityModel {
 
         AbstractNamedEntityModel that = (AbstractNamedEntityModel) o;
 
-        return !(name != null ? !name.equals(that.name) : that.name != null);
+        return !(nameTranslation != null ? !nameTranslation.equals(that.nameTranslation) : that.nameTranslation != null);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (nameTranslation != null ? nameTranslation.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "AbstractNamedEntityModel{" +
-                "name='" + name + '\'' +
+                "nameTranslation='" + nameTranslation + '\'' +
                 "} " + super.toString();
     }
 }

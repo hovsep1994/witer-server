@@ -39,9 +39,9 @@
     User user = userDAO.authenticate(authCookie.getValue());
 %>
 
-<form id="add_venue_form" name="company_reg">
+<form id="add_venue_form" nameTranslation="company_reg">
     <label>Menu: </label>
-    <select id="menu" class="reg_input" name="venueMenu">
+    <select id="menu" class="reg_input" nameTranslation="venueMenu">
         <option value="" disabled selected>Select Menu</option>
         <% for (Menu menu : menuDAO.getCompanyMenus(user.getCompany().getId())) { %>
         <option value="<%=menu.getId()%>"><%=menu.getName()%>
@@ -50,7 +50,7 @@
     </select> Or <a href="/menus/add">create a new one. </a> <br>
 
     <label for="country">Country: </label>
-    <select id="country" class="reg_input" name="venueCountry">
+    <select id="country" class="reg_input" nameTranslation="venueCountry">
         <option value="" disabled selected>Select Country</option>
         <% for (Country country : locationJDBCTemplate.getAllCountries()) { %>
         <option value="<%=country.getCode()%>"><%=country.getName()%>
@@ -59,14 +59,14 @@
     </select><br>
 
     <label for="city">City: </label>
-    <input id="city" class="reg_input" list="cities_data" name="city"/>
+    <input id="city" class="reg_input" list="cities_data" nameTranslation="city"/>
     <datalist id="cities_data"></datalist><br>
 
     <label for="address">Address: </label>
-    <input id="address" class="reg_input" name="address"/><br>
+    <input id="address" class="reg_input" nameTranslation="address"/><br>
 
     <div id="map"></div><br>
-    <input class="reg_input" name="venueSubmit" type="submit" value="Submit">
+    <input class="reg_input" nameTranslation="venueSubmit" type="submit" value="Submit">
 </form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

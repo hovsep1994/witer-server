@@ -7,7 +7,6 @@ import com.waiter.server.services.gallery.model.ImageType;
 
 /**
  * User: hovsep
- * Company: SFL LLC
  * Date: 2/20/16
  * Time: 8:01 PM
  */

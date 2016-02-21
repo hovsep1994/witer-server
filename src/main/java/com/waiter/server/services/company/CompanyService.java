@@ -1,5 +1,6 @@
 package com.waiter.server.services.company;
 
+import com.waiter.server.services.company.dto.CompanyDto;
 import com.waiter.server.services.company.model.Company;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public interface CompanyService {
 
-    Company create(Company company);
+    Company create(CompanyDto companyDto);
 
     Company get(Long id);
 

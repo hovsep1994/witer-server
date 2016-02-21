@@ -1,6 +1,6 @@
 package com.waiter.server.services.name;
 
-import com.waiter.server.services.name.model.Name;
+import com.waiter.server.services.name.model.NameTranslation;
 
 import java.util.List;
 
@@ -8,6 +8,6 @@ import java.util.List;
  * @author shahenpoghosyan
  */
 public interface NameService {
-    Name create(Name name);
-    List<Name> create(List<Name> names);
+    NameTranslation create(NameTranslation nameTranslation);
+    List<NameTranslation> create(List<NameTranslation> nameTranslations);
 }

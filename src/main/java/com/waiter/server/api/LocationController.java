@@ -29,13 +29,13 @@ public class LocationController {
     @RequestMapping(value = "/countries/all", method = RequestMethod.GET)
     public ResponseEntity<List<Country>> searchCountries() {
         List<Country> countries = locationService.getAllCountries();
-        return new ResponseEntity<>(countries);
+        return ResponseEntity.forResponse(countries);
     }
 
     @RequestMapping(value = "/cities/search", method = RequestMethod.GET)
     public ResponseEntity<List<City>> searchCities(String name, String countryCode, int from, int to) {
         List<City> cities = locationService.searchCities(name, countryCode, from, to);
-        return new ResponseEntity<>(cities);
+        return ResponseEntity.forResponse(cities);
     }
 
 }

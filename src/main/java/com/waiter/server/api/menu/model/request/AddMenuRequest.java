@@ -2,7 +2,6 @@ package com.waiter.server.api.menu.model.request;
 
 /**
  * User: hovsep
- * Company: SFL LLC
  * Date: 2/20/16
  * Time: 5:42 PM
  */

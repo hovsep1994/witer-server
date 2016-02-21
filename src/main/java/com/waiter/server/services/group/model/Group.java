@@ -2,7 +2,7 @@ package com.waiter.server.services.group.model;
 
 import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.menu.model.Menu;
-import com.waiter.server.services.name.model.Name;
+import com.waiter.server.services.name.model.NameTranslation;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
 
@@ -24,7 +24,7 @@ public class Group extends AbstractEntityModel {
     private Menu menu;
 
     @OneToMany(fetch = FetchType.LAZY)
-    private List<Name> names;
+    private List<NameTranslation> nameTranslations;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Product> products;
@@ -48,12 +48,12 @@ public class Group extends AbstractEntityModel {
         this.image = image;
     }
 
-    public List<Name> getNames() {
-        return names;
+    public List<NameTranslation> getNameTranslations() {
+        return nameTranslations;
     }
 
-    public void setNames(List<Name> names) {
-        this.names = names;
+    public void setNameTranslations(List<NameTranslation> nameTranslations) {
+        this.nameTranslations = nameTranslations;
     }
 
     public List<Product> getProducts() {
@@ -82,7 +82,7 @@ public class Group extends AbstractEntityModel {
 
         if (menu != null ? !menu.equals(group.menu) : group.menu != null) return false;
         if (image != null ? !image.equals(group.image) : group.image != null) return false;
-        if (names != null ? !names.equals(group.names) : group.names != null) return false;
+        if (nameTranslations != null ? !nameTranslations.equals(group.nameTranslations) : group.nameTranslations != null) return false;
         if (products != null ? !products.equals(group.products) : group.products != null) return false;
         return !(tags != null ? !tags.equals(group.tags) : group.tags != null);
 
@@ -93,7 +93,7 @@ public class Group extends AbstractEntityModel {
         int result = super.hashCode();
         result = 31 * result + (menu != null ? menu.hashCode() : 0);
         result = 31 * result + (image != null ? image.hashCode() : 0);
-        result = 31 * result + (names != null ? names.hashCode() : 0);
+        result = 31 * result + (nameTranslations != null ? nameTranslations.hashCode() : 0);
         result = 31 * result + (products != null ? products.hashCode() : 0);
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
@@ -104,7 +104,7 @@ public class Group extends AbstractEntityModel {
         return "Group{" +
                 "menu=" + menu +
                 ", image='" + image + '\'' +
-                ", names=" + names +
+                ", nameTranslations=" + nameTranslations +
                 ", products=" + products +
                 ", tags=" + tags +
                 "} " + super.toString();

@@ -2,7 +2,7 @@ package com.waiter.server.services.name.impl;
 
 import com.waiter.server.persistence.core.repository.name.NameRepository;
 import com.waiter.server.services.name.NameService;
-import com.waiter.server.services.name.model.Name;
+import com.waiter.server.services.name.model.NameTranslation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +18,12 @@ public class NameServiceImpl implements NameService{
     private NameRepository nameRepository;
 
     @Override
-    public Name create(Name name) {
-        return nameRepository.save(name);
+    public NameTranslation create(NameTranslation nameTranslation) {
+        return nameRepository.save(nameTranslation);
     }
 
     @Override
-    public List<Name> create(List<Name> names) {
-        return nameRepository.save(names);
+    public List<NameTranslation> create(List<NameTranslation> nameTranslations) {
+        return nameRepository.save(nameTranslations);
     }
 }
