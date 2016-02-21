@@ -62,5 +62,4 @@ public class Name extends AbstractEntityModel {
     public void setTranslationType(TranslationType translationType) {
         this.translationType = translationType;
     }
-
 }

@@ -10,7 +10,6 @@ import java.io.InputStream;
 /**
  * @author shahenpoghosyan
  */
-@Service
 public interface GalleryService {
 
     Gallery createGallery(GalleryDto galleryDto);
