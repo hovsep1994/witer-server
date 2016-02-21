@@ -1,5 +1,6 @@
 package com.waiter.server.services.user;
 
+import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.user.dto.UserDto;
 import com.waiter.server.services.user.model.SignUpStatus;
 import com.waiter.server.services.user.model.User;
@@ -9,9 +10,9 @@ import com.waiter.server.services.user.model.User;
  */
 public interface UserService {
 
-    SignUpStatus signUp(UserDto userDto);
+    SignUpStatus signUp(UserDto userDto) throws ServiceException;
 
-    SignUpStatus validate(UserDto userDto);
+    SignUpStatus validate(String email);
 
     User findUserByNamePassword(String name, String password);
 

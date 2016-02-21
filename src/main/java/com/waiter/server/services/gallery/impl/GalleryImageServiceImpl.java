@@ -1,6 +1,7 @@
 package com.waiter.server.services.gallery.impl;
 
 import com.waiter.server.persistence.core.repository.gallery.GalleryImageRepository;
+import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.filesystem.FileSystemService;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.GalleryService;
@@ -19,7 +20,6 @@ import java.util.List;
 
 /**
  * User: hovsep
- * Company: SFL LLC
  * Date: 2/20/16
  * Time: 7:08 PM
  */
@@ -43,7 +43,7 @@ public class GalleryImageServiceImpl implements GalleryImageService {
 
     @Transactional
     @Override
-    public GalleryImage save(Long galleryId, GalleryImageDto galleryImageDto, InputStream imageStream) throws IOException {
+    public GalleryImage save(Long galleryId, GalleryImageDto galleryImageDto, InputStream imageStream) throws IOException,ServiceException {
         GalleryImage galleryImage = new GalleryImage();
         galleryImageDto.convertToEntityModel(galleryImage);
         Gallery gallery = galleryService.getGalleryById(galleryId);

@@ -5,7 +5,6 @@ import com.waiter.server.api.common.AbstractApiModel;
 
 /**
  * User: hovsep
- * Company: SFL LLC
  * Date: 2/20/16
  * Time: 5:31 PM
  */

@@ -2,11 +2,13 @@ package com.waiter.server.api.user;
 
 import com.waiter.server.api.common.ResponseEntity;
 import com.waiter.server.api.common.ResponseStatus;
+import com.waiter.server.api.user.model.UserModel;
 import com.waiter.server.api.user.model.request.UserRegistrationModelRequest;
+import com.waiter.server.api.user.model.request.UserValidationModelRequest;
+import com.waiter.server.services.common.exception.ServiceException;
+import com.waiter.server.services.company.CompanyService;
+import com.waiter.server.services.company.dto.CompanyDto;
 import com.waiter.server.services.company.model.Company;
-import com.waiter.server.services.name.model.EntityType;
-import com.waiter.server.services.name.model.Name;
-import com.waiter.server.services.name.model.TranslationType;
 import com.waiter.server.services.user.UserService;
 import com.waiter.server.services.user.dto.UserDto;
 import com.waiter.server.services.user.model.SignUpStatus;
@@ -26,33 +28,46 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<User> login(String email, String password) {
-        User findUser = userService.findUserByNamePassword(email, password);
-        return new ResponseEntity<>(findUser);
+    @Autowired
+    private CompanyService companyService;
+
+    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    public ResponseEntity<UserModel> login(String email, String password) {
+        User user = userService.findUserByNamePassword(email, password);
+        UserModel userModel = new UserModel();
+        userModel.setEmail(user.getEmail());
+        userModel.setName(user.getName());
+        userModel.setToken(user.getToken());
+        return ResponseEntity.forResponse(userModel);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ResponseStatus register(UserRegistrationModelRequest request) {
+
+        CompanyDto companyDto = new CompanyDto();
+        companyDto.setLanguage(request.getLanguage());
+        companyDto.setName(request.getCompanyName());
+        companyDto.setPhone(request.getPhone());
+        Company company = companyService.create(companyDto);
 
         UserDto userDto = new UserDto();
         userDto.setPassword(request.getPassword());
         userDto.setEmail(request.getEmail());
-//        userDto.setCompanyId();
+        userDto.setCompanyId(company.getId());
         userDto.setName(request.getName());
-        SignUpStatus signUpStatus = userService.signUp(userDto);
+
+        SignUpStatus signUpStatus = null;
+        try {
+            signUpStatus = userService.signUp(userDto);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
         return new ResponseStatus(signUpStatus.name());
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
-    public ResponseStatus validate(UserRegistrationModelRequest request) {
-
-        UserDto userDto = new UserDto();
-        userDto.setPassword(request.getPassword());
-        userDto.setEmail(request.getEmail());
-//        userDto.setCompanyId();
-        userDto.setName(request.getName());
-        SignUpStatus signUpStatus = userService.validate(userDto);
+    public ResponseStatus validate(UserValidationModelRequest request) {
+        SignUpStatus signUpStatus = userService.validate(request.getEmail());
         return new ResponseStatus(signUpStatus.name());
     }
 }

@@ -6,7 +6,6 @@ import com.waiter.server.api.location.model.LocationModel;
 
 /**
  * User: hovsep
- * Company: SFL LLC
  * Date: 2/20/16
  * Time: 5:49 PM
  */

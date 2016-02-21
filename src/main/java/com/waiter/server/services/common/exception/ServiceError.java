@@ -1,29 +1,31 @@
-package com.waiter.server.commons;
+package com.waiter.server.services.common.exception;
 
 /**
  * Created by shahen on 11/3/14.
  */
-public class APIError {
+public class ServiceError {
 
-    private int code;
+    private ErrorCode errorCode;
     private String message;
     private String description;
 
-    public APIError(int code, String message) {
-        this(code, message, null);
+    public ServiceError(ErrorCode errorCode, String message) {
+        this(errorCode, message, null);
     }
-    public APIError(int code, String message, String description) {
-        this.code = code;
+
+    public ServiceError(ErrorCode errorCode, String message, String description) {
+        this.errorCode = errorCode;
         this.message = message;
         this.description = description;
     }
 
 
-    public int getCode() {
-        return code;
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
-    public void setCode(int code) {
-        this.code = code;
+
+    public void setErrorCode(ErrorCode errorCode) {
+        this.errorCode = errorCode;
     }
 
     public String getMessage() {
@@ -45,7 +47,7 @@ public class APIError {
     @Override
     public String toString() {
         return "APIError{" +
-                "code=" + code +
+                "errorCode=" + errorCode +
                 ", message='" + message + '\'' +
                 ", description='" + description + '\'' +
                 '}';

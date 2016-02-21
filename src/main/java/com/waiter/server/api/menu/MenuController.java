@@ -18,13 +18,13 @@ public class MenuController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Menu> findOne(@PathVariable Long id) {
-        return new ResponseEntity<>(menuService.get(id));
+        return ResponseEntity.forResponse(menuService.get(id));
     }
 
     @RequestMapping(value = "/add}", method = RequestMethod.POST)
     public ResponseEntity<Menu> createMenu(@RequestBody AddMenuRequest addMenuRequest) {
         Menu menu = new Menu();
         Menu createdMenu = menuService.create(menu);
-        return new ResponseEntity<>(createdMenu);
+        return ResponseEntity.forResponse(createdMenu);
     }
 }

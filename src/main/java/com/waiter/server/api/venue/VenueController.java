@@ -25,7 +25,7 @@ public class VenueController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Venue> findOne(@PathVariable Long id) {
-        return new ResponseEntity<>(venueService.getVenueById(id));
+        return ResponseEntity.forResponse(venueService.getVenueById(id));
     }
 
     @RequestMapping(value = "/add}", method = RequestMethod.POST)
@@ -41,13 +41,13 @@ public class VenueController {
         menu.setId(addVenueRequest.getMenuId());
         venue.setMenu(menu);
         Venue createdVenue = venueService.create(venue);
-        return new ResponseEntity<>(createdVenue);
+        return ResponseEntity.forResponse(createdVenue);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ResponseEntity<List<Venue>> findVenues(@RequestBody VenueSearchParameters parameters) {
         List<Venue> venues = venueService.getVenuesBySearchParameters(parameters);
-        return new ResponseEntity<>(venues);
+        return ResponseEntity.forResponse(venues);
     }
 
 }

@@ -1,26 +1,22 @@
 package com.waiter.server.services.name.model;
 
 import com.waiter.server.services.common.model.AbstractEntityModel;
+import com.waiter.server.services.language.Language;
 
-import com.waiter.server.services.common.model.AbstractNamedEntityModel;
-import com.waiter.server.services.language.model.Language;
 
 import javax.persistence.*;
+
 
 /**
  * Created by Admin on 12/23/2015.
  */
 @Entity
-@Table(name = "name", indexes = {
-        @Index(columnList = "name", name = "name_name_hidx")
-})
-public class Name extends AbstractEntityModel {
+@Table(name = "name_translation" )
+public class NameTranslation extends AbstractEntityModel {
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "language_id")
     private Language language;
 
     @Enumerated(EnumType.STRING)

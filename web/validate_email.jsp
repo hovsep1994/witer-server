@@ -3,7 +3,7 @@
 <%@ page import="com.waiter.server.repository.sql.CompanyRepository" %>
 <%@ page import="com.waiter.server.utils.paramparser.IParamParser" %>
 <%@ page import="com.waiter.server.utils.paramparser.ParserFactory" %>
-<%@ page import="com.waiter.server.commons.APIException" %>
+<%@ page import="com.waiter.server.services.common.exception.APIException" %>
 <%@ page import="com.waiter.server.repository.UserDAO" %>
 <%--
   Created by IntelliJ IDEA.

@@ -1,13 +1,11 @@
 package com.waiter.server.services.product.model;
 
-import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 import com.waiter.server.services.group.model.Group;
-import com.waiter.server.services.name.model.Name;
+import com.waiter.server.services.name.model.NameTranslation;
 import com.waiter.server.services.tag.model.Tag;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +29,7 @@ public class Product extends AbstractNamedEntityModel {
     private Group group;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Name> names;
+    private List<NameTranslation> nameTranslations;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Tag> tags;
@@ -68,12 +66,12 @@ public class Product extends AbstractNamedEntityModel {
         this.group = group;
     }
 
-    public List<Name> getNames() {
-        return names;
+    public List<NameTranslation> getNameTranslations() {
+        return nameTranslations;
     }
 
-    public void setNames(List<Name> names) {
-        this.names = names;
+    public void setNameTranslations(List<NameTranslation> nameTranslations) {
+        this.nameTranslations = nameTranslations;
     }
 
     public List<Tag> getTags() {

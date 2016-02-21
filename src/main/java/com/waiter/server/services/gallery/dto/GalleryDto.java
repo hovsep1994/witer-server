@@ -5,7 +5,6 @@ import com.waiter.server.services.gallery.model.Gallery;
 
 /**
  * User: hovsep
- * Company: SFL LLC
  * Date: 2/20/16
  * Time: 7:42 PM
  */
@@ -14,6 +13,7 @@ public class GalleryDto extends AbstractDtoModel<Gallery> {
     private boolean systemGallery;
 
     public GalleryDto() {
+        systemGallery = false;
     }
 
     public GalleryDto(boolean systemGallery) {

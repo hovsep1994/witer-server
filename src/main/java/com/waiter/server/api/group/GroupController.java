@@ -21,12 +21,12 @@ public class GroupController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Group> getGroupById(@PathVariable Long id) {
-        return new ResponseEntity<>(groupService.get(id));
+        return ResponseEntity.forResponse(groupService.get(id));
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<Group> addGroup(Group group) {
         Group createdGroup = groupService.create(group);
-        return new ResponseEntity<>(createdGroup);
+        return ResponseEntity.forResponse(createdGroup);
     }
 }

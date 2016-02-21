@@ -29,18 +29,18 @@
     Company company = companyDAO.authenticate(authCookie.getValue());
 %>
 
-<form id="add_menu_form" name="add_menu_form">
+<form id="add_menu_form" nameTranslation="add_menu_form">
     <label for="menuName">Menu Name: </label>
-    <input id="menuName" name="menuName" class="reg_input" type="text"/>&nbsp;&nbsp;&nbsp;
+    <input id="menuName" nameTranslation="menuName" class="reg_input" type="text"/>&nbsp;&nbsp;&nbsp;
     <input type="submit">
 </form>
 <br>
 
-<form id="add_group_form" name="add_group_form">
+<form id="add_group_form" nameTranslation="add_group_form">
     <label for="groupName">Group Name: </label>
-    <input id="groupName" name="groupName" class="reg_input" type="text"/><br>
+    <input id="groupName" nameTranslation="groupName" class="reg_input" type="text"/><br>
     <label for="groupName">Group Menu: </label>
-    <select id="groupMenu" class="reg_input" name="venueMenu">
+    <select id="groupMenu" class="reg_input" nameTranslation="venueMenu">
         <option value="" disabled selected>Select Menu</option>
         <% for (Menu menu : menuDAO.getCompanyMenus(company.getId())) { %>
         <option value="<%=menu.getId()%>"><%=menu.getName()%>

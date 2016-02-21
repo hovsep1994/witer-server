@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * User: hovsep
- * Company: SFL LLC
  * Date: 2/20/16
  * Time: 7:08 PM
  */
