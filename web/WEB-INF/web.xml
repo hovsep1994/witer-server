@@ -13,6 +13,14 @@
         <servlet-name>home</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>business</servlet-name>
+        <jsp-file>/business.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>business</servlet-name>
+        <url-pattern>/business</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>login</servlet-name>

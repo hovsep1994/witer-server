@@ -39,8 +39,8 @@
             With our smart search tool you can quickly find your preferred food.
         </div>
     </div>
-    <%@ include file="footer.jsp" %>
 </div>
+<%@ include file="footer.jsp" %>
 <%--<form name="company_reg" id="reg_company_form">--%>
 <%--<label>Name: </label>--%>
 <%--<input id="name" class="reg_input" name="name" type="text"/> <br>--%>

@@ -1,0 +1,37 @@
+.signup {
+    margin-top: 60px;
+    text-align: center;
+    background-color:#1D1E22;
+    min-height: 200px;
+    width: 100%;
+    color: white;
+    font-size: 20px;
+    padding-top: 15px;
+}
+
+.signup_button {
+    display: block !important;
+    width: 100% !important;
+}
+
+.reg_input {
+    margin-top: 15px;
+}
+
+@media screen  {
+    .signup-form {
+        width: 900px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .signup-form {
+        width: 768px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .signup-form {
+        width: 500px;
+    }
+}
