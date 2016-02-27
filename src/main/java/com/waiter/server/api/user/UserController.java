@@ -14,6 +14,7 @@ import com.waiter.server.services.user.dto.UserDto;
 import com.waiter.server.services.user.model.SignUpStatus;
 import com.waiter.server.services.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,10 +43,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseStatus register(UserRegistrationModelRequest request) {
+    public ResponseStatus register(@RequestBody UserRegistrationModelRequest request) throws ServiceException {
 
         CompanyDto companyDto = new CompanyDto();
-        companyDto.setLanguage(request.getLanguage());
         companyDto.setName(request.getCompanyName());
         companyDto.setPhone(request.getPhone());
         Company company = companyService.create(companyDto);
@@ -56,12 +56,7 @@ public class UserController {
         userDto.setCompanyId(company.getId());
         userDto.setName(request.getName());
 
-        SignUpStatus signUpStatus = null;
-        try {
-            signUpStatus = userService.signUp(userDto);
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+        SignUpStatus signUpStatus = userService.signUp(userDto);
         return new ResponseStatus(signUpStatus.name());
     }
 

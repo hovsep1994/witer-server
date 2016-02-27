@@ -18,11 +18,11 @@ public class UserDto extends AbstractDtoModel<User>{
 
     @Override
     public void convertToEntityModel(User user) {
+        Company company = new Company();
+        company.setId(getCompanyId());
         user.setName(getName());
         user.setEmail(getEmail());
         user.setPassword(getPassword());
-        Company company = new Company();
-        company.setId(getCompanyId());
         user.setCompany(company);
     }
 

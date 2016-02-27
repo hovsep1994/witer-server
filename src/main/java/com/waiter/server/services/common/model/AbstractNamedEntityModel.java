@@ -10,7 +10,7 @@ import javax.persistence.*;
 @MappedSuperclass
 public abstract class AbstractNamedEntityModel extends AbstractEntityModel {
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "name_id", nullable = false)
     private NameTranslation nameTranslation;
 

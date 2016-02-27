@@ -15,9 +15,5 @@ import java.util.List;
 @Repository
 public interface CityRepository extends JpaRepository<City, Long> {
 
-    @Query("SELECT ci, co FROM City AS ci " +
-            "LEFT JOIN Country AS co ON ci.country_id = co.id " +
-            "WHERE ci.name like :name and co.code like :countryCode")
-    List<City> findByNameAndCountryCode(@Param("name") String name, @Param("countryCode") String countryCode);
 
 }

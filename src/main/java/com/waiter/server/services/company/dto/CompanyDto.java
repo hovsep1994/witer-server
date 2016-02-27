@@ -11,15 +11,12 @@ import com.waiter.server.services.name.model.NameTranslation;
 public class CompanyDto extends AbstractDtoModel<Company>{
 
     private String name;
-    private String language;
     private String phone;
 
     @Override
     public void convertToEntityModel(Company company) {
         company.setPhone(getPhone());
-        NameTranslation nameTranslation = new NameTranslation();
-        nameTranslation.setLanguage(Language.valueOf(getLanguage()));
-        company.setNameTranslation(nameTranslation);
+        company.setName(getName());
     }
 
     public String getName() {
@@ -28,14 +25,6 @@ public class CompanyDto extends AbstractDtoModel<Company>{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     public String getPhone() {

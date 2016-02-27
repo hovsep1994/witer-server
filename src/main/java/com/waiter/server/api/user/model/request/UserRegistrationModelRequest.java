@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * User: hovsep
-  * Date: 2/20/16
+ * Date: 2/20/16
  * Time: 4:58 PM
  */
 public class UserRegistrationModelRequest {
@@ -18,7 +18,7 @@ public class UserRegistrationModelRequest {
     @JsonProperty(value = "password")
     private String password;
 
-    @JsonProperty(value = "phone",required = false)
+    @JsonProperty(value = "phone", required = false)
     private String phone;
 
     @JsonProperty(value = "companyName")

@@ -36,7 +36,7 @@ public class DataAccessConfig {
     public DataSource createJDBCDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUsername("root");
-        dataSource.setPassword("password");
+        dataSource.setPassword("root");
         dataSource.setUrl("jdbc:mysql://localhost/WAITER1");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         return dataSource;
@@ -67,7 +67,6 @@ public class DataAccessConfig {
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
-
         return transactionManager;
     }
 
@@ -80,8 +79,9 @@ public class DataAccessConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-//        properties.setProperty("javax.persistence.lock.timeout", "10000");
-//        properties.setProperty("hibernate.format_sql", "false");
+        properties.setProperty("javax.persistence.lock.timeout", "10000");
+        properties.setProperty("hibernate.format_sql", "false");
+        properties.setProperty("hibernate.id.new_generator_mappings", "false");
         return properties;
     }
 }

@@ -21,6 +21,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company create(CompanyDto companyDto) {
         Company company = new Company();
+        companyDto.convertToEntityModel(company);
         return companyRepository.save(company);
     }
 
@@ -31,6 +32,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<Company> search(String name) {
-        return companyRepository.findCompanyByName(name);
+        return null;
     }
 }

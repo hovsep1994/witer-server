@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SignUpStatus signUp(UserDto userDto) throws ServiceException {
-        if (checkExistanceByEmail(userDto.getEmail())) {
+        if (checkExistenceByEmail(userDto.getEmail())) {
             LOGGER.debug("User with email -{} exists", userDto.getEmail());
             throw new ServiceException(ErrorCode.DUPLICATE_EMAIL,
                     "User with email " + userDto.getEmail() + "exists");
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SignUpStatus validate(String email) {
-        if (checkExistanceByEmail(email)) {
+        if (checkExistenceByEmail(email)) {
             return SignUpStatus.EMAIL_EXISTS;
         }
         return SignUpStatus.OK;
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         return user != null;
     }
 
-    public boolean checkExistanceByEmail(String email) {
-        return userRepository.countByEmail(email) < 1;
+    public boolean checkExistenceByEmail(String email) {
+        return userRepository.countByEmail(email) > 0;
     }
 }

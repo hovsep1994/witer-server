@@ -20,6 +20,11 @@ public abstract class AbstractEntityModel {
     @Column(name = "updated", nullable = false)
     private Date updated;
 
+    public AbstractEntityModel() {
+        created = new Date();
+        updated = created;
+    }
+
     public Long getId() {
         return id;
     }

@@ -32,7 +32,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<City> searchCities(String name, String countryCode, int from, int to) {
         Pageable pageRequest = new PageRequest(from, to);
-        List<City> cities = cityRepository.findByNameAndCountryCode(name, countryCode);
-        return cities;
+//        List<City> cities = cityRepository.findByNameAndCountryCode(name, countryCode);
+        return null;
     }
 }

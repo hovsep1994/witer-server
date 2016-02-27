@@ -1,6 +1,7 @@
 package com.waiter.server.services.company.model;
 
 
+import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.venue.model.Venue;
@@ -13,7 +14,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "company")
-public class Company extends AbstractNamedEntityModel {
+public class Company extends AbstractEntityModel {
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "phone")
     private String phone;
@@ -46,6 +50,14 @@ public class Company extends AbstractNamedEntityModel {
 
     public void setVenues(List<Venue> venues) {
         this.venues = venues;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
 
