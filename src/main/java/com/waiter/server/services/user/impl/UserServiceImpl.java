@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.UUID;
+
 /**
  * Created by Admin on 12/15/2015.
  */
@@ -35,8 +37,24 @@ public class UserServiceImpl implements UserService {
         }
         User user = new User();
         userDto.convertToEntityModel(user);
+        user.setToken(UUID.randomUUID().toString());
         userRepository.save(user);
         return SignUpStatus.OK;
+    }
+
+    @Override
+    public User signIn(String email, String password) {
+        Assert.notNull(email, "email must not be null");
+        Assert.notNull(password, "password must not be null");
+        User user = userRepository.findByEmailAndPassword(email, password);
+        if (user == null) {
+            throw new ServiceRuntimeException("No user found with email " + email + " password " + password);
+        }
+        if (user.getToken() == null) {
+            user.setToken(UUID.randomUUID().toString());
+            user = userRepository.save(user);
+        }
+        return user;
     }
 
     @Override
@@ -54,17 +72,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByNameAndPassword(name, password);
         if (user == null) {
             throw new ServiceRuntimeException("No user found with name " + name + " password " + password);
-        }
-        return user;
-    }
-
-    @Override
-    public User findUserByEmailPassword(String email, String password) {
-        Assert.notNull(email, "email must not be null");
-        Assert.notNull(password, "password must not be null");
-        User user = userRepository.findByEmailAndPassword(email, password);
-        if (user == null) {
-            throw new ServiceRuntimeException("No user found with email " + email + " password " + password);
         }
         return user;
     }

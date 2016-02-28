@@ -12,11 +12,11 @@ public interface UserService {
 
     SignUpStatus signUp(UserDto userDto) throws ServiceException;
 
+    User signIn(String name, String password);
+
     SignUpStatus validate(String email);
 
     User findUserByNamePassword(String name, String password);
-
-    User findUserByEmailPassword(String name, String password);
 
     User authenticate(String key);
 
