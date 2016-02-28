@@ -33,7 +33,7 @@ public class UserController {
 
     @RequestMapping(value = "/signin", method = RequestMethod.POST)
     public ResponseEntity<UserModel> login(@RequestParam String email, @RequestParam String password) {
-        User user = userService.findUserByEmailPassword(email, password);
+        User user = userService.signIn(email, password);
         UserModel userModel = new UserModel();
         userModel.setEmail(user.getEmail());
         userModel.setName(user.getName());
