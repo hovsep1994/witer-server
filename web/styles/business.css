@@ -20,18 +20,18 @@
 
 @media screen  {
     .signup-form {
-        width: 900px;
+        width: 65%;
     }
 }
 
 @media screen and (max-width: 992px) {
     .signup-form {
-        width: 768px;
+        width: 65%;
     }
 }
 
 @media screen and (max-width: 768px) {
     .signup-form {
-        width: 500px;
+        width: 65%;
     }
 }
