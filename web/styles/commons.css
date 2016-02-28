@@ -1,5 +1,5 @@
 a:hover {
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .footer {
@@ -27,10 +27,12 @@ a:hover {
 }
 
 .navbar_bussiness {
+    position: absolute;
+    right: 0px;
     font-size: 11px;
     color: #C3C3C4;
     margin-top: 15px;
-    margin-left: 48%;
+    margin-right: 20%;
     border-radius: 3px;
     border: 1px solid #2f8ea1;
     display:inline-block;
@@ -42,5 +44,57 @@ a.brand:hover {
 }
 
 a.navbar_bussiness:hover {
-    color: #C3C3C4;
+    cursor: pointer;
+    color: #C3C3C4 !important;
+    text-decoration: none !important;
 }
+
+.signin_dialog {
+    margin-top: 60px;
+}
+
+.signin_modal_content {
+    text-align: center;
+    color: white;
+    background-color: #17181d;
+}
+
+.signin_modal_content input {
+    height: 40px;
+}
+
+.signin_modal_content div.modal-header {
+    border-bottom: 0;
+}
+
+.signin_modal_content div.modal-body {
+    margin-top: -25px !important;
+    width: 70%;
+    margin: 0 auto;
+}
+.signin_modal_content div.modal-body div {
+    font-size: 10px;
+    margin-top: 5px;
+    text-align: left !important;
+}
+
+.signin_modal_content div.modal-body div a {
+    color: #FFFFFF;
+}
+
+.signin_modal_content div.modal-footer {
+    width: 70%;
+    border-top: 0;
+    margin: 0 auto;
+}
+
+/*todo*/
+/*a.navbar_bussiness:active {*/
+    /*color: #C3C3C4 !important;*/
+    /*text-decoration: none !important;*/
+/*}*/
+
+/*a.navbar_bussiness:visited {*/
+    /*color: #C3C3C4 !important;*/
+    /*text-decoration: none !important;*/
+/*}*/

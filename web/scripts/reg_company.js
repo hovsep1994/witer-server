@@ -2,14 +2,39 @@
  * Created by shahenpoghosyan on 10/29/15.
  */
 
-var app = angular.module('app', []);
-    app.controller('userCtrl', function($scope, $http) {
+var host = "..";
 
-    $scope.signUp = function(user) {
+var app = angular.module('app', []);
+app.controller('userCtrl', function ($scope, $http) {
+
+    $scope.signUp = function (user) {
+        alert(host + "/api/users/signup", user);
+        $http.post(host + "/api/users/signup", user).then(function (response) {
+            alert(JSON.stringify(response));
+            if (response.data.success) {
+                var date = new Date();
+                date.setDate(new Date().getDate() + 60);
+                setCookie("ckey", response.response.token, date);
+                window.location.href = "/";
+            }
+        });
+    };
+
+    $scope.signIn = function (user) {
         alert(JSON.stringify(user));
-        //$http.get("customers.php").then(function(response) {
-        //    $scope.myData = response.data.records;
-        //});
+        $http.post(host + "/api/users/signin", user).then(function (response) {
+            if (response.success) {
+                var date = new Date();
+                date.setDate(new Date().getDate() + 60);
+                setCookie("ckey", response.response.token, date);
+                window.location.href = "/";
+            }
+        });
+    };
+
+    $scope.openSignInDialog = function () {
+        alert("valod");
+        $('#signInModal').modal('show');
     }
 
 });

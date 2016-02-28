@@ -5,6 +5,6 @@
 <nav class="navbar navbar-fixed-top navbar_custom">
     <div class="container-fluid">
         <a class="brand" href="#">Menu <span style="color: yellow">Kit</span></a>
-        <a class="navbar_bussiness" href="#" >Business</a>
+        <a class="navbar_bussiness" href="./business" >Business</a>
     </div>
 </nav>

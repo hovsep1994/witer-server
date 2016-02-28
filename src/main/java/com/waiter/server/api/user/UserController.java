@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.waiter.server.api.common.ResponseEntity.*;
+
 /**
  * Created by Admin on 1/17/2016.
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -43,7 +45,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseStatus register(@RequestBody UserRegistrationModelRequest request) throws ServiceException {
+    public ResponseEntity<Void> register(@RequestBody UserRegistrationModelRequest request) throws ServiceException {
 
         CompanyDto companyDto = new CompanyDto();
         companyDto.setName(request.getCompanyName());
@@ -55,9 +57,9 @@ public class UserController {
         userDto.setEmail(request.getEmail());
         userDto.setCompanyId(company.getId());
         userDto.setName(request.getName());
+        userService.signUp(userDto);
 
-        SignUpStatus signUpStatus = userService.signUp(userDto);
-        return new ResponseStatus(signUpStatus.name());
+        return forSuccess();
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
