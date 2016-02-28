@@ -1,6 +1,6 @@
 package com.waiter.server.api.venue;
 
-import com.waiter.server.api.common.ResponseEntity;
+import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.venue.model.request.AddVenueRequest;
 import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.location.model.Location;

@@ -1,4 +1,4 @@
-package com.waiter.server.api.common;
+package com.waiter.server.api.common.model;
 
 /**
  * User: hovsep

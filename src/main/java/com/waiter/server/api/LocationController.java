@@ -1,10 +1,9 @@
 package com.waiter.server.api;
 
-import com.waiter.server.api.common.ResponseEntity;
+import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.services.location.LocationService;
 import com.waiter.server.services.location.model.City;
 import com.waiter.server.services.location.model.Country;
-import com.waiter.server.services.product.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

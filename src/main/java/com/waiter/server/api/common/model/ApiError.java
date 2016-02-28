@@ -1,19 +1,27 @@
-package com.waiter.server.services.common.exception;
+package com.waiter.server.api.common.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.waiter.server.services.common.exception.ErrorCode;
 
 /**
- * Created by shahen on 11/3/14.
+ * Created by hovsep on 2/28/16.
  */
-public class ServiceError {
+public class ApiError {
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ErrorCode errorCode;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
-    public ServiceError(ErrorCode errorCode, String message) {
+    public ApiError(ErrorCode errorCode, String message) {
         this(errorCode, message, null);
     }
 
-    public ServiceError(ErrorCode errorCode, String message, String description) {
+    public ApiError(ErrorCode errorCode, String message, String description) {
         this.errorCode = errorCode;
         this.message = message;
         this.description = description;
@@ -46,7 +54,7 @@ public class ServiceError {
 
     @Override
     public String toString() {
-        return "ServiceError{" +
+        return "ApiError{" +
                 "errorCode=" + errorCode +
                 ", message='" + message + '\'' +
                 ", description='" + description + '\'' +

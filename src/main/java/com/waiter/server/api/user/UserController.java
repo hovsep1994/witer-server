@@ -1,7 +1,8 @@
 package com.waiter.server.api.user;
 
-import com.waiter.server.api.common.ResponseEntity;
-import com.waiter.server.api.common.ResponseStatus;
+import com.waiter.server.api.common.MainController;
+import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.common.model.ResponseStatus;
 import com.waiter.server.api.user.model.UserModel;
 import com.waiter.server.api.user.model.request.UserRegistrationModelRequest;
 import com.waiter.server.api.user.model.request.UserValidationModelRequest;
@@ -16,14 +17,14 @@ import com.waiter.server.services.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static com.waiter.server.api.common.ResponseEntity.*;
+import static com.waiter.server.api.common.model.ResponseEntity.*;
 
 /**
  * Created by Admin on 1/17/2016.
  */
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController extends MainController{
 
     @Autowired
     private UserService userService;
@@ -43,19 +44,16 @@ public class UserController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ResponseEntity<Void> register(@RequestBody UserRegistrationModelRequest request) throws ServiceException {
-
         CompanyDto companyDto = new CompanyDto();
         companyDto.setName(request.getCompanyName());
         companyDto.setPhone(request.getPhone());
         Company company = companyService.create(companyDto);
-
         UserDto userDto = new UserDto();
         userDto.setPassword(request.getPassword());
         userDto.setEmail(request.getEmail());
         userDto.setCompanyId(company.getId());
         userDto.setName(request.getName());
         userService.signUp(userDto);
-
         return forSuccess();
     }
 

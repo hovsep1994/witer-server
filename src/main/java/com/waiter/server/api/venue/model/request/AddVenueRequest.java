@@ -1,7 +1,7 @@
 package com.waiter.server.api.venue.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.waiter.server.api.common.AbstractApiModel;
+import com.waiter.server.api.common.model.AbstractApiModel;
 import com.waiter.server.api.location.model.LocationModel;
 
 /**

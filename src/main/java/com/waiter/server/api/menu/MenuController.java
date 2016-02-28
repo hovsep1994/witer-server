@@ -1,6 +1,6 @@
 package com.waiter.server.api.menu;
 
-import com.waiter.server.api.common.ResponseEntity;
+import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.menu.model.request.AddMenuRequest;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;

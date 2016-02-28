@@ -1,6 +1,6 @@
 package com.waiter.server.api.group;
 
-import com.waiter.server.api.common.ResponseEntity;
+import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.services.group.GroupService;
 import com.waiter.server.services.group.model.Group;
 import org.apache.log4j.Logger;

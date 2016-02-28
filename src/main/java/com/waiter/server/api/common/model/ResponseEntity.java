@@ -1,7 +1,6 @@
-package com.waiter.server.api.common;
+package com.waiter.server.api.common.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.waiter.server.api.user.model.UserModel;
 import com.waiter.server.services.common.exception.ServiceError;
 
 import java.util.Collections;
@@ -18,8 +17,7 @@ public class ResponseEntity<TResponse> {
     private TResponse response;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<ServiceError> errors;
-
+    private List<ApiError> errors;
 
 
     public static <T> ResponseEntity<T> forResponse(T response) {
@@ -36,7 +34,8 @@ public class ResponseEntity<TResponse> {
     public static ResponseEntity<Void> forError(ServiceError error) {
         ResponseEntity<Void> responseEntity = new ResponseEntity<>();
         responseEntity.status = "error";
-        responseEntity.errors = Collections.singletonList(error);
+        ApiError apiError = new ApiError(error.getErrorCode(), error.getMessage(), error.getDescription());
+        responseEntity.errors = Collections.singletonList(apiError);
         return responseEntity;
     }
 
@@ -48,7 +47,7 @@ public class ResponseEntity<TResponse> {
         return response;
     }
 
-    public List<ServiceError> getErrors() {
+    public List<ApiError> getErrors() {
         return errors;
     }
 
@@ -60,7 +59,7 @@ public class ResponseEntity<TResponse> {
         this.response = response;
     }
 
-    public void setErrors(List<ServiceError> errors) {
+    public void setErrors(List<ApiError> errors) {
         this.errors = errors;
     }
 }
