@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SignUpStatus signUp(UserDto userDto) throws ServiceException {
+        Assert.isTrue(userDto.getPassword().length() > 5, "password must not be less than 6 characters");
         if (checkExistenceByEmail(userDto.getEmail())) {
             LOGGER.debug("User with email -{} exists", userDto.getEmail());
             throw new ServiceException(ErrorCode.DUPLICATE_EMAIL,
@@ -48,11 +49,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByNamePassword(String name, String password) {
-        Assert.notNull(name, "login must nor be null");
-        Assert.notNull(password, "password must nor be null");
+        Assert.notNull(name, "name must not be null");
+        Assert.notNull(password, "password must not be null");
         User user = userRepository.findByNameAndPassword(name, password);
         if (user == null) {
-            throw new ServiceRuntimeException("No user found with login " + name + " password " + password);
+            throw new ServiceRuntimeException("No user found with name " + name + " password " + password);
+        }
+        return user;
+    }
+
+    @Override
+    public User findUserByEmailPassword(String email, String password) {
+        Assert.notNull(email, "email must not be null");
+        Assert.notNull(password, "password must not be null");
+        User user = userRepository.findByEmailAndPassword(email, password);
+        if (user == null) {
+            throw new ServiceRuntimeException("No user found with email " + email + " password " + password);
         }
         return user;
     }

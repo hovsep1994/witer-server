@@ -15,7 +15,8 @@ import javax.persistence.EntityManagerFactory;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.waiter.server.api",
+@ComponentScan(basePackages = {
+        "com.waiter.server.api",
         "com.waiter.server.services.*.impl",
         "com.waiter.server.externalclients"})
 public class WebConfig {

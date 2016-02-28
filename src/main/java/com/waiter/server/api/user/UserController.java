@@ -14,10 +14,7 @@ import com.waiter.server.services.user.dto.UserDto;
 import com.waiter.server.services.user.model.SignUpStatus;
 import com.waiter.server.services.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Admin on 1/17/2016.
@@ -33,8 +30,8 @@ public class UserController {
     private CompanyService companyService;
 
     @RequestMapping(value = "/signin", method = RequestMethod.POST)
-    public ResponseEntity<UserModel> login(String email, String password) {
-        User user = userService.findUserByNamePassword(email, password);
+    public ResponseEntity<UserModel> login(@RequestParam String email, @RequestParam String password) {
+        User user = userService.findUserByEmailPassword(email, password);
         UserModel userModel = new UserModel();
         userModel.setEmail(user.getEmail());
         userModel.setName(user.getName());

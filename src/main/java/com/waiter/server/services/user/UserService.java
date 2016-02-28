@@ -16,6 +16,8 @@ public interface UserService {
 
     User findUserByNamePassword(String name, String password);
 
+    User findUserByEmailPassword(String name, String password);
+
     User authenticate(String key);
 
     boolean validateEmail(String hash);
