@@ -10,7 +10,7 @@ public class MainController {
 
 	@ExceptionHandler(ServiceException.class)
 	public ResponseEntity handleCustomException(ServiceException ex) {
-		return new ResponseEntity().forError(ex.getError());
+		return ResponseEntity.forError(ex.getError());
 	}
 
 }
