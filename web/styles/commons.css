@@ -1,16 +1,26 @@
+@font-face {
+    font-family: RobotoCondensed;
+    src: url("resources/fonts/RobotoCondensed-Regular.ttf");
+}
+
+@font-face {
+    font-family: Raleway;
+    src: url("resources/fonts/Raleway-Light.ttf");
+}
+
 a:hover {
     text-decoration: none !important;
 }
 
 .footer {
+    font-family: "RobotoCondensed-Light", serif;
     text-align: center;
     background-color: black;
-    font-size: 12px;
+    font-size: 13px;
     color: white;
     height: 50px;
     padding-top: 19px;
 }
-
 
 /* -------  navigation bar ----------- */
 .navbar_custom {
@@ -19,34 +29,31 @@ a:hover {
 }
 
 .brand {
-    font-size: 16px;
+    font-family: "RobotoCondensed", serif;
+    font-size: 18px;
     color: white;
-    margin-left: 20%;
-    margin-top: 15px;
-    display:inline-block;
+    margin-top: 8px;
+    display: inline-block;
 }
 
 .navbar_bussiness {
     position: absolute;
-    right: 0px;
-    font-size: 11px;
+    right: 0;
+    font-size: 12px;
     color: #C3C3C4;
-    margin-top: 15px;
-    margin-right: 20%;
+    margin-top: 17px;
     border-radius: 3px;
-    border: 1px solid #2f8ea1;
-    display:inline-block;
+    border: 1px solid #1b9caf;
+    display: inline-block;
     padding: 4px 20px 4px 20px;
+}
+
+.container-fluid span:hover {
+    cursor: pointer;
 }
 
 a.brand:hover {
     color: white;
-}
-
-a.navbar_bussiness:hover {
-    cursor: pointer;
-    color: #C3C3C4 !important;
-    text-decoration: none !important;
 }
 
 .signin_dialog {
@@ -72,6 +79,7 @@ a.navbar_bussiness:hover {
     width: 70%;
     margin: 0 auto;
 }
+
 .signin_modal_content div.modal-body div {
     font-size: 10px;
     margin-top: 5px;
@@ -88,13 +96,71 @@ a.navbar_bussiness:hover {
     margin: 0 auto;
 }
 
-/*todo*/
-/*a.navbar_bussiness:active {*/
-    /*color: #C3C3C4 !important;*/
-    /*text-decoration: none !important;*/
-/*}*/
+/* ------ account info --------- */
 
-/*a.navbar_bussiness:visited {*/
-    /*color: #C3C3C4 !important;*/
-    /*text-decoration: none !important;*/
-/*}*/
+.navbar_account {
+    position: absolute;
+    right: 0;
+    font-size: 13px;
+    color: white;
+    margin-top: 20px;
+    margin-right: 20%;
+}
+
+.account_dropdown {
+    margin-top: 20px;
+    background-color: #17181d;
+}
+
+.account_dropdown li a {
+    color: #828284;
+}
+
+.account_dropdown li a:hover {
+    color: white;
+    background-color: inherit !important;
+}
+
+
+/*Responsive content*/
+@media screen {
+    .brand {
+        margin-left: 20%;
+    }
+
+    .navbar_bussiness {
+        margin-right: 20%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .brand {
+        margin-left: 15%;
+    }
+
+    .navbar_bussiness {
+        margin-right: 15%;
+    }
+}
+
+
+@media screen and (max-width: 997px) {
+    .brand {
+        margin-left: 10%;
+    }
+
+    .navbar_bussiness {
+        margin-right: 10%;
+    }
+}
+
+
+@media screen and (max-width: 762px) {
+    .brand {
+        margin-left: 5%;
+    }
+
+    .navbar_bussiness {
+        margin-right: 5%;
+    }
+}
