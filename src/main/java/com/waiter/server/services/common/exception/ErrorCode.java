@@ -18,5 +18,6 @@ public enum ErrorCode {
     WRONG_REQUEST,
     WRONG_VERIFICATION_HASH,
     NOT_FOUND,
+    IOException,
 
 }

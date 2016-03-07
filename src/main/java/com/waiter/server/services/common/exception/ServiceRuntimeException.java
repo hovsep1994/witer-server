@@ -4,16 +4,23 @@ package com.waiter.server.services.common.exception;
  * Created by Admin on 12/23/2015.
  */
 public class ServiceRuntimeException extends RuntimeException {
+    private ServiceError error;
 
-    public ServiceRuntimeException(final Throwable cause) {
-        super(cause);
+    public ServiceRuntimeException(ServiceError error) {
+        super(error.getMessage());
+        this.error = error;
     }
 
-    public ServiceRuntimeException(final String message) {
+    public ServiceRuntimeException(ErrorCode errorCode, String message) {
         super(message);
+        this.error = new ServiceError(errorCode, message);
     }
 
-    public ServiceRuntimeException(final String message, final Throwable cause) {
-        super(message, cause);
+    public ServiceError getError() {
+        return error;
+    }
+
+    public void setError(ServiceError error) {
+        this.error = error;
     }
 }

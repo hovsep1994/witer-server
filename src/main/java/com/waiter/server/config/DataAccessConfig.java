@@ -53,12 +53,10 @@ public class DataAccessConfig {
         em.setDataSource(dataSource);
         em.setPackagesToScan(
                 "com.waiter.server.persistence.core.repository.*",
-                "com.waiter.server.services");
-
+                "com.waiter.server.services.*");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(additionalProperties());
-
         return em;
     }
 
@@ -75,7 +73,7 @@ public class DataAccessConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    Properties additionalProperties() {
+    private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");

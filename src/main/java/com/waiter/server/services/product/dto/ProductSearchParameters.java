@@ -4,6 +4,7 @@ package com.waiter.server.services.product.dto;
  * Created by Admin on 1/17/2016.
  */
 public class ProductSearchParameters {
+
     private String name;
     private double latitude;
     private double longitude;

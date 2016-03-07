@@ -1,7 +1,12 @@
 package com.waiter.server.api.product;
 
 import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.product.model.ProductModel;
+import com.waiter.server.api.product.model.request.AddProductRequest;
+import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.ProductService;
+import com.waiter.server.services.product.dto.AddProductDto;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import org.slf4j.Logger;
@@ -24,14 +29,30 @@ public class ProductController {
     private ProductService productService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<Product> save(@RequestBody Product product) {
-        Product createdProduct = productService.create(product);
-        return ResponseEntity.forResponse(createdProduct);
+    public ResponseEntity<ProductModel> save(@RequestBody AddProductRequest addProductRequest) {
+        AddProductDto addProductDto = new AddProductDto();
+        addProductDto.setDescription(addProductRequest.getDescription());
+        addProductDto.setPrice(addProductRequest.getPrice());
+        addProductDto.setLanguage(addProductRequest.getAddNameTranslationRequest().getLanguage());
+        addProductDto.setName(addProductRequest.getAddNameTranslationRequest().getName());
+        addProductDto.setTags(TagModel.convert(addProductRequest.getTagModels()));
+        Product product = productService.create(addProductRequest.getGroupId(), addProductDto);
+        ProductModel productModel = ProductModel.convert(product, addProductRequest.getAddNameTranslationRequest().getLanguage());
+        return ResponseEntity.forResponse(productModel);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Product> findOne(@PathVariable Long id) {
-        return ResponseEntity.forResponse(productService.get(id));
+    public ResponseEntity<ProductModel> getByProductId(@PathVariable Long id, @RequestParam Language language) {
+        Product product = productService.getById(id);
+        ProductModel productModel = ProductModel.convert(product, language);
+        return ResponseEntity.forResponse(productModel);
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseEntity<List<ProductModel>> getByGroupId(@RequestParam Long groupId, @RequestParam Language language) {
+        List<Product> products = productService.getByGroupId(groupId);
+        List<ProductModel> productModels = ProductModel.convert(products, language);
+        return ResponseEntity.forResponse(productModels);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)

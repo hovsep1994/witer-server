@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
 
-    List<Product> findByGroupId(Long groupId);
+    List<Product> findByCategoryId(Long groupId);
 }

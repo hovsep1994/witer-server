@@ -55,7 +55,7 @@ public class RequestSender {
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(host).append(FIRST_DELIMITER).append(constructQuery(params));
         URL url = new URL(urlBuilder.toString());
-        logger.debug("get request: " + urlBuilder);
+        logger.debug("getById request: " + urlBuilder);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         //add request headers

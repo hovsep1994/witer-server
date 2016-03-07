@@ -22,10 +22,10 @@ public class Company extends AbstractEntityModel {
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private List<Menu> menus;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private List<Venue> venues;
 
     public String getPhone() {

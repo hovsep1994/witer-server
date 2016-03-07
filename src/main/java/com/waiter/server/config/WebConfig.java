@@ -6,14 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import javax.persistence.EntityManagerFactory;
 
 /**
  * @author shahenpoghosyan
@@ -33,18 +29,18 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return new RestTemplate();
     }
 
-    @Bean
-    public AuthenticationInterceptor authenticationInterceptor() {
-        return new AuthenticationInterceptor();
-    }
-
-    @Autowired
-    private AuthenticationInterceptor authenticationInterceptor;
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        logger.info("auth interceptor added. ");
-        registry.addInterceptor(authenticationInterceptor).addPathPatterns("/heartbeat");
-    }
+//    @Bean
+//    public AuthenticationInterceptor authenticationInterceptor() {
+//        return new AuthenticationInterceptor();
+//    }
+//
+//    @Autowired
+//    private AuthenticationInterceptor authenticationInterceptor;
+//
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        logger.info("auth interceptor added. ");
+//        registry.addInterceptor(authenticationInterceptor).addPathPatterns("/heartbeat");
+//    }
 
 }

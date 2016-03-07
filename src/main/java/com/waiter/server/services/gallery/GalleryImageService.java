@@ -14,5 +14,5 @@ import java.io.InputStream;
  */
 public interface GalleryImageService {
 
-    GalleryImage save(Long galleryId, GalleryImageDto galleryImageDto, InputStream imageStream) throws IOException, ServiceException;
+    GalleryImage addImage(Long galleryId, GalleryImageDto galleryImageDto, InputStream imageStream) throws ServiceException;
 }

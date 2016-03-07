@@ -1,11 +1,11 @@
 package com.waiter.server.api.venue;
 
 import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.location.model.LocationModel;
+import com.waiter.server.api.venue.model.VenueModel;
 import com.waiter.server.api.venue.model.request.AddVenueRequest;
-import com.waiter.server.services.company.model.Company;
-import com.waiter.server.services.location.model.Location;
-import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.venue.VenueService;
+import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
 import com.waiter.server.services.venue.model.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,25 +24,24 @@ public class VenueController {
     private VenueService venueService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Venue> findOne(@PathVariable Long id) {
-        return ResponseEntity.forResponse(venueService.getVenueById(id));
+    public ResponseEntity<VenueModel> findOne(@PathVariable Long id) {
+        Venue venue = venueService.getVenueById(id);
+        VenueModel venueModel = VenueModel.convert(venue);
+        return ResponseEntity.forResponse(venueModel);
     }
 
     @RequestMapping(value = "/add}", method = RequestMethod.POST)
-    public ResponseEntity<Venue> createMenu(@RequestBody AddVenueRequest addVenueRequest) {
-        Venue venue = new Venue();
-        Company company = new Company();
-        company.setId(addVenueRequest.getCompanyId());
-        venue.setCompany(company);
-        Location location = new Location();
-        location.setCity(addVenueRequest.getLocation().getCity());
-        venue.setLocation(location);
-        Menu menu = new Menu();
-        menu.setId(addVenueRequest.getMenuId());
-        venue.setMenu(menu);
-        Venue createdVenue = venueService.create(venue);
-        return ResponseEntity.forResponse(createdVenue);
+    public ResponseEntity<VenueModel> createMenu(@RequestBody AddVenueRequest addVenueRequest) {
+        VenueDto venueDto = new VenueDto();
+        venueDto.setMenuId(addVenueRequest.getMenuId());
+        venueDto.setCompanyId(addVenueRequest.getCompanyId());
+        venueDto.setLocation(LocationModel.convert(addVenueRequest.getLocation()));
+        Venue createdVenue = venueService.create(venueDto);
+        VenueModel venueModel = VenueModel.convert(createdVenue);
+        return ResponseEntity.forResponse(venueModel);
     }
+
+
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ResponseEntity<List<Venue>> findVenues(@RequestBody VenueSearchParameters parameters) {

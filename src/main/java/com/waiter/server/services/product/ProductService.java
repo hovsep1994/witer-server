@@ -1,5 +1,6 @@
 package com.waiter.server.services.product;
 
+import com.waiter.server.services.product.dto.AddProductDto;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 
@@ -10,15 +11,13 @@ import java.util.List;
  */
 public interface ProductService {
 
-    Product create(Product product);
+    Product getById(Long id);
+
+    List<Product> getByGroupId(Long groupId);
+
+    Product create(Long groupId, AddProductDto addProductDto);
 
     void remove(Long productId);
-
-    Product update(Product product);
-
-    List<Product> getByGroup(Long groupId);
-
-    Product get(Long id);
 
     List<Product> search(ProductSearchParameters productSearchParams);
 

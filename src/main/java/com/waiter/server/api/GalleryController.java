@@ -19,7 +19,7 @@ public class GalleryController {
 //                                                 @RequestHeader("Content-Type") String contentType,
 //                                                 InputStream stream) throws IOException {
 //        String extension = contentType.substring(6); //todo throw error if not valid
-//        galleryService.save(new Gallery(productId, extension), stream);
+//        galleryService.addImage(new Gallery(productId, extension), stream);
 //        return new ResponseEntity<>();
 //    }
 }

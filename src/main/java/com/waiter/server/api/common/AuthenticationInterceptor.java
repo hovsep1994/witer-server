@@ -5,6 +5,8 @@ import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceError;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +23,10 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         logger.debug("Interceptor is working .... ");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(mapper.writeValueAsString(ResponseEntity
                 .forError(new ServiceError(ErrorCode.FAILED_AUTHENTICATION, "Authorization required."))));
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         return false;
     }
 }

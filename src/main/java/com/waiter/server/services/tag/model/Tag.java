@@ -7,9 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Admin on 12/24/2015.
@@ -36,6 +34,24 @@ public class Tag extends AbstractEntityModel {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Tag tag = (Tag) o;
+
+        return name != null ? name.equals(tag.name) : tag.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
+
     public static List<String> toStrings(List<Tag> tags) {
         List<String> list = new ArrayList<>(tags.size());
         for (Tag tag : tags) {
@@ -44,28 +60,20 @@ public class Tag extends AbstractEntityModel {
         return list;
     }
 
-    public static List<Tag> parseTags(List<String> tags) {
+    public static Set<Tag> parseTags(Set<String> tags) {
         if (tags == null) return null;
-        List<Tag> tagList = new ArrayList<>(tags.size());
+        Set<Tag> tagList = new HashSet<>(tags.size());
         for (String t : tags) {
             tagList.add(new Tag(t));
         }
         return tagList;
     }
 
-    public static List<Tag> parseTags(String tags) {
+    public static Set<Tag> parseTags(String tags) {
         if (tags == null) {
-            return new ArrayList<>();
+            return new HashSet<>();
         }
-        return parseTags(Arrays.asList(tags.split(",")));
-    }
-
-    public static String[] getNamesArray(List<Tag> tags) {
-        String strings[] = new String[tags.size()];
-        for (int i = 0; i < tags.size(); i++) {
-            strings[i] = tags.get(i).getName();
-        }
-        return strings;
+        return parseTags(new HashSet<String>(Arrays.asList(tags.split(","))));
     }
 
 }
