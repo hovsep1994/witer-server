@@ -35,7 +35,7 @@ public class FourSquareServiceImpl implements FourSquareService {
             return jsonNode;
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-            throw new ServiceRuntimeException(ErrorCode.IOException, e.getMessage());
+            throw new ServiceRuntimeException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
     }
 

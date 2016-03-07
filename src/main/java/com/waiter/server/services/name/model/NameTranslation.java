@@ -6,7 +6,6 @@ import com.waiter.server.services.language.Language;
 
 import javax.persistence.*;
 
-
 /**
  * Created by Admin on 12/23/2015.
  */

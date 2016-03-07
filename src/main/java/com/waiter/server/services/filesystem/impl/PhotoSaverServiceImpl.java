@@ -1,9 +1,12 @@
 package com.waiter.server.services.filesystem.impl;
 
+import com.waiter.server.services.common.exception.ErrorCode;
+import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.filesystem.PhotoSaverService;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
 import org.imgscalr.Scalr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -19,8 +22,9 @@ import java.io.InputStream;
 @Service
 public class PhotoSaverServiceImpl implements PhotoSaverService {
 
-    private static final Logger LOG = Logger.getLogger(PhotoSaverServiceImpl.class);
-    private static final String UPLOAD_DIRECTORY = "/Users/shahenpoghosyan/static/";
+    private static final Logger LOGGER = LoggerFactory.getLogger(PhotoSaverServiceImpl.class);
+
+    private static final String UPLOAD_DIRECTORY = "/tmp/waiter/static/";
     private static final String PATH = "http://localhost:8080/photos/";
     private static final String ORIGINALS_PATH = "originals";
     private static final String DELIMITER_DOT = ".";
@@ -65,14 +69,18 @@ public class PhotoSaverServiceImpl implements PhotoSaverService {
     private BufferedImage resizePhoto(int newSize, BufferedImage image) {
         int newHeight = image.getHeight() <= image.getWidth() ? newSize : (int) ((float) image.getHeight() / image.getWidth() * newSize);
         int newWidth = image.getWidth() <= image.getHeight() ? newSize : (int) ((float) image.getWidth() / image.getHeight() * newSize);
-        LOG.debug("old size: " + image.getHeight() + ", " + image.getWidth());
-        LOG.debug("new size: " + newHeight + ", " + newWidth);
+        LOGGER.debug("old size: " + image.getHeight() + ", " + image.getWidth());
+        LOGGER.debug("new size: " + newHeight + ", " + newWidth);
         return Scalr.resize(image, Scalr.Method.AUTOMATIC, newWidth, newHeight);
     }
 
     private void createDirIfNotExist(File dir) {
         if (!dir.exists()) {
-            dir.mkdir();
+            boolean create = dir.mkdir();
+            if (!create) {
+                LOGGER.error("can not create direction -{}", dir);
+                throw new ServiceRuntimeException(ErrorCode.CAN_NOT_CREATE_DIRECTION, "can not create direction");
+            }
         }
     }
 }

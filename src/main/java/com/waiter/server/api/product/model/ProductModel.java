@@ -26,7 +26,6 @@ public class ProductModel extends AbstractProductModel {
     @JsonProperty(value = "nameTranslation")
     private NameTranslationModel nameTranslationModel;
 
-
     public Long getId() {
         return id;
     }

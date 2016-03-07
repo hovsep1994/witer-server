@@ -18,6 +18,8 @@ public enum ErrorCode {
     WRONG_REQUEST,
     WRONG_VERIFICATION_HASH,
     NOT_FOUND,
-    IOException,
+    IO_EXCEPTION,
+    CAN_NOT_CREATE_DIRECTION,
+    FAILD_TRANSLATION
 
 }

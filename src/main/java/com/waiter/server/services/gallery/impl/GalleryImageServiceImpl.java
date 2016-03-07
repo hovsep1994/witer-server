@@ -66,7 +66,7 @@ public class GalleryImageServiceImpl implements GalleryImageService {
             photoSaverService.savePhoto(inputStream, filePath);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-            throw new ServiceException(ErrorCode.IOException, e.getMessage());
+            throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
         return galleryImage;
     }
