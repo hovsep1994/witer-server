@@ -2,6 +2,7 @@ package com.waiter.server.services.product.model;
 
 import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.evaluation.model.Evaluation;
 import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.tag.model.Tag;
 
@@ -16,7 +17,7 @@ import java.util.Set;
 @Table(name = "product")
 public class Product extends AbstractNamedEntityModel {
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "gallery_id", nullable = false)
     private Gallery gallery;
 
@@ -32,6 +33,10 @@ public class Product extends AbstractNamedEntityModel {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Tag> tags;
+
+    @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "evaluation_id", nullable = false)
+    private Evaluation evaluation;
 
     public Product() {
         tags = new HashSet<>();
@@ -75,5 +80,13 @@ public class Product extends AbstractNamedEntityModel {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Evaluation getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(Evaluation evaluation) {
+        this.evaluation = evaluation;
     }
 }
