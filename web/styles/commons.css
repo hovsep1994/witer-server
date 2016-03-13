@@ -48,7 +48,7 @@ a:hover {
     padding: 4px 20px 4px 20px;
 }
 
-.container-fluid span:hover {
+.navbar .container-fluid span:hover {
     cursor: pointer;
 }
 

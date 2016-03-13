@@ -5,7 +5,11 @@
 <%%>
 <nav ng-controller="userCtrl" class="navbar navbar-fixed-top navbar_custom">
     <div class="container-fluid">
-        <a class="brand" href="#">Menu Kit <span style="color: yellow">Bussines</span></a>
+        <a class="brand" href="#">
+            <img src="${pageContext.request.contextPath}/styles/resources/commons/logo.png" width="55px"
+                 style="margin-top: -10px; margin-right: -5px;">
+            Menu <span style="color:#ffcc00">Kit</span>
+        </a>
         <span ng-if="!user" data-toggle="modal" data-target="#signInModal" class="navbar_bussiness">Sign In</span>
     </div>
     <div id="signInModal" class="modal fade" role="dialog">
