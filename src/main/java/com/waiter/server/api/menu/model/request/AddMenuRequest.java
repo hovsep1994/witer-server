@@ -9,7 +9,7 @@ public class AddMenuRequest {
 
     private String name;
 
-    private String companyId;
+    private Long companyId;
 
     public String getName() {
         return name;
@@ -19,11 +19,11 @@ public class AddMenuRequest {
         this.name = name;
     }
 
-    public String getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 }

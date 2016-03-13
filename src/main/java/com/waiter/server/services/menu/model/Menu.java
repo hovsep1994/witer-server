@@ -1,8 +1,8 @@
 package com.waiter.server.services.menu.model;
 
-import com.waiter.server.services.common.model.AbstractNamedEntityModel;
+import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.company.model.Company;
-import com.waiter.server.services.group.model.Group;
+import com.waiter.server.services.category.model.Category;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,14 +12,25 @@ import java.util.List;
  */
 @Entity
 @Table(name = "menu")
-public class Menu extends AbstractNamedEntityModel {
+public class Menu extends AbstractEntityModel {
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @Column(name = "name")
+    private String name;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Group> groups;
+    @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
+    private List<Category> categories;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Company getCompany() {
         return company;
@@ -29,11 +40,11 @@ public class Menu extends AbstractNamedEntityModel {
         this.company = company;
     }
 
-    public List<Group> getGroups() {
-        return groups;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

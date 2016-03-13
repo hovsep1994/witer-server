@@ -6,17 +6,17 @@ import com.waiter.server.services.language.Language;
 
 import javax.persistence.*;
 
-
 /**
  * Created by Admin on 12/23/2015.
  */
 @Entity
-@Table(name = "name_translation" )
+@Table(name = "name_translation")
 public class NameTranslation extends AbstractEntityModel {
 
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "language", nullable = false)
     private Language language;
 
     @Enumerated(EnumType.STRING)

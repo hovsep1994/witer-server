@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
         Assert.notNull(password, "password must not be null");
         User user = userRepository.findByEmailAndPassword(email, password);
         if (user == null) {
-            throw new ServiceRuntimeException("No user found with email " + email + " password " + password);
+            LOGGER.error("User not found with password -{} and email -{}", password, email);
+            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "User not found");
         }
         if (user.getToken() == null) {
             user.setToken(UUID.randomUUID().toString());
@@ -71,17 +72,19 @@ public class UserServiceImpl implements UserService {
         Assert.notNull(password, "password must not be null");
         User user = userRepository.findByNameAndPassword(name, password);
         if (user == null) {
-            throw new ServiceRuntimeException("No user found with name " + name + " password " + password);
+            LOGGER.error("User not found with password -{} and name -{}", password, name);
+            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "User not found");
         }
         return user;
     }
 
     @Override
     public User authenticate(String token) {
-        Assert.notNull(token, "token must nor be null");
+        Assert.notNull(token, "token must not be null");
         User user = userRepository.findUserByToken(token);
         if (user == null) {
-            throw new ServiceRuntimeException("No user found with token " + token);
+            LOGGER.error("User not found with token -{}", token);
+            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "User not found");
         }
         return user;
     }

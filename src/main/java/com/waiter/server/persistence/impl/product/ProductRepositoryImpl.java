@@ -1,7 +1,7 @@
 package com.waiter.server.persistence.impl.product;
 
 import com.waiter.server.persistence.core.repository.product.ProductRepositoryCustom;
-import com.waiter.server.services.group.model.Group;
+import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.name.model.NameTranslation;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
@@ -17,6 +17,7 @@ import javax.persistence.TypedQuery;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Admin on 1/3/2016.
@@ -136,11 +137,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         public Product getProduct(ResultSet rs) throws SQLException {
             Product product = new Product();
             product.setId(rs.getLong("p.id"));
-            product.setImage(rs.getString("p.image"));
+//            product.setImage(rs.getString("p.image"));
             product.setDescription(rs.getString("p.description"));
             product.setPrice(rs.getDouble("p.price"));
 
-            List<Tag> tags = Tag.parseTags(rs.getString("product_tags"));
+            Set<Tag> tags = Tag.parseTags(rs.getString("product_tags"));
             product.setTags(tags);
 
             NameTranslation nameTranslation = new NameTranslation();
@@ -148,9 +149,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 //            nameTranslation.setLanguage(language);
             nameTranslation.setName(rs.getString("n.nameTranslation"));
 
-            Group group = new Group();
-            group.setId(rs.getLong("p.group_id"));
-            product.setGroup(group);
+            Category category = new Category();
+            category.setId(rs.getLong("p.group_id"));
+            product.setCategory(category);
 
             return product;
         }

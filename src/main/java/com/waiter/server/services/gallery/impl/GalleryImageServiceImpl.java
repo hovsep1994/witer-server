@@ -1,22 +1,25 @@
 package com.waiter.server.services.gallery.impl;
 
 import com.waiter.server.persistence.core.repository.gallery.GalleryImageRepository;
+import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
-import com.waiter.server.services.filesystem.FileSystemService;
+import com.waiter.server.services.common.exception.ServiceRuntimeException;
+import com.waiter.server.services.filesystem.PhotoSaverService;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.GalleryService;
-import com.waiter.server.services.gallery.dto.GalleryDto;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
 import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.ImageType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * User: hovsep
@@ -26,7 +29,7 @@ import java.util.List;
 @Service
 public class GalleryImageServiceImpl implements GalleryImageService {
 
-    private static final int[] productImageSizes = {60, 120};
+    private static final Logger LOGGER = LoggerFactory.getLogger(GalleryImageServiceImpl.class);
 
     @Autowired
     private GalleryImageRepository galleryImageRepository;
@@ -35,22 +38,36 @@ public class GalleryImageServiceImpl implements GalleryImageService {
     private GalleryService galleryService;
 
     @Autowired
-    private FileSystemService fileSystemService;
+    private PhotoSaverService photoSaverService;
 
     public GalleryImage getGalleryImageById(Long id) {
-        return galleryImageRepository.findOne(id);
+        assertGalleryImageId(id);
+        GalleryImage galleryImage = galleryImageRepository.findOne(id);
+        if (galleryImage == null) {
+            LOGGER.error("gallery image -{} not found", id);
+            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "gallery image not found");
+        }
+        return galleryImage;
     }
 
     @Transactional
     @Override
-    public GalleryImage save(Long galleryId, GalleryImageDto galleryImageDto, InputStream imageStream) throws IOException,ServiceException {
+    public GalleryImage addImage(Long galleryId, GalleryImageDto galleryImageDto, InputStream inputStream) throws ServiceException {
+        Assert.notNull(galleryId, "gallery id must not be null");
+        Assert.notNull(inputStream, "inputStream must not be null");
+
         GalleryImage galleryImage = new GalleryImage();
         galleryImageDto.convertToEntityModel(galleryImage);
         Gallery gallery = galleryService.getGalleryById(galleryId);
         galleryImage.setGallery(gallery);
         galleryImage = galleryImageRepository.save(galleryImage);
         String filePath = generatePathForGallery(galleryImage);
-        fileSystemService.saveImage(filePath, imageStream, productImageSizes);
+        try {
+            photoSaverService.savePhoto(inputStream, filePath);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+            throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
+        }
         return galleryImage;
     }
 
@@ -64,6 +81,10 @@ public class GalleryImageServiceImpl implements GalleryImageService {
                 .append(image.getFileName())
                 .append("/").append(image.getId())
                 .append(".").append(ImageType.identifyImageType(image.getImageType().name())).toString();
+    }
+
+    private void assertGalleryImageId(Long id) {
+        Assert.notNull(id, "gallery image id must not be null");
     }
 
 }

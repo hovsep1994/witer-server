@@ -17,10 +17,10 @@ public class Gallery extends AbstractEntityModel {
     private boolean systemGallery;
 
     @OneToMany(mappedBy = "gallery", fetch = FetchType.LAZY)
-    private Set<GalleryImage> images;
+    private Set<GalleryImage> galleryImages;
 
     public Gallery() {
-        this.images = new LinkedHashSet<>();
+        this.galleryImages = new LinkedHashSet<>();
         this.systemGallery = false;
     }
 
@@ -32,12 +32,12 @@ public class Gallery extends AbstractEntityModel {
         this.systemGallery = systemGallery;
     }
 
-    public Set<GalleryImage> getImages() {
-        return images;
+    public Set<GalleryImage> getGalleryImages() {
+        return galleryImages;
     }
 
-    public void setImages(Set<GalleryImage> images) {
-        this.images = images;
+    public void setGalleryImages(Set<GalleryImage> galleryImages) {
+        this.galleryImages = galleryImages;
     }
 
     @Override
@@ -48,14 +48,14 @@ public class Gallery extends AbstractEntityModel {
         Gallery gallery = (Gallery) o;
 
         if (systemGallery != gallery.systemGallery) return false;
-        return !(images != null ? !images.equals(gallery.images) : gallery.images != null);
+        return !(galleryImages != null ? !galleryImages.equals(gallery.galleryImages) : gallery.galleryImages != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = (systemGallery ? 1 : 0);
-        result = 31 * result + (images != null ? images.hashCode() : 0);
+        result = 31 * result + (galleryImages != null ? galleryImages.hashCode() : 0);
         return result;
     }
 
@@ -63,7 +63,7 @@ public class Gallery extends AbstractEntityModel {
     public String toString() {
         return "Gallery{" +
                 "systemGallery=" + systemGallery +
-                ", images=" + images +
+                ", galleryImages=" + galleryImages +
                 '}';
     }
 }

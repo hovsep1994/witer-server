@@ -11,6 +11,9 @@ import javax.persistence.*;
 @Table(name = "venue")
 public class Venue extends AbstractEntityModel {
 
+    @Column(name = "name")
+    private String name;
+
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
@@ -45,5 +48,13 @@ public class Venue extends AbstractEntityModel {
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

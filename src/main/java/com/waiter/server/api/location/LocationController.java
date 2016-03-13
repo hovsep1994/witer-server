@@ -1,4 +1,4 @@
-package com.waiter.server.api;
+package com.waiter.server.api.location;
 
 import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.services.location.LocationService;

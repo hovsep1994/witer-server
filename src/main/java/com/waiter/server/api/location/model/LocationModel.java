@@ -1,6 +1,7 @@
 package com.waiter.server.api.location.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.waiter.server.services.location.model.Location;
 
 /**
  * User: hovsep
@@ -73,5 +74,27 @@ public class LocationModel {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public static LocationModel convert(Location location) {
+        LocationModel locationModel = new LocationModel();
+        locationModel.setCity(location.getCity());
+        locationModel.setCountry(location.getCountry());
+        locationModel.setLatitude(location.getLatitude());
+        locationModel.setLongitude(location.getLongitude());
+        locationModel.setStreet(location.getStreet());
+        locationModel.setZip(location.getZip());
+        return locationModel;
+    }
+
+    public static Location convert(LocationModel locationModel) {
+        Location location = new Location();
+        location.setCity(locationModel.getCity());
+        location.setCountry(locationModel.getCountry());
+        location.setLatitude(locationModel.getLatitude());
+        location.setLongitude(locationModel.getLongitude());
+        location.setStreet(locationModel.getStreet());
+        location.setZip(locationModel.getZip());
+        return location;
     }
 }

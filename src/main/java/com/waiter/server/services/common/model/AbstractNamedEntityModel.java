@@ -1,8 +1,11 @@
 package com.waiter.server.services.common.model;
 
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.name.model.NameTranslation;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author shahenpoghosyan
@@ -10,40 +13,23 @@ import javax.persistence.*;
 @MappedSuperclass
 public abstract class AbstractNamedEntityModel extends AbstractEntityModel {
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "name_id", nullable = false)
-    private NameTranslation nameTranslation;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<NameTranslation> nameTranslations;
 
-    public NameTranslation getNameTranslation() {
-        return nameTranslation;
+    public AbstractNamedEntityModel() {
+        nameTranslations = new ArrayList<>();
     }
 
-    public void setNameTranslation(NameTranslation nameTranslation) {
-        this.nameTranslation = nameTranslation;
+    public List<NameTranslation> getNameTranslations() {
+        return nameTranslations;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        AbstractNamedEntityModel that = (AbstractNamedEntityModel) o;
-
-        return !(nameTranslation != null ? !nameTranslation.equals(that.nameTranslation) : that.nameTranslation != null);
+    public void setNameTranslations(List<NameTranslation> nameTranslations) {
+        this.nameTranslations = nameTranslations;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (nameTranslation != null ? nameTranslation.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "AbstractNamedEntityModel{" +
-                "nameTranslation='" + nameTranslation + '\'' +
-                "} " + super.toString();
+    public NameTranslation getNameTranslationByLanguage(Language language) {
+        return nameTranslations.stream().filter(nameTranslation ->
+                nameTranslation.getLanguage().equals(language)).findFirst().orElse(null);
     }
 }

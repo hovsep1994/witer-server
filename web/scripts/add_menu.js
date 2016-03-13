@@ -40,7 +40,7 @@ $(document).ready(function () {
         fd.append('name', groupName);
         fd.append('menu_id', menuId);
 
-        xhr.open('post', '../api/group/add', true);
+        xhr.open('post', '../api/category/add', true);
         xhr.send(fd);
     });
 

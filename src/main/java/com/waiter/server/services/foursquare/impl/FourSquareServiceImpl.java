@@ -1,9 +1,12 @@
 package com.waiter.server.services.foursquare.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.foursquare.FourSquareService;
 import com.waiter.server.utils.requests.RequestSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,6 +16,9 @@ import java.util.Map;
  * Created by Admin on 1/17/2016.
  */
 public class FourSquareServiceImpl implements FourSquareService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FourSquareServiceImpl.class);
+
     private static final String host = "https://api.foursquare.com/v2";
     private static final String searchVenues = "/venues/search";
 
@@ -28,8 +34,8 @@ public class FourSquareServiceImpl implements FourSquareService {
             JsonNode jsonNode = sender.getRequest(url, params);
             return jsonNode;
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new ServiceRuntimeException(e);
+            LOGGER.error(e.getMessage());
+            throw new ServiceRuntimeException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
     }
 

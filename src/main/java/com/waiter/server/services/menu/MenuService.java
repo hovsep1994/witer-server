@@ -10,13 +10,13 @@ import java.util.List;
  */
 public interface MenuService {
 
-    Menu create(Menu menu);
+    Menu create(String menuName, Long companyId);
 
-    Menu get(Long id);
+    Menu getById(Long id);
 
-    List<Menu> getCompanyMenus(Long companyId);
+    List<Menu> getMenusByCompanyId(Long companyId);
 
-    Menu update(Menu menu);
+    Menu update(Long menuId, String menuName);
 
     void remove(Long id);
 }

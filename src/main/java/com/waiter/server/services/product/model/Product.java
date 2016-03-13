@@ -1,12 +1,13 @@
 package com.waiter.server.services.product.model;
 
 import com.waiter.server.services.common.model.AbstractNamedEntityModel;
-import com.waiter.server.services.group.model.Group;
-import com.waiter.server.services.name.model.NameTranslation;
+import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.tag.model.Tag;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author shahenpoghosyan
@@ -15,31 +16,33 @@ import java.util.List;
 @Table(name = "product")
 public class Product extends AbstractNamedEntityModel {
 
-    @Column(name = "image")
-    private String image;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "gallery_id", nullable = false)
+    private Gallery gallery;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id", nullable = false)
-    private Group group;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<NameTranslation> nameTranslations;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Tag> tags;
+    private Set<Tag> tags;
 
-    public String getImage() {
-        return image;
+    public Product() {
+        tags = new HashSet<>();
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public Gallery getGallery() {
+        return gallery;
+    }
+
+    public void setGallery(Gallery gallery) {
+        this.gallery = gallery;
     }
 
     public String getDescription() {
@@ -50,35 +53,27 @@ public class Product extends AbstractNamedEntityModel {
         this.description = description;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public Group getGroup() {
-        return group;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public List<NameTranslation> getNameTranslations() {
-        return nameTranslations;
-    }
-
-    public void setNameTranslations(List<NameTranslation> nameTranslations) {
-        this.nameTranslations = nameTranslations;
-    }
-
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 }
