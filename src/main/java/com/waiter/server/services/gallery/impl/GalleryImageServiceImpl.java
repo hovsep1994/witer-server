@@ -57,7 +57,7 @@ public class GalleryImageServiceImpl implements GalleryImageService {
         Assert.notNull(inputStream, "inputStream must not be null");
 
         GalleryImage galleryImage = new GalleryImage();
-        galleryImageDto.convertToEntityModel(galleryImage);
+        galleryImageDto.updateProperties(galleryImage);
         Gallery gallery = galleryService.getGalleryById(galleryId);
         galleryImage.setGallery(gallery);
         galleryImage = galleryImageRepository.save(galleryImage);

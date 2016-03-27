@@ -2,7 +2,6 @@ package com.waiter.server.services.company.model;
 
 
 import com.waiter.server.services.common.model.AbstractEntityModel;
-import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.venue.model.Venue;
 

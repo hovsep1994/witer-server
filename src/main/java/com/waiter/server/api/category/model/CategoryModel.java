@@ -15,13 +15,13 @@ import java.util.Set;
 /**
  * Created by hovsep on 3/5/16.
  */
-public class CategoryModel extends AbstractIdApiModel {
+public class CategoryModel extends AbstractCategoryModel {
+
+    @JsonProperty(value = "id")
+    private Long id;
 
     @JsonProperty("menuId")
     private Long menuId;
-
-    @JsonProperty("nameTranslation")
-    private NameTranslationModel nameTranslation;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("products")
@@ -31,28 +31,28 @@ public class CategoryModel extends AbstractIdApiModel {
     @JsonProperty(value = "tags")
     private Set<TagModel> tags;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<ProductModel> getProductModels() {
+        return productModels;
+    }
+
+    public void setProductModels(List<ProductModel> productModels) {
+        this.productModels = productModels;
+    }
+
     public Long getMenuId() {
         return menuId;
     }
 
     public void setMenuId(Long menuId) {
         this.menuId = menuId;
-    }
-
-    public NameTranslationModel getNameTranslation() {
-        return nameTranslation;
-    }
-
-    public void setNameTranslation(NameTranslationModel nameTranslation) {
-        this.nameTranslation = nameTranslation;
-    }
-
-    public List<ProductModel> getProducts() {
-        return productModels;
-    }
-
-    public void setProducts(List<ProductModel> productModels) {
-        this.productModels = productModels;
     }
 
     public Set<TagModel> getTags() {
@@ -68,8 +68,8 @@ public class CategoryModel extends AbstractIdApiModel {
         categoryModel.setId(category.getId());
         categoryModel.setMenuId(category.getMenu().getId());
         categoryModel.setTags(TagModel.convertToModel(category.getTags()));
+        categoryModel.setProductModels(null);
         categoryModel.setNameTranslation(NameTranslationModel.convert(category.getNameTranslationByLanguage(language)));
-        categoryModel.setProducts(null);
         return categoryModel;
     }
 }

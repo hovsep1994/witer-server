@@ -1,30 +1,25 @@
 package com.waiter.server.api.name.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.waiter.server.services.language.Language;
-import com.waiter.server.services.name.model.NameTranslation;
+import com.waiter.server.services.translation.dto.TranslationDto;
+import com.waiter.server.services.translation.model.Translation;
 
 /**
  * Created by hovsep on 3/5/16.
  */
-public class NameTranslationModel extends AbstractNameTranslationModel{
+public class NameTranslationModel extends AbstractNameTranslationModel {
 
-    @JsonProperty(value = "id", required = false)
-    private Long id;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public static NameTranslationModel convert(NameTranslation nameTranslation) {
+    public static NameTranslationModel convert(Translation translation) {
         NameTranslationModel nameTranslationModel = new NameTranslationModel();
-        nameTranslationModel.setId(nameTranslation.getId());
-        nameTranslationModel.setName(nameTranslation.getName());
-        nameTranslationModel.setLanguage(nameTranslation.getLanguage());
+        nameTranslationModel.setName(translation.getName());
+        nameTranslationModel.setLanguage(translation.getLanguage());
         return nameTranslationModel;
+    }
+
+    public static TranslationDto convert(NameTranslationModel nameTranslationModel) {
+        TranslationDto translationDto = new TranslationDto();
+        translationDto.setLanguage(nameTranslationModel.getLanguage());
+        translationDto.setName(nameTranslationModel.getName());
+        return translationDto;
     }
 }

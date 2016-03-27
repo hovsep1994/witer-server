@@ -1,11 +1,9 @@
 package com.waiter.server.services.tag.model;
 
 import com.waiter.server.services.common.model.AbstractEntityModel;
-import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Index;
 import javax.persistence.Table;
 import java.util.*;
 

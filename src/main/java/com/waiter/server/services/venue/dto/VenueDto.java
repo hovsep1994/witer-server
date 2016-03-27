@@ -17,7 +17,7 @@ public class VenueDto extends AbstractDtoModel<Venue> {
     private Long menuId;
 
     @Override
-    public void convertToEntityModel(Venue venue) {
+    public void updateProperties(Venue venue) {
         Company company = new Company();
         company.setId(getCompanyId());
         Menu menu = new Menu();

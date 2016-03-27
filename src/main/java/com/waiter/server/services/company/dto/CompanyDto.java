@@ -2,8 +2,6 @@ package com.waiter.server.services.company.dto;
 
 import com.waiter.server.services.common.model.AbstractDtoModel;
 import com.waiter.server.services.company.model.Company;
-import com.waiter.server.services.language.Language;
-import com.waiter.server.services.name.model.NameTranslation;
 
 /**
  * @author shahenpoghosyan
@@ -14,7 +12,7 @@ public class CompanyDto extends AbstractDtoModel<Company>{
     private String phone;
 
     @Override
-    public void convertToEntityModel(Company company) {
+    public void updateProperties(Company company) {
         company.setPhone(getPhone());
         company.setName(getName());
     }

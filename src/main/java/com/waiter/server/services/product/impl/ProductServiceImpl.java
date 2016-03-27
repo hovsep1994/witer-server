@@ -1,12 +1,12 @@
 package com.waiter.server.services.product.impl;
 
-import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.persistence.core.repository.product.ProductRepository;
 import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
+import com.waiter.server.services.evaluation.model.Evaluation;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
 import com.waiter.server.services.gallery.model.Gallery;
@@ -14,11 +14,11 @@ import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.gallery.model.ImageType;
 import com.waiter.server.services.language.Language;
-import com.waiter.server.services.name.dto.NameTranslationDto;
-import com.waiter.server.services.name.model.EntityType;
-import com.waiter.server.services.name.model.NameTranslation;
+import com.waiter.server.services.translation.TranslationService;
+import com.waiter.server.services.translation.dto.TranslationDto;
+import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.product.ProductService;
-import com.waiter.server.services.product.dto.AddProductDto;
+import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.translate.TranslatorService;
@@ -28,9 +28,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,15 +55,38 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private TranslatorService translatorService;
 
+    @Autowired
+    private TranslationService translationService;
+
     @Override
-    public Product create(Long groupId, AddProductDto addProductDto) {
-        assertCategoryId(groupId);
-        assertAddProductDto(addProductDto);
+    public Product create(Long categoryId, ProductDto productDto, TranslationDto translationDto,
+                          TranslationDto descriptionDto) {
+        assertCategoryId(categoryId);
+        Assert.notNull(productDto);
+        Assert.notNull(translationDto);
         Product product = new Product();
-        Category category = categoryService.getById(groupId);
+        Category category = categoryService.getById(categoryId);
         product.setCategory(category);
+        Translation translation = translationService.create(translationDto);
+        Translation description = translationService.create(descriptionDto);
+        product.getNameSet().add(translation);
+        product.getDescriptionSet().add(description);
         product.setGallery(new Gallery());
-        addProductDto.convertToEntityModel(product);
+        product.setEvaluation(new Evaluation());
+        productDto.updateProperties(product);
+        return productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public Product update(Long id, ProductDto productDto, TranslationDto translationDto) {
+        assertProductId(id);
+        Assert.notNull(productDto);
+        Product product = productRepository.findOne(id);
+        Translation translation = product.getNameTranslationByLanguage(translationDto.getLanguage());
+        translationDto.updateProperties(translation);
+        product.setUpdated(new Date());
+        productDto.updateProperties(product);
         return productRepository.save(product);
     }
 
@@ -75,31 +100,36 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getByCategoryId(Long categoryId) {
         assertCategoryId(categoryId);
-        List<Product> products = productRepository.findByCategoryId(categoryId);
-        return products;
+        return productRepository.findByCategoryId(categoryId);
     }
 
     @Override
+    @Transactional
     public Product getById(Long id) {
         assertProductId(id);
         Product product = productRepository.findOne(id);
         if (product == null) {
-            LOGGER.debug("Product with id -{} not found", id);
+            LOGGER.error("Product with id -{} not found", id);
             throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Product not found");
         }
+        Hibernate.initialize(product.getTags());
+        Hibernate.initialize(product.getNameSet());
+        Hibernate.initialize(product.getCategory());
+        Hibernate.initialize(product.getDescriptionSet());
         return product;
     }
 
     @Override
+    @Transactional
     public Product getByIdAndLanguage(Long id, Language language) {
         Product product = getById(id);
-        NameTranslation nameTranslation = product.getNameTranslationByLanguage(language);
-        if (nameTranslation == null) {
-            NameTranslation nameTranslation1 = product.getNameTranslations().get(0);
+        Translation translation = product.getNameTranslationByLanguage(language);
+        if (translation == null) {
+            Translation translation1 = product.getNameSet().stream().findAny().get();
             TextTranslationDto textTranslationDto = new TextTranslationDto();
-            textTranslationDto.setText(nameTranslation1.getName());
-            textTranslationDto.setLanguageFrom(nameTranslation1.getLanguage());
-            textTranslationDto.setLanguageTo(nameTranslation1.getLanguage());
+            textTranslationDto.setText(translation1.getName());
+            textTranslationDto.setLanguageFrom(translation1.getLanguage());
+            textTranslationDto.setLanguageTo(translation1.getLanguage());
             translatorService.translate(textTranslationDto);
         }
         return product;
@@ -118,20 +148,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public GalleryImage getImageByType(Long productId, GalleryImageType galleryImageType) {
-        Gallery gallery = productRepository.findById(productId);
+        Gallery gallery = productRepository.findGalleryById(productId);
         Hibernate.initialize(gallery.getGalleryImages());
         return gallery.getGalleryImages().stream().filter(galleryImage ->
                 galleryImage.getGalleryImageType().equals(galleryImageType)).findFirst().orElse(null);
     }
 
     @Override
-    public Product addTranslation(Long productId, NameTranslationDto nameTranslationDto) {
+    public Product addTranslation(Long productId, TranslationDto translationDto) {
         assertProductId(productId);
         Product product = productRepository.findOne(productId);
-        NameTranslation nameTranslation = new NameTranslation();
-        nameTranslation.setEntityType(EntityType.PRODUCT);
-        nameTranslationDto.convertToEntityModel(nameTranslation);
-        product.getNameTranslations().add(nameTranslation);
+        Translation translation = translationService.create(translationDto);
+        product.getNameSet().add(translation);
         return productRepository.save(product);
     }
 
@@ -148,12 +176,6 @@ public class ProductServiceImpl implements ProductService {
 
     private void assertProductId(Long id) {
         Assert.notNull(id, "product id must not be null");
-    }
-
-    private void assertAddProductDto(AddProductDto addProductDto) {
-        Assert.notNull(addProductDto, "add product dto must nor be null");
-        Assert.notNull(addProductDto.getName(), "product name must nor be null");
-        Assert.notNull(addProductDto.getLanguage(), "product language must nor be null");
     }
 
 }

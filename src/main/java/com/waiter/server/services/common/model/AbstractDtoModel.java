@@ -7,6 +7,6 @@ package com.waiter.server.services.common.model;
  */
 public abstract class AbstractDtoModel<T extends AbstractEntityModel> {
 
-    public abstract void convertToEntityModel(T t);
+    public abstract void updateProperties(T t);
 
 }
