@@ -1,12 +1,17 @@
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("resources/fonts/Myriad-Pro-Regular.ttf");
+}
+
 .signup {
-    margin-top: 60px;
+    font-family: "Raleway ", serif;
     text-align: center;
     background-color:#1D1E22;
     min-height: 200px;
     width: 100%;
     color: white;
     font-size: 20px;
-    padding-top: 15px;
+    padding-top: 25px;
 }
 
 .signup_button {
@@ -14,24 +19,297 @@
     width: 100% !important;
 }
 
+
+/* ----------- descriptions --------------- */
+.business-desc-cell {
+    display: table;
+    font-family: "Myriad Pro", serif;
+    min-height: 350px;
+}
+
+.business-desc-cell-left {
+    padding-right: 5%;
+}
+
+.business-desc-cell-right {
+    text-align: right;
+}
+
+.business-desc-cell div {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.business-desc-cell img {
+    max-height: 250px;
+    max-width: 190px;
+}
+
 .reg_input {
     margin-top: 15px;
 }
 
-@media screen  {
-    .signup-form {
-        width: 65%;
+/*Responsive Content*/
+@media screen {
+    body {
+        background-image: url("resources/business/background-hd.png");
     }
+
+    .business-main {
+        background-size: contain;
+        background-image: url('resources/business/main-hd.png');
+        background-repeat: no-repeat;
+        margin-top: 60px;
+        width: 100%;
+        padding-top: 27.7%; /* background image ratio */
+    }
+
+    .business-title {
+        font-family: "Raleway ", serif;
+        width: 40%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-top: -23%;
+        color: #e6e6e6;
+        font-size: 3vw;
+    }
+
+    .business-title a {
+        margin-top: 15px;
+        width: 8vw;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .desc-row {
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+
+    .desc-header {
+        line-height: 8vh;
+        font-size: 2vw;
+        font-family: Raleway, serif;
+        color: #bd9a0d;
+    }
+
+    .desc-content {
+        font-family: Raleway, serif;
+        color: white;
+        cursor: text !important;
+        font-size: 1.2vw;
+        line-height: 6vh;
+    }
+
+    .signup-form {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+        width: 60%;
+    }
+
+}
+
+@media screen and (max-width: 1200px) {
+
+    body {
+        background-image: url("resources/business/background-md.png");
+    }
+
+    .business-main {
+        background-size: contain;
+        background-image: url('resources/business/main-md.png');
+        background-repeat: no-repeat;
+        margin-top: 60px;
+        width: 100%;
+        padding-top: 35.35%; /* background image ratio */
+    }
+
+    .business-title {
+        font-family: "Raleway ", serif;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-top: -28%;
+        color: #e6e6e6;
+        font-size: 4vw;
+    }
+
+    .business-title a {
+        margin-top: 15px;
+        width: 12vw;
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }
+
+    .desc-row {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
+    .desc-header {
+        line-height: 8vh;
+        font-size: 3vw;
+        font-family: Raleway, serif;
+        color: #bd9a0d;
+    }
+
+    .desc-content {
+        font-family: Raleway, serif;
+        color: white;
+        cursor: text !important;
+        font-size: 1.5vw;
+        line-height: 6vh;
+    }
+
+    .signup-form {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+        width: 80%;
+    }
+
 }
 
 @media screen and (max-width: 992px) {
+
+    body {
+        background-image: url("resources/business/background-md.png");
+    }
+
+    .business-main {
+        background-size: contain;
+        background-image: url('resources/business/main-sd.png');
+        background-repeat: no-repeat;
+        margin-top: 60px;
+        width: 100%;
+        padding-top: 47.2%; /* background image ratio */
+    }
+
+    .business-title {
+        font-family: "Raleway ", serif;
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-top: -40%;
+        color: #e6e6e6;
+        font-size: 5vw;
+    }
+
+    .business-title a {
+        margin-top: 15px;
+        width: 15vw;
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }
+
+    .desc-row {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .desc-header {
+        line-height: 8vh;
+        font-size: 4vw;
+        font-family: Raleway, serif;
+        color: #bd9a0d;
+    }
+
+    .desc-content {
+        font-family: Raleway, serif;
+        color: white;
+        cursor: text !important;
+        font-size: 2vw;
+        line-height: 6vh;
+    }
+
     .signup-form {
-        width: 65%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+        width: 90%;
     }
 }
 
 @media screen and (max-width: 768px) {
+
+    .business-main {
+        background-size: contain;
+        background-image: url('resources/business/main-xd.png');
+        background-repeat: no-repeat;
+        margin-top: 60px;
+        width: 100%;
+        padding-top: 90%; /* background image ratio */
+    }
+
+    .business-title {
+        font-family: "Raleway ", serif;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-top: -80%;
+        color: #e6e6e6;
+        font-size: 10vw;
+    }
+
+    .business-title a {
+        margin-top: 15px;
+        width: 25vw;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .desc-row {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .desc-header {
+        line-height: 8vh;
+        font-size: 6vw;
+        font-family: Raleway, serif;
+        color: #bd9a0d;
+    }
+
+    .desc-content {
+        font-family: Raleway, serif;
+        color: white;
+        cursor: text !important;
+        font-size: 3vw;
+    }
+
     .signup-form {
-        width: 65%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+        width: 90%;
+    }
+
+    .business-desc-cell-left {
+        padding-right: 0 !important;
+        text-align: center;
+    }
+
+    .business-desc-cell-right {
+        text-align: center;
+    }
+
+    .push-up {
+        margin-top: -500px;
+    }
+
+    .push-down {
+        margin-top: 250px;
+    }
+
+    .business-desc-cell {
+        display: table;
+        font-family: "Myriad Pro", serif;
+        min-height: 250px;
+        padding-top: 50px;
     }
 }
