@@ -1,0 +1,195 @@
+body {
+    background-image: url("../resources/business/admin/background.png");
+}
+
+.company-header {
+    font-family: RobotoCondensed-Light, serif;
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.company-header h2 {
+    line-height: 80px;
+}
+
+.company-header h6 {
+    color: #d9d9d9;
+}
+
+.company-panel {
+    margin-bottom: 20px;
+}
+
+/*  ---------------   tabs   ------------- */
+
+#company_tabs.nav-pills {
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+#company_tabs.nav-pills > li > a,
+#company_tabs.nav-pills > li > a:hover,
+#company_tabs.nav-pills > li > a:focus {
+    background-color: #393c40;
+    color: #a1a5a6;
+}
+
+#company_tabs.nav-pills > li.active > a,
+#company_tabs.nav-pills > li.active > a:hover,
+#company_tabs.nav-pills > li.active > a:focus {
+    color: black !important;
+    background-color: white;
+}
+
+/*   -----------  tabs content   -------- */
+
+/*  ----- table headers --- */
+
+.tab-content {
+    background-color: #303136;
+    color: #fff;
+}
+
+.tab-content div.row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.venues-headers-row {
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}
+
+.venues-headers-col-left, .venues-headers-col-right {
+    background-color: #e6ebed;
+    border: 1px #a1a5a6 solid;
+    padding: 8px 0 8px 0;
+}
+
+.venues-headers-col-left {
+    border-top-left-radius: 5px;
+}
+
+.venues-headers-col-right {
+    border-top-right-radius: 5px;
+}
+
+/*  ----- table content venues list --- */
+
+.venues-list-row {
+    width: 100%;
+    color: black;
+    min-height: 300px;
+    background-color: white;
+}
+
+.venues-list {
+    padding-left: 0;
+    padding-right: 0;
+    border-right: 1px #a1a5a6 solid;
+    min-height: 300px;
+}
+
+.venues-list ul {
+    padding-left: 0 !important;
+    text-align: left !important;
+    list-style-type: none;
+}
+
+.venues-list ul li {
+    border-bottom: 1px #d2d7d9 solid;
+    line-height: 40px;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+.venues-list .nav-pills li span {
+    padding: 0 0 0 0 !important;
+    color: black;
+    background-color: white !important;
+    width: 80% !important;
+}
+
+.venues-list .nav-pills li a{
+    background-color: white !important;
+    width: 5% !important;
+    display: inline;
+    float: right;
+    margin-top: 3px;
+}
+
+.venues-list > .nav-pills > li.active > span,
+.venues-list > .nav-pills > li > span:hover,
+.venues-list > .nav-pills > li > span:focus,
+.venues-list > .nav-pills > li.active > span:hover,
+.venues-list > .nav-pills > li.active > span:focus {
+    color: #3cbad3;
+    cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/*  ----- table content venue info --- */
+
+.venues-list-row .tab-content {
+    background-color: inherit !important;
+    color: inherit !important;
+}
+
+
+
+/*  ------ edit venue modal ----- */
+#editVenueModal .modal-dialog {
+    width: 800px !important;
+}
+
+#editVenueModal .modal-dialog .modal-content {
+    background-color: #f7f7f7;
+    padding: 0 5% 0 5%;
+    text-align: center;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-header {
+    padding-top: 30px;
+    border-bottom: 0;
+    text-align: center;
+    font-weight: bold;
+    color: black;
+    font-size: 16px;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body {
+    border-bottom: 0;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div.image {
+    width: 120px;
+    text-align: left;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div.map {
+    width: 500px;
+    height: 330px;
+    margin-top: 30px;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div.inputs input {
+    margin: 7px 10px 7px 10px;
+    display: inline;
+    width: 230px;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div.buttons input {
+    margin: 30px 30px 30px 30px;
+    display: inline;
+    width: 70px;
+}
