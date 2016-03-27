@@ -1,7 +1,7 @@
 package com.waiter.server.api.category.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.waiter.server.api.name.model.requst.AddNameTranslationRequest;
+import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.tag.model.TagModel;
 
 import java.util.Set;
@@ -17,7 +17,7 @@ public class AddCategoryModelRequest {
     private Long menuId;
 
     @JsonProperty("nameTranslation")
-    private AddNameTranslationRequest addNameTranslationRequest;
+    private NameTranslationModel nameTranslationModel;
 
     @JsonProperty(value = "tags", required = false)
     private Set<TagModel> tagModels;
@@ -30,12 +30,12 @@ public class AddCategoryModelRequest {
         this.menuId = menuId;
     }
 
-    public AddNameTranslationRequest getAddNameTranslationRequest() {
-        return addNameTranslationRequest;
+    public NameTranslationModel getNameTranslationModel() {
+        return nameTranslationModel;
     }
 
-    public void setAddNameTranslationRequest(AddNameTranslationRequest addNameTranslationRequest) {
-        this.addNameTranslationRequest = addNameTranslationRequest;
+    public void setNameTranslationModel(NameTranslationModel nameTranslationModel) {
+        this.nameTranslationModel = nameTranslationModel;
     }
 
     public Set<TagModel> getTagModels() {

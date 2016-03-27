@@ -17,7 +17,7 @@ public class GalleryImageDto extends AbstractDtoModel<GalleryImage> {
     private GalleryImageType galleryImageType;
 
     @Override
-    public void convertToEntityModel(GalleryImage galleryImage) {
+    public void updateProperties(GalleryImage galleryImage) {
         galleryImage.setFileName(getFileName());
         galleryImage.setImageType(getImageType());
         galleryImage.setGalleryImageType(getGalleryImageType());

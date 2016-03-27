@@ -1,19 +1,19 @@
 package com.waiter.server.api.product;
 
 import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.product.model.request.AddProductRequest;
-import com.waiter.server.api.product.model.request.AddProductTranslationRequest;
+import com.waiter.server.api.product.model.request.UpdateProductRequest;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.language.Language;
-import com.waiter.server.services.name.dto.NameTranslationDto;
-import com.waiter.server.services.name.model.TranslationType;
+import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.product.ProductService;
-import com.waiter.server.services.product.dto.AddProductDto;
-import com.waiter.server.services.product.model.Product;
+import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
+import com.waiter.server.services.product.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,21 +36,32 @@ public class ProductController {
     private ProductService productService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<ProductModel> save(@RequestBody AddProductRequest addProductRequest) {
-        AddProductDto addProductDto = new AddProductDto();
-        addProductDto.setDescription(addProductRequest.getDescription());
-        addProductDto.setPrice(addProductRequest.getPrice());
-        addProductDto.setLanguage(addProductRequest.getAddNameTranslationRequest().getLanguage());
-        addProductDto.setName(addProductRequest.getAddNameTranslationRequest().getName());
-        addProductDto.setTags(TagModel.convert(addProductRequest.getTagModels()));
-        Product product = productService.create(addProductRequest.getGroupId(), addProductDto);
-        ProductModel productModel = ProductModel.convert(product, addProductRequest.getAddNameTranslationRequest().getLanguage());
+    public ResponseEntity<ProductModel> addProduct(@RequestBody AddProductRequest request) {
+        ProductDto productDto = new ProductDto();
+        productDto.setPrice(request.getPrice());
+        productDto.setTags(TagModel.convert(request.getTagModels()));
+        TranslationDto name = new TranslationDto(request.getName(), request.getLanguage());
+        TranslationDto description = new TranslationDto(request.getDescription(), request.getLanguage());
+        Product product = productService.create(request.getGroupId(), productDto, name, description);
+        ProductModel productModel = ProductModel.convert(product, request.getLanguage());
         return ResponseEntity.forResponse(productModel);
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ResponseEntity<ProductModel> updateProduct(@RequestBody UpdateProductRequest request) {
+        ProductDto productDto = new ProductDto();
+//        productDto.setDescription(request.getDescription());
+        productDto.setPrice(request.getPrice());
+        productDto.setTags(TagModel.convert(request.getTagModels()));
+//        TranslationDto nameTranslationDto = NameTranslationModel.convert(request.getNameTranslationModel());
+//        Product product = productService.update(request.getId(), productDto, nameTranslationDto);
+//        ProductModel productModel = ProductModel.convert(product, request.getNameTranslationModel().getLanguage());
+        return ResponseEntity.forResponse(new ProductModel());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<ProductModel> getByProductId(@PathVariable Long id, @RequestParam Language language) {
-        Product product = productService.getById(id);
+        Product product = productService.getByIdAndLanguage(id, language);
         ProductModel productModel = ProductModel.convert(product, language);
         return ResponseEntity.forResponse(productModel);
     }
@@ -79,13 +90,10 @@ public class ProductController {
         return ResponseEntity.forResponse(products);
     }
 
-    @RequestMapping(value = "/addTranslation", method = RequestMethod.POST)
-    public ResponseEntity<Product> addTranslation(@RequestBody AddProductTranslationRequest request) {
-        NameTranslationDto nameTranslationDto = new NameTranslationDto();
-        nameTranslationDto.setTranslationType(TranslationType.MANUAL);
-        nameTranslationDto.setName(request.getAddNameTranslationRequest().getName());
-        nameTranslationDto.setLanguage(request.getAddNameTranslationRequest().getLanguage());
-        Product product = productService.addTranslation(request.getProductId(), nameTranslationDto);
+    @RequestMapping(value = "{id}/addTranslation", method = RequestMethod.POST)
+    public ResponseEntity<Product> addTranslation(@PathVariable Long id, @RequestBody NameTranslationModel nameTranslationModel) {
+        TranslationDto translationDto = NameTranslationModel.convert(nameTranslationModel);
+        Product product = productService.addTranslation(id, translationDto);
         return ResponseEntity.forResponse(product);
     }
 

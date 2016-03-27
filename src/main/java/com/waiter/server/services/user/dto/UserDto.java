@@ -17,7 +17,7 @@ public class UserDto extends AbstractDtoModel<User>{
     private Long companyId;
 
     @Override
-    public void convertToEntityModel(User user) {
+    public void updateProperties(User user) {
         Company company = new Company();
         company.setId(getCompanyId());
         user.setName(getName());

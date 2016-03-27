@@ -1,7 +1,9 @@
 package com.waiter.server.services.category.model;
 
-import com.waiter.server.services.common.model.AbstractNamedEntityModel;
+import com.waiter.server.services.common.model.AbstractEntityModel;
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.model.Menu;
+import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
 
@@ -15,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "category")
-public class Category extends AbstractNamedEntityModel {
+public class Category extends AbstractEntityModel {
 
     @Column(name = "image")
     private String image;
@@ -30,7 +32,11 @@ public class Category extends AbstractNamedEntityModel {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Tag> tags;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Translation> translations;
+
     public Category() {
+        translations = new HashSet<>();
         tags = new HashSet<>();
     }
 
@@ -64,5 +70,18 @@ public class Category extends AbstractNamedEntityModel {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Set<Translation> getTranslations() {
+        return translations;
+    }
+
+    public void setTranslations(Set<Translation> translations) {
+        this.translations = translations;
+    }
+
+    public Translation getNameTranslationByLanguage(Language language) {
+        return translations.stream().filter(nameTranslation ->
+                nameTranslation.getLanguage().equals(language)).findFirst().orElse(null);
     }
 }

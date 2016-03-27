@@ -1,4 +1,4 @@
-package com.waiter.server.services.name.model;
+package com.waiter.server.services.translation.model;
 
 /**
  * @author shahenpoghosyan

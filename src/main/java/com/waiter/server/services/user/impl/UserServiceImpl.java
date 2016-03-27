@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
                     "User with email " + userDto.getEmail() + "exists");
         }
         User user = new User();
-        userDto.convertToEntityModel(user);
+        userDto.updateProperties(user);
         user.setToken(UUID.randomUUID().toString());
         userRepository.save(user);
         return SignUpStatus.OK;

@@ -1,9 +1,11 @@
 package com.waiter.server.services.product.model;
 
-import com.waiter.server.services.common.model.AbstractNamedEntityModel;
 import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.evaluation.model.Evaluation;
 import com.waiter.server.services.gallery.model.Gallery;
+import com.waiter.server.services.language.Language;
+import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.tag.model.Tag;
 
 import javax.persistence.*;
@@ -15,14 +17,11 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "product")
-public class Product extends AbstractNamedEntityModel {
+public class Product extends AbstractEntityModel {
 
     @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "gallery_id", nullable = false)
     private Gallery gallery;
-
-    @Column(name = "description")
-    private String description;
 
     @Column(name = "price")
     private Double price;
@@ -38,7 +37,17 @@ public class Product extends AbstractNamedEntityModel {
     @JoinColumn(name = "evaluation_id", nullable = false)
     private Evaluation evaluation;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "product_description")
+    private Set<Translation> descriptionSet;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "product_name")
+    private Set<Translation> nameSet;
+
     public Product() {
+        descriptionSet = new HashSet<>();
+        nameSet = new HashSet<>();
         tags = new HashSet<>();
     }
 
@@ -48,14 +57,6 @@ public class Product extends AbstractNamedEntityModel {
 
     public void setGallery(Gallery gallery) {
         this.gallery = gallery;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Double getPrice() {
@@ -88,5 +89,31 @@ public class Product extends AbstractNamedEntityModel {
 
     public void setEvaluation(Evaluation evaluation) {
         this.evaluation = evaluation;
+    }
+
+    public Set<Translation> getDescriptionSet() {
+        return descriptionSet;
+    }
+
+    public void setDescriptionSet(Set<Translation> descriptionSet) {
+        this.descriptionSet = descriptionSet;
+    }
+
+    public Set<Translation> getNameSet() {
+        return nameSet;
+    }
+
+    public void setNameSet(Set<Translation> nameSet) {
+        this.nameSet = nameSet;
+    }
+
+    public Translation getNameTranslationByLanguage(Language language) {
+        return nameSet.stream().filter(nameTranslation ->
+                nameTranslation.getLanguage().equals(language)).findFirst().orElse(null);
+    }
+
+    public Translation getDescriptionByLanguage(Language language) {
+        return descriptionSet.stream().filter(nameTranslation ->
+                nameTranslation.getLanguage().equals(language)).findFirst().orElse(null);
     }
 }

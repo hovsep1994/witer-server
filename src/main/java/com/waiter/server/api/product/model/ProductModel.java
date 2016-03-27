@@ -23,9 +23,6 @@ public class ProductModel extends AbstractProductModel {
     @JsonProperty(value = "category")
     private CategoryModel categoryModel;
 
-    @JsonProperty(value = "nameTranslation")
-    private NameTranslationModel nameTranslationModel;
-
     public Long getId() {
         return id;
     }
@@ -42,25 +39,13 @@ public class ProductModel extends AbstractProductModel {
         this.categoryModel = categoryModel;
     }
 
-    public NameTranslationModel getNameTranslationModel() {
-        return nameTranslationModel;
-    }
-
-    public void setNameTranslationModel(NameTranslationModel nameTranslationModel) {
-        this.nameTranslationModel = nameTranslationModel;
-    }
-
     public static ProductModel convert(Product product, Language language) {
         ProductModel productModel = new ProductModel();
         productModel.setId(product.getId());
-        productModel.setDescription(product.getDescription());
+        productModel.setDescription(product.getDescriptionByLanguage(language).getName());
+        productModel.setDescription(product.getNameTranslationByLanguage(language).getName());
         productModel.setPrice(product.getPrice());
         productModel.setTagModels(TagModel.convertToModel(product.getTags()));
-        product.getNameTranslations().stream().forEach(nameTranslation1 -> {
-            if (nameTranslation1.getLanguage() == language) {
-                productModel.setNameTranslationModel(NameTranslationModel.convert(nameTranslation1));
-            }
-        });
         return productModel;
     }
 

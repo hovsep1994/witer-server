@@ -6,8 +6,12 @@ import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.category.dto.CategoryDto;
 import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
+import com.waiter.server.services.translation.TranslationService;
+import com.waiter.server.services.translation.dto.TranslationDto;
+import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.tag.TagService;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
@@ -36,13 +40,19 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private TagService tagService;
 
+    @Autowired
+    private TranslationService translationService;
+
     @Override
     @Transactional
-    public Category create(Long menuId, CategoryDto categoryDto) {
+    public Category create(Long menuId, CategoryDto categoryDto, TranslationDto translationDto) {
         Menu menu = menuService.getById(menuId);
+        Translation translation = translationService.create(translationDto);
         Category category = new Category();
         category.setMenu(menu);
-        categoryDto.convertToEntityModel(category);
+        category.getTranslations().add(translation);
+        categoryDto.updateProperties(category);
+        Hibernate.initialize(category.getNameTranslationByLanguage(translation.getLanguage()));
         return categoryRepository.save(category);
     }
 
@@ -54,16 +64,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category update(Category category) {
-        Assert.notNull(category, "category must not be null");
-        Assert.notNull(category.getId(), "category id must not be null");
-        /*
-         * checking does product with id exist
-         */
-        getById(category.getId());
+    @Transactional
+    public Category update(Long categoryId, CategoryDto categoryDto, TranslationDto translationDto) {
+        assertCategoryId(categoryId);
+        assertCategoryDto(categoryDto);
+        Category category = getById(categoryId);
+        Translation translation = category.getNameTranslationByLanguage(translationDto.getLanguage());
+        translationDto.updateProperties(translation);
+        categoryDto.updateProperties(category);
         category.setUpdated(new Date());
-        Category updatedCategory = categoryRepository.save(category);
-        return updatedCategory;
+        return categoryRepository.save(category);
     }
 
     @Override
@@ -76,12 +86,32 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Category not found");
         }
         Hibernate.initialize(category.getMenu());
+        Hibernate.initialize(category.getTranslations());
+        Hibernate.initialize(category.getTags());
+        return category;
+    }
+
+    @Override
+    @Transactional
+    public Category getByIdAndLanguage(Long id, Language language) {
+        assertCategoryId(id);
+        Category category = categoryRepository.findOne(id);
+        if (category == null) {
+            LOGGER.error("category with id -{} not found", id);
+            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Category not found");
+        }
+        Hibernate.initialize(category.getMenu());
         Hibernate.initialize(category.getTags());
         Hibernate.initialize(category.getProducts());
+        Hibernate.initialize(category.getNameTranslationByLanguage(language));
         return category;
     }
 
     private void assertCategoryId(Long id) {
         Assert.notNull(id, "category id must not be null");
+    }
+
+    private void assertCategoryDto(CategoryDto categoryDto) {
+        Assert.notNull(categoryDto, "category dto must not be null");
     }
 }

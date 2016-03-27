@@ -3,10 +3,14 @@ package com.waiter.server.services.evaluation.model;
 import com.waiter.server.services.common.model.AbstractEntityModel;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by hovsep on 3/12/16.
  */
+@Entity
+@Table(name = "rate")
 public class Rate extends AbstractEntityModel{
 
     @Column(name = "customerToken", nullable = false)

@@ -21,7 +21,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company create(CompanyDto companyDto) {
         Company company = new Company();
-        companyDto.convertToEntityModel(company);
+        companyDto.updateProperties(company);
         return companyRepository.save(company);
     }
 

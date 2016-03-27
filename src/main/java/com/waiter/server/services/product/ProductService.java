@@ -1,12 +1,11 @@
 package com.waiter.server.services.product;
 
 import com.waiter.server.services.common.exception.ServiceException;
-import com.waiter.server.services.gallery.dto.GalleryImageDto;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.language.Language;
-import com.waiter.server.services.name.dto.NameTranslationDto;
-import com.waiter.server.services.product.dto.AddProductDto;
+import com.waiter.server.services.translation.dto.TranslationDto;
+import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 
@@ -22,9 +21,11 @@ public interface ProductService {
 
     Product getByIdAndLanguage(Long id, Language language);
 
-    List<Product> getByCategoryId(Long groupId);
+    List<Product> getByCategoryId(Long categoryId);
 
-    Product create(Long groupId, AddProductDto addProductDto);
+    Product create(Long categoryId, ProductDto productDto, TranslationDto translationDto, TranslationDto descriptionDto);
+
+    Product update(Long id, ProductDto productDto, TranslationDto translationDto);
 
     GalleryImage addImage(Long productId, InputStream inputStream) throws ServiceException;
 
@@ -32,7 +33,7 @@ public interface ProductService {
 
     GalleryImage getImageByType(Long productId, GalleryImageType galleryImageType);
 
-    Product addTranslation(Long productId, NameTranslationDto nameTranslationDto);
+    Product addTranslation(Long productId, TranslationDto translationDto);
 
     List<Product> search(ProductSearchParameters productSearchParams);
 

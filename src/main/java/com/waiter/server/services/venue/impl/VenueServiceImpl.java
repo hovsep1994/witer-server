@@ -30,7 +30,7 @@ public class VenueServiceImpl implements VenueService {
     public Venue create(VenueDto venueDto) {
         assertVenueDto(venueDto);
         Venue venue = new Venue();
-        venueDto.convertToEntityModel(venue);
+        venueDto.updateProperties(venue);
         return venueRepository.save(venue);
     }
 
@@ -42,7 +42,7 @@ public class VenueServiceImpl implements VenueService {
         if (venue == null) {
             throw new RuntimeException("venue with id not found");
         }
-        venueDto.convertToEntityModel(venue);
+        venueDto.updateProperties(venue);
         return venueRepository.save(venue);
     }
 
