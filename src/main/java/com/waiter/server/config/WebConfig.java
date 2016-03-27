@@ -1,14 +1,9 @@
 package com.waiter.server.config;
 
-import com.waiter.server.api.common.AuthenticationInterceptor;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -16,18 +11,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {
-        "com.waiter.server.api",
-        "com.waiter.server.services.*.impl",
-        "com.waiter.server.externalclients"})
+@ComponentScan(basePackages = "com.waiter.server.web")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static final Logger logger = Logger.getLogger(WebConfig.class);
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 
 //    @Bean
 //    public AuthenticationInterceptor authenticationInterceptor() {

@@ -27,7 +27,6 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories("com.waiter.server.persistence.*")
 @EnableTransactionManagement
-//@ComponentScan(basePackages = "com.waiter.server.persistence.core.repository.*")
 public class DataAccessConfig {
 
     @Autowired
