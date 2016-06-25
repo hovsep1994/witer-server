@@ -2,6 +2,7 @@ package com.waiter.server.config;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -32,12 +33,27 @@ public class DataAccessConfig {
     @Autowired
     private DataSource dataSource;
 
+    @Value("db.url")
+    private String dbUrl;
+
+    @Value("db.username")
+    private String username;
+
+    @Value("db.password")
+    private String password;
+
+    @Value("hibernate.hbm2ddl.auto")
+    private String auto;
+
+    @Value("javax.persistence.lock.timeout")
+    private String timeout;
+
     @Bean
     public DataSource createJDBCDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
-        dataSource.setUrl("jdbc:mysql://localhost/WAITER1");
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setUrl(dbUrl);
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         return dataSource;
     }
@@ -76,9 +92,9 @@ public class DataAccessConfig {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.hbm2ddl.auto", auto);
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-        properties.setProperty("javax.persistence.lock.timeout", "10000");
+        properties.setProperty("javax.persistence.lock.timeout", timeout);
         properties.setProperty("hibernate.format_sql", "false");
         properties.setProperty("hibernate.id.new_generator_mappings", "false");
         return properties;

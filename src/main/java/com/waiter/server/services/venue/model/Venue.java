@@ -18,12 +18,12 @@ public class Venue extends AbstractEntityModel {
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", nullable = false)
+    @OneToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = true)
     private Company company;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id", nullable = false)
+    @OneToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id", nullable = true)
     private Menu menu;
 
     public Company getCompany() {

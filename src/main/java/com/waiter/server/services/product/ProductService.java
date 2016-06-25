@@ -35,6 +35,8 @@ public interface ProductService {
 
     Product addTranslation(Long productId, TranslationDto translationDto);
 
+    Product setRateByCustomerToken(Long productId, String customerToken, Integer rating);
+
     List<Product> search(ProductSearchParameters productSearchParams);
 
 }

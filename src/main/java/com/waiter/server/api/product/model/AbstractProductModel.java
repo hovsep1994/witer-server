@@ -2,6 +2,7 @@ package com.waiter.server.api.product.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.waiter.server.api.common.model.AbstractApiLanguageModel;
 import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.language.Language;
@@ -11,7 +12,7 @@ import java.util.Set;
 /**
  * Created by hovsep on 3/6/16.
  */
-public abstract class AbstractProductModel {
+public abstract class AbstractProductModel extends AbstractApiLanguageModel {
 
     @JsonProperty(value = "tags", required = false)
     private Set<TagModel> tagModels;
@@ -24,9 +25,6 @@ public abstract class AbstractProductModel {
 
     @JsonProperty(value = "nameTranslation")
     private String name;
-
-    @JsonProperty(value = "language")
-    private Language language;
 
     public Set<TagModel> getTagModels() {
         return tagModels;
@@ -60,11 +58,4 @@ public abstract class AbstractProductModel {
         this.name = name;
     }
 
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
 }

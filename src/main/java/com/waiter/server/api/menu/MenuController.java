@@ -22,9 +22,6 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @Autowired
-    private HibernateEntityManagerFactory hibernateEntityManagerFactory;
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<MenuModel> findOne(@PathVariable Long id) {
         Menu menu = menuService.getById(id);
