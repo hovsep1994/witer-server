@@ -29,7 +29,16 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>business-admin</servlet-name>
-        <url-pattern>/api/business/admin</url-pattern>
+        <url-pattern>/web/business/admin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>menu-edit</servlet-name>
+        <jsp-file>/business/edit-menu.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>menu-edit</servlet-name>
+        <url-pattern>/web/business/admin/menu</url-pattern>
     </servlet-mapping>
 
     <servlet>

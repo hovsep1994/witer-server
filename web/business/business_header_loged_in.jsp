@@ -16,7 +16,7 @@
 
         <div class="navbar-account">
             <span class="dropdown-toggle" data-toggle="dropdown">
-                Company Name &nbsp;&nbsp;<span class="caret"></span>
+                ${user} &nbsp;&nbsp;<span class="caret"></span>
             </span> <br>
             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1">
                 <li ng-init="setting_src = '/styles/resources/business/account-settings.png'"

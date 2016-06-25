@@ -18,6 +18,7 @@ public class MenuKitApplicationInitializer implements WebApplicationInitializer 
     public void onStartup(ServletContext servletContext) throws ServletException {
         // root context
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
+
         rootContext.register(DataAccessConfig.class, RootConfig.class);
         rootContext.scan("com.waiter.server.services.*.impl", "com.waiter.server.externalclients");
         servletContext.addListener(new ContextLoaderListener(rootContext));
@@ -28,7 +29,7 @@ public class MenuKitApplicationInitializer implements WebApplicationInitializer 
         webContext.register(WebConfig.class);
         ServletRegistration.Dynamic dispatcherWeb = servletContext.addServlet("dispatcherWeb", new DispatcherServlet(webContext));
         dispatcherWeb.setLoadOnStartup(1);
-        dispatcherWeb.addMapping("/*");
+        dispatcherWeb.addMapping("/");
 
         // dispatcher servlet 2
         AnnotationConfigWebApplicationContext apiContext = new AnnotationConfigWebApplicationContext();
