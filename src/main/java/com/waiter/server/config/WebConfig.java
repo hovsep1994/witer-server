@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -23,11 +24,19 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 //
 //    @Autowired
 //    private AuthenticationInterceptor authenticationInterceptor;
-//
+
 //    @Override
 //    public void addInterceptors(InterceptorRegistry registry) {
 //        logger.info("auth interceptor added. ");
 //        registry.addInterceptor(authenticationInterceptor).addPathPatterns("/heartbeat");
 //    }
 
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/styles/**")
+                .addResourceLocations("/styles/");
+        registry.addResourceHandler("/scripts/**")
+                .addResourceLocations("/scripts/");
+    }
 }

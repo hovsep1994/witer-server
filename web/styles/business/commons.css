@@ -1,0 +1,21 @@
+@font-face {
+    font-family: "Myriad Pro";
+    src: url("../resources/fonts/Myriad-Pro-Regular.ttf");
+}
+
+@font-face {
+    font-family: RobotoCondensed-Light;
+    src: url("../resources/fonts/RobotoCondensed-Light.ttf");
+}
+
+@font-face {
+    font-family: Raleway;
+    src: url("../resources/fonts/Raleway-Light.ttf");
+}
+
+.admin-content {
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+}

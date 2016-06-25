@@ -30,7 +30,7 @@ public class VenueController {
         return ResponseEntity.forResponse(venueModel);
     }
 
-    @RequestMapping(value = "/add}", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<VenueModel> createMenu(@RequestBody AddVenueRequest addVenueRequest) {
         VenueDto venueDto = new VenueDto();
         venueDto.setMenuId(addVenueRequest.getMenuId());

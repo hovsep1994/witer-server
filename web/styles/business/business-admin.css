@@ -1,0 +1,249 @@
+body {
+    background-image: url("../resources/business/admin/background.png");
+}
+
+.company-header {
+    font-family: RobotoCondensed-Light, serif;
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.company-header h2 {
+    line-height: 80px;
+}
+
+.company-header h6 {
+    color: #d9d9d9;
+}
+
+.company-panel {
+    margin-bottom: 20px;
+}
+
+/*  ---------------   tabs   ------------- */
+
+#company_tabs.nav-pills {
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+#company_tabs.nav-pills > li > a,
+#company_tabs.nav-pills > li > a:hover,
+#company_tabs.nav-pills > li > a:focus {
+    background-color: #393c40;
+    color: #a1a5a6;
+}
+
+#company_tabs.nav-pills > li.active > a,
+#company_tabs.nav-pills > li.active > a:hover,
+#company_tabs.nav-pills > li.active > a:focus {
+    color: black !important;
+    background-color: white;
+}
+
+/*   -----------  tabs content   -------- */
+
+/*  ----- table headers --- */
+
+.tab-content {
+    background-color: #303136;
+    color: #fff;
+}
+
+.tab-content div.row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.panel-headers-row {
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}
+
+.panel-headers-col-left, .panel-headers-col-right, .panel-headers-col-middle {
+    background-color: #e6ebed;
+    border: 1px #a1a5a6 solid;
+    padding: 8px 0 8px 0;
+}
+
+.panel-headers-col-left {
+    border-top-left-radius: 5px;
+}
+
+.panel-headers-col-right {
+    border-top-right-radius: 5px;
+}
+
+/*  ----- table content venues list --- */
+
+.content-row {
+    width: 100%;
+    color: black;
+    min-height: 100%;
+    background-color: white;
+}
+
+.item-list {
+    padding-top: 10px;
+    padding-left: 0;
+    padding-right: 0;
+    border-right: 1px #a1a5a6 solid;
+    min-height: 120%;
+}
+
+.item-list ul {
+    padding-left: 0 !important;
+    text-align: left !important;
+    list-style-type: none;
+}
+
+.item-list ul li {
+    border-bottom: 1px #d2d7d9 solid;
+    line-height: 40px;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+.item-list .nav-pills li span {
+    padding: 0 0 0 0 !important;
+    color: black;
+    background-color: white !important;
+    width: 80% !important;
+}
+
+.item-list .nav-pills li a {
+    background-color: white !important;
+    width: 5% !important;
+    display: inline;
+    float: right;
+    margin-top: 2px;
+    padding-left: 0 !important;
+    margin-left: 15px;
+}
+
+.item-list > .nav-pills > li.active > span,
+.item-list > .nav-pills > li > span:hover,
+.item-list > .nav-pills > li > span:focus,
+.item-list > .nav-pills > li.active > span:hover,
+.item-list > .nav-pills > li.active > span:focus {
+    color: #3cbad3;
+    cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/*  ----- table content venue info --- */
+
+.content-row .tab-content {
+    background-color: inherit !important;
+    color: inherit !important;
+}
+
+/*  ------ edit venue modal ----- */
+#editVenueModal .modal-dialog {
+    width: 800px !important;
+}
+
+#editVenueModal .modal-dialog .modal-content {
+    background-color: #f7f7f7;
+    padding: 0 5% 0 5%;
+    text-align: center;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-header {
+    padding-top: 30px;
+    border-bottom: 0;
+    text-align: center;
+    font-weight: bold;
+    color: black;
+    font-size: 16px;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body {
+    border-bottom: 0;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div.image {
+    width: 120px;
+    text-align: left;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div.map {
+    width: 500px;
+    height: 330px;
+    margin-top: 30px;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div.inputs input {
+    margin: 7px 10px 7px 10px;
+    display: inline;
+    width: 230px;
+}
+
+#editVenueModal .modal-dialog .modal-content .modal-body div.buttons input {
+    margin: 30px 30px 30px 30px;
+    display: inline;
+    width: 70px;
+}
+
+/*  ------ venue info ----- */
+
+#venue-info {
+    padding-top: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.venue-data div {
+    display: inline-block;
+    min-width: 130px;
+    font-weight: bold;
+}
+
+.venue-data div, span {
+    padding-bottom: 5px;
+
+}
+
+
+
+
+/* ------------ Product Items -------------- */
+.product-item {
+    min-height: 150px;
+    padding: 10px 0 10px 0;
+    background-color: #f4f6f7;
+}
+
+.product-prices {
+    position: relative;
+    text-align: center;
+    height: 150px;
+}
+
+.product-prices:after {
+    content:'';
+    width:1px;
+    height:80px;
+    background:#cccccc;
+    position:absolute;
+    left: 0;
+    top: 20px;
+}
+
+.product-prices div {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    height: 130px;
+    vertical-align: middle;
+}

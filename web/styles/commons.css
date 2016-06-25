@@ -8,7 +8,7 @@
     src: url("resources/fonts/Raleway-Light.ttf");
 }
 
-a:hover {
+a:hover, a:active, a:focus {
     text-decoration: none !important;
 }
 
@@ -36,6 +36,10 @@ a:hover {
     display: inline-block;
 }
 
+.brand-fixed {
+    margin-left: 0;
+}
+
 .navbar_bussiness {
     position: absolute;
     right: 0;
@@ -52,7 +56,7 @@ a:hover {
     cursor: pointer;
 }
 
-a.brand:hover {
+a.brand:hover, a.brand:focus, a.brand:visited {
     color: white;
 }
 
@@ -98,25 +102,30 @@ a.brand:hover {
 
 /* ------ account info --------- */
 
-.navbar_account {
-    position: absolute;
-    right: 0;
+.navbar-account {
+    float: right !important;
     font-size: 13px;
     color: white;
     margin-top: 20px;
-    margin-right: 20%;
+    text-align: right !important;
 }
 
-.account_dropdown {
-    margin-top: 20px;
+.navbar-account ul {
+    margin-top: 23px;
+    position: relative !important;
+    float: right !important;
     background-color: #17181d;
 }
 
-.account_dropdown li a {
+.navbar-account ul li {
+    margin: 7px 0 7px 0;
+}
+
+.navbar-account ul li a {
     color: #828284;
 }
 
-.account_dropdown li a:hover {
+.navbar-account ul li a:hover {
     color: white;
     background-color: inherit !important;
 }
@@ -124,7 +133,7 @@ a.brand:hover {
 
 /*Responsive content*/
 @media screen {
-    .brand {
+    .brand-responsive {
         margin-left: 20%;
     }
 
@@ -134,7 +143,7 @@ a.brand:hover {
 }
 
 @media screen and (max-width: 1200px) {
-    .brand {
+    .brand-responsive {
         margin-left: 15%;
     }
 
@@ -144,8 +153,8 @@ a.brand:hover {
 }
 
 
-@media screen and (max-width: 997px) {
-    .brand {
+@media screen and (max-width: 992px) {
+    .brand-responsive {
         margin-left: 10%;
     }
 
@@ -155,8 +164,8 @@ a.brand:hover {
 }
 
 
-@media screen and (max-width: 762px) {
-    .brand {
+@media screen and (max-width: 768px) {
+    .brand-responsive {
         margin-left: 5%;
     }
 
