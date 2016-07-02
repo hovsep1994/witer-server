@@ -17,21 +17,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static final Logger logger = Logger.getLogger(WebConfig.class);
 
-//    @Bean
-//    public AuthenticationInterceptor authenticationInterceptor() {
-//        return new AuthenticationInterceptor();
-//    }
-//
-//    @Autowired
-//    private AuthenticationInterceptor authenticationInterceptor;
-
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        logger.info("auth interceptor added. ");
-//        registry.addInterceptor(authenticationInterceptor).addPathPatterns("/heartbeat");
-//    }
-
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/styles/**")

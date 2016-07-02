@@ -1,5 +1,6 @@
 package com.waiter.server.config;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,8 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 public class RootConfig {
+
+    private static final Logger logger = Logger.getLogger(RootConfig.class);
 
     @Bean
     public RestTemplate restTemplate() {
