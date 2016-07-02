@@ -36,7 +36,7 @@ public class DataAccessConfig {
     public DataSource createJDBCDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("password");
         dataSource.setUrl("jdbc:mysql://localhost/WAITER1");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         return dataSource;

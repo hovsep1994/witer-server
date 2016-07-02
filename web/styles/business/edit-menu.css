@@ -1,0 +1,157 @@
+body {
+    background-color: #edf1f2 !important;
+}
+
+.edit-menu-content {
+    min-height: 90%;
+    margin-bottom: 100px;
+}
+
+.edit-menu-content > div {
+    width: 1170px;
+    margin: 0 auto;
+    color: black;
+}
+
+.edit-menu-title {
+    padding-top: 50px;
+    text-align: center;
+    color: #6dc6d9 !important;
+    padding-bottom: 20px;
+    font-size: 20px;
+}
+
+.menu-info-inputs {
+    min-width: 270px;
+    display: inline-block;
+    padding-right: 30px;
+}
+
+#add-category {
+    padding-bottom: 39px;
+}
+
+#add-category span {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+#categories ul.nav-tabs > li.active > a{
+    background-color: #393c40 !important;
+    color: white;
+}
+
+#categories ul.nav-tabs > li > a:hover  {
+    background-color: #393c40 !important;
+    color: white;
+}
+
+#categories ul.nav-tabs > li > a {
+    background-color: #d2d7d9 !important;
+    color: #a1a5a6;
+}
+
+/*  ----------- product item  ---------- */
+
+.product {
+    padding-top: 25px !important;
+}
+.product-buttons {
+    width: 100%;
+    min-height: 40px;
+}
+
+.product-buttons > button {
+    float: right;
+    margin-left: 10px;
+    height: 40px;
+}
+
+.product-buttons .available, .not-available {
+    width: 110px;
+}
+
+.product-buttons > .available:hover, .not-available:hover, .delete:hover {
+    background-color: #ebf0f2 !important;
+    color: #9ea2a4 !important;
+    border-color: #9ea2a4 !important;
+}
+
+.product-buttons > .available, .delete {
+    background-color: #ebf0f2 !important;
+    color: #b6bbbc !important;
+    border-color: #d2d7d9 !important;
+}
+
+.product-buttons > .available > span.text-not-available {
+    display: none;
+}
+
+.product-buttons > .available:hover > span.text-available {
+    display: none;
+}
+
+.product-buttons > .available:hover > span.text-not-available {
+    display: inline;
+}
+
+.product-buttons > .not-available {
+    background-color: #d32c43;
+    color: white;
+    border-color: white;
+}
+
+.product-buttons > .not-available > span.text-available {
+    display: none;
+}
+
+.product-buttons > .not-available:hover > span.text-not-available {
+    display: none;
+}
+
+.product-buttons > .not-available:hover > span.text-available {
+    display: inline;
+}
+
+.product-info {
+    margin-top: 5px;
+    background-color: #f7f7f7;
+    min-height: 250px;
+    padding-top: 30px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.product-info > div > input {
+    margin-bottom: 10px;
+}
+
+.product-info > div > textarea {
+    margin-bottom: 10px;
+}
+
+.add-product {
+    font-weight: bold;
+    min-height: 300px;
+    text-align: center;
+    padding-top: 80px;
+    padding-bottom: 120px;
+    color: #d2d7d9;
+    font-size: 18px;
+}
+
+.menu-attach {
+    background-color: white !important;
+}
+
+.menu-attach > div {
+    min-height: 80px;
+    width: 1170px;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.menu-attach > div > .dropup > button {
+    height: 35px;
+    background-color: #393c40 !important;
+}
