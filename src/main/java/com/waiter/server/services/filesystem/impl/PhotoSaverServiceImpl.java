@@ -24,7 +24,7 @@ public class PhotoSaverServiceImpl implements PhotoSaverService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PhotoSaverServiceImpl.class);
 
-    private static final String UPLOAD_DIRECTORY = "/tmp/waiter/static/";
+    private static final String UPLOAD_DIRECTORY = "/opt/waiter/static/";
     private static final String PATH = "http://localhost:8080/photos/";
     private static final String ORIGINALS_PATH = "originals";
     private static final String DELIMITER_DOT = ".";

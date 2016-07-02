@@ -7,6 +7,7 @@ import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.evaluation.model.Evaluation;
+import com.waiter.server.services.evaluation.model.Rate;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
 import com.waiter.server.services.gallery.model.Gallery;
@@ -34,6 +35,10 @@ import org.springframework.util.Assert;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
+import static org.springframework.util.Assert.isTrue;
+import static org.springframework.util.Assert.notNull;
 
 /**
  * @author shahenpoghosyan
@@ -62,8 +67,8 @@ public class ProductServiceImpl implements ProductService {
     public Product create(Long categoryId, ProductDto productDto, TranslationDto translationDto,
                           TranslationDto descriptionDto) {
         assertCategoryId(categoryId);
-        Assert.notNull(productDto);
-        Assert.notNull(translationDto);
+        notNull(productDto);
+        notNull(translationDto);
         Product product = new Product();
         Category category = categoryService.getById(categoryId);
         product.setCategory(category);
@@ -81,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public Product update(Long id, ProductDto productDto, TranslationDto translationDto) {
         assertProductId(id);
-        Assert.notNull(productDto);
+        notNull(productDto);
         Product product = productRepository.findOne(id);
         Translation translation = product.getNameTranslationByLanguage(translationDto.getLanguage());
         translationDto.updateProperties(translation);
@@ -164,6 +169,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product setRateByCustomerToken(Long productId, String customerToken, Integer rating) {
+        assertProductId(productId);
+        notNull(customerToken);
+        notNull(rating);
+        isTrue(rating >= 0 && rating <= 10);
+        return productRepository.setRatingByCustomerToken(productId, customerToken, rating);
+    }
+
+    @Override
     public List<Product> search(ProductSearchParameters params) {
         List<Product> products = productRepository.search(
                 params.getName(), params.getLatitude(), params.getLongitude());
@@ -171,11 +185,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void assertCategoryId(Long categoryId) {
-        Assert.notNull(categoryId, "category id must not be null");
+        notNull(categoryId, "category id must not be null");
     }
 
     private void assertProductId(Long id) {
-        Assert.notNull(id, "product id must not be null");
+        notNull(id, "product id must not be null");
     }
 
 }

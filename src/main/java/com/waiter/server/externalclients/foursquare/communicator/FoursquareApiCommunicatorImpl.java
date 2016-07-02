@@ -2,7 +2,7 @@ package com.waiter.server.externalclients.foursquare.communicator;
 
 import com.waiter.server.externalclients.common.communicator.AbstractApiCommunicatorImpl;
 import com.waiter.server.externalclients.common.http.rest.RestClient;
-import com.waiter.server.externalclients.foursquare.model.FoursquareVenueModel;
+import com.waiter.server.externalclients.foursquare.model.FoursquareModel;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -24,7 +24,7 @@ public class FoursquareApiCommunicatorImpl extends AbstractApiCommunicatorImpl i
     @Autowired
     private RestClient restClient;
 
-    public FoursquareVenueModel searchVenues(String query, String city) {
+    public FoursquareModel searchVenues(String query, String city) {
         String url = new StringBuilder().append(host).append(searchVenues).toString();
         Map<String, String> params = newAuthParams();
         params.put("query", query);
@@ -35,7 +35,7 @@ public class FoursquareApiCommunicatorImpl extends AbstractApiCommunicatorImpl i
             final String result1 = IOUtils.toString(response.getBody());
             return new ResponseEntity<>(result1, response.getStatusCode());
         }, params);
-        final FoursquareVenueModel venueModel = deserializeJson(result.getBody(), FoursquareVenueModel.class);
+        final FoursquareModel venueModel = deserializeJson(result.getBody(), FoursquareModel.class);
         return venueModel;
     }
 

@@ -29,7 +29,6 @@ public class VenueRepositoryImpl implements VenueRepositoryCustom {
     private static final String PARAMETER_LONGITUDE = "longitude";
     private static final String PARAMETER_NAME = "name";
 
-
     @Autowired
     private EntityManager entityManager;
 

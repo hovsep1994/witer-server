@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "evaluation")
 public class Evaluation extends AbstractEntityModel {
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "evaluation",fetch = FetchType.LAZY)
     private Set<Rate> rates;
 
     public Set<Rate> getRates() {

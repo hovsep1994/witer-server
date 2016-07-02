@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface ProductRepositoryCustom {
 
+    Product setRatingByCustomerToken(Long productId, String customerToken, Integer rating);
+
     List<Product> search(String name, double lat, double lon);
 
 }
