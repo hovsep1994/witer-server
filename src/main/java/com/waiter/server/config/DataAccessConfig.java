@@ -2,10 +2,15 @@ package com.waiter.server.config;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,6 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -27,17 +33,39 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories("com.waiter.server.persistence.*")
 @EnableTransactionManagement
+@DependsOn("appProperties")
 public class DataAccessConfig {
+
+    @Value("#{appProperties['db.url']}")
+    private String dbUrl;
+
+    @Value("#{appProperties['db.username']}")
+    private String username;
+
+    @Value("#{appProperties['db.password']}")
+    private String password;
+
+    @Value("#{appProperties['hibernate.hbm2ddl.auto']}")
+    private String auto;
+
+    @Value("#{appProperties['javax.persistence.lock.timeout']}")
+    private String timeout;
 
     @Autowired
     private DataSource dataSource;
 
+//    private String timeout;
+
+
+    @Value("#{appProperties['javax.persistence.lock.timeout']}")
+
     @Bean
+    @DependsOn(value = "appProperties")
     public DataSource createJDBCDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUsername("root");
-        dataSource.setPassword("password");
-        dataSource.setUrl("jdbc:mysql://localhost/WAITER1");
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setUrl(dbUrl);
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         return dataSource;
     }
@@ -76,11 +104,12 @@ public class DataAccessConfig {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.hbm2ddl.auto", auto);
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-        properties.setProperty("javax.persistence.lock.timeout", "10000");
+        properties.setProperty("javax.persistence.lock.timeout", timeout);
         properties.setProperty("hibernate.format_sql", "false");
         properties.setProperty("hibernate.id.new_generator_mappings", "false");
         return properties;
     }
+
 }

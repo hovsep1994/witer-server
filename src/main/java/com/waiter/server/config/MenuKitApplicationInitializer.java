@@ -18,8 +18,7 @@ public class MenuKitApplicationInitializer implements WebApplicationInitializer 
     public void onStartup(ServletContext servletContext) throws ServletException {
         // root context
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-
-        rootContext.register(DataAccessConfig.class, RootConfig.class);
+        rootContext.register(RootConfig.class, DataAccessConfig.class);
         rootContext.scan("com.waiter.server.services.*.impl", "com.waiter.server.externalclients");
         servletContext.addListener(new ContextLoaderListener(rootContext));
 
