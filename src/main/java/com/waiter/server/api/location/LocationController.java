@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/location")
 public class LocationController {
 
+
     private static final Logger LOGGER = LoggerFactory.getLogger(LocationController.class);
 
     @Autowired
