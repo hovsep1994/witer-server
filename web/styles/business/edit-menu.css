@@ -53,9 +53,23 @@ body {
 
 /*  ----------- product item  ---------- */
 
+.products-container {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
 .product {
     padding-top: 25px !important;
 }
+
+.product-left {
+    padding-left: 0 !important;
+}
+
+.product-right {
+    padding-right: 0 !important;
+}
+
 .product-buttons {
     width: 100%;
     min-height: 40px;
@@ -154,4 +168,110 @@ body {
 .menu-attach > div > .dropup > button {
     height: 35px;
     background-color: #393c40 !important;
+}
+
+
+/* -- add category modal -----   */
+#addCategoryModal .modal-dialog {
+    width: 450px !important;
+}
+
+#addCategoryModal .modal-dialog .modal-content {
+    background-color: #f7f7f7;
+    padding: 0 5% 0 5%;
+    text-align: center;
+}
+
+#addCategoryModal .modal-dialog .modal-content .modal-header {
+    padding-top: 20px;
+    border-bottom: 0;
+    text-align: center;
+    font-weight: bold;
+    color: black;
+    font-size: 16px;
+    padding-bottom: 0px;
+}
+
+#addCategoryModal .modal-dialog .modal-content .modal-body {
+    border-bottom: 0;
+}
+
+#addCategoryModal .modal-dialog .modal-content .modal-body div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#addCategoryModal .modal-dialog .modal-content .modal-body div.image {
+    width: 120px;
+    text-align: left;
+    display: inline;
+}
+
+#addCategoryModal .modal-dialog .modal-content .modal-body div.inputs input {
+    margin: 7px 10px 7px 10px;
+    display: inline;
+    width: 240px;
+    height: 38px;
+}
+
+#addCategoryModal .modal-dialog .modal-content .modal-body div.buttons > div {
+    height: 50px;
+}
+
+#addCategoryModal .modal-dialog .modal-content .modal-body div.buttons input {
+    margin: 30px 30px 0 30px;
+    display: inline;
+    width: 70px;
+    float: left;
+}
+
+#addCategoryModal .modal-dialog .modal-content .modal-footer {
+    border: 0 !important;
+}
+
+
+/* -------- save menu line  -------- */
+
+.attach-venues {
+    width: 100% !important;
+}
+
+.attach-venues li {
+    height: 30px;
+}
+
+.attach-venues li a {
+    background-color: white !important;
+}
+
+.attach-venues li a span {
+    padding-top: 15px;
+    margin-top: 15px;
+    min-height: 30px;
+}
+
+.attach-venues li a .image-div {
+    width: 24px;
+    min-height: 24px;
+    background: url('/styles/resources/business/admin/plus-button-menu.png');
+    right: 0;
+    float: right;
+    display: inline;
+}
+
+.attach-venues li a:hover {
+    cursor: pointer;
+    color: #8fd3e2 !important;
+    background-color: white !important;
+}
+.attach-venues li a:hover .image-div {
+    background: url('/styles/resources/business/admin/plus-button-hove.png');
+}
+
+.attach-venues li.selected a {
+    color: #8fd3e2 !important;
+    background-color: white !important;
+}
+.attach-venues li.selected a .image-div {
+    background: url('/styles/resources/business/admin/plus-button-hove.png');
 }

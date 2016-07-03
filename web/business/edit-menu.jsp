@@ -44,7 +44,10 @@
     </div>
     <div id="add-category">
         <span>Add menu category</span>&nbsp;&nbsp;&nbsp;
-        <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button.png">
+        <a href="" data-toggle="modal" data-target="#addCategoryModal">
+            <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button.png">
+        </a>
+        <%@ include file="modals/add_category_modal.jsp" %>
     </div>
     <div id="categories">
         <ul class="nav nav-tabs">
@@ -55,8 +58,8 @@
 
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
-                <div class="container">
-                    <div class="col-lg-6 product">
+                <div class="container products-container">
+                    <div class="col-lg-6 product product-left">
                         <div class="product-buttons">
                             <button type="button" class="btn btn-primary delete">Delete Product</button>
                             <button type="button" class="btn btn-primary available">
@@ -80,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 product">
+                    <div class="col-lg-6 product product-right">
                         <div class="product-buttons">
                             <button type="button" class="btn btn-primary delete">Delete Product</button>
                             <button type="button" class="btn btn-primary not-available">
@@ -126,21 +129,46 @@
 <div class="desc navbar-fixed-bottom">
     <div class="menu-attach">
         <div>
-            <div class="dropup">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <div class="dropup" style="max-width: 300px; display: inline-block;">
+                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" style="width: 100%" >
                     Choose which venues to attach menu &nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Venue 1</a></li>
-                    <li><a href="#">Venue 2</a></li>
-                    <li><a href="#">Venue 2</a></li>
-                    <li><a href="#">Venue 2</a></li>
+                <ul class="dropdown-menu attach-venues">
+                    <li>
+                        <a><span>Venue 1</span><div class="image-div"></div></a>
+                    </li>
+                    <li>
+                        <a><span>Venue 2</span><div class="image-div"></div></a>
+                    </li>
+                    <li>
+                        <a><span>Venue 3</span><div class="image-div"></div></a>
+                    </li>
+                    <li>
+                        <a><span>Venue 4</span><div class="image-div"></div></a>
+                    </li>
                 </ul>
+            </div>
+            <div style="display: inline; float: right; right: 0;">
+                <input type="button" class="btn btn-info" value="Save" style="width: 80px">
             </div>
         </div>
     </div>
-    <div class="row footer">
-        <div class="col-sm-12">All Right Reserved. MenuKit 2016</div>
-    </div>
 </div>
 </body>
+<script>
+    $(document).ready(function() {
+
+        $(document).on('click', '.dropdown-menu', function (e) {
+            e.stopPropagation();
+        });
+
+        $('.attach-venues li').on('click', function (event) {
+            if($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                $(this).toggleClass('selected');
+            }
+        });
+    });
+
+</script>
 </html>
