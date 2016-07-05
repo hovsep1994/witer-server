@@ -42,6 +42,24 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>add-translation</servlet-name>
+        <jsp-file>/business/add_translation.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>add-translation</servlet-name>
+        <url-pattern>/web/business/admin/menu/translation</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>account-settings</servlet-name>
+        <jsp-file>/business/account_settings.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>account-settings</servlet-name>
+        <url-pattern>/web/account/settings</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>addVenue</servlet-name>
         <jsp-file>/add_venue.jsp</jsp-file>
     </servlet>

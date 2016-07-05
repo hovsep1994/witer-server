@@ -1,0 +1,30 @@
+.account-settings {
+    background-color: white;
+    color: #393c40;
+    border-radius: 10px;
+    padding-top: 50px !important;
+    padding-left: 100px !important;
+    padding-right: 100px !important;
+    margin-bottom: 60px;
+}
+
+.account-settings h4 {
+    font-size: 20px !important;
+}
+
+.account-settings h5 {
+    padding-top: 10px;
+    color: #4e5054;
+}
+
+.account-settings input {
+    margin-bottom: 30px;
+}
+
+.account-settings label {
+    color: #b0b0b0;
+}
+
+.account-settings button {
+    width: 150px;
+}

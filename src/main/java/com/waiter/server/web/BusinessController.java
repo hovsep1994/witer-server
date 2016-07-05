@@ -28,4 +28,18 @@ public class BusinessController {
         logger.info("Business controller - webiste2. ");
         return "/web/business/admin/menu";
     }
+
+    @RequestMapping(value = "/menu/translation", method = RequestMethod.GET)
+    public String menuTranslation(ModelMap model) {
+        model.addAttribute("user", "valod");
+        logger.info("Business controller - menu translation. ");
+        return "/web/business/admin/menu/translation";
+    }
+
+    @RequestMapping(value = "/account/settings", method = RequestMethod.GET)
+    public String accountSettings(ModelMap model) {
+        model.addAttribute("user", "valod");
+        logger.info("Business controller - account settings. ");
+        return "/web/account/settings";
+    }
 }

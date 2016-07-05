@@ -36,12 +36,12 @@ body {
     font-size: 16px;
 }
 
-#categories ul.nav-tabs > li.active > a{
+#categories ul.nav-tabs > li.active > a {
     background-color: #393c40 !important;
     color: white;
 }
 
-#categories ul.nav-tabs > li > a:hover  {
+#categories ul.nav-tabs > li > a:hover {
     background-color: #393c40 !important;
     color: white;
 }
@@ -53,13 +53,15 @@ body {
 
 /*  ----------- product item  ---------- */
 
-.products-container {
-    padding-right: 0 !important;
-    padding-left: 0 !important;
-}
+/*.products-container {*/
+    /*padding-right: 0 !important;*/
+    /*padding-left: 0 !important;*/
+/*}*/
 
 .product {
     padding-top: 25px !important;
+    /*padding-left: 0 !important;*/
+
 }
 
 .product-left {
@@ -170,7 +172,6 @@ body {
     background-color: #393c40 !important;
 }
 
-
 /* -- add category modal -----   */
 #addCategoryModal .modal-dialog {
     width: 450px !important;
@@ -189,7 +190,7 @@ body {
     font-weight: bold;
     color: black;
     font-size: 16px;
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 #addCategoryModal .modal-dialog .modal-content .modal-body {
@@ -229,7 +230,6 @@ body {
     border: 0 !important;
 }
 
-
 /* -------- save menu line  -------- */
 
 .attach-venues {
@@ -264,6 +264,7 @@ body {
     color: #8fd3e2 !important;
     background-color: white !important;
 }
+
 .attach-venues li a:hover .image-div {
     background: url('/styles/resources/business/admin/plus-button-hove.png');
 }
@@ -272,6 +273,46 @@ body {
     color: #8fd3e2 !important;
     background-color: white !important;
 }
+
 .attach-venues li.selected a .image-div {
     background: url('/styles/resources/business/admin/plus-button-hove.png');
+}
+
+/* --------------- translation ---------------- */
+.translation-decs {
+    min-height: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 50px !important;
+}
+
+.float-right {
+    text-align: right;
+}
+
+
+.category-header-translation {
+    min-height: 46px;
+    background-color: #393c40;
+    padding-top: 6px;
+    color: white;
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.category-caret {
+    float: right;
+    margin-right: -15px;
+    margin-top: -6px;
+    width: 46px;
+}
+
+.category-caret .caret {
+    border-top: 8px solid white;
+}
+
+.float-right {
+    float: right;
 }
