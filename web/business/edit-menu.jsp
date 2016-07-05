@@ -28,7 +28,7 @@
         Hi !! Let's create your menu.
     </div>
     <hr size="5">
-    <div style="padding-bottom: 50px">
+    <div class="container" style="padding-bottom: 50px">
         <div class="menu-info-inputs">
             <label for="menu-name"><h4>Menu Name</h4></label><br>
             <input type="text" class="form-control" id="menu-name">
@@ -42,14 +42,14 @@
             <select class="form-control" id="menu-currency" disabled></select>
         </div>
     </div>
-    <div id="add-category">
+    <div class="container" id="add-category">
         <span>Add menu category</span>&nbsp;&nbsp;&nbsp;
         <a href="" data-toggle="modal" data-target="#addCategoryModal">
             <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button.png">
         </a>
         <%@ include file="modals/add_category_modal.jsp" %>
     </div>
-    <div id="categories">
+    <div class="container" id="categories">
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#home">Drinks</a></li>
             <li><a data-toggle="tab" href="#menu1">Appertize</a></li>
@@ -58,7 +58,7 @@
 
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
-                <div class="container products-container">
+                <div class="products-container">
                     <div class="col-lg-6 product product-left">
                         <div class="product-buttons">
                             <button type="button" class="btn btn-primary delete">Delete Product</button>
