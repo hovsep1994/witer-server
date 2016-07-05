@@ -2,10 +2,8 @@
     background-color: white;
     color: #393c40;
     border-radius: 10px;
-    padding-top: 50px !important;
-    padding-left: 100px !important;
-    padding-right: 100px !important;
     margin-bottom: 60px;
+    padding: 60px 120px 40px 130px !important;
 }
 
 .account-settings h4 {
