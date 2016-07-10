@@ -93,15 +93,13 @@
               <div class="col-lg-3">
                 <img src="${pageContext.request.contextPath}/styles/resources/business/admin/image-icon.png">
               </div>
-              <div class="col-lg-6">
-                <input class="form-control">
-                <textarea class="form-control" style="height: 100px"></textarea>
-                <input class="form-control">
+              <div class="col-lg-6" style="border-right: 1px #ebebeb solid;">
+                <div class="product-name">Product 1</div>
+                <div class="product-desc">Product Desc 1</div>
+                <div class="product-tags">#tag1, #tag2</div>
               </div>
-              <div class="col-lg-3">
-                <select class="form-control">
-                  <option>Price Type</option>
-                </select>
+              <div class="col-lg-3" style="text-align: center; font-size: 16px">
+                2500 AMD
               </div>
             </div>
           </div>
