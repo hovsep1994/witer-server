@@ -1,6 +1,7 @@
 package com.waiter.server.api.user.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.waiter.server.services.user.model.User;
 
 /**
  * User: hovsep
@@ -41,4 +42,12 @@ public class UserModel {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public void updateProperties(User user) {
+        this.email = user.getEmail();
+        this.name = user.getName();
+        this.token = user.getToken();
+    }
+
+
 }

@@ -209,7 +209,7 @@
 <script src="${pageContext.request.contextPath}/scripts/services/helper-service.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/services/user-service.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/services/venue-service.js"></script>
-<script src="${pageContext.request.contextPath}/scripts/user-controller.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/controllers/user-controller.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
@@ -237,5 +237,5 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAW_hI04roTnEO08eq4tlKgNh4okOdMSTE&callback=initMap">
 </script>
-<script src="${pageContext.request.contextPath}/scripts/venue-controller.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/controllers/venue-controller.js"></script>
 </html>

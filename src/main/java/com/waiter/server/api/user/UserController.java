@@ -43,7 +43,7 @@ public class UserController extends MainController{
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<Void> register(@RequestBody UserRegistrationModelRequest request) throws ServiceException {
+    public ResponseEntity<UserModel> register(@RequestBody UserRegistrationModelRequest request) throws ServiceException {
         CompanyDto companyDto = new CompanyDto();
         companyDto.setName(request.getCompanyName());
         companyDto.setPhone(request.getPhone());
@@ -53,8 +53,11 @@ public class UserController extends MainController{
         userDto.setEmail(request.getEmail());
         userDto.setCompanyId(company.getId());
         userDto.setName(request.getName());
-        userService.signUp(userDto);
-        return success();
+        User user = userService.signUp(userDto);
+
+        UserModel userModel = new UserModel();
+        userModel.updateProperties(user);
+        return success(userModel);
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)

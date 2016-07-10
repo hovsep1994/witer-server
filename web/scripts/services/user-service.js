@@ -15,65 +15,70 @@ function UserService(helper, $http) {
     this.getUser = getUser;
     this.saveUser = saveUser;
     this.removeUser = removeUser;
-}
 
-
-function signUp(user, done) {
-    $http.post(host + "/api/users/signup", user).then(function (response) {
-        alert(JSON.stringify(response));
-        if (response.data.status === 'success') {
-            this.saveUser(response.data.response);
-            done(null, response.data.response);
-        } else {
-            done(response.data.errors);
-        }
-    });
-};
-
-function signIn(user) {
-    $http({
-        method: 'POST',
-        url: host + "/api/users/signin",
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        transformRequest: function (obj) {
-            var str = [];
-            for (var p in obj)
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            return str.join("&");
-        },
-        data: user
-    }).then(function (response) {
-        if (response.data.status === 'success') {
-            this.saveUser(response.data.response);
-
-            done(null, response.data.response);
-        } else {
-            done(response.data.errors);
-        }
-    });
-};
-
-function signOut() {
-    this.removeUser();
-};
-
-
-function getUser() {
-    if (!this.helper.getCookie(keyCookie)) {
-        return null;
+    function signUp(user, done) {
+        var that = this;
+        console.log("user: ", user);
+        $http.post(host + "/api/users/signup", user).then(function (response) {
+            console.log("response", response.data);
+            if (response.data.status === 'success') {
+                that.saveUser(response.data.response);
+                done(null, response.data.response);
+            } else {
+                done(response.data.errors);
+            }
+        });
     }
-    return localStorage.getItem("user");
-}
 
-function saveUser(user) {
-    var date = new Date();
-    date.setDate(new Date().getDate() + 60);
-    this.helper.setCookie(keyCookie, user.token, date);
+    function signIn(user, done) {
+        console.log("valod2");
+        $http({
+            method: 'POST',
+            url: host + "/api/users/signin",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: user
+        }).then(function (response) {
+            console.log(response.data);
+            if (response.data.status === 'success') {
+                saveUser(response.data.response);
 
-    localStorage.setItem("user", user);
-}
+                done(null, response.data.response);
+            } else {
+                done(response.data.errors);
+            }
+        });
+    }
 
-function removeUser() {
-    localStorage.removeItem("user");
-    this.helper.deleteCookie(keyCookie);
+    function signOut() {
+        removeUser();
+    }
+
+
+    function getUser() {
+        if (helper.getCookie(keyCookie)) {
+            return null;
+        }
+        return localStorage.getItem("user");
+    }
+
+    function saveUser(user) {
+        var date = new Date();
+        date.setDate(new Date().getDate() + 60);
+        helper.setCookie(keyCookie, user.token, date);
+
+        localStorage.setItem("user", user);
+    }
+
+    function removeUser() {
+        localStorage.removeItem("user");
+        helper.deleteCookie(keyCookie);
+    }
+
+    return this;
 }

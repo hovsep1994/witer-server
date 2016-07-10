@@ -1,6 +1,7 @@
 package com.waiter.server.services.user.impl;
 
 import com.waiter.server.persistence.core.repository.user.UserRepository;
+import com.waiter.server.services.common.exception.Assert;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.UUID;
 
@@ -23,12 +23,13 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public SignUpStatus signUp(UserDto userDto) throws ServiceException {
+    public User signUp(UserDto userDto) throws ServiceException {
         Assert.isTrue(userDto.getPassword().length() > 5, "password must not be less than 6 characters");
         if (checkExistenceByEmail(userDto.getEmail())) {
             LOGGER.debug("User with email -{} exists", userDto.getEmail());
@@ -38,8 +39,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         userDto.updateProperties(user);
         user.setToken(UUID.randomUUID().toString());
-        userRepository.save(user);
-        return SignUpStatus.OK;
+        return userRepository.save(user);
     }
 
     @Override

@@ -10,7 +10,7 @@ import com.waiter.server.services.user.model.User;
  */
 public interface UserService {
 
-    SignUpStatus signUp(UserDto userDto) throws ServiceException;
+    User signUp(UserDto userDto) throws ServiceException;
 
     User signIn(String name, String password);
 

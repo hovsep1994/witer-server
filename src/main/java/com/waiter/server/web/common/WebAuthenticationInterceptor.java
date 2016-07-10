@@ -46,8 +46,9 @@ public class WebAuthenticationInterceptor extends HandlerInterceptorAdapter {
                 return null;
             }
             final String token = cookie.getValue();
+            LOGGER.info("token: " + token);
             final User user = userService.authenticate(token);
-            LOGGER.info("Successfully get user - {} for request - {}");
+            LOGGER.info("Successfully get user - " + user.getToken() + " for request - {}");
             return user;
         } catch (SecurityException ex) {
             LOGGER.error("User not authorised for request - {}");
@@ -56,6 +57,9 @@ public class WebAuthenticationInterceptor extends HandlerInterceptorAdapter {
     }
 
     public Cookie getCookie(String cookie, HttpServletRequest request) {
+        if(request.getCookies() == null) {
+            return null;
+        }
         for (Cookie c : request.getCookies()) {
             if (c.getName().equals(cookie)) {
                 return c;

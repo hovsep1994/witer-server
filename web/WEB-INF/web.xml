@@ -20,7 +20,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>business-landing</servlet-name>
-        <url-pattern>/api/business/landing</url-pattern>
+        <url-pattern>/web/business/landing</url-pattern>
     </servlet-mapping>
 
     <servlet>
