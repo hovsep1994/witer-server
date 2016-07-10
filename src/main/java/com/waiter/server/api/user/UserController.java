@@ -39,7 +39,7 @@ public class UserController extends MainController{
         userModel.setEmail(user.getEmail());
         userModel.setName(user.getName());
         userModel.setToken(user.getToken());
-        return ResponseEntity.forResponse(userModel);
+        return ResponseEntity.success(userModel);
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -54,7 +54,7 @@ public class UserController extends MainController{
         userDto.setCompanyId(company.getId());
         userDto.setName(request.getName());
         userService.signUp(userDto);
-        return forSuccess();
+        return success();
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)

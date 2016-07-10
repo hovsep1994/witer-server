@@ -44,7 +44,7 @@ public class ProductController {
         TranslationDto description = new TranslationDto(request.getDescription(), request.getLanguage());
         Product product = productService.create(request.getGroupId(), productDto, name, description);
         ProductModel productModel = ProductModel.convert(product, request.getLanguage());
-        return ResponseEntity.forResponse(productModel);
+        return ResponseEntity.success(productModel);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -56,21 +56,21 @@ public class ProductController {
 //        TranslationDto nameTranslationDto = NameTranslationModel.convert(request.getNameTranslationModel());
 //        Product product = productService.update(request.getId(), productDto, nameTranslationDto);
 //        ProductModel productModel = ProductModel.convert(product, request.getNameTranslationModel().getLanguage());
-        return ResponseEntity.forResponse(new ProductModel());
+        return ResponseEntity.success(new ProductModel());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<ProductModel> getByProductId(@PathVariable Long id, @RequestParam Language language) {
         Product product = productService.getByIdAndLanguage(id, language);
         ProductModel productModel = ProductModel.convert(product, language);
-        return ResponseEntity.forResponse(productModel);
+        return ResponseEntity.success(productModel);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<ProductModel>> getByGroupId(@RequestParam Long groupId, @RequestParam Language language) {
         List<Product> products = productService.getByCategoryId(groupId);
         List<ProductModel> productModels = ProductModel.convert(products, language);
-        return ResponseEntity.forResponse(productModels);
+        return ResponseEntity.success(productModels);
     }
 
     @RequestMapping(value = "/{id}/uploadImage", method = RequestMethod.POST)
@@ -81,20 +81,20 @@ public class ProductController {
             LOGGER.error(e.getMessage());
             throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
-        return ResponseEntity.forResponse("ok");
+        return ResponseEntity.success("ok");
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity<List<Product>> search(@RequestBody ProductSearchParameters productSearchParams) {
         List<Product> products = productService.search(productSearchParams);
-        return ResponseEntity.forResponse(products);
+        return ResponseEntity.success(products);
     }
 
     @RequestMapping(value = "{id}/addTranslation", method = RequestMethod.POST)
     public ResponseEntity<Product> addTranslation(@PathVariable Long id, @RequestBody NameTranslationModel nameTranslationModel) {
         TranslationDto translationDto = NameTranslationModel.convert(nameTranslationModel);
         Product product = productService.addTranslation(id, translationDto);
-        return ResponseEntity.forResponse(product);
+        return ResponseEntity.success(product);
     }
 
 }

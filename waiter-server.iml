@@ -18,10 +18,8 @@
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="fileset" name="Spring Application Context" removed="false" />
-        <fileset id="fileset2" name="Spring Application Context (2)" removed="false">
-          <file>file://$MODULE_DIR$/src/main/java/com/waiter/server/config/DataAccessConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/waiter/server/config/WebConfig.java</file>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/spring-config.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -38,7 +36,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
-    <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
@@ -87,7 +84,5 @@
     <orderEntry type="library" name="Maven: org.hibernate.common:hibernate-commons-annotations:5.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.18.1-GA" level="project" />
-    <orderEntry type="library" name="bootstrap" level="application" />
-    <orderEntry type="library" name="angular" level="application" />
   </component>
 </module>

@@ -31,6 +31,6 @@ public class TranslateController {
         textTranslationDto.setLanguageFrom(translateTextModel.getLanguageFrom());
         textTranslationDto.setLanguageTo(translateTextModel.getLanguageTo());
         String translatedText = translatorService.translate(textTranslationDto);
-        return ResponseEntity.forResponse(translatedText);
+        return ResponseEntity.success(translatedText);
     }
 }

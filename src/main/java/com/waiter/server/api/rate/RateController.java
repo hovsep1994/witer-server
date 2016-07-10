@@ -25,7 +25,7 @@ public class RateController {
     public ResponseEntity<ProductModel> addMenu(@RequestBody RateRequest rateRequest) {
         Product product = productService.setRateByCustomerToken(rateRequest.getId(), rateRequest.getToken(), rateRequest.getRating());
         ProductModel productModel = ProductModel.convert(product, rateRequest.getLanguage());
-        return ResponseEntity.forResponse(productModel);
+        return ResponseEntity.success(productModel);
     }
 
 }

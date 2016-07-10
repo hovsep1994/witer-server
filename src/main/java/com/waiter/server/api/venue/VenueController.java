@@ -27,7 +27,7 @@ public class VenueController {
     public ResponseEntity<VenueModel> findOne(@PathVariable Long id) {
         Venue venue = venueService.getVenueById(id);
         VenueModel venueModel = VenueModel.convert(venue);
-        return ResponseEntity.forResponse(venueModel);
+        return ResponseEntity.success(venueModel);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -38,7 +38,7 @@ public class VenueController {
         venueDto.setLocation(LocationModel.convert(addVenueRequest.getLocation()));
         Venue createdVenue = venueService.create(venueDto);
         VenueModel venueModel = VenueModel.convert(createdVenue);
-        return ResponseEntity.forResponse(venueModel);
+        return ResponseEntity.success(venueModel);
     }
 
 
@@ -46,7 +46,7 @@ public class VenueController {
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ResponseEntity<List<Venue>> findVenues(@RequestBody VenueSearchParameters parameters) {
         List<Venue> venues = venueService.getVenuesBySearchParameters(parameters);
-        return ResponseEntity.forResponse(venues);
+        return ResponseEntity.success(venues);
     }
 
 }

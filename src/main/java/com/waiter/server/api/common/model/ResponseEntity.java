@@ -20,18 +20,18 @@ public class ResponseEntity<TResponse> {
     private List<ApiError> errors;
 
 
-    public static <T> ResponseEntity<T> forResponse(T response) {
+    public static <T> ResponseEntity<T> success(T response) {
         ResponseEntity<T> responseEntity = new ResponseEntity<>();
         responseEntity.response = response;
         responseEntity.status = "success";
         return responseEntity;
     }
 
-    public static ResponseEntity<Void> forSuccess() {
-        return forResponse(null);
+    public static ResponseEntity<Void> success() {
+        return success(null);
     }
 
-    public static ResponseEntity<Void> forError(ServiceError error) {
+    public static ResponseEntity<Void> error(ServiceError error) {
         ResponseEntity<Void> responseEntity = new ResponseEntity<>();
         responseEntity.status = "error";
         ApiError apiError = new ApiError(error.getErrorCode(), error.getMessage(), error.getDescription());

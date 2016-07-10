@@ -39,7 +39,7 @@ public class ApiAuthenticationInterceptor extends HandlerInterceptorAdapter {
             LOGGER.debug("Interceptor is working .... ");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(mapper.writeValueAsString(ResponseEntity
-                    .forError(new ServiceError(ErrorCode.FAILED_AUTHENTICATION, "Authorization required."))));
+                    .error(new ServiceError(ErrorCode.FAILED_AUTHENTICATION, "Authorization required."))));
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }

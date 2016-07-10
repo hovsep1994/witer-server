@@ -14,7 +14,7 @@ public class WebHeartBeatController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<String> heartbeat() {
-        return ResponseEntity.forResponse("ok");
+        return ResponseEntity.success("ok");
     }
 
 }

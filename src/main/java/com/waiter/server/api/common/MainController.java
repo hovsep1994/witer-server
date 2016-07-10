@@ -11,12 +11,12 @@ public class MainController {
 
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity handleCustomException(ServiceException ex) {
-        return ResponseEntity.forError(ex.getError());
+        return ResponseEntity.error(ex.getError());
     }
 
     @ExceptionHandler(ServiceRuntimeException.class)
     public ResponseEntity handleCustomException(ServiceRuntimeException ex) {
-        return ResponseEntity.forError(ex.getError());
+        return ResponseEntity.error(ex.getError());
     }
 
 }

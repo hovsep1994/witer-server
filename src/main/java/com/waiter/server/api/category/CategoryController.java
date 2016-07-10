@@ -32,7 +32,7 @@ public class CategoryController {
     public ResponseEntity<CategoryModel> getCategoryById(@PathVariable Long id, @RequestParam Language language) {
         Category category = categoryService.getByIdAndLanguage(id, language);
         CategoryModel categoryModel = CategoryModel.convert(category, language);
-        return ResponseEntity.forResponse(categoryModel);
+        return ResponseEntity.success(categoryModel);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -42,7 +42,7 @@ public class CategoryController {
         TranslationDto translationDto = NameTranslationModel.convert(request.getNameTranslationModel());
         Category category = categoryService.create(request.getMenuId(), categoryDto, translationDto);
         CategoryModel categoryModel = CategoryModel.convert(category, translationDto.getLanguage());
-        return ResponseEntity.forResponse(categoryModel);
+        return ResponseEntity.success(categoryModel);
     }
 
     @RequestMapping(value = "{id}/update", method = RequestMethod.POST)
@@ -52,12 +52,12 @@ public class CategoryController {
         TranslationDto translationDto = NameTranslationModel.convert(request.getNameTranslation());
         Category category = categoryService.update(id, categoryDto, translationDto);
         CategoryModel categoryModel = CategoryModel.convert(category, translationDto.getLanguage());
-        return ResponseEntity.forResponse(categoryModel);
+        return ResponseEntity.success(categoryModel);
     }
 
     @RequestMapping(value = "/heartbeat", method = RequestMethod.GET)
     public ResponseEntity<String> heartbeat() {
-        return ResponseEntity.forResponse("ok");
+        return ResponseEntity.success("ok");
     }
 
 }
