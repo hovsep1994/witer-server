@@ -1,5 +1,8 @@
 package com.waiter.server.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.support.OpenSessionInViewFilter;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -21,6 +24,8 @@ public class MenuKitApplicationInitializer implements WebApplicationInitializer 
         rootContext.register(RootConfig.class, DataAccessConfig.class);
         rootContext.scan("com.waiter.server.services.*.impl", "com.waiter.server.externalclients");
         servletContext.addListener(new ContextLoaderListener(rootContext));
+        servletContext.addFilter("openEntityManagerInViewFilter", getOpenEntityManagerInViewFilter())
+                .addMappingForUrlPatterns(null, false, "/*");
 
         // dispatcher servlet 1
         AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
@@ -39,4 +44,9 @@ public class MenuKitApplicationInitializer implements WebApplicationInitializer 
         dispatcherApi.addMapping("/api/*");
     }
 
+    private OpenEntityManagerInViewFilter getOpenEntityManagerInViewFilter() {
+        OpenEntityManagerInViewFilter openEntityManagerInViewFilter = new OpenEntityManagerInViewFilter();
+        openEntityManagerInViewFilter.setEntityManagerFactoryBeanName("entityManagerFactory");
+        return openEntityManagerInViewFilter;
+    }
 }
