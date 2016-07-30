@@ -1,9 +1,12 @@
 package com.waiter.server.api.venue;
 
+import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.location.model.LocationModel;
 import com.waiter.server.api.venue.model.VenueModel;
 import com.waiter.server.api.venue.model.request.AddVenueRequest;
+import com.waiter.server.services.company.CompanyService;
+import com.waiter.server.services.user.model.User;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
@@ -18,10 +21,13 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/venue")
-public class VenueController {
+public class VenueController extends MainController {
 
     @Autowired
     private VenueService venueService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<VenueModel> findOne(@PathVariable Long id) {
@@ -31,7 +37,8 @@ public class VenueController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<VenueModel> createMenu(@RequestBody AddVenueRequest addVenueRequest) {
+    public ResponseEntity<VenueModel> createMenu(@RequestBody AddVenueRequest addVenueRequest, @ModelAttribute User user) {
+        checkUserHasAccess(user, companyService.get(addVenueRequest.getCompanyId()));
         VenueDto venueDto = new VenueDto();
         venueDto.setMenuId(addVenueRequest.getMenuId());
         venueDto.setCompanyId(addVenueRequest.getCompanyId());
@@ -40,7 +47,6 @@ public class VenueController {
         VenueModel venueModel = VenueModel.convert(createdVenue);
         return ResponseEntity.success(venueModel);
     }
-
 
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)

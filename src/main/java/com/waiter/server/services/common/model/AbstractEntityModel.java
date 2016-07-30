@@ -1,5 +1,9 @@
 package com.waiter.server.services.common.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -52,31 +56,33 @@ public abstract class AbstractEntityModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
 
         AbstractEntityModel that = (AbstractEntityModel) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (created != null ? !created.equals(that.created) : that.created != null) return false;
-        if (updated != null ? !updated.equals(that.updated) : that.updated != null) return false;
-
-        return true;
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(created, that.created)
+                .append(updated, that.updated)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (created != null ? created.hashCode() : 0);
-        result = 31 * result + (updated != null ? updated.hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(created)
+                .append(updated)
+                .toHashCode();
     }
 
     @Override
     public String toString() {
-        return "Entitiy{" +
-                "id=" + id +
-                ", created=" + created +
-                ", updated=" + updated +
-                '}';
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("created", created)
+                .append("updated", updated)
+                .toString();
     }
 }

@@ -1,6 +1,7 @@
 package com.waiter.server.services.product;
 
 import com.waiter.server.services.common.exception.ServiceException;
+import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.language.Language;
@@ -36,6 +37,8 @@ public interface ProductService {
     Product addTranslation(Long productId, TranslationDto translationDto);
 
     Product setRateByCustomerToken(Long productId, String customerToken, Integer rating);
+
+    Company getCompanyByProductId(Long productId);
 
     List<Product> search(ProductSearchParameters productSearchParams);
 

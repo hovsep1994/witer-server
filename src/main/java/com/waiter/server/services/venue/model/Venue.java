@@ -4,6 +4,9 @@ import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.menu.model.Menu;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 
@@ -56,5 +59,43 @@ public class Venue extends AbstractEntityModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Venue venue = (Venue) o;
+
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(name, venue.name)
+                .append(location, venue.location)
+                .append(company, venue.company)
+                .append(menu, venue.menu)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(name)
+                .append(location)
+                .append(company)
+                .append(menu)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("name", name)
+                .append("location", location)
+                .append("company", company)
+                .append("menu", menu)
+                .toString();
     }
 }

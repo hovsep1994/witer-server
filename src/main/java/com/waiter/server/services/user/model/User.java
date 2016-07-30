@@ -2,6 +2,9 @@ package com.waiter.server.services.user.model;
 
 import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.company.model.Company;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 
@@ -79,41 +82,44 @@ public class User extends AbstractEntityModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
         User user = (User) o;
 
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (token != null ? !token.equals(user.token) : user.token != null) return false;
-        if (hash != null ? !hash.equals(user.hash) : user.hash != null) return false;
-        return !(company != null ? !company.equals(user.company) : user.company != null);
-
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(name, user.name)
+                .append(email, user.email)
+                .append(password, user.password)
+                .append(token, user.token)
+                .append(hash, user.hash)
+                .append(company, user.company)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (token != null ? token.hashCode() : 0);
-        result = 31 * result + (hash != null ? hash.hashCode() : 0);
-        result = 31 * result + (company != null ? company.hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(name)
+                .append(email)
+                .append(password)
+                .append(token)
+                .append(hash)
+                .append(company)
+                .toHashCode();
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", token='" + token + '\'' +
-                ", hash='" + hash + '\'' +
-                ", company=" + company +
-                "} " + super.toString();
+        return new ToStringBuilder(this)
+                .append("name", name)
+                .append("email", email)
+                .append("password", password)
+                .append("token", token)
+                .append("hash", hash)
+                .append("company", company)
+                .toString();
     }
 }

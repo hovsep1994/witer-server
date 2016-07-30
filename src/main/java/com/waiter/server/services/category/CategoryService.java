@@ -2,6 +2,7 @@ package com.waiter.server.services.category;
 
 import com.waiter.server.services.category.dto.CategoryDto;
 import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.translation.dto.TranslationDto;
 
@@ -19,4 +20,6 @@ public interface CategoryService {
     Category getById(Long id);
 
     Category getByIdAndLanguage(Long id, Language language);
+
+    Company getCompanyById(Long id);
 }

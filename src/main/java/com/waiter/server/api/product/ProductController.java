@@ -1,11 +1,13 @@
 package com.waiter.server.api.product;
 
+import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.product.model.request.AddProductRequest;
 import com.waiter.server.api.product.model.request.UpdateProductRequest;
 import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.language.Language;
@@ -14,6 +16,7 @@ import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
+import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,27 +31,32 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/products")
-public class ProductController {
+public class ProductController extends MainController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<ProductModel> addProduct(@RequestBody AddProductRequest request) {
+    public ResponseEntity<ProductModel> addProduct(@RequestBody AddProductRequest request, @ModelAttribute User user) {
+        checkUserHasAccess(user, categoryService.getCompanyById(request.getCategoryId()));
         ProductDto productDto = new ProductDto();
         productDto.setPrice(request.getPrice());
         productDto.setTags(TagModel.convert(request.getTagModels()));
         TranslationDto name = new TranslationDto(request.getName(), request.getLanguage());
         TranslationDto description = new TranslationDto(request.getDescription(), request.getLanguage());
-        Product product = productService.create(request.getGroupId(), productDto, name, description);
+        Product product = productService.create(request.getCategoryId(), productDto, name, description);
         ProductModel productModel = ProductModel.convert(product, request.getLanguage());
         return ResponseEntity.success(productModel);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseEntity<ProductModel> updateProduct(@RequestBody UpdateProductRequest request) {
+    public ResponseEntity<ProductModel> updateProduct(@RequestBody UpdateProductRequest request, @ModelAttribute User user) {
+        checkUserHasAccess(user, productService.getCompanyByProductId(request.getId()));
         ProductDto productDto = new ProductDto();
 //        productDto.setDescription(request.getDescription());
         productDto.setPrice(request.getPrice());
@@ -74,7 +82,8 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}/uploadImage", method = RequestMethod.POST)
-    public ResponseEntity<String> uploadImage(HttpServletRequest request, @PathVariable Long id) throws ServiceException {
+    public ResponseEntity<String> uploadImage(HttpServletRequest request, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
+        checkUserHasAccess(user, productService.getCompanyByProductId(id));
         try {
             productService.addImage(id, request.getInputStream());
         } catch (IOException e) {
@@ -91,7 +100,8 @@ public class ProductController {
     }
 
     @RequestMapping(value = "{id}/addTranslation", method = RequestMethod.POST)
-    public ResponseEntity<Product> addTranslation(@PathVariable Long id, @RequestBody NameTranslationModel nameTranslationModel) {
+    public ResponseEntity<Product> addTranslation(@PathVariable Long id, @RequestBody NameTranslationModel nameTranslationModel, @ModelAttribute User user) {
+        checkUserHasAccess(user, productService.getCompanyByProductId(id));
         TranslationDto translationDto = NameTranslationModel.convert(nameTranslationModel);
         Product product = productService.addTranslation(id, translationDto);
         return ResponseEntity.success(product);

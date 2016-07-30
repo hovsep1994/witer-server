@@ -1,9 +1,11 @@
 package com.waiter.server.api.translate;
 
+import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.translate.model.TranslateTextModel;
 import com.waiter.server.services.translate.TranslatorService;
 import com.waiter.server.services.translate.dto.TextTranslationDto;
+import org.apache.log4j.chainsaw.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/translate")
-public class TranslateController {
+public class TranslateController extends MainController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslateController.class);
 

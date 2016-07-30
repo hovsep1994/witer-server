@@ -1,16 +1,19 @@
 package com.waiter.server.api.category;
 
-import com.waiter.server.api.category.model.request.UpdateCategoryRequest;
-import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.category.model.CategoryModel;
 import com.waiter.server.api.category.model.request.AddCategoryModelRequest;
+import com.waiter.server.api.category.model.request.UpdateCategoryRequest;
+import com.waiter.server.api.common.MainController;
+import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.category.dto.CategoryDto;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.language.Language;
+import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.translation.dto.TranslationDto;
+import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +24,15 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/category")
-public class CategoryController {
+public class CategoryController extends MainController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private MenuService menuService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<CategoryModel> getCategoryById(@PathVariable Long id, @RequestParam Language language) {
@@ -36,7 +42,8 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<CategoryModel> addCategory(@RequestBody AddCategoryModelRequest request) {
+    public ResponseEntity<CategoryModel> addCategory(@RequestBody AddCategoryModelRequest request, @ModelAttribute User user) {
+        checkUserHasAccess(user, menuService.getCompanyByMenuId(request.getMenuId()));
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setTags(TagModel.convert(request.getTagModels()));
         TranslationDto translationDto = NameTranslationModel.convert(request.getNameTranslationModel());
@@ -46,7 +53,8 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "{id}/update", method = RequestMethod.POST)
-    public ResponseEntity<CategoryModel> updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryRequest request) {
+    public ResponseEntity<CategoryModel> updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryRequest request, @ModelAttribute User user) {
+        checkUserHasAccess(user, categoryService.getCompanyById(id));
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setTags(TagModel.convert(request.getTagModels()));
         TranslationDto translationDto = NameTranslationModel.convert(request.getNameTranslation());

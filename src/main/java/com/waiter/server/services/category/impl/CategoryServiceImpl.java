@@ -6,6 +6,7 @@ import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.category.dto.CategoryDto;
 import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
@@ -105,6 +106,12 @@ public class CategoryServiceImpl implements CategoryService {
         Hibernate.initialize(category.getProducts());
         Hibernate.initialize(category.getNameTranslationByLanguage(language));
         return category;
+    }
+
+    @Override
+    public Company getCompanyById(Long id) {
+        assertCategoryId(id);
+        return getById(id).getMenu().getCompany();
     }
 
     private void assertCategoryId(Long id) {

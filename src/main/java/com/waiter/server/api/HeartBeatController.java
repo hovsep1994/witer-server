@@ -17,7 +17,7 @@ public class HeartBeatController extends AuthenticationController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> heartbeat(@ModelAttribute User user) {
-        return ResponseEntity.forResponse("ok");
+        return ResponseEntity.success("ok");
     }
 
 }

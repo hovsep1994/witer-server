@@ -1,6 +1,7 @@
 package com.waiter.server.services.menu;
 
 
+import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.menu.model.Menu;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface MenuService {
     List<Menu> getMenusByCompanyId(Long companyId);
 
     Menu update(Long menuId, String menuName);
+
+    Company getCompanyByMenuId(Long menuId);
 
     void remove(Long id);
 }
