@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/business")
 public class BusinessController extends AuthenticationController {
 
-    private static final Logger logger = Logger.getLogger(BusinessController.class);
+    private static final Logger LOGGER = Logger.getLogger(BusinessController.class);
 
 
     @RequestMapping(value = "/landing", method = RequestMethod.GET)
@@ -29,28 +29,28 @@ public class BusinessController extends AuthenticationController {
 
 
         model.addAttribute("user", user);
-        logger.info("Business controller - webiste2. ");
+        LOGGER.info("Business controller - webiste2. ");
         return "/web/business/admin";
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public String menu(ModelMap model, @ModelAttribute User user) {
         model.addAttribute("user", user);
-        logger.info("Business controller - webiste2. ");
+        LOGGER.info("Business controller - webiste2. ");
         return "/web/business/admin/menu";
     }
 
     @RequestMapping(value = "/menu/translation", method = RequestMethod.GET)
     public String menuTranslation(ModelMap model, @ModelAttribute User user) {
         model.addAttribute("user", user);
-        logger.info("Business controller - menu translation. ");
+        LOGGER.info("Business controller - menu translation. ");
         return "/web/business/admin/menu/translation";
     }
 
     @RequestMapping(value = "/account/settings", method = RequestMethod.GET)
     public String accountSettings(ModelMap model, @ModelAttribute User user) {
         model.addAttribute("user", user);
-        logger.info("Business controller - account settings. ");
+        LOGGER.info("Business controller - account settings. ");
         return "/web/account/settings";
     }
 }

@@ -21,7 +21,7 @@ public class MailClient {
     public static final String GMAIL_SMTP_PORT = "465";
 
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
-    private static final Logger logger = Logger.getLogger(MailClient.class);
+    private static final Logger LOGGER = Logger.getLogger(MailClient.class);
 
     private final String password = "tuynparol";
     private final String username = "testwaiter11";
@@ -59,7 +59,7 @@ public class MailClient {
             t.sendMessage(msg, msg.getAllRecipients());
             t.close();
         } catch (MessagingException e) {
-            logger.error("Exception when sending mail. ", e);
+            LOGGER.error("Exception when sending mail. ", e);
             throw new IOException(e);
         }
     }

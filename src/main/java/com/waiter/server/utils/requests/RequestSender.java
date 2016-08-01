@@ -20,7 +20,7 @@ public class RequestSender {
     public static final String PARAM_DELIMITER = "&";
     public static final String FIRST_DELIMITER = "?";
     public static final String EQUAL_DELIMITER = "=";
-    private static final Logger logger = Logger.getLogger(RequestSender.class);
+    private static final Logger LOGGER = Logger.getLogger(RequestSender.class);
     private static final Map<String, String> DEFAULT_HEADERS = new HashMap<>();
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -55,7 +55,7 @@ public class RequestSender {
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(host).append(FIRST_DELIMITER).append(constructQuery(params));
         URL url = new URL(urlBuilder.toString());
-        logger.debug("getById request: " + urlBuilder);
+        LOGGER.debug("getById request: " + urlBuilder);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         //add request headers

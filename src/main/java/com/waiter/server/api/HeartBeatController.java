@@ -3,6 +3,8 @@ package com.waiter.server.api;
 import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.services.user.model.User;
+import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/heartbeat")
 public class HeartBeatController extends AuthenticationController {
+
+    @Autowired
+    private ProductSolrRepository productSolrRepository;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> heartbeat(@ModelAttribute User user) {

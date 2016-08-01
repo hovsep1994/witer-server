@@ -8,7 +8,6 @@ import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.evaluation.model.Evaluation;
-import com.waiter.server.services.evaluation.model.Rate;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
 import com.waiter.server.services.gallery.model.Gallery;
@@ -25,18 +24,17 @@ import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.translate.TranslatorService;
 import com.waiter.server.services.translate.dto.TextTranslationDto;
+import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
@@ -63,6 +61,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private TranslationService translationService;
+
+    @Autowired
+    private ProductSolrRepository productSolrRepository;
 
     @Override
     public Product create(Long categoryId, ProductDto productDto, TranslationDto translationDto,
