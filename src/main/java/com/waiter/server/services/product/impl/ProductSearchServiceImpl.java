@@ -34,7 +34,7 @@ public class ProductSearchServiceImpl implements ProductSearchService {
         for (Translation translation : product.getNameSet()) {
             final ProductDocument productDocument = new ProductDocument();
             productDocument.setId(product.getId().toString());
-            productDocument.setLanguage(translation.getLanguage());
+            productDocument.setLanguage(translation.getLanguage().name());
             productDocument.setName(translation.getName());
             productSolrRepository.save(productDocument);
         }

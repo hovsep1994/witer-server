@@ -36,6 +36,6 @@ public class TranslationServiceImpl implements TranslationService {
         Assert.notNull(translationDto, "translation dto must not be null");
         Assert.notNull(translationDto.getTranslationType(), "translation type must not be null");
         Assert.notNull(translationDto.getLanguage(), "language must not be null");
-        Assert.notNull(translationDto.getName(), "name must not be null");
+        Assert.notNull(translationDto.getText(), "text must not be null");
     }
 }

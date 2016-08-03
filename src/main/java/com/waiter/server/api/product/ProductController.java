@@ -20,6 +20,7 @@ import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +49,10 @@ public class ProductController extends MainController {
         productDto.setPrice(request.getPrice());
         productDto.setTags(TagModel.convert(request.getTagModels()));
         TranslationDto name = new TranslationDto(request.getName(), request.getLanguage());
-        TranslationDto description = new TranslationDto(request.getDescription(), request.getLanguage());
+        TranslationDto description = null;
+        if (!StringUtils.isEmpty(request.getDescription())) {
+            description = new TranslationDto(request.getDescription(), request.getLanguage());
+        }
         Product product = productService.create(request.getCategoryId(), productDto, name, description);
         ProductModel productModel = ProductModel.convert(product, request.getLanguage());
         return ResponseEntity.success(productModel);
@@ -105,6 +109,11 @@ public class ProductController extends MainController {
         TranslationDto translationDto = NameTranslationModel.convert(nameTranslationModel);
         Product product = productService.addTranslation(id, translationDto);
         return ResponseEntity.success(product);
+    }
+
+    @RequestMapping(value = "heartbeat", method = RequestMethod.GET)
+    public ResponseEntity<String> heartbeat() {
+        return ResponseEntity.success("ok");
     }
 
 }

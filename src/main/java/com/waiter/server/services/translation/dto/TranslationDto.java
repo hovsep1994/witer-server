@@ -4,13 +4,16 @@ import com.waiter.server.services.common.model.AbstractDtoModel;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.translation.model.TranslationType;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Created by hovsep on 3/7/16.
  */
 public class TranslationDto extends AbstractDtoModel<Translation> {
 
-    private String name;
+    private String text;
     private Language language;
     private TranslationType translationType;
 
@@ -18,25 +21,25 @@ public class TranslationDto extends AbstractDtoModel<Translation> {
         translationType = TranslationType.MAIN;
     }
 
-    public TranslationDto(String name, Language language) {
+    public TranslationDto(String text, Language language) {
         this();
-        this.name = name;
+        this.text = text;
         this.language = language;
     }
 
     @Override
     public void updateProperties(Translation translation) {
         translation.setLanguage(getLanguage());
-        translation.setName(getName());
+        translation.setName(getText());
         translation.setTranslationType(getTranslationType());
     }
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Language getLanguage() {
@@ -55,4 +58,36 @@ public class TranslationDto extends AbstractDtoModel<Translation> {
         this.translationType = translationType;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TranslationDto that = (TranslationDto) o;
+
+        return new EqualsBuilder()
+                .append(text, that.text)
+                .append(language, that.language)
+                .append(translationType, that.translationType)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(text)
+                .append(language)
+                .append(translationType)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("text", text)
+                .append("language", language)
+                .append("translationType", translationType)
+                .toString();
+    }
 }

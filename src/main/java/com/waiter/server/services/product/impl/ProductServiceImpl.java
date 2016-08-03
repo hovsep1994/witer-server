@@ -74,10 +74,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product();
         Category category = categoryService.getById(categoryId);
         product.setCategory(category);
+        if (descriptionDto != null) {
+            Translation description = translationService.create(descriptionDto);
+            product.getDescriptionSet().add(description);
+        }
         Translation translation = translationService.create(translationDto);
-        Translation description = translationService.create(descriptionDto);
         product.getNameSet().add(translation);
-        product.getDescriptionSet().add(description);
         product.setGallery(new Gallery());
         product.setEvaluation(new Evaluation());
         productDto.updateProperties(product);

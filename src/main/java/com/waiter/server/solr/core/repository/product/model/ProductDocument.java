@@ -24,7 +24,7 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
     private String name;
 
     @Field("language")
-    private Language language;
+    private String language;
 
     @Field("tags")
     private List<String> tags;
@@ -58,11 +58,11 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
         this.name = name;
     }
 
-    public Language getLanguage() {
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
