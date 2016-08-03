@@ -9,11 +9,8 @@ import java.util.List;
 /**
  * Created by hovsep on 7/31/16.
  */
-@Repository
-public interface ProductSolrRepository extends SolrCrudRepository<ProductDocument, String>, ProductSolrRepositoryCustom {
+public interface ProductSolrRepositoryCustom {
 
-    ProductDocument findByProductId(Long productId);
-
-    List<ProductDocument> findByProductNameStartingWith(String name);
+    List<ProductDocument> findBySearchParams(String text);
 
 }

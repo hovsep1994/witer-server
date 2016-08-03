@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Admin on 12/24/2015.
@@ -50,12 +51,8 @@ public class Tag extends AbstractEntityModel {
         return result;
     }
 
-    public static List<String> toStrings(List<Tag> tags) {
-        List<String> list = new ArrayList<>(tags.size());
-        for (Tag tag : tags) {
-            list.add(tag.getName());
-        }
-        return list;
+    public static List<String> toStrings(Collection<Tag> tags) {
+        return tags.stream().map(Tag::getName).collect(Collectors.toList());
     }
 
     public static Set<Tag> parseTags(Set<String> tags) {

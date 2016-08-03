@@ -1,5 +1,6 @@
 package com.waiter.server.solr.core.repository.category;
 
+import com.waiter.server.solr.core.repository.common.model.AbstractSolrDocument;
 import com.waiter.server.solr.core.repository.common.model.AbstractSolrDocumentWithId;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -11,14 +12,25 @@ import java.util.List;
 /**
  * Created by hovsep on 7/31/16.
  */
-public class CategorySolrDocument extends AbstractSolrDocumentWithId {
+public class CategorySolrDocument extends AbstractSolrDocument {
     private static final long serialVersionUID = -6596387152588059874L;
+
+    @Field("categoryId")
+    private Long categoryId;
 
     @Field("name")
     private String name;
 
     @Field("categoryTags")
     private List<String> tags;
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public String getName() {
         return name;
@@ -45,7 +57,7 @@ public class CategorySolrDocument extends AbstractSolrDocumentWithId {
         CategorySolrDocument that = (CategorySolrDocument) o;
 
         return new EqualsBuilder()
-                .appendSuper(super.equals(o))
+                .append(categoryId, that.categoryId)
                 .append(name, that.name)
                 .append(tags, that.tags)
                 .isEquals();
@@ -54,7 +66,7 @@ public class CategorySolrDocument extends AbstractSolrDocumentWithId {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .appendSuper(super.hashCode())
+                .append(categoryId)
                 .append(name)
                 .append(tags)
                 .toHashCode();
@@ -63,6 +75,7 @@ public class CategorySolrDocument extends AbstractSolrDocumentWithId {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .append("categoryId", categoryId)
                 .append("name", name)
                 .append("tags", tags)
                 .toString();

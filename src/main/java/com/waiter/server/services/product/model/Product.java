@@ -3,6 +3,7 @@ package com.waiter.server.services.product.model;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.evaluation.model.Evaluation;
+import com.waiter.server.services.evaluation.model.Rate;
 import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.translation.model.Translation;
@@ -105,6 +106,13 @@ public class Product extends AbstractEntityModel {
 
     public void setNameSet(Set<Translation> nameSet) {
         this.nameSet = nameSet;
+    }
+
+    public Double getAverageRating() {
+        if (evaluation == null || evaluation.getRates().isEmpty()) {
+            return null;
+        }
+        return evaluation.getRates().stream().mapToInt(Rate::getRating).average().getAsDouble();
     }
 
     public Translation getNameTranslationByLanguage(Language language) {

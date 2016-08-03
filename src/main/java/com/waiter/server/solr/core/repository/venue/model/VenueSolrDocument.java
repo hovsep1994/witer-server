@@ -13,6 +13,9 @@ import org.springframework.data.solr.core.geo.Point;
 public class VenueSolrDocument extends AbstractSolrDocumentWithId {
     private static final long serialVersionUID = -1941047069037577163L;
 
+    @Field("venueId")
+    private Long venueId;
+
     @Field("name")
     private String name;
 
@@ -20,7 +23,15 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
     private Point location;
 
     @Field("companyId")
-    private String companyId;
+    private Long companyId;
+
+    public Long getVenueId() {
+        return venueId;
+    }
+
+    public void setVenueId(Long venueId) {
+        this.venueId = venueId;
+    }
 
     public String getName() {
         return name;
@@ -38,11 +49,11 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
         this.location = location;
     }
 
-    public String getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
@@ -56,6 +67,7 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
 
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
+                .append(venueId, that.venueId)
                 .append(name, that.name)
                 .append(location, that.location)
                 .append(companyId, that.companyId)
@@ -66,6 +78,7 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
+                .append(venueId)
                 .append(name)
                 .append(location)
                 .append(companyId)
@@ -75,6 +88,7 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .append("venueId", venueId)
                 .append("name", name)
                 .append("location", location)
                 .append("companyId", companyId)
