@@ -8,7 +8,10 @@ import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.solr.core.geo.Point;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by hovsep on 7/31/16.
@@ -18,20 +21,14 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
 
     private static final long serialVersionUID = -1801268777977380163L;
 
-    @Field("productId")
-    private Long productId;
-
-    @Field("productName")
-    private String productName;
-
-    @Field("language")
-    private String language;
+    @Field("productNameTranslations")
+    private List<String> productNameTranslations;
 
     @Field("productTags")
-    private List<String> productTags;
+    private Set<String> productTags;
 
-    @Field("description")
-    private String description;
+    @Field("descriptionTranslations")
+    private List<String> descriptionTranslations;
 
     @Field("galleryId")
     private Long galleryId;
@@ -48,62 +45,55 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
     @Field("categoryId")
     private Long categoryId;
 
-    @Field("categoryName")
-    private String categoryName;
+    @Field("categoryNameTranslations")
+    private List<String> categoryNameTranslations;
 
     @Field("categoryTags")
-    private List<String> categoryTags;
+    private Set<String> categoryTags;
 
     @Field("venueId")
     private Long venueId;
 
-    @Field("name")
+    @Field("venueName")
     private String venueName;
 
     @Field("location")
-    private Point location;
+    private Set<Point> locations;
 
     @Field("companyId")
     private Long companyId;
 
-    public Long getProductId() {
-        return productId;
+    public ProductDocument() {
+//        productNameTranslations = new ArrayList<>();
+//        productTags = new HashSet<>();
+//        categoryNameTranslations = new ArrayList<>();
+//        categoryTags = new HashSet<>();
+//        descriptionTranslations = new ArrayList<>();
+//        venueName = "";
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public List<String> getProductNameTranslations() {
+        return productNameTranslations;
     }
 
-    public String getProductName() {
-        return productName;
+    public void setProductNameTranslations(List<String> productNameTranslations) {
+        this.productNameTranslations = productNameTranslations;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public List<String> getProductTags() {
+    public Set<String> getProductTags() {
         return productTags;
     }
 
-    public void setProductTags(List<String> productTags) {
+    public void setProductTags(Set<String> productTags) {
         this.productTags = productTags;
     }
 
-    public String getDescription() {
-        return description;
+    public List<String> getDescriptionTranslations() {
+        return descriptionTranslations;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptionTranslations(List<String> descriptionTranslations) {
+        this.descriptionTranslations = descriptionTranslations;
     }
 
     public Long getGalleryId() {
@@ -146,19 +136,19 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
         this.categoryId = categoryId;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public List<String> getCategoryNameTranslations() {
+        return categoryNameTranslations;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryNameTranslations(List<String> categoryNameTranslations) {
+        this.categoryNameTranslations = categoryNameTranslations;
     }
 
-    public List<String> getCategoryTags() {
+    public Set<String> getCategoryTags() {
         return categoryTags;
     }
 
-    public void setCategoryTags(List<String> categoryTags) {
+    public void setCategoryTags(Set<String> categoryTags) {
         this.categoryTags = categoryTags;
     }
 
@@ -178,12 +168,12 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
         this.venueName = venueName;
     }
 
-    public Point getLocation() {
-        return location;
+    public Set<Point> getLocations() {
+        return locations;
     }
 
-    public void setLocation(Point location) {
-        this.location = location;
+    public void setLocations(Set<Point> locations) {
+        this.locations = locations;
     }
 
     public Long getCompanyId() {
@@ -204,21 +194,19 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
 
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
-                .append(productId, that.productId)
-                .append(productName, that.productName)
-                .append(language, that.language)
+                .append(productNameTranslations, that.productNameTranslations)
                 .append(productTags, that.productTags)
-                .append(description, that.description)
+                .append(descriptionTranslations, that.descriptionTranslations)
                 .append(galleryId, that.galleryId)
                 .append(evaluation, that.evaluation)
                 .append(price, that.price)
                 .append(menuId, that.menuId)
                 .append(categoryId, that.categoryId)
-                .append(categoryName, that.categoryName)
+                .append(categoryNameTranslations, that.categoryNameTranslations)
                 .append(categoryTags, that.categoryTags)
                 .append(venueId, that.venueId)
                 .append(venueName, that.venueName)
-                .append(location, that.location)
+                .append(locations, that.locations)
                 .append(companyId, that.companyId)
                 .isEquals();
     }
@@ -227,21 +215,19 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
-                .append(productId)
-                .append(productName)
-                .append(language)
+                .append(productNameTranslations)
                 .append(productTags)
-                .append(description)
+                .append(descriptionTranslations)
                 .append(galleryId)
                 .append(evaluation)
                 .append(price)
                 .append(menuId)
                 .append(categoryId)
-                .append(categoryName)
+                .append(categoryNameTranslations)
                 .append(categoryTags)
                 .append(venueId)
                 .append(venueName)
-                .append(location)
+                .append(locations)
                 .append(companyId)
                 .toHashCode();
     }
@@ -249,21 +235,19 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("productId", productId)
-                .append("productName", productName)
-                .append("language", language)
+                .append("productNameTranslations", productNameTranslations)
                 .append("productTags", productTags)
-                .append("description", description)
+                .append("descriptionTranslations", descriptionTranslations)
                 .append("galleryId", galleryId)
                 .append("evaluation", evaluation)
                 .append("price", price)
                 .append("menuId", menuId)
                 .append("categoryId", categoryId)
-                .append("categoryName", categoryName)
+                .append("categoryNameTranslations", categoryNameTranslations)
                 .append("categoryTags", categoryTags)
                 .append("venueId", venueId)
                 .append("venueName", venueName)
-                .append("location", location)
+                .append("locations", locations)
                 .append("companyId", companyId)
                 .toString();
     }

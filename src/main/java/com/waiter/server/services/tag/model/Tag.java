@@ -51,8 +51,12 @@ public class Tag extends AbstractEntityModel {
         return result;
     }
 
-    public static List<String> toStrings(Collection<Tag> tags) {
+    public static List<String> toStringList(Collection<Tag> tags) {
         return tags.stream().map(Tag::getName).collect(Collectors.toList());
+    }
+
+    public static Set<String> toStringSet(Collection<Tag> tags) {
+        return tags.stream().map(Tag::getName).collect(Collectors.toSet());
     }
 
     public static Set<Tag> parseTags(Set<String> tags) {

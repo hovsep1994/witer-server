@@ -12,8 +12,5 @@ import java.util.List;
 @Repository
 public interface ProductSolrRepository extends SolrCrudRepository<ProductDocument, String>, ProductSolrRepositoryCustom {
 
-    ProductDocument findByProductId(Long productId);
-
-    List<ProductDocument> findByProductNameStartingWith(String name);
 
 }

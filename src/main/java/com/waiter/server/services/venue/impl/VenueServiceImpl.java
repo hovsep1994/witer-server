@@ -3,17 +3,19 @@ package com.waiter.server.services.venue.impl;
 import com.waiter.server.persistence.core.repository.venue.VenueRepository;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
+import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueDto;
-import com.waiter.server.services.venue.dto.VenueSearchParameters;
+import com.waiter.server.services.venue.event.VenueLocationUpdateEvent;
+import com.waiter.server.services.venue.event.VenueUpdateEvent;
 import com.waiter.server.services.venue.model.Venue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import static org.springframework.util.Assert.notNull;
 
 /**
  * Created by Admin on 12/12/2015.
@@ -26,24 +28,37 @@ public class VenueServiceImpl implements VenueService {
     @Autowired
     private VenueRepository venueRepository;
 
+    @Autowired
+    private ApplicationEventBus applicationEventBus;
+
     @Override
     public Venue create(VenueDto venueDto) {
+        LOGGER.debug("Creating venue by dto -{}", venueDto);
         assertVenueDto(venueDto);
-        Venue venue = new Venue();
+        final Venue venue = new Venue();
         venueDto.updateProperties(venue);
-        return venueRepository.save(venue);
+        final Venue createdVenue = venueRepository.save(venue);
+        LOGGER.debug("Venue -{} successfully stored", venue);
+        applicationEventBus.publish(new VenueUpdateEvent(createdVenue.getId()));
+        return createdVenue;
     }
 
     @Override
+    @Transactional
     public Venue updateVenue(Long id, VenueDto venueDto) {
         assertVenueId(id);
         assertVenueDto(venueDto);
-        Venue venue = venueRepository.findOne(id);
+        final Venue venue = venueRepository.findOne(id);
         if (venue == null) {
             throw new RuntimeException("venue with id not found");
         }
+        if (venue.getLocation() != venueDto.getLocation()) {
+            applicationEventBus.publish(new VenueLocationUpdateEvent(id));
+        }
         venueDto.updateProperties(venue);
-        return venueRepository.save(venue);
+        final Venue updatedVenue = venueRepository.save(venue);
+        applicationEventBus.publish(new VenueUpdateEvent(updatedVenue.getId()));
+        return updatedVenue;
     }
 
     @Override
@@ -57,21 +72,15 @@ public class VenueServiceImpl implements VenueService {
         return venue;
     }
 
-    @Override
-    public List<Venue> getVenuesBySearchParameters(VenueSearchParameters parameters) {
-        Assert.notNull(parameters, "parameters must not be null");
-        return venueRepository.findBySearchParameters(parameters);
-    }
-
     private void assertVenueId(Long id) {
-        Assert.notNull(id, "id must not be null");
+        notNull(id, "id must not be null");
     }
 
     private void assertVenueDto(VenueDto venueDto) {
-        Assert.notNull(venueDto);
-        Assert.notNull(venueDto.getCompanyId());
-        Assert.notNull(venueDto.getMenuId());
-        Assert.notNull(venueDto.getLocation());
-        Assert.notNull(venueDto.getName());
+        notNull(venueDto);
+        notNull(venueDto.getCompanyId());
+        notNull(venueDto.getMenuId());
+        notNull(venueDto.getLocation());
+        notNull(venueDto.getName());
     }
 }

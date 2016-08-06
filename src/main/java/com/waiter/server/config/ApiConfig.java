@@ -26,7 +26,7 @@ public class ApiConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         LOGGER.info("auth interceptor added. ");
-//        registry.addInterceptor(apiAuthenticationInterceptor).addPathPatterns("/menu/add");
+//        registry.addInterceptor(apiAuthenticationInterceptor).addPathPatterns("/menu/addOrUpdate");
     }
 
     @Bean

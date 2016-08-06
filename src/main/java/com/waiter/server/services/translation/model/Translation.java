@@ -5,6 +5,9 @@ import com.waiter.server.services.language.Language;
 
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Admin on 12/23/2015.
@@ -45,5 +48,9 @@ public class Translation extends AbstractEntityModel {
 
     public void setTranslationType(TranslationType translationType) {
         this.translationType = translationType;
+    }
+
+    public static List<String> getListOfTexts(Collection<Translation> translations) {
+        return translations.stream().map(Translation::getName).collect(Collectors.toList());
     }
 }

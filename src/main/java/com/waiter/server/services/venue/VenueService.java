@@ -17,6 +17,4 @@ public interface VenueService {
     Venue updateVenue(Long id, VenueDto venueDto);
 
     Venue getVenueById(Long id);
-
-    List<Venue> getVenuesBySearchParameters(VenueSearchParameters parameters);
 }

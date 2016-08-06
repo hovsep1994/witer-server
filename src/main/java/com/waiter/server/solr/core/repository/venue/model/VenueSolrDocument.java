@@ -6,32 +6,27 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.solr.core.geo.Point;
+import org.springframework.data.solr.core.mapping.Indexed;
+import org.springframework.data.solr.core.mapping.SolrDocument;
 
 /**
  * Created by hovsep on 7/31/16.
  */
+@SolrDocument(solrCoreName = "venue")
 public class VenueSolrDocument extends AbstractSolrDocumentWithId {
+
     private static final long serialVersionUID = -1941047069037577163L;
 
-    @Field("venueId")
-    private Long venueId;
-
     @Field("name")
+    @Indexed
     private String name;
 
     @Field("location")
+    @Indexed
     private Point location;
 
     @Field("companyId")
     private Long companyId;
-
-    public Long getVenueId() {
-        return venueId;
-    }
-
-    public void setVenueId(Long venueId) {
-        this.venueId = venueId;
-    }
 
     public String getName() {
         return name;
@@ -67,7 +62,6 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
 
         return new EqualsBuilder()
                 .appendSuper(super.equals(o))
-                .append(venueId, that.venueId)
                 .append(name, that.name)
                 .append(location, that.location)
                 .append(companyId, that.companyId)
@@ -78,7 +72,6 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .appendSuper(super.hashCode())
-                .append(venueId)
                 .append(name)
                 .append(location)
                 .append(companyId)
@@ -88,7 +81,6 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("venueId", venueId)
                 .append("name", name)
                 .append("location", location)
                 .append("companyId", companyId)

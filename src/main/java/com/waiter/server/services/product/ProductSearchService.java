@@ -11,7 +11,13 @@ public interface ProductSearchService {
 
     ProductDocument get(Long id);
 
-    void add(Long productId);
+    void addOrUpdate(Long productId);
 
-    List<ProductDocument> findProductsStartingWith(String name);
+    void addOrUpdateByCategoryId(Long categoryId);
+
+    void addOrUpdateByVenueId(Long venueId);
+
+//    List<ProductDocument> findProductsStartingWith(String name);
+
+
 }

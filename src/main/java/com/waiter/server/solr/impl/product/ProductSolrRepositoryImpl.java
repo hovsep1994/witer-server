@@ -1,4 +1,4 @@
-package com.waiter.server.solr.impl;
+package com.waiter.server.solr.impl.product;
 
 import com.waiter.server.solr.core.repository.product.ProductSolrRepositoryCustom;
 import com.waiter.server.solr.core.repository.product.model.ProductDocument;
@@ -21,9 +21,10 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepositoryCustom {
     @Override
     public List<ProductDocument> findBySearchParams(String text) {
         final Criteria criteria =
-                new Criteria("name").contains(text)
-                .or(new Criteria("tags").contains(text))
-                .or(new Criteria("category.name").contains(text));
+                new Criteria("productName").contains(text).boost(1f)
+                        .or(new Criteria("productTags").isNotNull().contains(text)).boost(2f)
+                        .or(new Criteria("categoryName").contains(text)).boost(3f)
+                        .or(new Criteria("categoryTags").isNotNull().contains(text)).boost(4f);
         final SimpleQuery query = new SimpleQuery(criteria);
         Page<ProductDocument> results = solrTemplate.queryForPage(query, ProductDocument.class);
         return results.getContent();
