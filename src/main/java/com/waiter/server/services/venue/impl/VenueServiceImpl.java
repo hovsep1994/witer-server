@@ -39,7 +39,7 @@ public class VenueServiceImpl implements VenueService {
         venueDto.updateProperties(venue);
         final Venue createdVenue = venueRepository.save(venue);
         LOGGER.debug("Venue -{} successfully stored", venue);
-        applicationEventBus.publish(new VenueUpdateEvent(createdVenue.getId()));
+        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue.getId()));
         return createdVenue;
     }
 
@@ -53,11 +53,11 @@ public class VenueServiceImpl implements VenueService {
             throw new RuntimeException("venue with id not found");
         }
         if (venue.getLocation() != venueDto.getLocation()) {
-            applicationEventBus.publish(new VenueLocationUpdateEvent(id));
+            applicationEventBus.publishAsynchronousEvent(new VenueLocationUpdateEvent(id));
         }
         venueDto.updateProperties(venue);
         final Venue updatedVenue = venueRepository.save(venue);
-        applicationEventBus.publish(new VenueUpdateEvent(updatedVenue.getId()));
+//        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(updatedVenue.getId()));
         return updatedVenue;
     }
 
@@ -77,10 +77,9 @@ public class VenueServiceImpl implements VenueService {
     }
 
     private void assertVenueDto(VenueDto venueDto) {
-        notNull(venueDto);
-        notNull(venueDto.getCompanyId());
-        notNull(venueDto.getMenuId());
-        notNull(venueDto.getLocation());
-        notNull(venueDto.getName());
+        notNull(venueDto, "venue dto must not bu null");
+        notNull(venueDto.getCompanyId(), "company id must not bu null");
+        notNull(venueDto.getLocation(), "location must not bu null");
+        notNull(venueDto.getName(), "name must not bu null");
     }
 }

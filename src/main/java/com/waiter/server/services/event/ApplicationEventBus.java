@@ -5,8 +5,10 @@ package com.waiter.server.services.event;
  */
 public interface ApplicationEventBus {
 
-    void publish(ApplicationEvent event);
-
     void subscribe(ApplicationEventListener applicationEventListener);
+
+    void publishSynchronousEvent(ApplicationEvent event);
+
+    void publishAsynchronousEvent(ApplicationEvent applicationEvent);
 
 }

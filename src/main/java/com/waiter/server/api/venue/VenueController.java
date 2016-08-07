@@ -4,9 +4,10 @@ import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.location.model.LocationModel;
 import com.waiter.server.api.venue.model.VenueModel;
-import com.waiter.server.api.venue.model.request.AddVenueRequest;
+import com.waiter.server.api.venue.model.request.VenueRequest;
 import com.waiter.server.services.company.CompanyService;
 import com.waiter.server.services.user.model.User;
+import com.waiter.server.services.venue.VenueSearchService;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
@@ -27,6 +28,9 @@ public class VenueController extends MainController {
     private VenueService venueService;
 
     @Autowired
+    private VenueSearchService venueSearchService;
+
+    @Autowired
     private CompanyService companyService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -37,21 +41,24 @@ public class VenueController extends MainController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<VenueModel> createMenu(@RequestBody AddVenueRequest addVenueRequest, @ModelAttribute User user) {
-        checkUserHasAccess(user, companyService.get(addVenueRequest.getCompanyId()));
-        VenueDto venueDto = new VenueDto();
-        venueDto.setMenuId(addVenueRequest.getMenuId());
-        venueDto.setCompanyId(addVenueRequest.getCompanyId());
-        venueDto.setLocation(LocationModel.convert(addVenueRequest.getLocation()));
-        Venue createdVenue = venueService.create(venueDto);
-        VenueModel venueModel = VenueModel.convert(createdVenue);
+    public ResponseEntity<VenueModel> createVenue(@RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
+        checkUserHasAccess(user, companyService.get(venueRequest.getCompanyId()));
+        final Venue createdVenue = venueService.create(venueRequest.convertToVenueDto());
+        final VenueModel venueModel = VenueModel.convert(createdVenue);
         return ResponseEntity.success(venueModel);
     }
 
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
+    public ResponseEntity<VenueModel> updateVenue(@PathVariable Long id, @RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
+        checkUserHasAccess(user, companyService.get(venueRequest.getCompanyId()));
+        final Venue createdVenue = venueService.updateVenue(id, venueRequest.convertToVenueDto());
+        final VenueModel venueModel = VenueModel.convert(createdVenue);
+        return ResponseEntity.success(venueModel);
+    }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ResponseEntity<List<Venue>> findVenues(@RequestBody VenueSearchParameters parameters) {
-        List<Venue> venues = venueService.getVenuesBySearchParameters(parameters);
+        List<Venue> venues = venueSearchService.getVenuesBySearchParameters(parameters);
         return ResponseEntity.success(venues);
     }
 

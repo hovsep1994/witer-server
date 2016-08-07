@@ -1,10 +1,19 @@
 package com.waiter.server.services.event.impl;
 
-import com.waiter.server.services.event.*;
+import com.waiter.server.services.event.ApplicationEvent;
+import com.waiter.server.services.event.ApplicationEventBus;
+import com.waiter.server.services.event.ApplicationEventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
+import static org.springframework.util.Assert.notNull;
 
 /**
  * Created by hovsep on 8/5/16.
@@ -12,22 +21,51 @@ import java.util.List;
 @Service
 public class ApplicationEventBusImpl implements ApplicationEventBus {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationEventBusImpl.class);
+
+    private static final int MAX_THREAD_POOL_SIZE = 20;
+
+    private static final int CORE_THREAD_POOL_SIZE = 10;
+
     private List<ApplicationEventListener> listeners;
+
+    private ExecutorService executorService;
 
     public ApplicationEventBusImpl() {
         listeners = new ArrayList<>();
-    }
-
-    @Override
-    public void publish(ApplicationEvent event) {
-        listeners.forEach(listener -> {
-            listener.process(event);
-        });
+        initExecutorService();
     }
 
     @Override
     public void subscribe(ApplicationEventListener applicationEventListener) {
         listeners.add(applicationEventListener);
+    }
+
+    @Override
+    public void publishSynchronousEvent(ApplicationEvent applicationEvent) {
+        assertApplicationEventNotNull(applicationEvent);
+        listeners.forEach(listener -> {
+            listener.process(applicationEvent);
+        });
+    }
+
+    @Override
+    public void publishAsynchronousEvent(ApplicationEvent applicationEvent) {
+        assertApplicationEventNotNull(applicationEvent);
+        LOGGER.debug("Processing Synchronous event - {}", applicationEvent);
+        executorService.submit(() -> listeners.forEach(listener ->
+            listener.process(applicationEvent)));
+    }
+
+    private void assertApplicationEventNotNull(ApplicationEvent applicationEvent) {
+        notNull(applicationEvent);
+    }
+
+    private void initExecutorService() {
+        final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(MAX_THREAD_POOL_SIZE);
+        threadPoolExecutor.setCorePoolSize(CORE_THREAD_POOL_SIZE);
+        threadPoolExecutor.setMaximumPoolSize(MAX_THREAD_POOL_SIZE);
+        this.executorService = threadPoolExecutor;
     }
 
 }
