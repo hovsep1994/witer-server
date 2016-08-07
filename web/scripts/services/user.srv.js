@@ -1,13 +1,11 @@
 /**
- * Created by shahenpoghosyan on 6/11/16.
+ * @author shahenpogosyan
  */
 
 var host = "..";
 var keyCookie = "ckey";
 
-function UserService(helper, $http) {
-
-    this.helper = helper;
+function UserService(helper, $http, host, keyCookie) {
 
     this.signUp = signUp;
     this.signIn = signIn;
@@ -31,7 +29,6 @@ function UserService(helper, $http) {
     }
 
     function signIn(user, done) {
-        console.log("valod2");
         $http({
             method: 'POST',
             url: host + "/api/users/signin",
@@ -61,7 +58,7 @@ function UserService(helper, $http) {
 
 
     function getUser() {
-        if (helper.getCookie(keyCookie)) {
+        if (!helper.getCookie(keyCookie)) {
             return null;
         }
         return localStorage.getItem("user");

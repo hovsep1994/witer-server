@@ -48,6 +48,6 @@
 </div>
 <%@ include file="footer.jsp" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="scripts/controllers/user-controller.js" type="text/javascript"></script>
+<script src="scripts/controllers/user.ctrl.js" type="text/javascript"></script>
 </body>
 </html>

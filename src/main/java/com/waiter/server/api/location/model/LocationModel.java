@@ -13,6 +13,9 @@ public class LocationModel {
     @JsonProperty(value = "country")
     private String country;
 
+    @JsonProperty(value = "countryCode")
+    private String countryCode;
+
     @JsonProperty(value = "city")
     private String city;
 
@@ -34,6 +37,14 @@ public class LocationModel {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     public String getCity() {
@@ -80,6 +91,7 @@ public class LocationModel {
         LocationModel locationModel = new LocationModel();
         locationModel.setCity(location.getCity());
         locationModel.setCountry(location.getCountry());
+        locationModel.setCountryCode(location.getContryCode());
         locationModel.setLatitude(location.getLatitude());
         locationModel.setLongitude(location.getLongitude());
         locationModel.setStreet(location.getStreet());
@@ -91,6 +103,7 @@ public class LocationModel {
         Location location = new Location();
         location.setCity(locationModel.getCity());
         location.setCountry(locationModel.getCountry());
+        location.setContryCode(locationModel.getCountryCode());
         location.setLatitude(locationModel.getLatitude());
         location.setLongitude(locationModel.getLongitude());
         location.setStreet(locationModel.getStreet());

@@ -32,9 +32,17 @@
         </ul>
 
         <div class="tab-content">
+
+
+            <%---- -------------------- Venues Section ------------------------%>
             <div ng-controller="venueCtrl" id="venues" class="venues-panel tab-pane fade in active">
                 <div class="panel-headers-row row">
-                    <div class="col-lg-3 col-md-3 panel-headers-col-left">VENUES</div>
+                    <div class="col-lg-3 col-md-3 panel-headers-col-left">
+                        <span>VENUES</span> &nbsp;
+                        <a href="" data-toggle="modal" data-target="#editVenueModal" ng-click="initEditVenue(true)">
+                            <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button-black.png">
+                        </a>
+                    </div>
                     <div class="col-lg-9 col-md-9 panel-headers-col-right">INFORMATION</div>
                 </div>
                 <div class="content-row row">
@@ -45,7 +53,7 @@
                                 <a href="" data-toggle="modal" data-target="#deleteVenueModal">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
                                 </a>
-                                <a href="" data-toggle="modal" data-target="#editVenueModal">
+                                <a href="" data-toggle="modal" data-target="#editVenueModal" ng-click="initEditVenue(false)">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">
                                 </a>
                             </li>
@@ -91,9 +99,6 @@
                                         </div>
                                         <span>Paris street</span><br>
 
-                                        <div style="display: inline-block; min-width: 130px; font-weight: bold">Phone
-                                        </div>
-                                        <span>0775657795</span><br>
                                     </div>
                                     <br><br>
 
@@ -206,36 +211,17 @@
 <%@ include file="../footer.jsp" %>
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script src="${pageContext.request.contextPath}/scripts/services/helper-service.js"></script>
-<script src="${pageContext.request.contextPath}/scripts/services/user-service.js"></script>
-<script src="${pageContext.request.contextPath}/scripts/services/venue-service.js"></script>
-<script src="${pageContext.request.contextPath}/scripts/controllers/user-controller.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAW_hI04roTnEO08eq4tlKgNh4okOdMSTE"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/map.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/helper.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/user.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/venue.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/app.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/controllers/user.ctrl.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/controllers/venue.ctrl.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"></script>
+integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+crossorigin="anonymous"></script>
 
-<script type="text/javascript">
-    var mapEdit, mapDisplay;
-    function initMap() {
-        mapEdit = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 70, lng: 0},
-            zoom: 2
-        });
-
-        mapDisplay = new google.maps.Map(document.getElementById('map1'), {
-            center: {lat: 70, lng: 0},
-            zoom: 2
-        });
-    }
-
-    $("#editVenueModal").on("shown.bs.modal", function () {
-        google.maps.event.trigger(mapEdit, "resize");
-    });
-
-</script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAW_hI04roTnEO08eq4tlKgNh4okOdMSTE&callback=initMap">
-</script>
-<script src="${pageContext.request.contextPath}/scripts/controllers/venue-controller.js"></script>
 </html>

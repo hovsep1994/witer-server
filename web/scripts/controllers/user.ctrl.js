@@ -2,11 +2,8 @@
  * Created by shahenpoghosyan on 10/29/15.
  */
 
-var app = angular.module('app', []);
-app.controller('userCtrl', function ($scope, $http) {
-    console.log("valod");
-    var helper = new HelperService();
-    var userService = new UserService(helper, $http);
+var app = angular.module('app');
+app.controller('userCtrl', ['$scope', '$http', 'userService', function ($scope, $http, userService) {
 
     var user = userService.getUser();
     if(user) {
@@ -36,4 +33,4 @@ app.controller('userCtrl', function ($scope, $http) {
         window.location.href = "/business/landing";
     };
 
-});
+}]);

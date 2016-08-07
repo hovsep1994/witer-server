@@ -16,6 +16,9 @@ public class Location extends AbstractEntityModel {
     @Column(name = "country")
     private String country;
 
+    @Column(name = "country_code")
+    private String contryCode;
+
     @Column(name = "city")
     private String city;
 
@@ -52,6 +55,14 @@ public class Location extends AbstractEntityModel {
     public Location setCountry(String country) {
         this.country = country;
         return this;
+    }
+
+    public String getContryCode() {
+        return contryCode;
+    }
+
+    public void setContryCode(String contryCode) {
+        this.contryCode = contryCode;
     }
 
     public Location setCity(String city) {
