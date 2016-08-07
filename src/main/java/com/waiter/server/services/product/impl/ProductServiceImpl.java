@@ -6,6 +6,7 @@ import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
+import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.evaluation.model.Evaluation;
 import com.waiter.server.services.evaluation.model.Rate;
 import com.waiter.server.services.gallery.GalleryImageService;
@@ -175,6 +176,12 @@ public class ProductServiceImpl implements ProductService {
         notNull(rating);
         isTrue(rating >= 0 && rating <= 10);
         return productRepository.setRatingByCustomerToken(productId, customerToken, rating);
+    }
+
+    @Override
+    public Company getCompanyByProductId(Long productId) {
+        assertCategoryId(productId);
+        return getById(productId).getCategory().getMenu().getCompany();
     }
 
     @Override

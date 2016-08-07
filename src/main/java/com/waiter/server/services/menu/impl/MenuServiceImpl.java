@@ -74,6 +74,12 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    public Company getCompanyByMenuId(Long menuId) {
+        assertMenuId(menuId);
+        return getById(menuId).getCompany();
+    }
+
+    @Override
     @Transactional
     public void remove(Long menuId) {
         assertMenuId(menuId);

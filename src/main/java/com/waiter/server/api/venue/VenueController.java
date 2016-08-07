@@ -6,6 +6,7 @@ import com.waiter.server.api.location.model.LocationModel;
 import com.waiter.server.api.venue.model.VenueModel;
 import com.waiter.server.api.venue.model.request.AddVenueRequest;
 import com.waiter.server.services.user.model.User;
+import com.waiter.server.services.company.CompanyService;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
@@ -24,6 +25,9 @@ public class VenueController extends AuthenticationController {
 
     @Autowired
     private VenueService venueService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<VenueModel> findOne(@PathVariable Long id) {
@@ -58,7 +62,6 @@ public class VenueController extends AuthenticationController {
         VenueModel venueModel = VenueModel.convert(createdVenue);
         return ResponseEntity.success(venueModel);
     }
-
 
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)

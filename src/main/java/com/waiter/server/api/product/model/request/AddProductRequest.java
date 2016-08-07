@@ -9,14 +9,14 @@ import com.waiter.server.api.product.model.AbstractProductModel;
  */
 public class AddProductRequest extends AbstractProductModel{
 
-    @JsonProperty(value = "groupId")
-    private Long groupId;
+    @JsonProperty(value = "categoryId")
+    private Long categoryId;
 
-    public Long getGroupId() {
-        return groupId;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

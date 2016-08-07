@@ -1,10 +1,14 @@
 package com.waiter.server.api.menu;
 
+import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.menu.model.MenuModel;
 import com.waiter.server.api.menu.model.request.AddMenuRequest;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
+import com.waiter.server.services.user.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +20,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/menu")
-public class MenuController {
+public class MenuController extends MainController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MenuController.class);
 
     @Autowired
     private MenuService menuService;
@@ -29,9 +35,10 @@ public class MenuController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<MenuModel> addMenu(@RequestBody AddMenuRequest addMenuRequest) {
-        Menu createdMenu = menuService.create(addMenuRequest.getName(), addMenuRequest.getCompanyId());
-        MenuModel menuModel = MenuModel.convert(createdMenu);
+    public ResponseEntity<MenuModel> addMenu(@RequestBody AddMenuRequest addMenuRequest, @ModelAttribute User user) {
+        Menu menu = menuService.create(addMenuRequest.getName(), addMenuRequest.getCompanyId());
+        checkUserHasAccess(user, menu.getCompany());
+        MenuModel menuModel = MenuModel.convert(menu);
         return ResponseEntity.success(menuModel);
     }
 
