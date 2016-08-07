@@ -52,7 +52,7 @@ public class VenueController extends AuthenticationController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<VenueModel> update(@RequestParam Long id, @RequestBody AddVenueRequest addVenueRequest) {
 
-
+        //todo check user permission
         VenueDto venueDto = new VenueDto();
         venueDto.setMenuId(addVenueRequest.getMenuId());
         venueDto.setLocation(LocationModel.convert(addVenueRequest.getLocation()));

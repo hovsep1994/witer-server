@@ -7,8 +7,6 @@ import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.log4j.Logger;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,7 +19,7 @@ public class MainController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
-    private static final Logger logger = Logger.getLogger(MainController.class);
+    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(MainController.class);
 
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity handleCustomException(ServiceException ex) {

@@ -20,7 +20,7 @@ function VenueService($http, host) {
         }
         $http.post(venueUrl, venue).then(function (response) {
             if (!response.data.success) return done(response.data.errors);
-            console.log(response.data);
+            console.log("success", response.data);
             done(null, response.data.response);
         });
     }

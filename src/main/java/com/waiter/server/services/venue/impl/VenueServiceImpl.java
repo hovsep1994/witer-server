@@ -70,7 +70,6 @@ public class VenueServiceImpl implements VenueService {
     private void assertVenueDto(VenueDto venueDto) {
         Assert.notNull(venueDto);
         Assert.notNull(venueDto.getCompanyId());
-        Assert.notNull(venueDto.getMenuId());
         Assert.notNull(venueDto.getLocation());
         Assert.notNull(venueDto.getName());
     }
