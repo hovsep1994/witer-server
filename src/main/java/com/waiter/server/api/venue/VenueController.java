@@ -43,7 +43,6 @@ public class VenueController extends AuthenticationController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<VenueModel> createVenue(@RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
-//        checkUserHasAccess(user, companyService.get(venueRequest.getCompanyId()));
         final Location location = LocationModel.convert(venueRequest.getLocation());
         VenueDto venueDto = venueRequest.convertToVenueDto();
         venueDto.setCompanyId(user.getCompany().getId());
@@ -54,7 +53,6 @@ public class VenueController extends AuthenticationController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<VenueModel> updateVenue(@PathVariable Long id, @RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
-//        checkUserHasAccess(user, companyService.get(venueRequest.getCompanyId()));
         final Location location = LocationModel.convert(venueRequest.getLocation());
         final Venue createdVenue = venueService.updateVenue(id, venueRequest.convertToVenueDto(), location);
         final VenueModel venueModel = VenueModel.convert(createdVenue);
