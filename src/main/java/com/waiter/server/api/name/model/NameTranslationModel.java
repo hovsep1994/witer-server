@@ -19,7 +19,7 @@ public class NameTranslationModel extends AbstractNameTranslationModel {
     public static TranslationDto convert(NameTranslationModel nameTranslationModel) {
         TranslationDto translationDto = new TranslationDto();
         translationDto.setLanguage(nameTranslationModel.getLanguage());
-        translationDto.setName(nameTranslationModel.getName());
+        translationDto.setText(nameTranslationModel.getName());
         return translationDto;
     }
 }

@@ -3,13 +3,14 @@ package com.waiter.server.api.venue.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.common.model.AbstractApiModel;
 import com.waiter.server.api.location.model.LocationModel;
+import com.waiter.server.services.venue.dto.VenueDto;
 
 /**
  * User: hovsep
  * Date: 2/20/16
  * Time: 5:49 PM
  */
-public class AddVenueRequest extends AbstractApiModel {
+public class VenueRequest extends AbstractApiModel {
 
     @JsonProperty(value = "companyId")
     private Long companyId;
@@ -53,5 +54,13 @@ public class AddVenueRequest extends AbstractApiModel {
 
     public void setMenuId(Long menuId) {
         this.menuId = menuId;
+    }
+
+    public VenueDto convertToVenueDto() {
+        VenueDto venueDto = new VenueDto();
+        venueDto.setName(getName());
+        venueDto.setMenuId(getMenuId());
+        venueDto.setCompanyId(getCompanyId());
+        return venueDto;
     }
 }

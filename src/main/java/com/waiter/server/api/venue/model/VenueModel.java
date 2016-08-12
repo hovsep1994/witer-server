@@ -56,8 +56,8 @@ public class VenueModel {
     public static VenueModel convert(Venue venue) {
         VenueModel venueModel = new VenueModel();
         venueModel.setId(venue.getId());
-        venueModel.setMenuId(venue.getMenu().getId());
-        venueModel.setCompanyId(venue.getCompany().getId());
+        venueModel.setMenuId(venue.getMenu() == null ? null : venue.getMenu().getId());
+        venueModel.setCompanyId(venue.getCompany() == null ? null : venue.getCompany().getId());
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
         return venueModel;
     }

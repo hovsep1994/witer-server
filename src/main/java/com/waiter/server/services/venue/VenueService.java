@@ -1,6 +1,7 @@
 package com.waiter.server.services.venue;
 
 
+import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
 import com.waiter.server.services.venue.model.Venue;
@@ -12,11 +13,9 @@ import java.util.List;
  */
 public interface VenueService {
 
-    Venue create(VenueDto venueDto);
+    Venue create(VenueDto venueDto, Location location);
 
-    Venue updateVenue(Long id, VenueDto venueDto);
+    Venue updateVenue(Long id, VenueDto venueDto, Location location);
 
     Venue getVenueById(Long id);
-
-    List<Venue> getVenuesBySearchParameters(VenueSearchParameters parameters);
 }

@@ -23,7 +23,6 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;

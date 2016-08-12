@@ -8,7 +8,6 @@ import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.evaluation.model.Evaluation;
-import com.waiter.server.services.evaluation.model.Rate;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
 import com.waiter.server.services.gallery.model.Gallery;
@@ -25,18 +24,17 @@ import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.translate.TranslatorService;
 import com.waiter.server.services.translate.dto.TextTranslationDto;
+import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
@@ -64,19 +62,26 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private TranslationService translationService;
 
+    @Autowired
+    private ProductSolrRepository productSolrRepository;
+
     @Override
-    public Product create(Long categoryId, ProductDto productDto, TranslationDto translationDto,
+    public Product create(Long categoryId, ProductDto productDto, TranslationDto nameDto,
                           TranslationDto descriptionDto) {
         assertCategoryId(categoryId);
         notNull(productDto);
-        notNull(translationDto);
-        Product product = new Product();
-        Category category = categoryService.getById(categoryId);
+        notNull(nameDto);
+        final Product product = new Product();
+        final Category category = categoryService.getById(categoryId);
+        checkCategoryContainsLanguage(category, nameDto);
         product.setCategory(category);
-        Translation translation = translationService.create(translationDto);
-        Translation description = translationService.create(descriptionDto);
-        product.getNameSet().add(translation);
-        product.getDescriptionSet().add(description);
+        if (descriptionDto != null) {
+            checkCategoryContainsLanguage(category, descriptionDto);
+            final Translation description = translationService.create(descriptionDto);
+            product.getDescriptionSet().add(description);
+        }
+        final Translation name = translationService.create(nameDto);
+        product.getNameSet().add(name);
         product.setGallery(new Gallery());
         product.setEvaluation(new Evaluation());
         productDto.updateProperties(product);
@@ -89,6 +94,7 @@ public class ProductServiceImpl implements ProductService {
         assertProductId(id);
         notNull(productDto);
         Product product = productRepository.findOne(id);
+        checkCategoryContainsLanguage(product.getCategory(), translationDto);
         Translation translation = product.getNameTranslationByLanguage(translationDto.getLanguage());
         translationDto.updateProperties(translation);
         product.setUpdated(new Date());
@@ -118,10 +124,6 @@ public class ProductServiceImpl implements ProductService {
             LOGGER.error("Product with id -{} not found", id);
             throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Product not found");
         }
-        Hibernate.initialize(product.getTags());
-        Hibernate.initialize(product.getNameSet());
-        Hibernate.initialize(product.getCategory());
-        Hibernate.initialize(product.getDescriptionSet());
         return product;
     }
 
@@ -197,6 +199,13 @@ public class ProductServiceImpl implements ProductService {
 
     private void assertProductId(Long id) {
         notNull(id, "product id must not be null");
+    }
+
+    private void checkCategoryContainsLanguage(Category category, TranslationDto translationDto) {
+        if (!category.getLanguages().contains(translationDto.getLanguage())) {
+            LOGGER.error("No category -{} translation with language -{}", category, translationDto.getLanguage());
+            throw new ServiceRuntimeException(ErrorCode.NO_LANGUAGE, "No category translation with language");
+        }
     }
 
 }

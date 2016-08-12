@@ -21,7 +21,7 @@ import java.util.Properties;
 @EnableWebMvc
 public class RootConfig {
 
-    private static final Logger logger = Logger.getLogger(RootConfig.class);
+    private static final Logger LOGGER = Logger.getLogger(RootConfig.class);
 
     @Bean
     public RestTemplate restTemplate() {

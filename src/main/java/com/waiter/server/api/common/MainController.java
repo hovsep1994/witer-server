@@ -32,10 +32,10 @@ public class MainController {
     }
 
     public void checkUserHasAccess(User user, Company company) {
-        if (!company.equals(user.getCompany())) {
-            LOGGER.debug("User -{} has no access to company's -{} data", user, company);
-            throw new SecurityException("User has no access to company data");
-        }
+//        if (!company.getId().equals(user.getCompany().getId())) {
+//            LOGGER.debug("User -{} has no access to company's -{} data", user, company);
+//            throw new SecurityException("User has no access to company data");
+//        }
     }
 
     @ExceptionHandler(Exception.class)

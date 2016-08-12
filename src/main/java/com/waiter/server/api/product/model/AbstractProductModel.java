@@ -23,7 +23,7 @@ public abstract class AbstractProductModel extends AbstractApiLanguageModel {
     @JsonProperty(value = "description", required = false)
     private String description;
 
-    @JsonProperty(value = "nameTranslation")
+    @JsonProperty(value = "name")
     private String name;
 
     public Set<TagModel> getTagModels() {

@@ -41,8 +41,7 @@ public class FoursquareIdentityServiceImpl implements FoursquareIdentityService 
         VenueDto venueDto = new VenueDto();
         venueDto.setName(foursquareModel.getVenue().getName());
         venueDto.setCompanyId(companyId);
-        venueDto.setLocation(location);
-        Venue venue = venueService.create(venueDto);
+        Venue venue = venueService.create(venueDto, location);
         FoursquareIdentity foursquareIdentity = new FoursquareIdentity();
         foursquareIdentity.setReferralId(foursquareModel.getReferralId());
         foursquareIdentity.setName(foursquareModel.getVenue().getName());

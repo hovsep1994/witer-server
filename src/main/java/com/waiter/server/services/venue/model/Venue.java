@@ -26,7 +26,7 @@ public class Venue extends AbstractEntityModel {
     private Company company;
 
     @OneToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id", nullable = true)
+    @JoinColumn(name = "menu_id")
     private Menu menu;
 
     public Company getCompany() {

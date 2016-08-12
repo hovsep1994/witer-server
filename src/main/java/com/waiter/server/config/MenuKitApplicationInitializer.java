@@ -1,7 +1,5 @@
 package com.waiter.server.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.support.OpenSessionInViewFilter;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -21,7 +19,7 @@ public class MenuKitApplicationInitializer implements WebApplicationInitializer 
     public void onStartup(ServletContext servletContext) throws ServletException {
         // root context
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-        rootContext.register(RootConfig.class, DataAccessConfig.class);
+        rootContext.register(RootConfig.class, DataAccessConfig.class, SolrConfig.class);
         rootContext.scan("com.waiter.server.services.*.impl", "com.waiter.server.externalclients");
         servletContext.addListener(new ContextLoaderListener(rootContext));
         servletContext.addFilter("openEntityManagerInViewFilter", getOpenEntityManagerInViewFilter())

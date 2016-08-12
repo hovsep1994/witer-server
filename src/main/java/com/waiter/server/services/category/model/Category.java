@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Admin on 12/23/2015.
@@ -83,5 +84,9 @@ public class Category extends AbstractEntityModel {
     public Translation getNameTranslationByLanguage(Language language) {
         return translations.stream().filter(nameTranslation ->
                 nameTranslation.getLanguage().equals(language)).findFirst().orElse(null);
+    }
+
+    public Set<Language> getLanguages() {
+        return translations.stream().map(Translation::getLanguage).collect(Collectors.toSet());
     }
 }

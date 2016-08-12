@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan(basePackages = "com.waiter.server.web")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    private static final Logger logger = Logger.getLogger(WebConfig.class);
+    private static final Logger LOGGER = Logger.getLogger(WebConfig.class);
 
     @Autowired
     private WebAuthenticationInterceptor webAuthenticationInterceptor;
@@ -34,7 +34,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        logger.info("auth interceptor added. ");
+        LOGGER.info("auth interceptor added. ");
         registry.addInterceptor(webAuthenticationInterceptor).addPathPatterns("/business/*");
     }
 

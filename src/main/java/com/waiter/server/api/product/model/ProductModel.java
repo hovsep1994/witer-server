@@ -7,6 +7,7 @@ import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
+import com.waiter.server.services.translation.model.Translation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,8 @@ public class ProductModel extends AbstractProductModel {
     public static ProductModel convert(Product product, Language language) {
         ProductModel productModel = new ProductModel();
         productModel.setId(product.getId());
-        productModel.setDescription(product.getDescriptionByLanguage(language).getName());
+        Translation translation = product.getDescriptionByLanguage(language);
+        productModel.setDescription(translation == null ? null : translation.getName());
         productModel.setDescription(product.getNameTranslationByLanguage(language).getName());
         productModel.setPrice(product.getPrice());
         productModel.setTagModels(TagModel.convertToModel(product.getTags()));
