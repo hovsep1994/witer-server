@@ -42,7 +42,7 @@ public class MenuController extends MainController {
         return ResponseEntity.success(menuModel);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<MenuModel> updateMenu(@PathVariable("id") Long id, @RequestBody MenuRequest request) {
         final Menu menu = menuService.update(id, request.getName());
         final MenuModel menuModel = MenuModel.convert(menu);
