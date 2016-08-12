@@ -30,7 +30,7 @@ public class MenuController extends MainController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<MenuModel> findOne(@PathVariable Long id) {
         final Menu menu = menuService.getById(id);
-        MenuModel menuModel = MenuModel.convert(menu);
+        final MenuModel menuModel = MenuModel.convert(menu);
         return ResponseEntity.success(menuModel);
     }
 

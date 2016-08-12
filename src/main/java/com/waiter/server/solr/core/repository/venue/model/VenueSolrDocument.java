@@ -23,7 +23,6 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
     private String name;
 
     @Field("location")
-    @Dynamic
     @Indexed(type = "solr.PointType", stored = false)
     private Point location;
 
