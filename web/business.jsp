@@ -103,10 +103,12 @@
 </div>
 <%@ include file="footer.jsp" %>
 </body>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script src="${pageContext.request.contextPath}/scripts/services/user.srv.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/services/helper.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/user.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/app.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/controllers/user.ctrl.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"

@@ -12,9 +12,6 @@ import com.waiter.server.services.venue.dto.VenueDto;
  */
 public class VenueRequest extends AbstractApiModel {
 
-    @JsonProperty(value = "companyId")
-    private Long companyId;
-
     @JsonProperty(value = "name")
     private String name;
 
@@ -23,14 +20,6 @@ public class VenueRequest extends AbstractApiModel {
 
     @JsonProperty(value = "menuId", required = false)
     private Long menuId;
-
-    public Long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
-    }
 
     public String getName() {
         return name;
@@ -60,7 +49,6 @@ public class VenueRequest extends AbstractApiModel {
         VenueDto venueDto = new VenueDto();
         venueDto.setName(getName());
         venueDto.setMenuId(getMenuId());
-        venueDto.setCompanyId(getCompanyId());
         return venueDto;
     }
 }

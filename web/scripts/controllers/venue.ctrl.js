@@ -31,10 +31,15 @@ app.controller('venueCtrl', ['$scope', '$http', 'venueService', 'mapService', fu
     };
 
     self.update = function(venue) {
-        if(venue.new) {
-            return venueService.create(venue);
+        function process(cb) {
+            if(venue.new) {
+                return venueService.create(venue, cb);
+            }
+            return venueService.update(venue.id, venue);
         }
-        return venueService.update(venue.id, venue);
+        process(function () {
+            $('#editVenueModal').modal('toggle');
+        })
     };
 
     self.remove = venueService.remove;

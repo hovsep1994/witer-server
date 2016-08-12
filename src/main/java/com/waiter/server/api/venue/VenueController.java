@@ -10,6 +10,7 @@ import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.user.model.User;
 import com.waiter.server.services.venue.VenueSearchService;
 import com.waiter.server.services.venue.VenueService;
+import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
 import com.waiter.server.services.venue.model.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,9 @@ public class VenueController extends AuthenticationController {
     public ResponseEntity<VenueModel> createVenue(@RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
 //        checkUserHasAccess(user, companyService.get(venueRequest.getCompanyId()));
         final Location location = LocationModel.convert(venueRequest.getLocation());
-        final Venue createdVenue = venueService.create(venueRequest.convertToVenueDto(), location);
+        VenueDto venueDto = venueRequest.convertToVenueDto();
+        venueDto.setCompanyId(user.getCompany().getId());
+        final Venue createdVenue = venueService.create(venueDto, location);
         final VenueModel venueModel = VenueModel.convert(createdVenue);
         return ResponseEntity.success(venueModel);
     }
