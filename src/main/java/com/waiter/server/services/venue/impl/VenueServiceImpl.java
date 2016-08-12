@@ -4,6 +4,8 @@ import com.waiter.server.persistence.core.repository.venue.VenueRepository;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.event.ApplicationEventBus;
+import com.waiter.server.services.location.LocationService;
+import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.event.VenueLocationUpdateEvent;
@@ -29,14 +31,19 @@ public class VenueServiceImpl implements VenueService {
     private VenueRepository venueRepository;
 
     @Autowired
+    private LocationService locationService;
+
+    @Autowired
     private ApplicationEventBus applicationEventBus;
 
     @Override
-    public Venue create(VenueDto venueDto) {
+    @Transactional
+    public Venue create(VenueDto venueDto, Location location) {
         LOGGER.debug("Creating venue by dto -{}", venueDto);
         assertVenueDto(venueDto);
         final Venue venue = new Venue();
         venueDto.updateProperties(venue);
+        venue.setLocation(locationService.createLocation(location));
         final Venue createdVenue = venueRepository.save(venue);
         LOGGER.debug("Venue -{} successfully stored", venue);
         applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue.getId()));
@@ -45,19 +52,25 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     @Transactional
-    public Venue updateVenue(Long id, VenueDto venueDto) {
+    public Venue updateVenue(Long id, VenueDto venueDto, Location location) {
         assertVenueId(id);
         assertVenueDto(venueDto);
         final Venue venue = venueRepository.findOne(id);
         if (venue == null) {
-            throw new RuntimeException("venue with id not found");
+            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "venue with id not found");
         }
-        if (venue.getLocation() != venueDto.getLocation()) {
-            applicationEventBus.publishAsynchronousEvent(new VenueLocationUpdateEvent(id));
+        if (location != null) {
+            if (!venue.getLocation().getId().equals(location.getId())) {
+                throw new ServiceRuntimeException(ErrorCode.NOT_MATCH, "venue location not match");
+            }
+            if (venue.getLocation() != location) {
+                locationService.updateLocation(location);
+                applicationEventBus.publishAsynchronousEvent(new VenueLocationUpdateEvent(id));
+            }
         }
         venueDto.updateProperties(venue);
         final Venue updatedVenue = venueRepository.save(venue);
-//        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(updatedVenue.getId()));
+        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(updatedVenue.getId()));
         return updatedVenue;
     }
 
@@ -79,7 +92,6 @@ public class VenueServiceImpl implements VenueService {
     private void assertVenueDto(VenueDto venueDto) {
         notNull(venueDto, "venue dto must not bu null");
         notNull(venueDto.getCompanyId(), "company id must not bu null");
-        notNull(venueDto.getLocation(), "location must not bu null");
         notNull(venueDto.getName(), "name must not bu null");
     }
 }

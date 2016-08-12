@@ -22,7 +22,7 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
     private String name;
 
     @Field("location")
-    @Indexed
+    @Indexed(type = "PointType", stored = false)
     private Point location;
 
     @Field("companyId")

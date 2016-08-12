@@ -2,7 +2,6 @@ package com.waiter.server.services.venue.dto;
 
 import com.waiter.server.services.common.model.AbstractDtoModel;
 import com.waiter.server.services.company.model.Company;
-import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.venue.model.Venue;
 
@@ -12,7 +11,6 @@ import com.waiter.server.services.venue.model.Venue;
 public class VenueDto extends AbstractDtoModel<Venue> {
 
     private String name;
-    private Location location;
     private Long companyId;
     private Long menuId;
 
@@ -20,21 +18,13 @@ public class VenueDto extends AbstractDtoModel<Venue> {
     public void updateProperties(Venue venue) {
         Company company = new Company();
         company.setId(getCompanyId());
-        Menu menu = new Menu();
-        menu.setId(getMenuId());
-
+        if (menuId != null) {
+            Menu menu = new Menu();
+            menu.setId(getMenuId());
+            venue.setMenu(menu);
+        }
         venue.setName(getName());
-        venue.setMenu(menu);
         venue.setCompany(company);
-        venue.setLocation(getLocation());
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public Long getCompanyId() {

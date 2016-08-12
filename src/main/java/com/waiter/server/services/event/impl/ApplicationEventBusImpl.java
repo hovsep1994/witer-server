@@ -3,8 +3,10 @@ package com.waiter.server.services.event.impl;
 import com.waiter.server.services.event.ApplicationEvent;
 import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.event.ApplicationEventListener;
+import com.waiter.server.services.utility.PersistenceUtilityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public class ApplicationEventBusImpl implements ApplicationEventBus {
 
     private ExecutorService executorService;
 
+    @Autowired
+    private PersistenceUtilityService persistenceUtilityService;
+
     public ApplicationEventBusImpl() {
         listeners = new ArrayList<>();
         initExecutorService();
@@ -44,17 +49,17 @@ public class ApplicationEventBusImpl implements ApplicationEventBus {
     @Override
     public void publishSynchronousEvent(ApplicationEvent applicationEvent) {
         assertApplicationEventNotNull(applicationEvent);
-        listeners.forEach(listener -> {
-            listener.process(applicationEvent);
-        });
+        processApplicationEvent(applicationEvent);
     }
 
     @Override
     public void publishAsynchronousEvent(ApplicationEvent applicationEvent) {
         assertApplicationEventNotNull(applicationEvent);
         LOGGER.debug("Processing Synchronous event - {}", applicationEvent);
-        executorService.submit(() -> listeners.forEach(listener ->
-            listener.process(applicationEvent)));
+        final Runnable runnable = () -> persistenceUtilityService.runInNewTransaction(
+                () -> processApplicationEvent(applicationEvent)
+        );
+        executorService.submit(runnable);
     }
 
     private void assertApplicationEventNotNull(ApplicationEvent applicationEvent) {
@@ -66,6 +71,10 @@ public class ApplicationEventBusImpl implements ApplicationEventBus {
         threadPoolExecutor.setCorePoolSize(CORE_THREAD_POOL_SIZE);
         threadPoolExecutor.setMaximumPoolSize(MAX_THREAD_POOL_SIZE);
         this.executorService = threadPoolExecutor;
+    }
+
+    private void processApplicationEvent(ApplicationEvent applicationEvent) {
+        listeners.forEach(listener -> listener.process(applicationEvent));
     }
 
 }

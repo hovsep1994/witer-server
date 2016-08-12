@@ -6,6 +6,8 @@ import com.waiter.server.api.location.model.LocationModel;
 import com.waiter.server.api.venue.model.VenueModel;
 import com.waiter.server.api.venue.model.request.VenueRequest;
 import com.waiter.server.services.company.CompanyService;
+import com.waiter.server.services.location.LocationService;
+import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.user.model.User;
 import com.waiter.server.services.venue.VenueSearchService;
 import com.waiter.server.services.venue.VenueService;
@@ -43,7 +45,8 @@ public class VenueController extends MainController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<VenueModel> createVenue(@RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
         checkUserHasAccess(user, companyService.get(venueRequest.getCompanyId()));
-        final Venue createdVenue = venueService.create(venueRequest.convertToVenueDto());
+        final Location location = LocationModel.convert(venueRequest.getLocation());
+        final Venue createdVenue = venueService.create(venueRequest.convertToVenueDto(), location);
         final VenueModel venueModel = VenueModel.convert(createdVenue);
         return ResponseEntity.success(venueModel);
     }
@@ -51,7 +54,8 @@ public class VenueController extends MainController {
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
     public ResponseEntity<VenueModel> updateVenue(@PathVariable Long id, @RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
         checkUserHasAccess(user, companyService.get(venueRequest.getCompanyId()));
-        final Venue createdVenue = venueService.updateVenue(id, venueRequest.convertToVenueDto());
+        final Location location = LocationModel.convert(venueRequest.getLocation());
+        final Venue createdVenue = venueService.updateVenue(id, venueRequest.convertToVenueDto(), location);
         final VenueModel venueModel = VenueModel.convert(createdVenue);
         return ResponseEntity.success(venueModel);
     }

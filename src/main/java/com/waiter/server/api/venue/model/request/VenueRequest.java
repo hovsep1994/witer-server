@@ -61,7 +61,6 @@ public class VenueRequest extends AbstractApiModel {
         venueDto.setName(getName());
         venueDto.setMenuId(getMenuId());
         venueDto.setCompanyId(getCompanyId());
-        venueDto.setLocation(LocationModel.convert(getLocation()));
         return venueDto;
     }
 }

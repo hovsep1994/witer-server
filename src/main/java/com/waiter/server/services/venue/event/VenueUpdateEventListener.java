@@ -10,11 +10,11 @@ public abstract class VenueUpdateEventListener implements ApplicationEventListen
 
     @Override
     public void process(ApplicationEvent applicationEvent) {
-        if (applicationEvent instanceof VenueLocationUpdateEvent) {
-            processVenueUpdatedEvent((VenueLocationUpdateEvent) applicationEvent);
+        if (applicationEvent instanceof VenueUpdateEvent) {
+            processVenueUpdatedEvent((VenueUpdateEvent) applicationEvent);
         }
     }
 
-    public abstract void processVenueUpdatedEvent(VenueLocationUpdateEvent venueLocationUpdateEvent);
+    public abstract void processVenueUpdatedEvent(VenueUpdateEvent venueUpdateEvent);
 
 }

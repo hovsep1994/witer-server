@@ -21,6 +21,7 @@ public enum ErrorCode {
     IO_EXCEPTION,
     CAN_NOT_CREATE_DIRECTION,
     FAILD_TRANSLATION,
-    NO_LANGUAGE
+    NO_LANGUAGE,
+    NOT_MATCH
 
 }
