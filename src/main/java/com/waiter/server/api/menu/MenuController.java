@@ -3,7 +3,7 @@ package com.waiter.server.api.menu;
 import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.ResponseEntity;
 import com.waiter.server.api.menu.model.MenuModel;
-import com.waiter.server.api.menu.model.request.AddMenuRequest;
+import com.waiter.server.api.menu.model.request.MenuRequest;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.user.model.User;
@@ -29,16 +29,23 @@ public class MenuController extends MainController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<MenuModel> findOne(@PathVariable Long id) {
-        Menu menu = menuService.getById(id);
+        final Menu menu = menuService.getById(id);
         MenuModel menuModel = MenuModel.convert(menu);
         return ResponseEntity.success(menuModel);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<MenuModel> addMenu(@RequestBody AddMenuRequest addMenuRequest, @ModelAttribute User user) {
-        Menu menu = menuService.create(addMenuRequest.getName(), addMenuRequest.getCompanyId());
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public ResponseEntity<MenuModel> addMenu(@RequestBody MenuRequest menuRequest, @ModelAttribute User user) {
+        final Menu menu = menuService.create(menuRequest.getName(), user.getCompany().getId());
         checkUserHasAccess(user, menu.getCompany());
-        MenuModel menuModel = MenuModel.convert(menu);
+        final MenuModel menuModel = MenuModel.convert(menu);
+        return ResponseEntity.success(menuModel);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public ResponseEntity<MenuModel> updateMenu(@PathVariable("id") Long id, @RequestBody MenuRequest request) {
+        final Menu menu = menuService.update(id, request.getName());
+        final MenuModel menuModel = MenuModel.convert(menu);
         return ResponseEntity.success(menuModel);
     }
 
@@ -46,7 +53,7 @@ public class MenuController extends MainController {
     public ResponseEntity<List> getCompanyMenus(@RequestParam("companyId") Long companyId) {
         List<Menu> menus = menuService.getMenusByCompanyId(companyId);
         List<MenuModel> menuModels = new ArrayList<>(menus.size());
-        menus.stream().forEach(menu -> menuModels.add(MenuModel.convert(menu)));
+        menus.forEach(menu -> menuModels.add(MenuModel.convert(menu)));
         return ResponseEntity.success(menuModels);
     }
 

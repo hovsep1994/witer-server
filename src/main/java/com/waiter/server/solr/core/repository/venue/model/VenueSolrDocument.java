@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.solr.client.solrj.beans.Field;
 import org.springframework.data.solr.core.geo.Point;
+import org.springframework.data.solr.core.mapping.Dynamic;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
@@ -22,7 +23,8 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
     private String name;
 
     @Field("location")
-    @Indexed(type = "PointType", stored = false)
+    @Dynamic
+    @Indexed(type = "solr.PointType", stored = false)
     private Point location;
 
     @Field("companyId")

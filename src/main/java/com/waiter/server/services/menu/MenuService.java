@@ -11,13 +11,13 @@ import java.util.List;
  */
 public interface MenuService {
 
-    Menu create(String menuName, Long companyId);
-
     Menu getById(Long id);
 
-    List<Menu> getMenusByCompanyId(Long companyId);
+    Menu create(String menuName, Long companyId);
 
     Menu update(Long menuId, String menuName);
+
+    List<Menu> getMenusByCompanyId(Long companyId);
 
     Company getCompanyByMenuId(Long menuId);
 
