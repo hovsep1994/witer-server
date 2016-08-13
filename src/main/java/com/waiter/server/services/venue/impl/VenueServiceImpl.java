@@ -2,10 +2,18 @@ package com.waiter.server.services.venue.impl;
 
 import com.waiter.server.persistence.core.repository.venue.VenueRepository;
 import com.waiter.server.services.common.exception.ErrorCode;
+import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.event.ApplicationEventBus;
+import com.waiter.server.services.gallery.GalleryImageService;
+import com.waiter.server.services.gallery.GalleryService;
+import com.waiter.server.services.gallery.dto.GalleryImageDto;
+import com.waiter.server.services.gallery.model.GalleryImage;
+import com.waiter.server.services.gallery.model.GalleryImageType;
+import com.waiter.server.services.gallery.model.ImageType;
 import com.waiter.server.services.location.LocationService;
 import com.waiter.server.services.location.model.Location;
+import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.event.VenueLocationUpdateEvent;
@@ -16,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.InputStream;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -35,6 +45,9 @@ public class VenueServiceImpl implements VenueService {
 
     @Autowired
     private ApplicationEventBus applicationEventBus;
+
+    @Autowired
+    private GalleryImageService galleryImageService;
 
     @Override
     @Transactional
@@ -83,6 +96,17 @@ public class VenueServiceImpl implements VenueService {
             throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Venue not found");
         }
         return venue;
+    }
+
+    @Override
+    public GalleryImage addImage(Long venueId, InputStream inputStream) throws ServiceException {
+        final Venue venue = getVenueById(venueId);
+        final GalleryImageDto galleryImageDto = new GalleryImageDto();
+        galleryImageDto.setGalleryImageType(GalleryImageType.MAIN);
+        galleryImageDto.setImageType(ImageType.JPEG);
+        galleryImageDto.setFileName("venue");
+        final GalleryImage galleryImage = galleryImageService.addImage(venue.getGallery().getId(), galleryImageDto, inputStream);
+        return galleryImage;
     }
 
     private void assertVenueId(Long id) {

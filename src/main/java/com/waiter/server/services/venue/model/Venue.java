@@ -2,6 +2,7 @@ package com.waiter.server.services.venue.model;
 
 import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.company.model.Company;
+import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.menu.model.Menu;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -28,6 +29,10 @@ public class Venue extends AbstractEntityModel {
     @OneToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = true)
     private Menu menu;
+
+    @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "gallery_id", nullable = false)
+    private Gallery gallery;
 
     public Company getCompany() {
         return company;
@@ -61,6 +66,25 @@ public class Venue extends AbstractEntityModel {
         this.name = name;
     }
 
+    public Gallery getGallery() {
+        return gallery;
+    }
+
+    public void setGallery(Gallery gallery) {
+        this.gallery = gallery;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("name", name)
+                .append("location", location)
+                .append("company", company)
+                .append("menu", menu)
+                .append("gallery", gallery)
+                .toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,6 +99,7 @@ public class Venue extends AbstractEntityModel {
                 .append(location, venue.location)
                 .append(company, venue.company)
                 .append(menu, venue.menu)
+                .append(gallery, venue.gallery)
                 .isEquals();
     }
 
@@ -86,16 +111,7 @@ public class Venue extends AbstractEntityModel {
                 .append(location)
                 .append(company)
                 .append(menu)
+                .append(gallery)
                 .toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("name", name)
-                .append("location", location)
-                .append("company", company)
-                .append("menu", menu)
-                .toString();
     }
 }
