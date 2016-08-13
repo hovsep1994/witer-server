@@ -45,15 +45,41 @@ public class CategoryServiceImpl implements CategoryService {
     private TranslationService translationService;
 
     @Override
+    public Category getById(Long id) {
+        assertCategoryId(id);
+        final Category category = categoryRepository.findOne(id);
+        if (category == null) {
+            LOGGER.error("category with id -{} not found", id);
+            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Category not found");
+        }
+        return category;
+    }
+
+    @Override
     @Transactional
     public Category create(Long menuId, CategoryDto categoryDto, TranslationDto translationDto) {
-        Menu menu = menuService.getById(menuId);
-        Translation translation = translationService.create(translationDto);
-        Category category = new Category();
+        assertCategoryDto(categoryDto);
+        final Menu menu = menuService.getById(menuId);
+        final Translation translation = translationService.create(translationDto);
+        final Category category = new Category();
         category.setMenu(menu);
         category.getTranslations().add(translation);
         categoryDto.updateProperties(category);
-        Hibernate.initialize(category.getNameTranslationByLanguage(translation.getLanguage()));
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    @Transactional
+    public Category update(Long categoryId, CategoryDto categoryDto, TranslationDto translationDto) {
+        assertCategoryId(categoryId);
+        assertCategoryDto(categoryDto);
+        final Category category = getById(categoryId);
+        if (translationDto != null) {
+            final Translation translation = category.getNameTranslationByLanguage(translationDto.getLanguage());
+            translationDto.updateProperties(translation);
+        }
+        categoryDto.updateProperties(category);
+        category.setUpdated(new Date());
         return categoryRepository.save(category);
     }
 
@@ -62,34 +88,6 @@ public class CategoryServiceImpl implements CategoryService {
         assertCategoryId(categoryId);
         Category category = getById(categoryId);
         categoryRepository.delete(category);
-    }
-
-    @Override
-    @Transactional
-    public Category update(Long categoryId, CategoryDto categoryDto, TranslationDto translationDto) {
-        assertCategoryId(categoryId);
-        assertCategoryDto(categoryDto);
-        Category category = getById(categoryId);
-        Translation translation = category.getNameTranslationByLanguage(translationDto.getLanguage());
-        translationDto.updateProperties(translation);
-        categoryDto.updateProperties(category);
-        category.setUpdated(new Date());
-        return categoryRepository.save(category);
-    }
-
-    @Override
-    @Transactional
-    public Category getById(Long id) {
-        assertCategoryId(id);
-        Category category = categoryRepository.findOne(id);
-        if (category == null) {
-            LOGGER.error("category with id -{} not found", id);
-            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Category not found");
-        }
-        Hibernate.initialize(category.getMenu());
-        Hibernate.initialize(category.getTranslations());
-        Hibernate.initialize(category.getTags());
-        return category;
     }
 
     @Override
@@ -114,11 +112,11 @@ public class CategoryServiceImpl implements CategoryService {
         return getById(id).getMenu().getCompany();
     }
 
-    private void assertCategoryId(Long id) {
+    private static void assertCategoryId(Long id) {
         Assert.notNull(id, "category id must not be null");
     }
 
-    private void assertCategoryDto(CategoryDto categoryDto) {
+    private static void assertCategoryDto(CategoryDto categoryDto) {
         Assert.notNull(categoryDto, "category dto must not be null");
     }
 }

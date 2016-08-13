@@ -44,7 +44,7 @@ public class VenueController extends AuthenticationController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<VenueModel> createVenue(@RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
         final Location location = LocationModel.convert(venueRequest.getLocation());
-        VenueDto venueDto = venueRequest.convertToVenueDto();
+        final VenueDto venueDto = venueRequest.convertToVenueDto();
         venueDto.setCompanyId(user.getCompany().getId());
         final Venue createdVenue = venueService.create(venueDto, location);
         final VenueModel venueModel = VenueModel.convert(createdVenue);

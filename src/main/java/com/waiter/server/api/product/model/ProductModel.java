@@ -3,7 +3,7 @@ package com.waiter.server.api.product.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.category.model.CategoryModel;
-import com.waiter.server.api.name.model.NameTranslationModel;
+import com.waiter.server.api.product.model.request.AbstractProductModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;

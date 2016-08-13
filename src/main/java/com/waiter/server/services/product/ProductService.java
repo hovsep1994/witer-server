@@ -20,13 +20,13 @@ public interface ProductService {
 
     Product getById(Long id);
 
+    Product create(Long categoryId, ProductDto productDto, TranslationDto translationDto, TranslationDto descriptionDto);
+
+    Product update(Long productId, ProductDto productDto, TranslationDto translationDto, TranslationDto descriptionDto);
+
     Product getByIdAndLanguage(Long id, Language language);
 
     List<Product> getByCategoryId(Long categoryId);
-
-    Product create(Long categoryId, ProductDto productDto, TranslationDto translationDto, TranslationDto descriptionDto);
-
-    Product update(Long id, ProductDto productDto, TranslationDto translationDto);
 
     GalleryImage addImage(Long productId, InputStream inputStream) throws ServiceException;
 

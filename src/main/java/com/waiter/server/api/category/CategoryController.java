@@ -44,11 +44,11 @@ public class CategoryController extends MainController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<CategoryModel> addCategory(@RequestBody AddCategoryModelRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, menuService.getCompanyByMenuId(request.getMenuId()));
-        CategoryDto categoryDto = new CategoryDto();
+        final CategoryDto categoryDto = new CategoryDto();
         categoryDto.setTags(TagModel.convert(request.getTagModels()));
-        TranslationDto translationDto = NameTranslationModel.convert(request.getNameTranslationModel());
-        Category category = categoryService.create(request.getMenuId(), categoryDto, translationDto);
-        CategoryModel categoryModel = CategoryModel.convert(category, translationDto.getLanguage());
+        final TranslationDto translationDto = NameTranslationModel.convert(request.getNameTranslationModel());
+        final Category category = categoryService.create(request.getMenuId(), categoryDto, translationDto);
+        final CategoryModel categoryModel = CategoryModel.convert(category, translationDto.getLanguage());
         return ResponseEntity.success(categoryModel);
     }
 
