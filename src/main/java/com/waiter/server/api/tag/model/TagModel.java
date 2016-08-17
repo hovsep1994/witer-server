@@ -54,10 +54,8 @@ public class TagModel extends AbstractApiModel {
         if (tags == null) {
             return null;
         }
-        Set<TagModel> tagModels = new HashSet<>(tags.size());
-        tags.stream().forEach(tag -> {
-            tagModels.add(convert(tag));
-        });
+        final Set<TagModel> tagModels = new HashSet<>(tags.size());
+        tags.forEach(tag -> tagModels.add(convert(tag)));
         return tagModels;
     }
 

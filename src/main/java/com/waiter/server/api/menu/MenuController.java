@@ -37,7 +37,6 @@ public class MenuController extends MainController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<MenuModel> addMenu(@RequestBody MenuRequest menuRequest, @ModelAttribute User user) {
         final Menu menu = menuService.create(menuRequest.getName(), user.getCompany().getId());
-        checkUserHasAccess(user, menu.getCompany());
         final MenuModel menuModel = MenuModel.convert(menu);
         return ResponseEntity.success(menuModel);
     }

@@ -8,6 +8,7 @@ import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.GalleryService;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
+import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.gallery.model.ImageType;
@@ -57,6 +58,7 @@ public class VenueServiceImpl implements VenueService {
         final Venue venue = new Venue();
         venueDto.updateProperties(venue);
         venue.setLocation(locationService.createLocation(location));
+        venue.setGallery(new Gallery());
         final Venue createdVenue = venueRepository.save(venue);
         LOGGER.debug("Venue -{} successfully stored", venue);
         applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue.getId()));
@@ -100,11 +102,15 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     public GalleryImage addImage(Long venueId, InputStream inputStream) throws ServiceException {
-        final Venue venue = getVenueById(venueId);
+        Venue venue = getVenueById(venueId);
         final GalleryImageDto galleryImageDto = new GalleryImageDto();
         galleryImageDto.setGalleryImageType(GalleryImageType.MAIN);
         galleryImageDto.setImageType(ImageType.JPEG);
         galleryImageDto.setFileName("venue");
+        if (venue.getGallery() == null) {
+            venue.setGallery(new Gallery());
+            venue = venueRepository.save(venue);
+        }
         final GalleryImage galleryImage = galleryImageService.addImage(venue.getGallery().getId(), galleryImageDto, inputStream);
         return galleryImage;
     }
