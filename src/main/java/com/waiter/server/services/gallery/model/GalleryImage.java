@@ -18,6 +18,9 @@ public class GalleryImage extends AbstractEntityModel {
     @Column(name = "file_name", nullable = false)
     private String fileName;
 
+    @Column(name = "url", nullable = false)
+    private String url;
+
     @Column(name = "image_type", nullable = false)
     private ImageType imageType;
 
@@ -42,6 +45,14 @@ public class GalleryImage extends AbstractEntityModel {
 
     public ImageType getImageType() {
         return imageType;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public void setImageType(ImageType imageType) {

@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -23,46 +24,41 @@ import java.io.InputStream;
 public class PhotoSaverServiceImpl implements PhotoSaverService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PhotoSaverServiceImpl.class);
+    private static final int[] DEFAULT_SIZES = {};
 
-    private static final String UPLOAD_DIRECTORY = "/opt/waiter/static/";
-    private static final String PATH = "http://localhost:8080/photos/";
-    private static final String ORIGINALS_PATH = "originals";
-    private static final String DELIMITER_DOT = ".";
-    private static final int[] DEFAULT_SIZES = {60, 120};
+    @Value("#{appProperties['images.directory']}")
+    private String uploadDir;
+
+    @Value("#{appProperties['images.path']}")
+    private String path;
 
     public PhotoSaverServiceImpl() {
-        File uploadDir = new File(UPLOAD_DIRECTORY);
-        createDirIfNotExist(uploadDir);
     }
 
     @Override
-    public String savePhoto(InputStream stream, String path, int[] sizes) throws IOException {
+    public String savePhoto(InputStream stream, String filename, int[] sizes) throws IOException {
         BufferedImage origImage = ImageIO.read(stream);
-        store(origImage, path);
+        store(origImage, filename);
         for (int size : sizes) {
-            resizeAndStore(origImage, path, size);
-            File sizeDir = new File(new StringBuilder(UPLOAD_DIRECTORY)
-                    .append(size).append(File.separator).toString());
+            resizeAndStore(origImage, filename, size);
+            File sizeDir = new File(uploadDir + size + File.separator);
             createDirIfNotExist(sizeDir);
         }
-        return new StringBuilder().append(PATH).append(path).toString();
+        return path + filename;
     }
 
     @Override
-    public String savePhoto(InputStream stream, String path) throws IOException {
-        return savePhoto(stream, path, DEFAULT_SIZES);
+    public String savePhoto(InputStream stream, String filename) throws IOException {
+        return savePhoto(stream, filename, DEFAULT_SIZES);
     }
 
-    private void resizeAndStore(BufferedImage origImage, String path, int size) throws IOException {
-        store(resizePhoto(size, origImage), path);
+    private void resizeAndStore(BufferedImage origImage, String filename, int size) throws IOException {
+        store(resizePhoto(size, origImage), filename);
     }
 
-    private void store(BufferedImage origImage, String path) throws IOException {
-        String extension = FilenameUtils.getExtension(path);
-        String fullPath = new StringBuilder()
-                .append(UPLOAD_DIRECTORY)
-                .append(ORIGINALS_PATH)
-                .append(File.separator).append(path).toString();
+    private void store(BufferedImage origImage, String filename) throws IOException {
+        String extension = FilenameUtils.getExtension(filename);
+        String fullPath = uploadDir + File.separator + filename;
         ImageIO.write(origImage, extension, new File(fullPath));
     }
 

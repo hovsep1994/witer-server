@@ -19,9 +19,26 @@ function VenueService($http, host) {
             done = function () {};
         }
         $http.post(venueUrl, venue).then(function (response) {
-            if (!response.data.success) return done(response.data.errors);
-            console.log("success", response.data);
-            done(null, response.data.response);
+            if (response.data.status !== 'success') return done(response.data.errors);
+
+            var createdVenue = response.data.response;
+
+            if(venue.image) {
+                var fd = new FormData();
+                fd.append('file', venue.image);
+                $http.post(venueUrl + createdVenue.id + "/image", fd, {
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
+                }).then(function (response) {
+                    alert("a" + JSON.stringify(response.data));
+                    if (response.data.status !== 'success') return done(response.data.errors);
+
+                    done(null, createdVenue);
+                });
+            } else {
+                done(null, createdVenue);
+            }
+
         });
     }
 
@@ -31,7 +48,7 @@ function VenueService($http, host) {
         }
         var url = venueUrl + id;
         $http.delete(url).then(function (response) {
-            if (!response.data.success) return done(response.data.errors);
+            if (response.data.status !== 'success') return done(response.data.errors);
 
             done(null, response.data.response);
         });
@@ -43,7 +60,9 @@ function VenueService($http, host) {
             done = function () {};
         }
         $http.get(venueUrl).then(function (response) {
-            if (!response.data.success) return done(response.data.errors);
+            console.log(response.data);
+            if (response.data.status !== 'success') return done(response.data.errors);
+
 
             done(null, response.data.response);
         });
@@ -55,7 +74,7 @@ function VenueService($http, host) {
         }
         venue = convertToVenueModel(venue);
         $http.put(venueUrl + id, venue).then(function (response) {
-            if (!response.data.success) return done(response.data.errors);
+            if (response.data.status !== 'success') return done(response.data.errors);
 
             done(null, response.data.response);
         });
@@ -70,7 +89,8 @@ function VenueService($http, host) {
                 city: venue.location.city,
                 street: venue.location.street,
                 zip: venue.location.zip
-            }
+            },
+            image: venue.image
         }
     }
 

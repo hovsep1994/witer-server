@@ -1,6 +1,7 @@
 package com.waiter.server.config;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.io.IOException;
@@ -23,6 +25,9 @@ public class RootConfig {
 
     private static final Logger LOGGER = Logger.getLogger(RootConfig.class);
 
+    @Value("images.directory")
+    private String imagesDir;
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -31,6 +36,13 @@ public class RootConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean(name = "multipartResolver")
+    public static CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSize(10 * 1024 * 1024); // 10MB
+        return resolver;
     }
 
     @Bean

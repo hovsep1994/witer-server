@@ -19,11 +19,14 @@ import com.waiter.server.services.venue.model.Venue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Admin on 12/12/2015.
@@ -37,6 +40,9 @@ public class VenueController extends AuthenticationController {
     @Autowired
     private VenueService venueService;
 
+    @Value("#{appProperties['cdn.base.url']}")
+    private String cdnBaseUrl;
+
     @Autowired
     private VenueSearchService venueSearchService;
 
@@ -46,7 +52,7 @@ public class VenueController extends AuthenticationController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<VenueModel> findOne(@PathVariable Long id) {
         Venue venue = venueService.getVenueById(id);
-        VenueModel venueModel = VenueModel.convert(venue);
+        VenueModel venueModel = VenueModel.convert(venue, cdnBaseUrl);
         return ResponseEntity.success(venueModel);
     }
 
@@ -56,7 +62,7 @@ public class VenueController extends AuthenticationController {
         final VenueDto venueDto = venueRequest.convertToVenueDto();
         venueDto.setCompanyId(user.getCompany().getId());
         final Venue createdVenue = venueService.create(venueDto, location);
-        final VenueModel venueModel = VenueModel.convert(createdVenue);
+        final VenueModel venueModel = VenueModel.convert(createdVenue, cdnBaseUrl);
         return ResponseEntity.success(venueModel);
     }
 
@@ -64,21 +70,29 @@ public class VenueController extends AuthenticationController {
     public ResponseEntity<VenueModel> updateVenue(@PathVariable Long id, @RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
         final Location location = LocationModel.convert(venueRequest.getLocation());
         final Venue createdVenue = venueService.updateVenue(id, venueRequest.convertToVenueDto(), location);
-        final VenueModel venueModel = VenueModel.convert(createdVenue);
+        final VenueModel venueModel = VenueModel.convert(createdVenue, cdnBaseUrl);
         return ResponseEntity.success(venueModel);
     }
 
-    @RequestMapping(value = "/{id}/uploadImage", method = RequestMethod.POST)
-    public ResponseEntity<String> uploadImage(HttpServletRequest request, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
+    @RequestMapping(value = "/{id}/image", method = RequestMethod.POST)
+    public ResponseEntity<String> uploadImage(@RequestPart("file") MultipartFile file, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
         checkUserHasAccess(user, venueService.getVenueById(id).getCompany());
         try {
-            final GalleryImage galleryImage = venueService.addImage(id, request.getInputStream());
+            final GalleryImage galleryImage = venueService.addImage(id, file.getInputStream());
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
             throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
         return ResponseEntity.success("ok");
     }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<List<VenueModel>> findUserVenues(@ModelAttribute User user) {
+        List<VenueModel> venues = user.getCompany().getVenues().stream()
+                .map(v -> VenueModel.convert(v, cdnBaseUrl)).collect(Collectors.toList());
+        return ResponseEntity.success(venues);
+    }
+
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ResponseEntity<List<Venue>> findVenues(@RequestBody VenueSearchParameters parameters) {

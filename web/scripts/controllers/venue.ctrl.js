@@ -15,19 +15,30 @@ app.controller('venueCtrl', ['$scope', '$http', 'venueService', 'mapService', fu
 
     var self = $scope; //todo change this
 
-    mapDisplay = new google.maps.Map(document.getElementById('map1'), {
-        center: {lat: 70, lng: 0},
-        zoom: 2
-    });
+    //mapDisplay = new google.maps.Map(document.getElementById('map1'), {
+    //    center: {lat: 70, lng: 0},
+    //    zoom: 2
+    //});
 
     mapEdit = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 70, lng: 0},
         zoom: 2
     });
-    google.maps.event.trigger(mapDisplay, "resize");
+    //google.maps.event.trigger(mapDisplay, "resize");
+
+    self.venues = [];
+    venueService.findUserVenues(function(err, venues) {
+        if(err) return console.log(err);
+        self.venues = venues.map(function(v, i) {
+            if(!i) {
+                v.active = true;
+            }
+            return v;
+        });
+    });
 
     self.editVenue = {
-        image : defaultImage
+        imageDisplay : defaultImage
     };
 
     self.update = function(venue) {
@@ -61,7 +72,8 @@ app.controller('venueCtrl', ['$scope', '$http', 'venueService', 'mapService', fu
         var reader = new FileReader();
         reader.onload = function(e) {
             self.$apply(function() {
-                self.editVenue.image = e.target.result;
+                self.editVenue.imageDisplay = e.target.result;
+                self.editVenue.image = photofile;
             });
         };
         reader.readAsDataURL(photofile);

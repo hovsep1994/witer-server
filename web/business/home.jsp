@@ -48,8 +48,8 @@
                 <div class="content-row row">
                     <div class="item-list col-lg-3">
                         <ul class="nav nav-pills nav-stacked">
-                            <li>
-                                <span data-toggle="pill" href="#venue1">Paris Night Restaurant St. 1</span>
+                            <li ng-repeat="venue in venues">
+                                <span data-toggle="pill" href="{{'#venue_' + venue.id}}">{{venue.name}}</span>
                                 <a href="" data-toggle="modal" data-target="#deleteVenueModal">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
                                 </a>
@@ -57,47 +57,40 @@
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">
                                 </a>
                             </li>
-                            <li>
-                                <span data-toggle="pill" href="#venue2">Paris Night Restaurant St. 2</span>
-                                <a href=""><img
-                                        src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png"></a>
-                                <a href=""><img
-                                        src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png"></a>
-                            </li>
-                            <div id="deleteVenueModal" class="modal fade" role="dialog">
-                                <div class="modal-dialog" style="width: 400px">
-                                    <div class="modal-content">
-                                        delete modal
-                                    </div>
+                        </ul>
+                        <div id="deleteVenueModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog" style="width: 400px">
+                                <div class="modal-content">
+                                    delete modal
                                 </div>
                             </div>
-                            <%@ include file="modals/edit_venue_modal.jsp" %>
-                        </ul>
+                        </div>
+                        <%@ include file="modals/edit_venue_modal.jsp" %>
                     </div>
 
                     <div class="tab-content col-lg-9">
-                        <div id="venue1" class="tab-pane fade in active">
+                        <div ng-repeat="venue in venues" id="{{'venue_' + venue.id}}" class="tab-pane fade{{venue.active ? ' in active' : ''}}">
                             <div id="venue-info">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <img src="../styles/resources/business/admin/venue-image.png"
+                                        <img src="{{venue.imageUrl}}"
                                              style="margin-right: 30px" class="img-circle" align="center">
-                                        <span style="font-weight: bold">Venue name</span>
+                                        <span style="font-weight: bold">{{venue.name}}</span>
                                     </div>
                                     <br><br>
 
                                     <div class="venue-data row">
                                         <div style="">City</div>
-                                        <span>Paris</span><br>
+                                        <span>{{venue.location.city}}</span><br>
 
                                         <div style="display: inline-block; min-width: 130px; font-weight: bold">
                                             Country
                                         </div>
-                                        <span>France</span><br>
+                                        <span>{{venue.location.country}}</span><br>
 
                                         <div style="display: inline-block; min-width: 130px; font-weight: bold">Street
                                         </div>
-                                        <span>Paris street</span><br>
+                                        <span>{{venue.location.street}}</span><br>
 
                                     </div>
                                     <br><br>
@@ -109,9 +102,6 @@
                                 </div>
 
                             </div>
-                        </div>
-                        <div id="venue2" class="tab-pane fade">
-                            INFORMATION2
                         </div>
                     </div>
                 </div>
