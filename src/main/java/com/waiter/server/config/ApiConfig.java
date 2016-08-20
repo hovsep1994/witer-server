@@ -28,7 +28,7 @@ public class ApiConfig extends WebMvcConfigurerAdapter {
         logger.info("auth interceptor added. ");
         registry.addInterceptor(apiAuthenticationInterceptor)
                 .addPathPatterns("/heartbeat")
-                .addPathPatterns("/venue/");
+                .addPathPatterns("/venue/*");
     }
 
     @Bean

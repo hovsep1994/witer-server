@@ -1,6 +1,6 @@
 package com.waiter.server.web;
 
-import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebHeartBeatController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<String> heartbeat() {
-        return ResponseEntity.success("ok");
+    public MenuKitResponseEntity<String> heartbeat() {
+        return MenuKitResponseEntity.success2("ok");
     }
 
 }

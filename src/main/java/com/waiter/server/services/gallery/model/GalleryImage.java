@@ -18,7 +18,7 @@ public class GalleryImage extends AbstractEntityModel {
     @Column(name = "file_name", nullable = false)
     private String fileName;
 
-    @Column(name = "url", nullable = false)
+    @Column(name = "url", nullable = true)
     private String url;
 
     @Column(name = "image_type", nullable = false)

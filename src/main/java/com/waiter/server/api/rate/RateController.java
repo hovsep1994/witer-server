@@ -1,6 +1,6 @@
 package com.waiter.server.api.rate;
 
-import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.rate.model.RateRequest;
 import com.waiter.server.services.product.ProductService;
@@ -22,10 +22,10 @@ public class RateController {
     private ProductService productService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<ProductModel> addMenu(@RequestBody RateRequest rateRequest) {
+    public MenuKitResponseEntity<ProductModel> addMenu(@RequestBody RateRequest rateRequest) {
         Product product = productService.setRateByCustomerToken(rateRequest.getId(), rateRequest.getToken(), rateRequest.getRating());
         ProductModel productModel = ProductModel.convert(product, rateRequest.getLanguage());
-        return ResponseEntity.success(productModel);
+        return MenuKitResponseEntity.success2(productModel);
     }
 
 }

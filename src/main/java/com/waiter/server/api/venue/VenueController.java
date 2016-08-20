@@ -1,7 +1,7 @@
 package com.waiter.server.api.venue;
 
 import com.waiter.server.api.common.AuthenticationController;
-import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.location.model.LocationModel;
 import com.waiter.server.api.venue.model.VenueModel;
 import com.waiter.server.api.venue.model.request.VenueRequest;
@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,32 +49,39 @@ public class VenueController extends AuthenticationController {
     private CompanyService companyService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<VenueModel> findOne(@PathVariable Long id) {
+    public MenuKitResponseEntity<VenueModel> findOne(@PathVariable Long id) {
         Venue venue = venueService.getVenueById(id);
         VenueModel venueModel = VenueModel.convert(venue, cdnBaseUrl);
-        return ResponseEntity.success(venueModel);
+        return MenuKitResponseEntity.success2(venueModel);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<VenueModel> createVenue(@RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
+    public MenuKitResponseEntity<VenueModel> createVenue(@RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
         final Location location = LocationModel.convert(venueRequest.getLocation());
         final VenueDto venueDto = venueRequest.convertToVenueDto();
         venueDto.setCompanyId(user.getCompany().getId());
         final Venue createdVenue = venueService.create(venueDto, location);
         final VenueModel venueModel = VenueModel.convert(createdVenue, cdnBaseUrl);
-        return ResponseEntity.success(venueModel);
+        return MenuKitResponseEntity.success2(venueModel);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<VenueModel> updateVenue(@PathVariable Long id, @RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
+    public MenuKitResponseEntity<VenueModel> updateVenue(@PathVariable Long id, @RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
         final Location location = LocationModel.convert(venueRequest.getLocation());
         final Venue createdVenue = venueService.updateVenue(id, venueRequest.convertToVenueDto(), location);
         final VenueModel venueModel = VenueModel.convert(createdVenue, cdnBaseUrl);
-        return ResponseEntity.success(venueModel);
+        return MenuKitResponseEntity.success2(venueModel);
+    }
+
+    @RequestMapping(value = "/{venueId}", method = RequestMethod.DELETE)
+    public MenuKitResponseEntity<Void> delete(@PathVariable Long venueId,  @ModelAttribute User user) throws ServiceException {
+        checkUserPermission(user, venueId);
+        venueService.delete(venueId);
+        return MenuKitResponseEntity.success2();
     }
 
     @RequestMapping(value = "/{id}/image", method = RequestMethod.POST)
-    public ResponseEntity<String> uploadImage(@RequestPart("file") MultipartFile file, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
+    public MenuKitResponseEntity<String> uploadImage(@RequestPart("file") MultipartFile file, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
         checkUserHasAccess(user, venueService.getVenueById(id).getCompany());
         try {
             final GalleryImage galleryImage = venueService.addImage(id, file.getInputStream());
@@ -83,21 +89,26 @@ public class VenueController extends AuthenticationController {
             LOGGER.error(e.getMessage());
             throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
-        return ResponseEntity.success("ok");
+        return MenuKitResponseEntity.success2("ok");
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<VenueModel>> findUserVenues(@ModelAttribute User user) {
+    public MenuKitResponseEntity<List<VenueModel>> findUserVenues(@ModelAttribute User user) {
         List<VenueModel> venues = user.getCompany().getVenues().stream()
                 .map(v -> VenueModel.convert(v, cdnBaseUrl)).collect(Collectors.toList());
-        return ResponseEntity.success(venues);
+        return MenuKitResponseEntity.success2(venues);
     }
 
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public ResponseEntity<List<Venue>> findVenues(@RequestBody VenueSearchParameters parameters) {
+    public MenuKitResponseEntity<List<Venue>> findVenues(@RequestBody VenueSearchParameters parameters) {
         List<Venue> venues = venueSearchService.getVenuesBySearchParameters(parameters);
-        return ResponseEntity.success(venues);
+        return MenuKitResponseEntity.success2(venues);
+    }
+
+    public void checkUserPermission(User user, Long venueId) throws ServiceException {
+        validatePermission(user.getCompany().getVenues().stream().map(Venue::getId)
+                .collect(Collectors.toList()).contains(venueId));
     }
 
 }

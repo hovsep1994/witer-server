@@ -1,7 +1,7 @@
 package com.waiter.server.api;
 
 import com.waiter.server.api.common.AuthenticationController;
-import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.services.product.ProductSearchService;
 import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class HeartBeatController extends AuthenticationController {
     ProductSolrRepository productSolrRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<String> heartbeat() {
-        return ResponseEntity.success("ok");
+    public MenuKitResponseEntity<String> heartbeat() {
+        return MenuKitResponseEntity.success2("ok");
     }
 
 }

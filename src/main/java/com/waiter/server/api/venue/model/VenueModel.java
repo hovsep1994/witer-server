@@ -28,7 +28,7 @@ public class VenueModel {
     private Long companyId;
 
     @JsonProperty
-    private String imageUrl;
+    private String image;
 
     @JsonProperty
     private Long menuId;
@@ -73,12 +73,12 @@ public class VenueModel {
         this.menuId = menuId;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrl(String image) {
+        this.image = image;
     }
 
     public static VenueModel convert(Venue venue, String cdnBaseUrl) {

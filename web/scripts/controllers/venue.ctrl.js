@@ -50,8 +50,20 @@ app.controller('venueCtrl', ['$scope', '$http', 'venueService', 'mapService', fu
         }
         process(function () {
             $('#editVenueModal').modal('toggle');
-        })
+        });
     };
+
+    function remove() {
+        if(deleteVenueId) {
+            venueService.remove(self.deleteVenueId, function(err) {
+                alert("deleted");
+            });
+        }
+    }
+
+    function initRemove(id) {
+        self.deleteVenueId = id;
+    }
 
     self.remove = venueService.remove;
     self.findUserVenues = venueService.findUserVenues;

@@ -22,6 +22,7 @@ public enum ErrorCode {
     CAN_NOT_CREATE_DIRECTION,
     FAILD_TRANSLATION,
     NO_LANGUAGE,
-    NOT_MATCH
+    NOT_MATCH,
+    UNAUTHORIZED
 
 }

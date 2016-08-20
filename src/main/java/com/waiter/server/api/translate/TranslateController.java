@@ -1,11 +1,10 @@
 package com.waiter.server.api.translate;
 
 import com.waiter.server.api.common.MainController;
-import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.translate.model.TranslateTextModel;
 import com.waiter.server.services.translate.TranslatorService;
 import com.waiter.server.services.translate.dto.TextTranslationDto;
-import org.apache.log4j.chainsaw.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +26,12 @@ public class TranslateController extends MainController {
     private TranslatorService translatorService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> translate(@RequestBody TranslateTextModel translateTextModel) {
+    public MenuKitResponseEntity<String> translate(@RequestBody TranslateTextModel translateTextModel) {
         TextTranslationDto textTranslationDto = new TextTranslationDto();
         textTranslationDto.setText(translateTextModel.getText());
         textTranslationDto.setLanguageFrom(translateTextModel.getLanguageFrom());
         textTranslationDto.setLanguageTo(translateTextModel.getLanguageTo());
         String translatedText = translatorService.translate(textTranslationDto);
-        return ResponseEntity.success(translatedText);
+        return MenuKitResponseEntity.success2(translatedText);
     }
 }

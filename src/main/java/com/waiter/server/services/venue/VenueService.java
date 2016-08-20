@@ -23,4 +23,6 @@ public interface VenueService {
     Venue getVenueById(Long id);
 
     GalleryImage addImage(Long venueId, InputStream inputStream) throws ServiceException;
+
+    void delete(Long venueId);
 }

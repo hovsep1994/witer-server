@@ -1,7 +1,7 @@
 package com.waiter.server.api.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceError;
 import com.waiter.server.services.user.UserService;
@@ -40,7 +40,7 @@ public class ApiAuthenticationInterceptor extends HandlerInterceptorAdapter {
         } else {
             LOGGER.debug("Interceptor is working .... ");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.getWriter().write(mapper.writeValueAsString(ResponseEntity
+            response.getWriter().write(mapper.writeValueAsString(MenuKitResponseEntity
                     .error(new ServiceError(ErrorCode.FAILED_AUTHENTICATION, "Authorization required."))));
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;

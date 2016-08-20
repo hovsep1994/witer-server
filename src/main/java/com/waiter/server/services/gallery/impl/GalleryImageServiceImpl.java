@@ -63,7 +63,9 @@ public class GalleryImageServiceImpl implements GalleryImageService {
         galleryImage = galleryImageRepository.save(galleryImage);
         String filePath = generatePathForGallery(galleryImage);
         try {
-            photoSaverService.savePhoto(inputStream, filePath);
+            String url = photoSaverService.savePhoto(inputStream, filePath);
+            galleryImage.setUrl(url);
+            galleryImage = galleryImageRepository.save(galleryImage);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
             throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());

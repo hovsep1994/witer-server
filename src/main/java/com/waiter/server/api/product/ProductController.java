@@ -1,7 +1,7 @@
 package com.waiter.server.api.product;
 
 import com.waiter.server.api.common.MainController;
-import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.product.model.request.AddProductRequest;
@@ -20,7 +20,6 @@ import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,43 +42,43 @@ public class ProductController extends MainController {
     private CategoryService categoryService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<ProductModel> addProduct(@RequestBody AddProductRequest request, @ModelAttribute User user) {
+    public MenuKitResponseEntity<ProductModel> addProduct(@RequestBody AddProductRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, categoryService.getCompanyById(request.getCategoryId()));
         final ProductDto productDto = convertToProductDto(request);
         final TranslationDto nameDto = new TranslationDto(request.getName(), request.getLanguage());
         final TranslationDto descriptionDto = createTranslationDto(request.getDescription(), request.getLanguage());
         final Product product = productService.create(request.getCategoryId(), productDto, nameDto, descriptionDto);
         final ProductModel productModel = ProductModel.convert(product, request.getLanguage());
-        return ResponseEntity.success(productModel);
+        return MenuKitResponseEntity.success2(productModel);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductRequest request, @ModelAttribute User user) {
+    public MenuKitResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, productService.getCompanyByProductId(id));
         final ProductDto productDto = convertToProductDto(request);
         final TranslationDto descriptionDto = createTranslationDto(request.getDescription(), request.getLanguage());
         final TranslationDto nameDto = createTranslationDto(request.getName(), request.getLanguage());
         final Product product = productService.update(id, productDto, nameDto, descriptionDto);
         final ProductModel productModel = ProductModel.convert(product, request.getLanguage());
-        return ResponseEntity.success(productModel);
+        return MenuKitResponseEntity.success2(productModel);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ProductModel> getByProductId(@PathVariable Long id, @RequestParam Language language) {
+    public MenuKitResponseEntity<ProductModel> getByProductId(@PathVariable Long id, @RequestParam Language language) {
         Product product = productService.getByIdAndLanguage(id, language);
         ProductModel productModel = ProductModel.convert(product, language);
-        return ResponseEntity.success(productModel);
+        return MenuKitResponseEntity.success2(productModel);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity<List<ProductModel>> getByGroupId(@RequestParam Long groupId, @RequestParam Language language) {
+    public MenuKitResponseEntity<List<ProductModel>> getByGroupId(@RequestParam Long groupId, @RequestParam Language language) {
         final List<Product> products = productService.getByCategoryId(groupId);
         final List<ProductModel> productModels = ProductModel.convert(products, language);
-        return ResponseEntity.success(productModels);
+        return MenuKitResponseEntity.success2(productModels);
     }
 
     @RequestMapping(value = "/{id}/uploadImage", method = RequestMethod.POST)
-    public ResponseEntity<String> uploadImage(HttpServletRequest request, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
+    public MenuKitResponseEntity<String> uploadImage(HttpServletRequest request, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
         checkUserHasAccess(user, productService.getCompanyByProductId(id));
         try {
             productService.addImage(id, request.getInputStream());
@@ -87,26 +86,26 @@ public class ProductController extends MainController {
             LOGGER.error(e.getMessage());
             throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
-        return ResponseEntity.success("ok");
+        return MenuKitResponseEntity.success2("ok");
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity<List<Product>> search(@RequestBody ProductSearchParameters productSearchParams) {
+    public MenuKitResponseEntity<List<Product>> search(@RequestBody ProductSearchParameters productSearchParams) {
         List<Product> products = productService.search(productSearchParams);
-        return ResponseEntity.success(products);
+        return MenuKitResponseEntity.success2(products);
     }
 
     @RequestMapping(value = "{id}/addTranslation", method = RequestMethod.POST)
-    public ResponseEntity<Product> addTranslation(@PathVariable Long id, @RequestBody NameTranslationModel nameTranslationModel, @ModelAttribute User user) {
+    public MenuKitResponseEntity<Product> addTranslation(@PathVariable Long id, @RequestBody NameTranslationModel nameTranslationModel, @ModelAttribute User user) {
         checkUserHasAccess(user, productService.getCompanyByProductId(id));
         TranslationDto translationDto = NameTranslationModel.convert(nameTranslationModel);
         Product product = productService.addTranslation(id, translationDto);
-        return ResponseEntity.success(product);
+        return MenuKitResponseEntity.success2(product);
     }
 
     @RequestMapping(value = "heartbeat", method = RequestMethod.GET)
-    public ResponseEntity<String> heartbeat() {
-        return ResponseEntity.success("ok");
+    public MenuKitResponseEntity<String> heartbeat() {
+        return MenuKitResponseEntity.success2("ok");
     }
 
     private static ProductDto convertToProductDto(ProductRequest request) {

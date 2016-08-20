@@ -115,6 +115,11 @@ public class VenueServiceImpl implements VenueService {
         return galleryImage;
     }
 
+    @Override
+    public void delete(Long venueId) {
+        venueRepository.delete(venueId);
+    }
+
     private void assertVenueId(Long id) {
         notNull(id, "id must not be null");
     }

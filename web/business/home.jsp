@@ -50,7 +50,7 @@
                         <ul class="nav nav-pills nav-stacked">
                             <li ng-repeat="venue in venues">
                                 <span data-toggle="pill" href="{{'#venue_' + venue.id}}">{{venue.name}}</span>
-                                <a href="" data-toggle="modal" data-target="#deleteVenueModal">
+                                <a href="" data-toggle="modal" data-target="#deleteVenueModal" ng-click="initRemove(venue.id)">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
                                 </a>
                                 <a href="" data-toggle="modal" data-target="#editVenueModal" ng-click="initEditVenue(false)">
@@ -58,13 +58,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div id="deleteVenueModal" class="modal fade" role="dialog">
-                            <div class="modal-dialog" style="width: 400px">
-                                <div class="modal-content">
-                                    delete modal
-                                </div>
-                            </div>
-                        </div>
+                        <%@ include file="modals/delete_venue_modal.jsp" %>
                         <%@ include file="modals/edit_venue_modal.jsp" %>
                     </div>
 
@@ -73,7 +67,7 @@
                             <div id="venue-info">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <img src="{{venue.imageUrl}}"
+                                        <img src="{{venue.image}}"
                                              style="margin-right: 30px" class="img-circle" align="center">
                                         <span style="font-weight: bold">{{venue.name}}</span>
                                     </div>

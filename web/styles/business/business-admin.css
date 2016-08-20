@@ -195,6 +195,18 @@ body {
     width: 70px;
 }
 
+/*------------- delete venue modal ------------- */
+
+.deleteVenueModal .modal-dialog .modal-content {
+    background-color: #f7f7f7 !important;
+    padding: 0 5% 0 5%;
+    text-align: center !important;
+}
+
+.deleteVenueModal .modal-dialog {
+    padding-top: 13% !important;
+}
+
 /*  ------ venue info ----- */
 
 #venue-info {

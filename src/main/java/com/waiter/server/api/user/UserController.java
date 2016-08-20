@@ -1,7 +1,7 @@
 package com.waiter.server.api.user;
 
 import com.waiter.server.api.common.MainController;
-import com.waiter.server.api.common.model.ResponseEntity;
+import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.common.model.ResponseStatus;
 import com.waiter.server.api.user.model.UserModel;
 import com.waiter.server.api.user.model.request.UserRegistrationModelRequest;
@@ -17,7 +17,7 @@ import com.waiter.server.services.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static com.waiter.server.api.common.model.ResponseEntity.*;
+import static com.waiter.server.api.common.model.MenuKitResponseEntity.*;
 
 /**
  * Created by Admin on 1/17/2016.
@@ -33,17 +33,17 @@ public class UserController extends MainController{
     private CompanyService companyService;
 
     @RequestMapping(value = "/signin", method = RequestMethod.POST)
-    public ResponseEntity<UserModel> login(@RequestParam String email, @RequestParam String password) {
+    public MenuKitResponseEntity<UserModel> login(@RequestParam String email, @RequestParam String password) {
         User user = userService.signIn(email, password);
         UserModel userModel = new UserModel();
         userModel.setEmail(user.getEmail());
         userModel.setName(user.getName());
         userModel.setToken(user.getToken());
-        return ResponseEntity.success(userModel);
+        return MenuKitResponseEntity.success2(userModel);
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<UserModel> register(@RequestBody UserRegistrationModelRequest request) throws ServiceException {
+    public MenuKitResponseEntity<UserModel> register(@RequestBody UserRegistrationModelRequest request) throws ServiceException {
         CompanyDto companyDto = new CompanyDto();
         companyDto.setName(request.getCompanyName());
         companyDto.setPhone(request.getPhone());
@@ -57,7 +57,7 @@ public class UserController extends MainController{
 
         UserModel userModel = new UserModel();
         userModel.updateProperties(user);
-        return success(userModel);
+        return success2(userModel);
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
