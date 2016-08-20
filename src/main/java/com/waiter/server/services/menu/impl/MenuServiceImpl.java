@@ -5,6 +5,7 @@ import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.company.CompanyService;
 import com.waiter.server.services.company.model.Company;
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -34,11 +36,13 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     @Transactional
-    public Menu create(String menuName, Long companyId) {
+    public Menu create(String menuName, Language language, Long companyId) {
         assertName(menuName);
         assertCompanyId(companyId);
-        Menu menu = new Menu();
-        Company company = companyService.get(companyId);
+        final Menu menu = new Menu();
+        menu.setLanguages(new HashSet<>(1));
+        menu.getLanguages().add(language);
+        final Company company = companyService.get(companyId);
         menu.setCompany(company);
         menu.setName(menuName);
         return menuRepository.save(menu);
@@ -74,6 +78,11 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    public Menu update(Menu menu) {
+        return menuRepository.save(menu);
+    }
+
+    @Override
     public Company getCompanyByMenuId(Long menuId) {
         assertMenuId(menuId);
         return getById(menuId).getCompany();
@@ -81,7 +90,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     @Transactional
-    public void remove(Long menuId) {
+    public void delete(Long menuId) {
         assertMenuId(menuId);
         Menu menu = getById(menuId);
         menuRepository.delete(menu);

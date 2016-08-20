@@ -121,7 +121,15 @@ public class Product extends AbstractEntityModel {
     }
 
     public Translation getDescriptionByLanguage(Language language) {
-        return descriptionSet.stream().filter(nameTranslation ->
-                nameTranslation.getLanguage().equals(language)).findFirst().orElse(null);
+        return descriptionSet.stream()
+                .filter(nameTranslation -> nameTranslation.getLanguage().equals(language))
+                .findFirst().orElse(null);
+    }
+
+    public String getDescriptionTextByLanguage(Language language) {
+        final Translation translation = descriptionSet.stream()
+                .filter(nameTranslation -> nameTranslation.getLanguage().equals(language))
+                .findFirst().orElse(null);
+        return translation == null ? null : translation.getText();
     }
 }

@@ -11,7 +11,7 @@ public class NameTranslationModel extends AbstractNameTranslationModel {
 
     public static NameTranslationModel convert(Translation translation) {
         NameTranslationModel nameTranslationModel = new NameTranslationModel();
-        nameTranslationModel.setName(translation.getName());
+        nameTranslationModel.setName(translation.getText());
         nameTranslationModel.setLanguage(translation.getLanguage());
         return nameTranslationModel;
     }

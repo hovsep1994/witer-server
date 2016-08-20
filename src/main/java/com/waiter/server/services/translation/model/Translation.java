@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class Translation extends AbstractEntityModel {
 
     @Column(name = "text", nullable = false)
-    private String name;
+    private String text;
 
     @Column(name = "language", nullable = false)
     private Language language;
@@ -26,12 +26,12 @@ public class Translation extends AbstractEntityModel {
     @Column(name = "translation_type", nullable = false)
     private TranslationType translationType;
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Language getLanguage() {
@@ -51,6 +51,6 @@ public class Translation extends AbstractEntityModel {
     }
 
     public static List<String> getListOfTexts(Collection<Translation> translations) {
-        return translations.stream().map(Translation::getName).collect(Collectors.toList());
+        return translations.stream().map(Translation::getText).collect(Collectors.toList());
     }
 }

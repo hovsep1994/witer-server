@@ -1,15 +1,18 @@
 package com.waiter.server.api.menu;
 
-import com.waiter.server.api.common.MainController;
+import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.menu.model.MenuModel;
 import com.waiter.server.api.menu.model.request.MenuRequest;
+import com.waiter.server.api.menu.model.response.MenuWithProductsModel;
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/menu")
-public class MenuController extends MainController {
+public class MenuController extends AuthenticationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MenuController.class);
 
@@ -28,32 +31,38 @@ public class MenuController extends MainController {
     private MenuService menuService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public MenuKitResponseEntity<MenuModel> findOne(@PathVariable Long id) {
+    public ResponseEntity findOne(@PathVariable Long id, @RequestParam Language language) {
         final Menu menu = menuService.getById(id);
-        final MenuModel menuModel = MenuModel.convert(menu);
-        return MenuKitResponseEntity.success2(menuModel);
+        final MenuWithProductsModel model = MenuWithProductsModel.convert(menu, language);
+        return MenuKitResponseEntity.success(model);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public MenuKitResponseEntity<MenuModel> addMenu(@RequestBody MenuRequest menuRequest, @ModelAttribute User user) {
-        final Menu menu = menuService.create(menuRequest.getName(), user.getCompany().getId());
+    public ResponseEntity addMenu(@ModelAttribute("user") User user, @RequestBody MenuRequest menuRequest, @RequestParam Language language) {
+        final Menu menu = menuService.create(menuRequest.getName(), language, user.getCompany().getId());
         final MenuModel menuModel = MenuModel.convert(menu);
-        return MenuKitResponseEntity.success2(menuModel);
+        return MenuKitResponseEntity.success(menuModel);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public MenuKitResponseEntity<MenuModel> updateMenu(@PathVariable("id") Long id, @RequestBody MenuRequest request) {
+    public ResponseEntity updateMenu(@PathVariable("id") Long id, @RequestBody MenuRequest request) {
         final Menu menu = menuService.update(id, request.getName());
         final MenuModel menuModel = MenuModel.convert(menu);
-        return MenuKitResponseEntity.success2(menuModel);
+        return MenuKitResponseEntity.success(menuModel);
+    }
+
+    @RequestMapping(value = "/{menuId}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteMenu(@PathVariable("menuId") Long menuId, @ModelAttribute User user) {
+        menuService.delete(menuId);
+        return MenuKitResponseEntity.success();
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public MenuKitResponseEntity<List> getCompanyMenus(@RequestParam("companyId") Long companyId) {
+    public ResponseEntity getCompanyMenus(@RequestParam("companyId") Long companyId) {
         List<Menu> menus = menuService.getMenusByCompanyId(companyId);
         List<MenuModel> menuModels = new ArrayList<>(menus.size());
         menus.forEach(menu -> menuModels.add(MenuModel.convert(menu)));
-        return MenuKitResponseEntity.success2(menuModels);
+        return MenuKitResponseEntity.success(menuModels);
     }
 
     @RequestMapping(value = "/heartbeat", method = RequestMethod.GET)

@@ -1,3 +1,4 @@
+
 package com.waiter.server.web.common;
 
 import com.waiter.server.services.user.UserService;

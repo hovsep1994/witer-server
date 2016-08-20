@@ -35,7 +35,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         LOGGER.info("auth interceptor added. ");
-        registry.addInterceptor(webAuthenticationInterceptor).addPathPatterns("/business/*");
+        registry.addInterceptor(webAuthenticationInterceptor)
+                .addPathPatterns("/business");
+//                .addPathPatterns("/business/*");
     }
 
     @Bean
