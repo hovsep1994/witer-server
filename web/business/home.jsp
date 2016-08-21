@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/commons.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/commons.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/business-admin.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/edit-menu.css">
 </head>
 <body ng-app="app">
 <%@ include file="business_header_loged_in.jsp" %>
@@ -104,10 +105,16 @@
             <!-- ------------- Menu Section ------------------>
             <div ng-controller="menuCtrl" id="menus" class="tab-pane fade">
                 <div class="panel-headers-row row">
-                    <div class="col-lg-3 col-md-3 panel-headers-col-left">MENUS</div>
+                    <div class="col-lg-3 col-md-3 panel-headers-col-left">
+                        <span>MENUS</span>
+                        <a href="" data-toggle="modal" data-target="#editMenuModal" ng-click="initEdit(true)">
+                            <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button-black.png">
+                        </a>
+                    </div>
                     <div class="col-lg-1 col-md-1 panel-headers-col-middle">LANGUAGES</div>
                     <div class="col-lg-2 col-md-2 panel-headers-col-middle">CATEGORIES</div>
                     <div class="col-lg-6 col-md-6 panel-headers-col-right">PRODUCTS</div>
+                    <%@ include file="modals/edit_menu_dialog.jsp" %>
                 </div>
 
                 <div class="content-row row">
@@ -201,9 +208,11 @@
 <script src="${pageContext.request.contextPath}/scripts/services/helper.srv.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/services/user.srv.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/services/venue.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/menu.srv.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/app.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/controllers/user.ctrl.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/controllers/venue.ctrl.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/controllers/menu.ctrl.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
 integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 crossorigin="anonymous"></script>
