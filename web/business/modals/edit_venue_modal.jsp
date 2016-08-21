@@ -15,9 +15,9 @@
                     <div class="image" >
                         <label for="file-input">
                             <img class="img-circle" style="cursor: pointer;"
-                                 src="{{editVenue.imageDisplay}}" width="100px" height="100px">
+                                 src="{{editVenue.image}}" width="100px" height="100px">
                         </label>
-                        <input id="file-input" type="file" style="display: none"
+                        <input accept=".png,.jpg,.jpeg"  id="file-input" type="file" style="display: none"
                                onchange="angular.element(this).scope().image_changed(this)" />
                     </div>
                     <div class="inputs">

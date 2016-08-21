@@ -11,28 +11,16 @@ import com.waiter.server.services.venue.model.Venue;
 public class VenueDto extends AbstractDtoModel<Venue> {
 
     private String name;
-    private Long companyId;
     private Long menuId;
 
     @Override
     public void updateProperties(Venue venue) {
-        Company company = new Company();
-        company.setId(getCompanyId());
         if (menuId != null) {
             Menu menu = new Menu();
             menu.setId(getMenuId());
             venue.setMenu(menu);
         }
         venue.setName(getName());
-        venue.setCompany(company);
-    }
-
-    public Long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
     }
 
     public Long getMenuId() {

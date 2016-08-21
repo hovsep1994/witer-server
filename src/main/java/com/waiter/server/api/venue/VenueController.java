@@ -59,8 +59,7 @@ public class VenueController extends AuthenticationController {
     public MenuKitResponseEntity<VenueModel> createVenue(@RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
         final Location location = LocationModel.convert(venueRequest.getLocation());
         final VenueDto venueDto = venueRequest.convertToVenueDto();
-        venueDto.setCompanyId(user.getCompany().getId());
-        final Venue createdVenue = venueService.create(venueDto, location);
+        final Venue createdVenue = venueService.create(venueDto, location, user.getCompany().getId());
         final VenueModel venueModel = VenueModel.convert(createdVenue, cdnBaseUrl);
         return MenuKitResponseEntity.success2(venueModel);
     }

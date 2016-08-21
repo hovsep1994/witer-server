@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface VenueService {
 
-    Venue create(VenueDto venueDto, Location location);
+    Venue create(VenueDto venueDto, Location location, Long companyId);
 
     Venue updateVenue(Long id, VenueDto venueDto, Location location);
 
