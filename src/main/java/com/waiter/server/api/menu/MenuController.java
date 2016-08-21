@@ -39,14 +39,14 @@ public class MenuController extends AuthenticationController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity addMenu(@ModelAttribute("user") User user, @RequestBody MenuRequest menuRequest, @RequestParam Language language) {
-        final Menu menu = menuService.create(menuRequest.getName(), language, user.getCompany().getId());
+        final Menu menu = menuService.create(menuRequest.getName(), language, menuRequest.getCurrency(), user.getCompany().getId());
         final MenuModel menuModel = MenuModel.convert(menu);
         return MenuKitResponseEntity.success(menuModel);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateMenu(@PathVariable("id") Long id, @RequestBody MenuRequest request) {
-        final Menu menu = menuService.update(id, request.getName());
+        final Menu menu = menuService.update(id, request.getName(), request.getCurrency());
         final MenuModel menuModel = MenuModel.convert(menu);
         return MenuKitResponseEntity.success(menuModel);
     }

@@ -1,6 +1,7 @@
 package com.waiter.server.api.menu.model.response;
 
 import com.waiter.server.api.category.model.response.CategoryMenuModel;
+import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.model.Menu;
 
@@ -14,6 +15,7 @@ public class MenuWithProductsModel {
     private Long id;
     private String name;
     private Language language;
+    private Currency currency;
     private List<CategoryMenuModel> categories;
 
     public Long getId() {
@@ -48,11 +50,20 @@ public class MenuWithProductsModel {
         this.categories = categories;
     }
 
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
     public static MenuWithProductsModel convert(Menu menu, Language language) {
         MenuWithProductsModel menuModel = new MenuWithProductsModel();
         menuModel.setId(menu.getId());
         menuModel.setName(menu.getName());
         menuModel.setLanguage(language);
+        menuModel.setCurrency(menu.getCurrency());
         menuModel.setCategories(CategoryMenuModel.convert(menu.getCategories(), language));
         return menuModel;
     }

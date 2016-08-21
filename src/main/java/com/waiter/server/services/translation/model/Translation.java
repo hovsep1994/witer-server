@@ -20,6 +20,7 @@ public class Translation extends AbstractEntityModel {
     private String text;
 
     @Column(name = "language", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Language language;
 
     @Enumerated(EnumType.STRING)
