@@ -4,6 +4,7 @@ import com.waiter.server.persistence.core.repository.venue.VenueRepository;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
+import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.GalleryService;
@@ -52,10 +53,11 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     @Transactional
-    public Venue create(VenueDto venueDto, Location location) {
+    public Venue create(VenueDto venueDto, Location location, Long companyId) {
         LOGGER.debug("Creating venue by dto -{}", venueDto);
         assertVenueDto(venueDto);
         final Venue venue = new Venue();
+        venue.setCompany(new Company(companyId));
         venueDto.updateProperties(venue);
         venue.setLocation(locationService.createLocation(location));
         venue.setGallery(new Gallery());
@@ -75,17 +77,15 @@ public class VenueServiceImpl implements VenueService {
             throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "venue with id not found");
         }
         if (location != null) {
-            if (!venue.getLocation().getId().equals(location.getId())) {
-                throw new ServiceRuntimeException(ErrorCode.NOT_MATCH, "venue location not match");
-            }
             if (venue.getLocation() != location) {
+                location.setId(venue.getLocation().getId());
                 locationService.updateLocation(location);
-                applicationEventBus.publishAsynchronousEvent(new VenueLocationUpdateEvent(id));
+//                applicationEventBus.publishAsynchronousEvent(new VenueLocationUpdateEvent(id));
             }
         }
         venueDto.updateProperties(venue);
         final Venue updatedVenue = venueRepository.save(venue);
-        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(updatedVenue.getId()));
+//        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(updatedVenue.getId()));
         return updatedVenue;
     }
 
@@ -126,7 +126,6 @@ public class VenueServiceImpl implements VenueService {
 
     private void assertVenueDto(VenueDto venueDto) {
         notNull(venueDto, "venue dto must not bu null");
-        notNull(venueDto.getCompanyId(), "company id must not bu null");
         notNull(venueDto.getName(), "name must not bu null");
     }
 }

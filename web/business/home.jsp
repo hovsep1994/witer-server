@@ -49,11 +49,11 @@
                     <div class="item-list col-lg-3">
                         <ul class="nav nav-pills nav-stacked">
                             <li ng-repeat="venue in venues">
-                                <span data-toggle="pill" href="{{'#venue_' + venue.id}}">{{venue.name}}</span>
+                                <span id="{{'venue_link' + venue.id}}" data-toggle="pill" href="{{'#venue_' + venue.id}}">{{venue.name}}</span>
                                 <a href="" data-toggle="modal" data-target="#deleteVenueModal" ng-click="initRemove(venue.id)">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
                                 </a>
-                                <a href="" data-toggle="modal" data-target="#editVenueModal" ng-click="initEditVenue(false)">
+                                <a href="" data-toggle="modal" data-target="#editVenueModal" ng-click="initEditVenue(false, venue)">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">
                                 </a>
                             </li>
@@ -68,7 +68,7 @@
                                 <div class="container-fluid">
                                     <div class="row">
                                         <img src="{{venue.image}}"
-                                             style="margin-right: 30px" class="img-circle" align="center">
+                                             style="margin-right: 30px" class="img-circle" align="center" width="100px" height="100px">
                                         <span style="font-weight: bold">{{venue.name}}</span>
                                     </div>
                                     <br><br>
@@ -90,7 +90,7 @@
                                     <br><br>
 
                                     <div class="row">
-                                        <div id="map1" style="min-height: 400px"></div>
+                                        <div id="{{'map' + venue.id}}" style="min-height: 400px"></div>
                                         <br>
                                     </div>
                                 </div>

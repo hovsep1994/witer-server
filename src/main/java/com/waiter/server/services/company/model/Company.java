@@ -28,6 +28,14 @@ public class Company extends AbstractEntityModel {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     private List<Venue> venues;
 
+    public Company() {
+
+    }
+
+    public Company(Long id) {
+        setId(id);
+    }
+
     public String getPhone() {
         return phone;
     }
