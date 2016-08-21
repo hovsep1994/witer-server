@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -26,10 +27,24 @@ public class ApiConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         logger.info("auth interceptor added. ");
-        registry.addInterceptor(apiAuthenticationInterceptor)
-                .addPathPatterns("/heartbeat")
-                .addPathPatterns("/venue/*")
-                .addPathPatterns("/menu/*");
+        InterceptorRegistration interceptorRegistration = registry.addInterceptor(apiAuthenticationInterceptor);
+        interceptorRegistration(interceptorRegistration, "venue");
+        interceptorRegistration(interceptorRegistration, "categories");
+        interceptorRegistration(interceptorRegistration, "products");
+        interceptorRegistration(interceptorRegistration, "menu");
+        interceptorRegistration(interceptorRegistration, "heartbeat");
+    }
+
+    private static void interceptorRegistration(InterceptorRegistration interceptorRegistration, String path) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("/").append(path);
+        interceptorRegistration.addPathPatterns(builder.toString());
+        builder.append("/");
+        interceptorRegistration.addPathPatterns(builder.toString());
+        builder.append("/*");
+        interceptorRegistration.addPathPatterns(builder.toString());
+        builder.append("/**");
+        interceptorRegistration.addPathPatterns(builder.toString());
     }
 
     @Bean

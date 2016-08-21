@@ -22,7 +22,7 @@ public class GalleryImage extends AbstractEntityModel {
     private String url;
 
     @Column(name = "image_type", nullable = false)
-    @Enumerated(EnumType.STRING)
+
     private ImageType imageType;
 
     @Column(name = "gallery_image_type", nullable = false)

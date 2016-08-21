@@ -3,6 +3,8 @@ package com.waiter.server.api.venue;
 import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.location.model.LocationModel;
+import com.waiter.server.api.utility.EntityType;
+import com.waiter.server.api.utility.ImageUrlGenerator;
 import com.waiter.server.api.venue.model.VenueModel;
 import com.waiter.server.api.venue.model.request.VenueRequest;
 import com.waiter.server.services.common.exception.ErrorCode;
@@ -74,22 +76,23 @@ public class VenueController extends AuthenticationController {
     }
 
     @RequestMapping(value = "/{venueId}", method = RequestMethod.DELETE)
-    public MenuKitResponseEntity<Void> delete(@PathVariable Long venueId,  @ModelAttribute User user) throws ServiceException {
+    public MenuKitResponseEntity<Void> delete(@PathVariable Long venueId, @ModelAttribute User user) throws ServiceException {
         checkUserPermission(user, venueId);
         venueService.delete(venueId);
         return MenuKitResponseEntity.success2();
     }
 
-    @RequestMapping(value = "/{id}/image", method = RequestMethod.POST)
-    public MenuKitResponseEntity<String> uploadImage(@RequestPart("file") MultipartFile file, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
-        checkUserHasAccess(user, venueService.getVenueById(id).getCompany());
+    @RequestMapping(value = "/{venueId}/image", method = RequestMethod.POST)
+    public MenuKitResponseEntity uploadImage(@RequestPart("file") MultipartFile file, @PathVariable Long venueId, @ModelAttribute User user) throws ServiceException {
+        checkUserHasAccess(user, venueService.getVenueById(venueId).getCompany());
+        GalleryImage galleryImage;
         try {
-            final GalleryImage galleryImage = venueService.addImage(id, file.getInputStream());
+            galleryImage = venueService.addImage(venueId, file.getInputStream());
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
             throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
-        return MenuKitResponseEntity.success2("ok");
+        return MenuKitResponseEntity.success2(ImageUrlGenerator.getFullUrl(EntityType.VENUE, galleryImage));
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)

@@ -2,6 +2,8 @@ package com.waiter.server.api.venue.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.location.model.LocationModel;
+import com.waiter.server.api.utility.EntityType;
+import com.waiter.server.api.utility.ImageUrlGenerator;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.venue.model.Venue;
@@ -88,12 +90,16 @@ public class VenueModel {
         venueModel.setMenuId(venue.getMenu() == null ? null : venue.getMenu().getId());
         venueModel.setCompanyId(venue.getCompany() == null ? null : venue.getCompany().getId());
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
-
-        Set<GalleryImage> images = venue.getGallery().getGalleryImages();
-        Optional<GalleryImage> mainImage = images.stream().filter(i -> i.getGalleryImageType() == GalleryImageType.MAIN).findFirst();
-
-        String imageUrl = mainImage.isPresent() ? mainImage.get().getUrl() : "images/venue-image.png";
-        venueModel.setImageUrl(cdnBaseUrl + imageUrl);
+        ImageUrlGenerator.getFullUrl(EntityType.VENUE, venue.getGallery().getGalleryImages(), GalleryImageType.MAIN);
+        venueModel.setImageUrl(getFullUrl(venue.getGallery().getGalleryImages(), cdnBaseUrl));
         return venueModel;
+    }
+
+    private static String getFullUrl(Set<GalleryImage> images, String cdnBaseUrl) {
+        final GalleryImage galleryImage = images.stream()
+                .filter(image -> image.getGalleryImageType() == GalleryImageType.MAIN)
+                .findFirst().orElse(null);
+        final String imageUrl = galleryImage != null ? galleryImage.getUrl() : "images/venue-image.png";
+        return cdnBaseUrl + imageUrl;
     }
 }

@@ -15,15 +15,15 @@ import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.gallery.model.ImageType;
 import com.waiter.server.services.language.Language;
-import com.waiter.server.services.translation.TranslationService;
-import com.waiter.server.services.translation.dto.TranslationDto;
-import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.translate.TranslatorService;
 import com.waiter.server.services.translate.dto.TextTranslationDto;
+import com.waiter.server.services.translation.TranslationService;
+import com.waiter.server.services.translation.dto.TranslationDto;
+import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
@@ -155,12 +155,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public GalleryImage addImage(Long productId, InputStream inputStream) throws ServiceException {
-        Product product = productRepository.findOne(productId);
+        Product product = getById(productId);
         GalleryImageDto galleryImageDto = new GalleryImageDto();
         galleryImageDto.setGalleryImageType(GalleryImageType.MAIN);
         galleryImageDto.setImageType(ImageType.JPEG);
-        galleryImageDto.setFileName("products");
-        GalleryImage galleryImage = galleryImageService.addImage(product.getGallery().getId(), galleryImageDto, inputStream);
+        galleryImageDto.setFileName("product");
+        if (product.getGallery() == null) {
+            product.setGallery(new Gallery());
+            product = productRepository.save(product);
+        }
+        final GalleryImage galleryImage = galleryImageService.addImage(product.getGallery().getId(), galleryImageDto, inputStream);
         return galleryImage;
     }
 

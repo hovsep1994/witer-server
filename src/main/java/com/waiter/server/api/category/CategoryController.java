@@ -3,6 +3,7 @@ package com.waiter.server.api.category;
 import com.waiter.server.api.category.model.CategoryModel;
 import com.waiter.server.api.category.model.request.AddCategoryModelRequest;
 import com.waiter.server.api.category.model.request.UpdateCategoryRequest;
+import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.name.model.NameTranslationModel;
@@ -24,8 +25,8 @@ import org.springframework.web.bind.annotation.*;
  * @author shahenpoghosyan
  */
 @RestController
-@RequestMapping("/category")
-public class CategoryController extends MainController {
+@RequestMapping("/categories")
+public class CategoryController extends AuthenticationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
 
@@ -42,7 +43,7 @@ public class CategoryController extends MainController {
         return MenuKitResponseEntity.success2(categoryModel);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public MenuKitResponseEntity<CategoryModel> addCategory(@RequestBody AddCategoryModelRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, menuService.getCompanyByMenuId(request.getMenuId()));
         final CategoryDto categoryDto = new CategoryDto();

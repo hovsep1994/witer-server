@@ -1,5 +1,6 @@
 package com.waiter.server.api.product;
 
+import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.name.model.NameTranslationModel;
@@ -7,9 +8,12 @@ import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.product.model.request.AddProductRequest;
 import com.waiter.server.api.product.model.request.ProductRequest;
 import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.api.utility.EntityType;
+import com.waiter.server.api.utility.ImageUrlGenerator;
 import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
+import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.product.ProductService;
@@ -20,7 +24,9 @@ import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -31,9 +37,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/products")
-public class ProductController extends MainController {
+public class ProductController extends AuthenticationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+
+    @Value("#{appProperties['cdn.base.url']}")
+    private String cdnBaseUrl;
 
     @Autowired
     private ProductService productService;
@@ -77,16 +86,17 @@ public class ProductController extends MainController {
         return MenuKitResponseEntity.success2(productModels);
     }
 
-    @RequestMapping(value = "/{id}/uploadImage", method = RequestMethod.POST)
-    public MenuKitResponseEntity<String> uploadImage(HttpServletRequest request, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
+    @RequestMapping(value = "/{id}/image", method = RequestMethod.POST)
+    public MenuKitResponseEntity<String> uploadImage(@RequestPart("file") MultipartFile file, @PathVariable Long id, @ModelAttribute User user) throws ServiceException {
         checkUserHasAccess(user, productService.getCompanyByProductId(id));
+        final GalleryImage galleryImage;
         try {
-            productService.addImage(id, request.getInputStream());
+            galleryImage = productService.addImage(id, file.getInputStream());
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
             throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
-        return MenuKitResponseEntity.success2("ok");
+        return MenuKitResponseEntity.success2(ImageUrlGenerator.getFullUrl(EntityType.PRODUCT, galleryImage));
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)

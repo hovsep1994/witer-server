@@ -27,7 +27,7 @@ public class MainController {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity handleCustomException(ServiceException ex) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        if(ex.getError().getErrorCode() == ErrorCode.UNAUTHORIZED) {
+        if (ex.getError().getErrorCode() == ErrorCode.UNAUTHORIZED) {
             httpStatus = HttpStatus.UNAUTHORIZED;
         }
         return MenuKitResponseEntity.error(ex.getError(), httpStatus);
@@ -39,20 +39,20 @@ public class MainController {
     }
 
     public void checkUserHasAccess(User user, Company company) {
-//        if (!company.getId().equals(user.getCompany().getId())) {
-//            LOGGER.debug("User -{} has no access to company's -{} data", user, company);
-//            throw new SecurityException("User has no access to company data");
-//        }
+        if (!company.getId().equals(user.getCompany().getId())) {
+            LOGGER.debug("User -{} has no access to company's -{} data", user, company);
+            throw new SecurityException("User has no access to company data");
+        }
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(value= HttpStatus.INTERNAL_SERVER_ERROR, reason="Something bad happened")
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Something bad happened")
     public void handleException(HttpServletRequest req, Exception exception) {
         logger.error("Exception processing request. ", exception);
     }
 
     public void validatePermission(boolean permission) throws ServiceException {
-        if(!permission) {
+        if (!permission) {
             throw new ServiceException(ErrorCode.UNAUTHORIZED, "Operation not permitted. ");
         }
     }

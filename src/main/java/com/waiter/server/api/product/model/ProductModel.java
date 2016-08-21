@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.category.model.CategoryModel;
 import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.api.utility.EntityType;
+import com.waiter.server.api.utility.ImageUrlGenerator;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.translation.model.Translation;
@@ -30,6 +32,8 @@ public class ProductModel {
     private String name;
 
     private Set<TagModel> tagModels;
+
+    private String image;
 
     public Long getId() {
         return id;
@@ -79,6 +83,14 @@ public class ProductModel {
         this.name = name;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public static ProductModel convert(Product product, Language language) {
         final ProductModel productModel = new ProductModel();
         productModel.setId(product.getId());
@@ -86,6 +98,7 @@ public class ProductModel {
         productModel.setName(product.getNameTranslationByLanguage(language).getText());
         productModel.setPrice(product.getPrice());
         productModel.setTagModels(TagModel.convertToModel(product.getTags()));
+        productModel.setImage(ImageUrlGenerator.getFullMainUrl(EntityType.PRODUCT, product.getGallery().getGalleryImages()));
         return productModel;
     }
 
