@@ -9,7 +9,6 @@ import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.translation.model.Translation;
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -27,6 +26,8 @@ public class ProductModel {
     private Double price;
 
     private String description;
+
+    private String name;
 
     private Set<TagModel> tagModels;
 
@@ -70,12 +71,19 @@ public class ProductModel {
         this.categoryModel = categoryModel;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public static ProductModel convert(Product product, Language language) {
         final ProductModel productModel = new ProductModel();
         productModel.setId(product.getId());
-        final Translation translation = product.getDescriptionByLanguage(language);
-        productModel.setDescription(translation == null ? null : translation.getName());
-        productModel.setDescription(product.getNameTranslationByLanguage(language).getName());
+        productModel.setDescription(product.getDescriptionTextByLanguage(language));
+        productModel.setName(product.getNameTranslationByLanguage(language).getText());
         productModel.setPrice(product.getPrice());
         productModel.setTagModels(TagModel.convertToModel(product.getTags()));
         return productModel;

@@ -30,7 +30,7 @@ public class TranslationDto extends AbstractDtoModel<Translation> {
     @Override
     public void updateProperties(Translation translation) {
         translation.setLanguage(getLanguage());
-        translation.setName(getText());
+        translation.setText(getText());
         translation.setTranslationType(getTranslationType());
     }
 

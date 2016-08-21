@@ -6,27 +6,18 @@ import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
-import org.hibernate.Criteria;
-import org.hibernate.SessionBuilder;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaUpdate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
-
-import static org.hibernate.criterion.Restrictions.eq;
 
 /**
  * Created by Admin on 1/3/2016.
@@ -170,7 +161,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
             Translation translation = new Translation();
 //            Language language = new Language(rs.getString("n.language"));
 //            translation.setLanguage(language);
-            translation.setName(rs.getString("n.translation"));
+            translation.setText(rs.getString("n.translation"));
 
             Category category = new Category();
             category.setId(rs.getLong("p.group_id"));

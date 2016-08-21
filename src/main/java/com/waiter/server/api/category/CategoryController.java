@@ -17,6 +17,7 @@ import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -61,6 +62,13 @@ public class CategoryController extends MainController {
         Category category = categoryService.update(id, categoryDto, translationDto);
         CategoryModel categoryModel = CategoryModel.convert(category, translationDto.getLanguage());
         return MenuKitResponseEntity.success2(categoryModel);
+    }
+
+    @RequestMapping(value = "{categoryId}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteCategory(@PathVariable Long categoryId, @ModelAttribute User user) {
+        checkUserHasAccess(user, categoryService.getCompanyById(categoryId));
+        categoryService.remove(categoryId);
+        return MenuKitResponseEntity.success();
     }
 
     @RequestMapping(value = "/heartbeat", method = RequestMethod.GET)

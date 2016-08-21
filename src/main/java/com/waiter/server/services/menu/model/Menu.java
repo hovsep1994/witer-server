@@ -1,14 +1,17 @@
 package com.waiter.server.services.menu.model;
 
+import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.company.model.Company;
-import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.currency.Currency;
+import com.waiter.server.services.language.Language;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author shahenpoghosyan
@@ -26,6 +29,16 @@ public class Menu extends AbstractEntityModel {
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
     private List<Category> categories;
+
+    @ElementCollection(targetClass = Language.class)
+    @CollectionTable(name = "menu_language")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "language")
+    private Set<Language> languages;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency")
+    private Currency currency;
 
     public String getName() {
         return name;
@@ -51,6 +64,22 @@ public class Menu extends AbstractEntityModel {
         this.categories = categories;
     }
 
+    public Set<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Set<Language> languages) {
+        this.languages = languages;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,6 +93,8 @@ public class Menu extends AbstractEntityModel {
                 .append(name, menu.name)
                 .append(company, menu.company)
                 .append(categories, menu.categories)
+                .append(languages, menu.languages)
+                .append(currency, menu.currency)
                 .isEquals();
     }
 
@@ -74,6 +105,8 @@ public class Menu extends AbstractEntityModel {
                 .append(name)
                 .append(company)
                 .append(categories)
+                .append(languages)
+                .append(currency)
                 .toHashCode();
     }
 
@@ -83,6 +116,8 @@ public class Menu extends AbstractEntityModel {
                 .append("name", name)
                 .append("company", company)
                 .append("categories", categories)
+                .append("languages", languages)
+                .append("currency", currency)
                 .toString();
     }
 }

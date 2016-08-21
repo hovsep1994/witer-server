@@ -59,7 +59,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public Category create(Long menuId, CategoryDto categoryDto, TranslationDto translationDto) {
         assertCategoryDto(categoryDto);
-        final Menu menu = menuService.getById(menuId);
+        Menu menu = menuService.getById(menuId);
+        if (!menu.getLanguages().contains(translationDto.getLanguage())) {
+            menu.getLanguages().add(translationDto.getLanguage());
+            menu = menuService.update(menu);
+        }
         final Translation translation = translationService.create(translationDto);
         final Category category = new Category();
         category.setMenu(menu);

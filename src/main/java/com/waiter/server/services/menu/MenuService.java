@@ -2,6 +2,8 @@ package com.waiter.server.services.menu;
 
 
 import com.waiter.server.services.company.model.Company;
+import com.waiter.server.services.currency.Currency;
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.model.Menu;
 
 import java.util.List;
@@ -13,13 +15,15 @@ public interface MenuService {
 
     Menu getById(Long id);
 
-    Menu create(String menuName, Long companyId);
+    Menu create(String menuName, Language language, Currency currency, Long companyId);
 
-    Menu update(Long menuId, String menuName);
+    Menu update(Long menuId, String menuName, Currency currency);
+
+    Menu update(Menu menu);
 
     List<Menu> getMenusByCompanyId(Long companyId);
 
     Company getCompanyByMenuId(Long menuId);
 
-    void remove(Long id);
+    void delete(Long id);
 }
