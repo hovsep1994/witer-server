@@ -109,10 +109,7 @@ public class Product extends AbstractEntityModel {
     }
 
     public Double getAverageRating() {
-        if (evaluation == null || evaluation.getRates().isEmpty()) {
-            return null;
-        }
-        return evaluation.getRates().stream().mapToInt(Rate::getRating).average().getAsDouble();
+        return evaluation.getAverageRating();
     }
 
     public Translation getNameTranslationByLanguage(Language language) {

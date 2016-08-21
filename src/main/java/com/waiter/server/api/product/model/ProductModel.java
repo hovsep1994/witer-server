@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.category.model.CategoryModel;
 import com.waiter.server.api.tag.model.TagModel;
-import com.waiter.server.api.utility.EntityType;
-import com.waiter.server.api.utility.ImageUrlGenerator;
+import com.waiter.server.api.utility.image.EntityType;
+import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
-import com.waiter.server.services.translation.model.Translation;
 
 import java.util.*;
 import java.util.stream.Collectors;

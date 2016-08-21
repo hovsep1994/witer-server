@@ -2,14 +2,12 @@ package com.waiter.server.api.venue.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.location.model.LocationModel;
-import com.waiter.server.api.utility.EntityType;
-import com.waiter.server.api.utility.ImageUrlGenerator;
+import com.waiter.server.api.utility.image.EntityType;
+import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.venue.model.Venue;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /**

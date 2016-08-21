@@ -1,4 +1,4 @@
-package com.waiter.server.api.utility;
+package com.waiter.server.api.utility.image;
 
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;

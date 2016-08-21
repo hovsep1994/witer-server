@@ -7,6 +7,7 @@ import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.company.model.Company;
+import com.waiter.server.services.evaluation.EvaluationService;
 import com.waiter.server.services.evaluation.model.Evaluation;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
@@ -64,6 +65,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductSolrRepository productSolrRepository;
+
+    @Autowired
+    private EvaluationService evaluationService;
 
     @Override
     public Product create(Long categoryId, ProductDto productDto, TranslationDto nameDto,
@@ -186,12 +190,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product setRateByCustomerToken(Long productId, String customerToken, Integer rating) {
         assertProductId(productId);
         notNull(customerToken);
         notNull(rating);
         isTrue(rating >= 0 && rating <= 10);
-        return productRepository.setRatingByCustomerToken(productId, customerToken, rating);
+        final Product product = getById(productId);
+        List product1 = productRepository.findByIdAndCustomerToken(productId, customerToken);
+        if (product1 != null && !product1.isEmpty()) {
+            throw new ServiceRuntimeException(ErrorCode.BAD_REQUEST, "customer can not rate twice same product");
+        }
+        final Evaluation evaluation = evaluationService.addRating(product.getEvaluation().getId(), customerToken, rating);
+        product.setEvaluation(evaluation);
+        return productRepository.save(product);
     }
 
     @Override

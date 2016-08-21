@@ -1,15 +1,14 @@
 package com.waiter.server.api.product;
 
 import com.waiter.server.api.common.AuthenticationController;
-import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.product.model.request.AddProductRequest;
 import com.waiter.server.api.product.model.request.ProductRequest;
 import com.waiter.server.api.tag.model.TagModel;
-import com.waiter.server.api.utility.EntityType;
-import com.waiter.server.api.utility.ImageUrlGenerator;
+import com.waiter.server.api.utility.image.EntityType;
+import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
@@ -28,7 +27,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 

@@ -49,6 +49,19 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         return typedQuery.getSingleResult();
     }
 
+    @Override
+    public List<Product> findByIdAndCustomerToken(Long productId, String customerToken) {
+        String queryString = new StringBuilder()
+                .append(" Select p from Product p")
+                .append(" join p.evaluation e")
+                .append(" join p.evaluation.rates r")
+                .append(" where p.id = ").append(productId)
+                .append(" and r.customerToken = '").append(customerToken).append("'")
+                .toString();
+        final TypedQuery<Product> typedQuery = entityManager.createQuery(queryString, Product.class);
+        return typedQuery.getResultList();
+    }
+
 
     public List<Product> findBySearchParameters(ProductSearchParameters parameters) {
         Assert.notNull(parameters, "ProductSearchParameters must not be null");

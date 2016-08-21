@@ -1,4 +1,4 @@
-package com.waiter.server.api.utility;
+package com.waiter.server.api.utility.image;
 
 /**
  * Created by hovsep on 8/21/16.

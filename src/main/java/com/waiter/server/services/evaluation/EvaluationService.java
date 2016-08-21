@@ -8,8 +8,7 @@ import com.waiter.server.services.evaluation.model.Rate;
  */
 public interface EvaluationService {
 
-    Evaluation getRating(Long id);
+    Evaluation getById(Long id);
 
-    Evaluation addRating(Long id, Rate rate);
-
+    Evaluation addRating(Long evaluationId, String customerToken, Integer rating);
 }

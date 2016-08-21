@@ -3,13 +3,13 @@ package com.waiter.server.api.rate;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.rate.model.RateRequest;
+import com.waiter.server.api.rate.model.response.RateResponse;
+import com.waiter.server.api.utility.rating.RoundRating;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by hovsep on 5/31/16.
@@ -21,11 +21,12 @@ public class RateController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public MenuKitResponseEntity<ProductModel> addMenu(@RequestBody RateRequest rateRequest) {
-        Product product = productService.setRateByCustomerToken(rateRequest.getId(), rateRequest.getToken(), rateRequest.getRating());
-        ProductModel productModel = ProductModel.convert(product, rateRequest.getLanguage());
-        return MenuKitResponseEntity.success2(productModel);
+    @RequestMapping(path = "product/{productId}", method = RequestMethod.POST)
+    public ResponseEntity addMenu(@PathVariable Long productId, @RequestBody RateRequest rateRequest) {
+        final Product product = productService.setRateByCustomerToken(productId, rateRequest.getToken(), rateRequest.getRating());
+        final RateResponse rateResponse = new RateResponse();
+        rateResponse.setRate(RoundRating.round(product.getAverageRating()));
+        return MenuKitResponseEntity.success(rateResponse);
     }
 
 }

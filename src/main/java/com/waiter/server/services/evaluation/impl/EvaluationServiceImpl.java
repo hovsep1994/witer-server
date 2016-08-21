@@ -1,11 +1,17 @@
 package com.waiter.server.services.evaluation.impl;
 
 import com.waiter.server.persistence.core.repository.evaluation.EvaluationRepository;
+import com.waiter.server.services.common.exception.ErrorCode;
+import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.evaluation.EvaluationService;
+import com.waiter.server.services.evaluation.RateService;
 import com.waiter.server.services.evaluation.model.Evaluation;
 import com.waiter.server.services.evaluation.model.Rate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 /**
@@ -14,20 +20,31 @@ import org.springframework.util.Assert;
 @Service
 public class EvaluationServiceImpl implements EvaluationService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EvaluationServiceImpl.class);
+
     @Autowired
     private EvaluationRepository evaluationRepository;
 
+    @Autowired
+    private RateService rateService;
+
     @Override
-    public Evaluation getRating(Long id) {
-        assertEvaluationId(id);
-        return evaluationRepository.findOne(id);
+    public Evaluation getById(Long id) {
+        final Evaluation evaluation = evaluationRepository.findOne(id);
+        if (evaluation == null) {
+            LOGGER.error("evaluation with id -{} not found", id);
+            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "evaluation not found");
+        }
+        return evaluation;
     }
 
     @Override
-    public Evaluation addRating(Long id, Rate rate) {
-        assertEvaluationId(id);
-        Evaluation evaluation = evaluationRepository.findOne(id);
-        evaluation.getRates().add(rate);
+    @Transactional
+    public Evaluation addRating(Long evaluationId, String customerToken, Integer rating) {
+        Evaluation evaluation = getById(evaluationId);
+        evaluation.setRateCount(evaluation.getRateCount() + 1);
+        evaluation.setRateSum(evaluation.getRateSum() + rating);
+        rateService.createRate(evaluation.getId(), customerToken, rating);
         return evaluationRepository.save(evaluation);
     }
 
