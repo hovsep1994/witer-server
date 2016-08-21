@@ -1,6 +1,7 @@
 package com.waiter.server.api.menu.model.request;
 
 import com.waiter.server.services.currency.Currency;
+import com.waiter.server.services.language.Language;
 
 /**
  * User: hovsep
@@ -12,6 +13,8 @@ public class MenuRequest {
     private String name;
 
     private Currency currency;
+
+    private Language mainLanguage;
 
     public String getName() {
         return name;
@@ -27,5 +30,13 @@ public class MenuRequest {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public Language getMainLanguage() {
+        return mainLanguage;
+    }
+
+    public void setMainLanguage(Language mainLanguage) {
+        this.mainLanguage = mainLanguage;
     }
 }

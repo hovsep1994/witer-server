@@ -29,18 +29,18 @@
     </div>
     <hr size="5">
     <div class="container" style="padding-bottom: 50px">
-        <div class="menu-info-inputs">
-            <label for="menu-name"><h4>Menu Name</h4></label><br>
-            <input type="text" class="form-control" id="menu-name">
-        </div>
+        <%--<div class="menu-info-inputs">--%>
+            <%--<label for="menu-name"><h4>Menu Name</h4></label><br>--%>
+            <%--<input type="text" class="form-control" id="menu-name">--%>
+        <%--</div>--%>
         <div class="menu-info-inputs">
             <label for="menu-language"><h4>Menu Language</h4></label><br>
             <select class="form-control" id="menu-language" disabled></select>
         </div>
-        <div class="menu-info-inputs">
-            <label for="menu-currency"><h4>Menu Currency</h4></label><br>
-            <select class="form-control" id="menu-currency" disabled></select>
-        </div>
+        <%--<div class="menu-info-inputs">--%>
+            <%--<label for="menu-currency"><h4>Menu Currency</h4></label><br>--%>
+            <%--<select class="form-control" id="menu-currency" disabled></select>--%>
+        <%--</div>--%>
     </div>
     <div class="container" id="add-category">
         <span>Add menu category</span>&nbsp;&nbsp;&nbsp;
@@ -126,33 +126,33 @@
         </div>
     </div>
 </div>
-<div class="desc navbar-fixed-bottom">
-    <div class="menu-attach">
-        <div>
-            <div class="dropup" style="max-width: 300px; display: inline-block;">
-                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" style="width: 100%" >
-                    Choose which venues to attach menu &nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
-                <ul class="dropdown-menu attach-venues">
-                    <li>
-                        <a><span>Venue 1</span><div class="image-div"></div></a>
-                    </li>
-                    <li>
-                        <a><span>Venue 2</span><div class="image-div"></div></a>
-                    </li>
-                    <li>
-                        <a><span>Venue 3</span><div class="image-div"></div></a>
-                    </li>
-                    <li>
-                        <a><span>Venue 4</span><div class="image-div"></div></a>
-                    </li>
-                </ul>
-            </div>
-            <div style="display: inline; float: right; right: 0;">
-                <input type="button" class="btn btn-info" value="Save" style="width: 80px">
-            </div>
-        </div>
-    </div>
-</div>
+<%--<div class="desc navbar-fixed-bottom">--%>
+    <%--<div class="menu-attach">--%>
+        <%--<div>--%>
+            <%--<div class="dropup" style="max-width: 300px; display: inline-block;">--%>
+                <%--<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" style="width: 100%" >--%>
+                    <%--Choose which venues to attach menu &nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>--%>
+                <%--<ul class="dropdown-menu attach-venues">--%>
+                    <%--<li>--%>
+                        <%--<a><span>Venue 1</span><div class="image-div"></div></a>--%>
+                    <%--</li>--%>
+                    <%--<li>--%>
+                        <%--<a><span>Venue 2</span><div class="image-div"></div></a>--%>
+                    <%--</li>--%>
+                    <%--<li>--%>
+                        <%--<a><span>Venue 3</span><div class="image-div"></div></a>--%>
+                    <%--</li>--%>
+                    <%--<li>--%>
+                        <%--<a><span>Venue 4</span><div class="image-div"></div></a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
+            <%--</div>--%>
+            <%--<div style="display: inline; float: right; right: 0;">--%>
+                <%--<input type="button" class="btn btn-info" value="Save" style="width: 80px">--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 </body>
 <script>
     $(document).ready(function() {

@@ -207,6 +207,19 @@ body {
     padding-top: 13% !important;
 }
 
+/*------------- edit menu modal ------------- */
+
+.editMenuModal .modal-dialog .modal-content {
+    background-color: #f7f7f7 !important;
+    padding: 0 5% 0 5%;
+    text-align: center !important;
+}
+
+.editMenuModal .modal-dialog .modal-footer {
+    text-align: center !important;
+}
+
+
 /*  ------ venue info ----- */
 
 #venue-info {
