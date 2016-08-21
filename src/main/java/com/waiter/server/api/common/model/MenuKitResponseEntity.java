@@ -22,7 +22,6 @@ public class MenuKitResponseEntity<TResponse> {
     private List<ApiError> errors;
 
 
-    @Deprecated
     public static <T> ResponseEntity<MenuKitResponseEntity<T>> success(T response) {
         MenuKitResponseEntity<T> responseEntity = new MenuKitResponseEntity<>();
         responseEntity.response = response;
@@ -32,7 +31,6 @@ public class MenuKitResponseEntity<TResponse> {
         return new ResponseEntity<>(responseEntity, HttpStatus.OK);
     }
 
-    @Deprecated
     public static ResponseEntity<MenuKitResponseEntity<Void>> success() {
         return success(null);
     }

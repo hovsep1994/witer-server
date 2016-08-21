@@ -35,6 +35,10 @@ public class Menu extends AbstractEntityModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "language")
     private Set<Language> languages;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "main_language")
+    private Language mainLanguage;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "currency")
@@ -80,6 +84,14 @@ public class Menu extends AbstractEntityModel {
         this.currency = currency;
     }
 
+    public Language getMainLanguage() {
+        return mainLanguage;
+    }
+
+    public void setMainLanguage(Language mainLanguage) {
+        this.mainLanguage = mainLanguage;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,6 +106,7 @@ public class Menu extends AbstractEntityModel {
                 .append(company, menu.company)
                 .append(categories, menu.categories)
                 .append(languages, menu.languages)
+                .append(mainLanguage, menu.mainLanguage)
                 .append(currency, menu.currency)
                 .isEquals();
     }
@@ -106,6 +119,7 @@ public class Menu extends AbstractEntityModel {
                 .append(company)
                 .append(categories)
                 .append(languages)
+                .append(mainLanguage)
                 .append(currency)
                 .toHashCode();
     }
@@ -117,6 +131,7 @@ public class Menu extends AbstractEntityModel {
                 .append("company", company)
                 .append("categories", categories)
                 .append("languages", languages)
+                .append("mainLanguage", mainLanguage)
                 .append("currency", currency)
                 .toString();
     }

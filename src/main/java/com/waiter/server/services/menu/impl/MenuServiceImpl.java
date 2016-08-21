@@ -47,6 +47,7 @@ public class MenuServiceImpl implements MenuService {
         menu.setCurrency(currency);
         menu.setLanguages(new HashSet<>(1));
         menu.getLanguages().add(language);
+        menu.setMainLanguage(language);
         final Company company = companyService.get(companyId);
         menu.setCompany(company);
         menu.setName(menuName);
