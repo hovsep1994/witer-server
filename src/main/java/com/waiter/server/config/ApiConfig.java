@@ -31,7 +31,7 @@ public class ApiConfig extends WebMvcConfigurerAdapter {
         interceptorRegistration(interceptorRegistration, "venue");
         interceptorRegistration(interceptorRegistration, "categories");
         interceptorRegistration(interceptorRegistration, "products");
-        interceptorRegistration(interceptorRegistration, "menu");
+        interceptorRegistration(interceptorRegistration, "menus");
         interceptorRegistration(interceptorRegistration, "heartbeat");
     }
 

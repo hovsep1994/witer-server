@@ -120,21 +120,14 @@
                 <div class="content-row row">
                     <div class="item-list col-lg-3">
                         <ul class="nav nav-pills nav-stacked">
-                            <li>
-                                <span data-toggle="pill" href="#venue1">Paris Night Restaurant St. 1</span>
+                            <li ng-repeat="menu in menus">
+                                <span data-toggle="pill" href="#menu{{menu.id}}">{{menu.name}}</span>
                                 <a href="" data-toggle="modal" data-target="#deleteVenueModal">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
                                 </a>
                                 <a href="" data-toggle="modal" data-target="#editVenueModal">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">
                                 </a>
-                            </li>
-                            <li>
-                                <span data-toggle="pill" href="#venue2">Paris Night Restaurant St. 2</span>
-                                <a href=""><img
-                                        src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png"></a>
-                                <a href=""><img
-                                        src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png"></a>
                             </li>
                         </ul>
                     </div>

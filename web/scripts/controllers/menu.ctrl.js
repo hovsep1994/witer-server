@@ -12,8 +12,18 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
     self.selectVenue = selectVenue;
 
     self.editMenu = {};
+    self.menus = [];
 
     initVenues();
+    find();
+
+    function find() {
+        menuService.find(function(err, menus) {
+            if(err) return console.log(err);
+
+            self.menus = menus;
+        });
+    }
 
     function initEdit(newMenu, menu) {
         if (newMenu) {

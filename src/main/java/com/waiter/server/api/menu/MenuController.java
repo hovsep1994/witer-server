@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Admin on 12/12/2015.
  */
 @RestController
-@RequestMapping("/menu")
+@RequestMapping("/menus")
 public class MenuController extends AuthenticationController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MenuController.class);
@@ -60,9 +60,9 @@ public class MenuController extends AuthenticationController {
         return MenuKitResponseEntity.success();
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity getCompanyMenus(@RequestParam("companyId") Long companyId) {
-        List<Menu> menus = menuService.getMenusByCompanyId(companyId);
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity getCompanyMenus(@ModelAttribute("user") User user) {
+        List<Menu> menus = menuService.getMenusByCompanyId(user.getCompany().getId());
         List<MenuModel> menuModels = new ArrayList<>(menus.size());
         menus.forEach(menu -> menuModels.add(MenuModel.convert(menu)));
         return MenuKitResponseEntity.success(menuModels);
