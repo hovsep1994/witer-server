@@ -15,16 +15,19 @@ public class TranslationDto extends AbstractDtoModel<Translation> {
 
     private String text;
     private Language language;
-    private TranslationType translationType;
+    private TranslationType translationType = TranslationType.MAIN;
 
     public TranslationDto() {
-        translationType = TranslationType.MAIN;
     }
 
     public TranslationDto(String text, Language language) {
-        this();
         this.text = text;
         this.language = language;
+    }
+
+    public TranslationDto(String text, Language language, TranslationType translationType) {
+        this(text, language);
+        this.translationType = translationType;
     }
 
     @Override

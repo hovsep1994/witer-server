@@ -3,9 +3,11 @@ package com.waiter.server.services.translation.impl;
 import com.waiter.server.persistence.core.repository.name.TranslationRepository;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
+import com.waiter.server.services.translation.model.TranslationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,20 @@ public class TranslationServiceImpl implements TranslationService {
         final Translation translation = getById(id);
         translationDto.updateProperties(translation);
         return translationRepository.save(translation);
+    }
+
+    public Long createOrUpdateTranslation(Translation translation, String text, Language language) {
+        if (text != null) {
+            final TranslationDto dto = new TranslationDto(text, language, TranslationType.MANUAL);
+            if (translation == null) {
+                Translation createdTranslation = create(dto);
+                return createdTranslation.getId();
+            } else {
+                dto.updateProperties(translation);
+                translationRepository.save(translation);
+            }
+        }
+        return null;
     }
 
     @Override

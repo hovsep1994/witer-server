@@ -21,7 +21,6 @@ import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
-import com.waiter.server.services.translation.model.TranslationType;
 import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,20 +106,12 @@ public class CategoryController extends AuthenticationController {
 
     @RequestMapping(value = "{categoryId}/translate", method = RequestMethod.PUT)
     public ResponseEntity addTranslation(@PathVariable Long categoryId, @RequestBody CategoryTranslateRequest request, @ModelAttribute User user) {
-        Category category = categoryService.getById(categoryId);
+        final Category category = categoryService.getById(categoryId);
         checkUserHasAccess(user, category.getMenu().getCompany());
-        if (request.getName() != null) {
-            Translation name = category.getNameTranslationByLanguage(request.getLanguage());
-            final TranslationDto translationDto = new TranslationDto(request.getName(), request.getLanguage());
-            translationDto.setTranslationType(TranslationType.MANUAL);
-            if (name != null) {
-                translationService.update(name.getId(), translationDto);
-            } else {
-                name = translationService.create(translationDto);
-                category = categoryService.update(categoryId, null, name.getId());
-            }
-        }
-        return MenuKitResponseEntity.success(CategoryModel.convert(category, request.getLanguage()));
+        final Translation name = category.getNameTranslationByLanguage(request.getLanguage());
+        final Long nameId = translationService.createOrUpdateTranslation(name, request.getName(), request.getLanguage());
+        final Category updatedCategory = categoryService.update(categoryId, null, nameId);
+        return MenuKitResponseEntity.success(CategoryModel.convert(updatedCategory, request.getLanguage()));
     }
 
     @RequestMapping(value = "{categoryId}", method = RequestMethod.DELETE)

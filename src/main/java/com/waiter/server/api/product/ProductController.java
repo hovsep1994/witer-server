@@ -23,7 +23,6 @@ import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
-import com.waiter.server.services.translation.model.TranslationType;
 import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,30 +141,10 @@ public class ProductController extends AuthenticationController {
     public ResponseEntity addTranslation(@PathVariable Long productId, @RequestBody ProductTranslationRequest request, @ModelAttribute User user) {
         final Product product = productService.getById(productId);
         checkUserHasAccess(user, product.getCategory().getMenu().getCompany());
-        Long nameId = null;
-        Long descriptionId = null;
-        if (request.getName() != null) {
-            Translation name = product.getNameTranslationByLanguage(request.getLanguage());
-            TranslationDto nameDto = new TranslationDto(request.getName(), request.getLanguage());
-            nameDto.setTranslationType(TranslationType.MANUAL);
-            if (name == null) {
-                name = translationService.create(nameDto);
-                nameId = name.getId();
-            } else {
-                translationService.update(name.getId(), nameDto);
-            }
-        }
-        if (request.getDescription() != null) {
-            Translation description = product.getDescriptionByLanguage(request.getLanguage());
-            TranslationDto descriptionDto = new TranslationDto(request.getDescription(), request.getLanguage());
-            descriptionDto.setTranslationType(TranslationType.MANUAL);
-            if (description == null) {
-                description = translationService.create(descriptionDto);
-                descriptionId = description.getId();
-            } else {
-                translationService.update(description.getId(), descriptionDto);
-            }
-        }
+        final Translation translation = product.getNameTranslationByLanguage(request.getLanguage());
+        final Long nameId = translationService.createOrUpdateTranslation(translation, request.getName(), request.getLanguage());
+        final Translation description = product.getDescriptionByLanguage(request.getLanguage());
+        final Long descriptionId = translationService.createOrUpdateTranslation(description, request.getDescription(), request.getLanguage());
         final Product updatedProduct = productService.update(productId, null, nameId, descriptionId);
         return MenuKitResponseEntity.success(ProductModel.convert(updatedProduct, request.getLanguage()));
     }
