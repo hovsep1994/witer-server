@@ -35,14 +35,15 @@ public class Category extends AbstractEntityModel {
     private Set<Tag> tags;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Translation> translations;
+    @JoinTable(name = "category_name")
+    private Set<Translation> nameSet;
 
     @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "gallery_id", nullable = false)
     private Gallery gallery;
 
     public Category() {
-        translations = new HashSet<>();
+        nameSet = new HashSet<>();
         tags = new HashSet<>();
     }
 
@@ -78,12 +79,12 @@ public class Category extends AbstractEntityModel {
         this.tags = tags;
     }
 
-    public Set<Translation> getTranslations() {
-        return translations;
+    public Set<Translation> getNameSet() {
+        return nameSet;
     }
 
-    public void setTranslations(Set<Translation> translations) {
-        this.translations = translations;
+    public void setNameSet(Set<Translation> nameSet) {
+        this.nameSet = nameSet;
     }
 
     public Gallery getGallery() {
@@ -95,11 +96,11 @@ public class Category extends AbstractEntityModel {
     }
 
     public Translation getNameTranslationByLanguage(Language language) {
-        return translations.stream().filter(nameTranslation ->
+        return nameSet.stream().filter(nameTranslation ->
                 nameTranslation.getLanguage().equals(language)).findFirst().orElse(null);
     }
 
     public Set<Language> getLanguages() {
-        return translations.stream().map(Translation::getLanguage).collect(Collectors.toSet());
+        return nameSet.stream().map(Translation::getLanguage).collect(Collectors.toSet());
     }
 }

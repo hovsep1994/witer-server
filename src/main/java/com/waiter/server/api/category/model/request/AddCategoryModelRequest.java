@@ -1,7 +1,6 @@
 package com.waiter.server.api.category.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.waiter.server.api.name.model.TranslationModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.language.Language;
 

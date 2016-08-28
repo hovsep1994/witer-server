@@ -6,7 +6,6 @@ import com.waiter.server.api.category.model.request.CategoryTranslateRequest;
 import com.waiter.server.api.category.model.request.UpdateCategoryRequest;
 import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
-import com.waiter.server.api.name.model.TranslationModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;

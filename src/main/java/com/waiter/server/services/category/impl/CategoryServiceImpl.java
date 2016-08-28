@@ -18,17 +18,13 @@ import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.translation.TranslationService;
-import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.tag.TagService;
-import com.waiter.server.services.translation.model.TranslationType;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -79,7 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
         final Menu menu = menuService.addLanguage(menuId, translation.getLanguage());
         final Category category = new Category();
         category.setMenu(menu);
-        category.getTranslations().add(translation);
+        category.getNameSet().add(translation);
         categoryDto.updateProperties(category);
         return categoryRepository.save(category);
     }
@@ -95,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         if (translationId != null) {
             Translation translation = translationService.getById(translationId);
-            category.getTranslations().add(translation);
+            category.getNameSet().add(translation);
         }
         category.setUpdated(new Date());
         return categoryRepository.save(category);
@@ -142,7 +138,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category getCategoryOrNullByIdAndLanguage(Long id, Language language) {
         assertCategoryId(id);
         notNull(language);
-        return categoryRepository.findByIdAndTranslations_language(id, language);
+        return categoryRepository.findByIdAndNameSet_language(id, language);
     }
 
     @Override

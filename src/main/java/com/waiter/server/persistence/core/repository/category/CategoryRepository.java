@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    Category findByIdAndTranslations_language(Long id, Language language);
+    Category findByIdAndNameSet_language(Long id, Language language);
 }

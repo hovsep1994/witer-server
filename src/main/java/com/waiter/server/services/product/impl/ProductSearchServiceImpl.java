@@ -121,7 +121,7 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
         //category fields
         final Category category = product.getCategory();
         productDocument.setCategoryId(category.getId());
-        productDocument.setCategoryNameTranslations(Translation.getListOfTexts(category.getTranslations()));
+        productDocument.setCategoryNameTranslations(Translation.getListOfTexts(category.getNameSet()));
         productDocument.setCategoryTags(Tag.toStringSet(category.getTags()));
         // venue fields
         final Set<Point> points = product.getCategory().getMenu().getCompany().getVenues().stream()
