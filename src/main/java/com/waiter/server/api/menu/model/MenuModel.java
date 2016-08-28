@@ -6,6 +6,7 @@ import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.model.Menu;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by hovsep on 3/5/16.
@@ -18,7 +19,9 @@ public class MenuModel {
     @JsonProperty
     private String name;
 
-    private Language language;
+    private Language mainLanguage;
+
+    private Set<Language> languages;
 
     public Long getId() {
         return id;
@@ -36,19 +39,28 @@ public class MenuModel {
         this.name = name;
     }
 
-    public Language getLanguage() {
-        return language;
+    public Language getMainLanguage() {
+        return mainLanguage;
     }
 
-    public void setLanguage(Language language) {
-        this.language = language;
+    public void setMainLanguage(Language mainLanguage) {
+        this.mainLanguage = mainLanguage;
+    }
+
+    public Set<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Set<Language> languages) {
+        this.languages = languages;
     }
 
     public static MenuModel convert(Menu menu) {
         MenuModel menuModel = new MenuModel();
         menuModel.setId(menu.getId());
         menuModel.setName(menu.getName());
-        menuModel.setLanguage(menu.getMainLanguage());
+        menuModel.setLanguages(menu.getLanguages());
+        menuModel.setMainLanguage(menu.getMainLanguage());
         return menuModel;
     }
 }

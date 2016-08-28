@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Admin on 12/12/2015.
@@ -63,8 +64,7 @@ public class MenuController extends AuthenticationController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity getCompanyMenus(@ModelAttribute("user") User user) {
         List<Menu> menus = menuService.getMenusByCompanyId(user.getCompany().getId());
-        List<MenuModel> menuModels = new ArrayList<>(menus.size());
-        menus.forEach(menu -> menuModels.add(MenuModel.convert(menu)));
+        List<MenuModel> menuModels = menus.stream().map(MenuModel::convert).collect(Collectors.toList());
         return MenuKitResponseEntity.success(menuModels);
     }
 

@@ -54,7 +54,7 @@ public class CategoryController extends AuthenticationController {
         return MenuKitResponseEntity.success2(categoryModel);
     }
 
-    @RequestMapping(value = "{id}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public MenuKitResponseEntity<CategoryModel> updateCategory(@PathVariable Long id, @RequestBody UpdateCategoryRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, categoryService.getCompanyById(id));
         CategoryDto categoryDto = new CategoryDto();
