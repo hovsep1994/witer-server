@@ -1,6 +1,7 @@
 package com.waiter.server.services.category.model;
 
 import com.waiter.server.services.common.model.AbstractEntityModel;
+import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.translation.model.Translation;
@@ -33,8 +34,12 @@ public class Category extends AbstractEntityModel {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Tag> tags;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Translation> translations;
+
+    @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "gallery_id", nullable = false)
+    private Gallery gallery;
 
     public Category() {
         translations = new HashSet<>();
@@ -79,6 +84,14 @@ public class Category extends AbstractEntityModel {
 
     public void setTranslations(Set<Translation> translations) {
         this.translations = translations;
+    }
+
+    public Gallery getGallery() {
+        return gallery;
+    }
+
+    public void setGallery(Gallery gallery) {
+        this.gallery = gallery;
     }
 
     public Translation getNameTranslationByLanguage(Language language) {

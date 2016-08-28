@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  * Created by Admin on 12/23/2015.
  */
 @Repository
-public interface NameRepository extends JpaRepository<Translation, Long> {
+public interface TranslationRepository extends JpaRepository<Translation, Long> {
 
 }

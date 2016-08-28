@@ -2,11 +2,18 @@ package com.waiter.server.services.category.impl;
 
 import com.waiter.server.persistence.core.repository.category.CategoryRepository;
 import com.waiter.server.services.common.exception.ErrorCode;
+import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.category.dto.CategoryDto;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.company.model.Company;
+import com.waiter.server.services.gallery.GalleryImageService;
+import com.waiter.server.services.gallery.dto.GalleryImageDto;
+import com.waiter.server.services.gallery.model.Gallery;
+import com.waiter.server.services.gallery.model.GalleryImage;
+import com.waiter.server.services.gallery.model.GalleryImageType;
+import com.waiter.server.services.gallery.model.ImageType;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
@@ -14,6 +21,7 @@ import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.tag.TagService;
+import com.waiter.server.services.translation.model.TranslationType;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +30,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.io.InputStream;
 import java.util.Date;
+
+import static org.springframework.util.Assert.notNull;
 
 /**
  * @author shahenpoghosyan
@@ -44,6 +55,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private TranslationService translationService;
 
+    @Autowired
+    private GalleryImageService galleryImageService;
+
     @Override
     public Category getById(Long id) {
         assertCategoryId(id);
@@ -57,14 +71,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Category create(Long menuId, CategoryDto categoryDto, TranslationDto translationDto) {
+    public Category create(CategoryDto categoryDto, Long menuId, Long translationId) {
         assertCategoryDto(categoryDto);
-        Menu menu = menuService.getById(menuId);
-        if (!menu.getLanguages().contains(translationDto.getLanguage())) {
-            menu.getLanguages().add(translationDto.getLanguage());
-            menu = menuService.update(menu);
-        }
-        final Translation translation = translationService.create(translationDto);
+        notNull(translationId);
+        notNull(menuId);
+        final Translation translation = translationService.getById(translationId);
+        final Menu menu = menuService.addLanguage(menuId, translation.getLanguage());
         final Category category = new Category();
         category.setMenu(menu);
         category.getTranslations().add(translation);
@@ -74,15 +86,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Category update(Long categoryId, CategoryDto categoryDto, TranslationDto translationDto) {
+    public Category update(Long categoryId, CategoryDto categoryDto, Long translationId) {
         assertCategoryId(categoryId);
-        assertCategoryDto(categoryDto);
         final Category category = getById(categoryId);
-        if (translationDto != null) {
-            final Translation translation = category.getNameTranslationByLanguage(translationDto.getLanguage());
-            translationDto.updateProperties(translation);
+        if (categoryDto != null) {
+            assertCategoryDto(categoryDto);
+            categoryDto.updateProperties(category);
         }
-        categoryDto.updateProperties(category);
+        if (translationId != null) {
+            Translation translation = translationService.getById(translationId);
+            category.getTranslations().add(translation);
+        }
         category.setUpdated(new Date());
         return categoryRepository.save(category);
     }
@@ -90,24 +104,45 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void remove(Long categoryId) {
         assertCategoryId(categoryId);
-        Category category = getById(categoryId);
+        final Category category = getById(categoryId);
+        if (category.getProducts() != null || !category.getProducts().isEmpty()) {
+            LOGGER.error("Category -{} contains products", category.getId());
+            throw new ServiceRuntimeException(ErrorCode.CAN_NOT_BE_DELETED, "Category contains products");
+        }
         categoryRepository.delete(category);
     }
 
     @Override
-    @Transactional
+    public GalleryImage addImage(Long categoryId, InputStream inputStream) throws ServiceException {
+        Category category = getById(categoryId);
+        GalleryImageDto galleryImageDto = new GalleryImageDto();
+        galleryImageDto.setGalleryImageType(GalleryImageType.MAIN);
+        galleryImageDto.setImageType(ImageType.JPEG);
+        galleryImageDto.setFileName("category");
+        if (category.getGallery() == null) {
+            category.setGallery(new Gallery());
+            category = categoryRepository.save(category);
+        }
+        return galleryImageService.addImage(category.getGallery().getId(), galleryImageDto, inputStream);
+    }
+
+    @Override
     public Category getByIdAndLanguage(Long id, Language language) {
         assertCategoryId(id);
-        Category category = categoryRepository.findOne(id);
+        notNull(language);
+        final Category category = getCategoryOrNullByIdAndLanguage(id, language);
         if (category == null) {
             LOGGER.error("category with id -{} not found", id);
             throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Category not found");
         }
-        Hibernate.initialize(category.getMenu());
-        Hibernate.initialize(category.getTags());
-        Hibernate.initialize(category.getProducts());
-        Hibernate.initialize(category.getNameTranslationByLanguage(language));
         return category;
+    }
+
+    @Override
+    public Category getCategoryOrNullByIdAndLanguage(Long id, Language language) {
+        assertCategoryId(id);
+        notNull(language);
+        return categoryRepository.findByIdAndTranslations_language(id, language);
     }
 
     @Override
@@ -117,10 +152,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private static void assertCategoryId(Long id) {
-        Assert.notNull(id, "category id must not be null");
+        notNull(id, "category id must not be null");
     }
 
     private static void assertCategoryDto(CategoryDto categoryDto) {
-        Assert.notNull(categoryDto, "category dto must not be null");
+        notNull(categoryDto, "category dto must not be null");
     }
+
 }

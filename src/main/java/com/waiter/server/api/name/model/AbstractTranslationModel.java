@@ -6,20 +6,20 @@ import com.waiter.server.services.language.Language;
 /**
  * Created by hovsep on 3/6/16.
  */
-public abstract class AbstractNameTranslationModel {
+public abstract class AbstractTranslationModel {
 
-    @JsonProperty(value = "name")
-    private String name;
+    @JsonProperty(value = "text")
+    private String text;
 
     @JsonProperty(value = "language")
     private Language language;
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Language getLanguage() {

@@ -17,7 +17,9 @@ public interface MenuService {
 
     Menu create(String menuName, Language language, Currency currency, Long companyId);
 
-    Menu update(Long menuId, String menuName, Currency currency);
+    Menu update(Long menuId, String name, Language mainLanguage, Currency currency);
+
+    Menu addLanguage(Long menuId, Language language);
 
     Menu update(Menu menu);
 

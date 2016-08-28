@@ -38,6 +38,17 @@ public class MenuServiceImpl implements MenuService {
     private CompanyService companyService;
 
     @Override
+    public Menu getById(Long id) {
+        notNull(id, "id must not be null");
+        Menu menu = menuRepository.findOne(id);
+        if (menu == null) {
+            LOGGER.debug("Product with id -{} not found", id);
+            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Product not found");
+        }
+        return menu;
+    }
+
+    @Override
     @Transactional
     public Menu create(String menuName, Language language, Currency currency, Long companyId) {
         assertName(menuName);
@@ -55,33 +66,38 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Menu getById(Long id) {
-        notNull(id, "id must not be null");
-        Menu menu = menuRepository.findOne(id);
-        if (menu == null) {
-            LOGGER.debug("Product with id -{} not found", id);
-            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Product not found");
+    @Transactional
+    public Menu update(Long menuId, String name, Language mainLanguage, Currency currency) {
+        assertMenuId(menuId);
+        final Menu menu = getById(menuId);
+        if (mainLanguage != null) {
+            menu.setMainLanguage(mainLanguage);
+            menu.getLanguages().add(mainLanguage);
         }
-        return menu;
+        if (currency != null) {
+            menu.setCurrency(currency);
+        }
+        if (name != null) {
+            menu.setName(name);
+        }
+        menu.setUpdated(new Date());
+        return menuRepository.save(menu);
     }
+
+    @Override
+    public Menu addLanguage(Long menuId, Language language) {
+        notNull(menuId);
+        notNull(language);
+        final Menu menu = getById(menuId);
+        menu.getLanguages().add(language);
+        return menuRepository.save(menu);
+    }
+
 
     @Override
     public List<Menu> getMenusByCompanyId(Long companyId) {
         notNull(companyId, "companyId must not be null");
         return menuRepository.findByCompanyId(companyId);
-    }
-
-
-    @Override
-    @Transactional
-    public Menu update(Long menuId, String menuName, Currency currency) {
-        assertMenuId(menuId);
-        assertName(menuName);
-        Menu menu = getById(menuId);
-        menu.setCurrency(currency);
-        menu.setUpdated(new Date());
-        menu.setName(menuName);
-        return menuRepository.save(menu);
     }
 
     @Override

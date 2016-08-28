@@ -6,20 +6,20 @@ import com.waiter.server.services.translation.model.Translation;
 /**
  * Created by hovsep on 3/5/16.
  */
-public class NameTranslationModel extends AbstractNameTranslationModel {
+public class TranslationModel extends AbstractTranslationModel {
 
 
-    public static NameTranslationModel convert(Translation translation) {
-        NameTranslationModel nameTranslationModel = new NameTranslationModel();
-        nameTranslationModel.setName(translation.getText());
+    public static TranslationModel convert(Translation translation) {
+        TranslationModel nameTranslationModel = new TranslationModel();
+        nameTranslationModel.setText(translation.getText());
         nameTranslationModel.setLanguage(translation.getLanguage());
         return nameTranslationModel;
     }
 
-    public static TranslationDto convert(NameTranslationModel nameTranslationModel) {
+    public static TranslationDto convert(TranslationModel nameTranslationModel) {
         TranslationDto translationDto = new TranslationDto();
         translationDto.setLanguage(nameTranslationModel.getLanguage());
-        translationDto.setText(nameTranslationModel.getName());
+        translationDto.setText(nameTranslationModel.getText());
         return translationDto;
     }
 }

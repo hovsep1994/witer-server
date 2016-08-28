@@ -54,7 +54,7 @@ public class MenuController extends AuthenticationController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateMenu(@PathVariable("id") Long id, @RequestBody MenuRequest request) {
-        final Menu menu = menuService.update(id, request.getName(), request.getCurrency());
+        final Menu menu = menuService.update(id, request.getName(), request.getMainLanguage(), request.getCurrency());
         if (request.getAttachedVenues() != null) {
             venueService.attacheMenuToVenues(request.getAttachedVenues(), menu.getId());
         }

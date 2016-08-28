@@ -70,25 +70,20 @@ public class ProductServiceImpl implements ProductService {
     private EvaluationService evaluationService;
 
     @Override
-    public Product create(Long categoryId, ProductDto productDto, TranslationDto nameDto,
-                          TranslationDto descriptionDto) {
+    public Product create(Long categoryId, ProductDto productDto, Long nameId, Long descriptionId) {
         assertCategoryId(categoryId);
         notNull(productDto);
-        notNull(nameDto);
+        notNull(nameId);
         final Category category = categoryService.getById(categoryId);
-        checkCategoryContainsLanguage(category, nameDto);
-        checkCategoryContainsLanguage(category, descriptionDto);
         final Product product = new Product();
         productDto.updateProperties(product);
         product.setCategory(category);
         product.setGallery(new Gallery());
         product.setEvaluation(new Evaluation());
-        final Translation name = new Translation();
-        nameDto.updateProperties(name);
+        final Translation name = translationService.getById(nameId);
         product.getNameSet().add(name);
-        if (descriptionDto != null) {
-            final Translation description = new Translation();
-            descriptionDto.updateProperties(description);
+        if (descriptionId != null) {
+            final Translation description = translationService.getById(descriptionId);
             product.getDescriptionSet().add(description);
         }
         return productRepository.save(product);
@@ -96,23 +91,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product update(Long productId, ProductDto productDto, TranslationDto nameDto,
-                          TranslationDto descriptionDto) {
+    public Product update(Long productId, ProductDto productDto, Long nameId, Long descriptionId) {
         assertProductId(productId);
-        notNull(productDto);
         final Product product = productRepository.findOne(productId);
-        checkCategoryContainsLanguage(product.getCategory(), nameDto);
-        checkCategoryContainsLanguage(product.getCategory(), descriptionDto);
+        if (productDto != null) {
+            productDto.updateProperties(product);
+        }
+        if (nameId != null) {
+            Translation name = translationService.getById(nameId);
+            product.getNameSet().add(name);
+        }
+        if (descriptionId != null) {
+            Translation description = translationService.getById(descriptionId);
+            product.getDescriptionSet().add(description);
+        }
         product.setUpdated(new Date());
-        productDto.updateProperties(product);
-        if (nameDto != null) {
-            final Translation name = product.getNameTranslationByLanguage(nameDto.getLanguage());
-            nameDto.updateProperties(name);
-        }
-        if (descriptionDto != null) {
-            final Translation description = product.getNameTranslationByLanguage(descriptionDto.getLanguage());
-            descriptionDto.updateProperties(description);
-        }
         return productRepository.save(product);
     }
 
@@ -137,22 +130,6 @@ public class ProductServiceImpl implements ProductService {
         if (product == null) {
             LOGGER.error("Product with id -{} not found", id);
             throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Product not found");
-        }
-        return product;
-    }
-
-    @Override
-    @Transactional
-    public Product getByIdAndLanguage(Long id, Language language) {
-        Product product = getById(id);
-        Translation translation = product.getNameTranslationByLanguage(language);
-        if (translation == null) {
-            Translation translation1 = product.getNameSet().stream().findAny().get();
-            TextTranslationDto textTranslationDto = new TextTranslationDto();
-            textTranslationDto.setText(translation1.getText());
-            textTranslationDto.setLanguageFrom(translation1.getLanguage());
-            textTranslationDto.setLanguageTo(translation1.getLanguage());
-            translatorService.translate(textTranslationDto);
         }
         return product;
     }
@@ -225,16 +202,6 @@ public class ProductServiceImpl implements ProductService {
 
     private void assertProductId(Long id) {
         notNull(id, "product id must not be null");
-    }
-
-    private void checkCategoryContainsLanguage(Category category, TranslationDto translationDto) {
-        if (translationDto == null) {
-            return;
-        }
-        if (!category.getLanguages().contains(translationDto.getLanguage())) {
-            LOGGER.error("No category -{} translation with language -{}", category, translationDto.getLanguage());
-            throw new ServiceRuntimeException(ErrorCode.NO_LANGUAGE, "No category translation with language");
-        }
     }
 
 }

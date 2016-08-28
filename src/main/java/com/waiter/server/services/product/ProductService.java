@@ -20,11 +20,9 @@ public interface ProductService {
 
     Product getById(Long id);
 
-    Product create(Long categoryId, ProductDto productDto, TranslationDto translationDto, TranslationDto descriptionDto);
+    Product create(Long categoryId, ProductDto productDto, Long nameId, Long descriptionId);
 
-    Product update(Long productId, ProductDto productDto, TranslationDto translationDto, TranslationDto descriptionDto);
-
-    Product getByIdAndLanguage(Long id, Language language);
+    Product update(Long productId, ProductDto productDto, Long nameId, Long descriptionId);
 
     List<Product> getByCategoryId(Long categoryId);
 

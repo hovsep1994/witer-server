@@ -27,7 +27,7 @@ public class User extends AbstractEntityModel {
     @Column(name = "hash")
     private String hash;
 
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 

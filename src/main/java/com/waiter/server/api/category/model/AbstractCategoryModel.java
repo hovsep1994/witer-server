@@ -2,8 +2,8 @@ package com.waiter.server.api.category.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.services.language.Language;
 
 import java.util.Set;
 
@@ -12,20 +12,15 @@ import java.util.Set;
  */
 public abstract class AbstractCategoryModel {
 
-    @JsonProperty(value = "nameTranslation", required = false)
-    private NameTranslationModel nameTranslation;
-
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "tags", required = false)
     private Set<TagModel> tagModels;
 
-    public NameTranslationModel getNameTranslation() {
-        return nameTranslation;
-    }
+    @JsonProperty(value = "name")
+    private String name;
 
-    public void setNameTranslation(NameTranslationModel nameTranslation) {
-        this.nameTranslation = nameTranslation;
-    }
+    @JsonProperty(value = "language", required = true)
+    private Language language;
 
     public Set<TagModel> getTagModels() {
         return tagModels;
@@ -33,5 +28,21 @@ public abstract class AbstractCategoryModel {
 
     public void setTagModels(Set<TagModel> tagModels) {
         this.tagModels = tagModels;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }

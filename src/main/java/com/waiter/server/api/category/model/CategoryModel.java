@@ -2,8 +2,6 @@ package com.waiter.server.api.category.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.waiter.server.api.common.model.AbstractIdApiModel;
-import com.waiter.server.api.name.model.NameTranslationModel;
 import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.category.model.Category;
@@ -64,12 +62,13 @@ public class CategoryModel extends AbstractCategoryModel {
     }
 
     public static CategoryModel convert(Category category, Language language) {
-        CategoryModel categoryModel = new CategoryModel();
+        final CategoryModel categoryModel = new CategoryModel();
         categoryModel.setId(category.getId());
         categoryModel.setMenuId(category.getMenu().getId());
         categoryModel.setTags(TagModel.convertToModel(category.getTags()));
         categoryModel.setProductModels(null);
-        categoryModel.setNameTranslation(NameTranslationModel.convert(category.getNameTranslationByLanguage(language)));
+        categoryModel.setName(category.getNameTranslationByLanguage(language).getText());
+        categoryModel.setLanguage(language);
         return categoryModel;
     }
 }

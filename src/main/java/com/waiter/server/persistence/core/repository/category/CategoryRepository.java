@@ -1,6 +1,7 @@
 package com.waiter.server.persistence.core.repository.category;
 
 import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.language.Language;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+    Category findByIdAndTranslations_language(Long id, Language language);
 }

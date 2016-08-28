@@ -10,7 +10,11 @@ import java.util.List;
  */
 public interface TranslationService {
 
+    Translation getById(Long id);
+
     Translation create(TranslationDto translationDto);
+
+    Translation update(Long id, TranslationDto translationDto);
 
     List<Translation> create(List<Translation> translations);
 }
