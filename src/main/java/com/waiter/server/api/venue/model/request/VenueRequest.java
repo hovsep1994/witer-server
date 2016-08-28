@@ -3,7 +3,6 @@ package com.waiter.server.api.venue.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.common.model.AbstractApiModel;
 import com.waiter.server.api.location.model.LocationModel;
-import com.waiter.server.services.venue.dto.VenueDto;
 
 /**
  * User: hovsep
@@ -18,7 +17,7 @@ public class VenueRequest extends AbstractApiModel {
     @JsonProperty(value = "location")
     private LocationModel location;
 
-    @JsonProperty(value = "menuId", required = false)
+    @JsonProperty(value = "menuId")
     private Long menuId;
 
     public String getName() {
@@ -45,10 +44,4 @@ public class VenueRequest extends AbstractApiModel {
         this.menuId = menuId;
     }
 
-    public VenueDto convertToVenueDto() {
-        VenueDto venueDto = new VenueDto();
-        venueDto.setName(getName());
-        venueDto.setMenuId(getMenuId());
-        return venueDto;
-    }
 }

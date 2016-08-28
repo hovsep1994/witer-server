@@ -99,7 +99,11 @@ public class MenuServiceImpl implements MenuService {
     @Transactional
     public void delete(Long menuId) {
         assertMenuId(menuId);
-        Menu menu = getById(menuId);
+        final Menu menu = getById(menuId);
+        if (menu.getVenues() == null || menu.getVenues().isEmpty()) {
+            LOGGER.error("Menu -{} can not be deleted", menu.getId());
+            throw new ServiceRuntimeException(ErrorCode.CAN_NOT_BE_DELETED, "Menu is attached to venue");
+        }
         menuRepository.delete(menu);
     }
 

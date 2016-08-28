@@ -23,6 +23,7 @@ public enum ErrorCode {
     FAILD_TRANSLATION,
     NO_LANGUAGE,
     NOT_MATCH,
-    UNAUTHORIZED
+    UNAUTHORIZED,
+    CAN_NOT_BE_DELETED
 
 }

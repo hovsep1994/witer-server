@@ -9,6 +9,7 @@ import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.user.model.User;
+import com.waiter.server.services.venue.VenueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class MenuController extends AuthenticationController {
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+    private VenueService venueService;
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity findOne(@PathVariable Long id, @RequestParam Language language) {
         final Menu menu = menuService.getById(id);
@@ -51,12 +55,17 @@ public class MenuController extends AuthenticationController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateMenu(@PathVariable("id") Long id, @RequestBody MenuRequest request) {
         final Menu menu = menuService.update(id, request.getName(), request.getCurrency());
+        if (request.getAttachedVenues() != null) {
+            venueService.attacheMenuToVenues(request.getAttachedVenues(), menu.getId());
+        }
         final MenuModel menuModel = MenuModel.convert(menu);
         return MenuKitResponseEntity.success(menuModel);
     }
 
     @RequestMapping(value = "/{menuId}", method = RequestMethod.DELETE)
     public ResponseEntity deleteMenu(@PathVariable("menuId") Long menuId, @ModelAttribute User user) {
+        final Menu menu = menuService.getById(menuId);
+        checkUserHasAccess(user, menu.getCompany());
         menuService.delete(menuId);
         return MenuKitResponseEntity.success();
     }

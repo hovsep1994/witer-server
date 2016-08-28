@@ -1,5 +1,6 @@
 package com.waiter.server.services.location;
 
+import com.waiter.server.services.location.dto.LocationDto;
 import com.waiter.server.services.location.model.City;
 import com.waiter.server.services.location.model.Country;
 import com.waiter.server.services.location.model.Location;
@@ -11,11 +12,11 @@ import java.util.List;
  */
 public interface LocationService {
 
-    Location getLocationById(Long id);
+    Location getById(Long id);
 
-    Location createLocation(Location location);
+    Location create(LocationDto locationDto);
 
-    Location updateLocation(Location location);
+    Location update(Long id, LocationDto locationDto);
 
     List<Country> getAllCountries();
 

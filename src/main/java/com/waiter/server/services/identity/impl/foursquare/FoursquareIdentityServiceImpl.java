@@ -5,13 +5,13 @@ import com.waiter.server.externalclients.foursquare.model.FoursquareModel;
 import com.waiter.server.persistence.core.repository.identity.foursquare.FoursquareIdentityRepository;
 import com.waiter.server.services.identity.foursquare.FoursquareIdentityService;
 import com.waiter.server.services.identity.model.foursquare.FoursquareIdentity;
+import com.waiter.server.services.location.LocationService;
+import com.waiter.server.services.location.dto.LocationDto;
 import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.venue.VenueService;
-import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.model.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -27,20 +27,22 @@ public class FoursquareIdentityServiceImpl implements FoursquareIdentityService 
     @Autowired
     private VenueService venueService;
 
+    @Autowired
+    private LocationService locationService;
+
     @Override
     public FoursquareIdentity createVenueFoursquareIdentity(FoursquareModel foursquareModel, Long companyId) {
         notNull(foursquareModel);
         notNull(foursquareModel.getJson());
         FoursquareLocationModel locationModel = foursquareModel.getVenue().getLocation();
-        Location location = new Location();
-        location.setCity(locationModel.getCity());
-        location.setCountry(locationModel.getCountry());
-        location.setStreet(locationModel.getAddress());
-        location.setLatitude(locationModel.getLat());
-        location.setLongitude(locationModel.getLng());
-        VenueDto venueDto = new VenueDto();
-        venueDto.setName(foursquareModel.getVenue().getName());
-        Venue venue = venueService.create(venueDto, location, companyId);
+        LocationDto dto = new LocationDto();
+        dto.setCity(locationModel.getCity());
+        dto.setCountry(locationModel.getCountry());
+        dto.setStreet(locationModel.getAddress());
+        dto.setLatitude(locationModel.getLat());
+        dto.setLongitude(locationModel.getLng());
+        Location location = locationService.create(dto);
+        Venue venue = venueService.create(foursquareModel.getVenue().getName(), null, location.getId(), companyId);
         FoursquareIdentity foursquareIdentity = new FoursquareIdentity();
         foursquareIdentity.setReferralId(foursquareModel.getReferralId());
         foursquareIdentity.setName(foursquareModel.getVenue().getName());

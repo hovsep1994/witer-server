@@ -1,6 +1,7 @@
 package com.waiter.server.api.location.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.waiter.server.services.location.dto.LocationDto;
 import com.waiter.server.services.location.model.Location;
 
 /**
@@ -26,10 +27,10 @@ public class LocationModel {
     private String zip;
 
     @JsonProperty(value = "latitude")
-    private double latitude;
+    private Double latitude;
 
     @JsonProperty(value = "longitude")
-    private double longitude;
+    private Double longitude;
 
     public String getCountry() {
         return country;
@@ -71,19 +72,19 @@ public class LocationModel {
         this.zip = zip;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -91,7 +92,7 @@ public class LocationModel {
         LocationModel locationModel = new LocationModel();
         locationModel.setCity(location.getCity());
         locationModel.setCountry(location.getCountry());
-        locationModel.setCountryCode(location.getContryCode());
+        locationModel.setCountryCode(location.getCountryCode());
         locationModel.setLatitude(location.getLatitude());
         locationModel.setLongitude(location.getLongitude());
         locationModel.setStreet(location.getStreet());
@@ -103,11 +104,23 @@ public class LocationModel {
         Location location = new Location();
         location.setCity(locationModel.getCity());
         location.setCountry(locationModel.getCountry());
-        location.setContryCode(locationModel.getCountryCode());
+        location.setCountryCode(locationModel.getCountryCode());
         location.setLatitude(locationModel.getLatitude());
         location.setLongitude(locationModel.getLongitude());
         location.setStreet(locationModel.getStreet());
         location.setZip(locationModel.getZip());
         return location;
+    }
+
+    public static LocationDto convertToDto(LocationModel locationModel) {
+        LocationDto dto = new LocationDto();
+        dto.setCity(locationModel.getCity());
+        dto.setCountry(locationModel.getCountry());
+        dto.setCountryCode(locationModel.getCountryCode());
+        dto.setLatitude(locationModel.getLatitude());
+        dto.setLongitude(locationModel.getLongitude());
+        dto.setStreet(locationModel.getStreet());
+        dto.setZip(locationModel.getZip());
+        return dto;
     }
 }
