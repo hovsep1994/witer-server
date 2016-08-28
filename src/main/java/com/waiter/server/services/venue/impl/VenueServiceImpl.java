@@ -4,21 +4,18 @@ import com.waiter.server.persistence.core.repository.venue.VenueRepository;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
-import com.waiter.server.services.company.model.Company;
+import com.waiter.server.services.company.CompanyService;
 import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.gallery.GalleryImageService;
-import com.waiter.server.services.gallery.GalleryService;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
 import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.gallery.model.ImageType;
 import com.waiter.server.services.location.LocationService;
-import com.waiter.server.services.location.model.Location;
-import com.waiter.server.services.product.model.Product;
+import com.waiter.server.services.menu.MenuService;
+import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.venue.VenueService;
-import com.waiter.server.services.venue.dto.VenueDto;
-import com.waiter.server.services.venue.event.VenueLocationUpdateEvent;
 import com.waiter.server.services.venue.event.VenueUpdateEvent;
 import com.waiter.server.services.venue.model.Venue;
 import org.slf4j.Logger;
@@ -28,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.util.List;
+import java.util.Set;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -51,46 +50,14 @@ public class VenueServiceImpl implements VenueService {
     @Autowired
     private GalleryImageService galleryImageService;
 
-    @Override
-    @Transactional
-    public Venue create(VenueDto venueDto, Location location, Long companyId) {
-        LOGGER.debug("Creating venue by dto -{}", venueDto);
-        assertVenueDto(venueDto);
-        final Venue venue = new Venue();
-        venue.setCompany(new Company(companyId));
-        venueDto.updateProperties(venue);
-        venue.setLocation(locationService.createLocation(location));
-        venue.setGallery(new Gallery());
-        final Venue createdVenue = venueRepository.save(venue);
-        LOGGER.debug("Venue -{} successfully stored", venue);
-        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue.getId()));
-        return createdVenue;
-    }
+    @Autowired
+    private MenuService menuService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @Override
-    @Transactional
-    public Venue updateVenue(Long id, VenueDto venueDto, Location location) {
-        assertVenueId(id);
-        assertVenueDto(venueDto);
-        final Venue venue = venueRepository.findOne(id);
-        if (venue == null) {
-            throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "venue with id not found");
-        }
-        if (location != null) {
-            if (venue.getLocation() != location) {
-                location.setId(venue.getLocation().getId());
-                locationService.updateLocation(location);
-//                applicationEventBus.publishAsynchronousEvent(new VenueLocationUpdateEvent(id));
-            }
-        }
-        venueDto.updateProperties(venue);
-        final Venue updatedVenue = venueRepository.save(venue);
-//        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(updatedVenue.getId()));
-        return updatedVenue;
-    }
-
-    @Override
-    public Venue getVenueById(Long id) {
+    public Venue getById(Long id) {
         assertVenueId(id);
         Venue venue = venueRepository.findOne(id);
         if (venue == null) {
@@ -101,8 +68,45 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
+    @Transactional
+    public Venue create(String name, Long menuId, Long locationId, Long companyId) {
+        notNull(name);
+        notNull(companyId);
+        notNull(locationId);
+        final Venue venue = new Venue();
+        venue.setName(name);
+        if (menuId != null) {
+            venue.setMenu(menuService.getById(menuId));
+        }
+        venue.setLocation(locationService.getById(locationId));
+        venue.setCompany(companyService.get(companyId));
+        venue.setGallery(new Gallery());
+        final Venue createdVenue = venueRepository.save(venue);
+        LOGGER.debug("Venue -{} successfully stored", venue);
+        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue.getId()));
+        return createdVenue;
+    }
+
+    @Override
+    @Transactional
+    public Venue update(Long id, String name, Long menuId) {
+        assertVenueId(id);
+        final Venue venue = getById(id);
+        if (menuId != null) {
+            Menu menu = menuService.getById(menuId);
+            venue.setMenu(menu);
+        }
+        if (name != null) {
+            venue.setName(name);
+        }
+        final Venue updatedVenue = venueRepository.save(venue);
+        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(updatedVenue.getId()));
+        return updatedVenue;
+    }
+
+    @Override
     public GalleryImage addImage(Long venueId, InputStream inputStream) throws ServiceException {
-        Venue venue = getVenueById(venueId);
+        Venue venue = getById(venueId);
         final GalleryImageDto galleryImageDto = new GalleryImageDto();
         galleryImageDto.setGalleryImageType(GalleryImageType.MAIN);
         galleryImageDto.setImageType(ImageType.JPEG);
@@ -115,17 +119,34 @@ public class VenueServiceImpl implements VenueService {
         return galleryImage;
     }
 
+    public List<Venue> attacheMenuToVenues(Set<Long> venueIds, Long menuId) {
+        final Menu menu = menuService.getById(menuId);
+        final List<Venue> venues = venueRepository.findAll(venueIds);
+        venues.forEach(venue -> {
+            if (venue.getMenu() != null) {
+                LOGGER.error("Menu already attached to venue -{}", venue.getId());
+                throw new ServiceRuntimeException(ErrorCode.BAD_REQUEST, "Menu already attached to venue");
+            }
+            venue.setMenu(menu);
+        });
+        return venueRepository.save(venues);
+    }
+
+    public Venue updateAttachmentOfMenu(Long venueId, Long menuId) {
+        final Venue venue = getById(venueId);
+        final Menu menu = menuService.getById(menuId);
+        venue.setMenu(menu);
+        return venueRepository.save(venue);
+    }
+
     @Override
     public void delete(Long venueId) {
-        venueRepository.delete(venueId);
+        final Venue venue = getById(venueId);
+        venueRepository.delete(venue);
     }
 
     private void assertVenueId(Long id) {
         notNull(id, "id must not be null");
     }
 
-    private void assertVenueDto(VenueDto venueDto) {
-        notNull(venueDto, "venue dto must not bu null");
-        notNull(venueDto.getName(), "name must not bu null");
-    }
 }

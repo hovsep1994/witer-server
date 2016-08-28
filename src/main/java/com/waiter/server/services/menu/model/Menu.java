@@ -5,6 +5,7 @@ import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
+import com.waiter.server.services.venue.model.Venue;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -27,6 +28,9 @@ public class Menu extends AbstractEntityModel {
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
+    @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
+    private List<Venue> venues;
+
     @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
     private List<Category> categories;
 
@@ -39,7 +43,7 @@ public class Menu extends AbstractEntityModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "main_language")
     private Language mainLanguage;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name = "currency")
     private Currency currency;
@@ -92,6 +96,14 @@ public class Menu extends AbstractEntityModel {
         this.mainLanguage = mainLanguage;
     }
 
+    public List<Venue> getVenues() {
+        return venues;
+    }
+
+    public void setVenues(List<Venue> venues) {
+        this.venues = venues;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,6 +116,7 @@ public class Menu extends AbstractEntityModel {
                 .appendSuper(super.equals(o))
                 .append(name, menu.name)
                 .append(company, menu.company)
+                .append(venues, menu.venues)
                 .append(categories, menu.categories)
                 .append(languages, menu.languages)
                 .append(mainLanguage, menu.mainLanguage)
@@ -117,6 +130,7 @@ public class Menu extends AbstractEntityModel {
                 .appendSuper(super.hashCode())
                 .append(name)
                 .append(company)
+                .append(venues)
                 .append(categories)
                 .append(languages)
                 .append(mainLanguage)
@@ -129,6 +143,7 @@ public class Menu extends AbstractEntityModel {
         return new ToStringBuilder(this)
                 .append("name", name)
                 .append("company", company)
+                .append("venues", venues)
                 .append("categories", categories)
                 .append("languages", languages)
                 .append("mainLanguage", mainLanguage)

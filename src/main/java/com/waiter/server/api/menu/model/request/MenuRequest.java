@@ -3,6 +3,8 @@ package com.waiter.server.api.menu.model.request;
 import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 
+import java.util.Set;
+
 /**
  * User: hovsep
  * Date: 2/20/16
@@ -15,6 +17,8 @@ public class MenuRequest {
     private Currency currency;
 
     private Language mainLanguage;
+
+    private Set<Long> attachedVenues;
 
     public String getName() {
         return name;
@@ -38,5 +42,13 @@ public class MenuRequest {
 
     public void setMainLanguage(Language mainLanguage) {
         this.mainLanguage = mainLanguage;
+    }
+
+    public Set<Long> getAttachedVenues() {
+        return attachedVenues;
+    }
+
+    public void setAttachedVenues(Set<Long> attachedVenues) {
+        this.attachedVenues = attachedVenues;
     }
 }

@@ -7,6 +7,7 @@ import com.waiter.server.services.common.exception.Assert;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.location.LocationService;
+import com.waiter.server.services.location.dto.LocationDto;
 import com.waiter.server.services.location.model.City;
 import com.waiter.server.services.location.model.Country;
 import com.waiter.server.services.location.model.Location;
@@ -39,7 +40,7 @@ public class LocationServiceImpl implements LocationService {
     private LocationRepository locationRepository;
 
     @Override
-    public Location getLocationById(Long id) {
+    public Location getById(Long id) {
         notNull(id);
         Location location = locationRepository.findOne(id);
         if (location == null) {
@@ -50,16 +51,20 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Location createLocation(Location location) {
-        notNull(location);
-        notNull(location.getCity());
+    public Location create(LocationDto locationDto) {
+        notNull(locationDto);
+        notNull(locationDto.getCity());
+        Location location = new Location();
+        locationDto.updateProperties(location);
         return locationRepository.save(location);
     }
 
     @Override
-    public Location updateLocation(Location location) {
-        notNull(location);
-        notNull(location.getId());
+    public Location update(Long id, LocationDto locationDto) {
+        notNull(id);
+        notNull(locationDto);
+        final Location location = getById(id);
+        locationDto.updateProperties(location);
         return locationRepository.save(location);
     }
 

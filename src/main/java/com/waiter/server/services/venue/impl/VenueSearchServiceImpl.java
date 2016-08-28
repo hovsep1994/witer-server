@@ -4,7 +4,6 @@ import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.venue.VenueSearchService;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
-import com.waiter.server.services.venue.event.VenueLocationUpdateEvent;
 import com.waiter.server.services.venue.event.VenueUpdateEvent;
 import com.waiter.server.services.venue.event.VenueUpdateEventListener;
 import com.waiter.server.services.venue.model.Venue;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -48,7 +46,7 @@ public class VenueSearchServiceImpl implements VenueSearchService, InitializingB
     @Override
     public void addOrUpdate(Long id) {
         notNull(id);
-        final Venue venue = venueService.getVenueById(id);
+        final Venue venue = venueService.getById(id);
         final VenueSolrDocument venueSolrDocument = new VenueSolrDocument();
         venueSolrDocument.setId(venue.getId().toString());
         venueSolrDocument.setName(venue.getName());
@@ -66,7 +64,7 @@ public class VenueSearchServiceImpl implements VenueSearchService, InitializingB
 //        final Point point = new Point(parameters.getLatitude(), parameters.getLongitude());
 //        final List<VenueSolrDocument> venueSolrDocuments = venueSolrRepository.findBySearchParameters(parameters.getText(), point);
 //        final List<Venue> venues = venueSolrDocuments.stream().map(venueSolrDocument -> venueService
-//                .getVenueById(Long.valueOf(venueSolrDocument.getId())))
+//                .getById(Long.valueOf(venueSolrDocument.getId())))
 //                .collect(Collectors.toList());
 //        LOGGER.debug("Successfully find venues -{} for search params -{}", venues, parameters);
         return new ArrayList<>();
