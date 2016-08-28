@@ -97,7 +97,7 @@ public class ProductModel {
         productModel.setName(product.getNameTranslationByLanguage(language).getText());
         productModel.setPrice(product.getPrice());
         productModel.setTagModels(TagModel.convertToModel(product.getTags()));
-        productModel.setImage(ImageUrlGenerator.getFullMainUrl(EntityType.PRODUCT, product.getGallery().getGalleryImages()));
+        productModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery().getGalleryImages()));
         return productModel;
     }
 

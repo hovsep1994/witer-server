@@ -106,7 +106,7 @@ public class VenueController extends AuthenticationController {
             LOGGER.error(e.getMessage());
             throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
-        return MenuKitResponseEntity.success(ImageUrlGenerator.getFullUrl(EntityType.VENUE, galleryImage));
+        return MenuKitResponseEntity.success(ImageUrlGenerator.getUrl(EntityType.VENUE, galleryImage));
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)

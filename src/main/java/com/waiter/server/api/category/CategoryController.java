@@ -102,7 +102,7 @@ public class CategoryController extends AuthenticationController {
             LOGGER.error(e.getMessage());
             throw new ServiceException(ErrorCode.IO_EXCEPTION, e.getMessage());
         }
-        return MenuKitResponseEntity.success(ImageUrlGenerator.getFullUrl(EntityType.PRODUCT, galleryImage));
+        return MenuKitResponseEntity.success(ImageUrlGenerator.getUrl(EntityType.PRODUCT, galleryImage));
     }
 
     @RequestMapping(value = "{categoryId}/translate", method = RequestMethod.PUT)

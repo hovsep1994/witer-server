@@ -1,12 +1,12 @@
 package com.waiter.server.api.menu.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.waiter.server.services.category.model.Category;
-import com.waiter.server.services.common.model.AbstractEntityModel;
+import com.waiter.server.api.utility.image.EntityType;
+import com.waiter.server.api.utility.image.ImageUrlGenerator;
+import com.waiter.server.api.venue.model.response.VenueMenuModel;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.model.Menu;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,7 +23,7 @@ public class MenuModel {
 
     private Language mainLanguage;
 
-    private Set<Long> attachedVenues;
+    private Set<VenueMenuModel> venues;
 
     private Set<Language> languages;
 
@@ -51,12 +51,12 @@ public class MenuModel {
         this.mainLanguage = mainLanguage;
     }
 
-    public Set<Long> getAttachedVenues() {
-        return attachedVenues;
+    public Set<VenueMenuModel> getVenues() {
+        return venues;
     }
 
-    public void setAttachedVenues(Set<Long> attachedVenues) {
-        this.attachedVenues = attachedVenues;
+    public void setVenues(Set<VenueMenuModel> venues) {
+        this.venues = venues;
     }
 
     public Set<Language> getLanguages() {
@@ -73,9 +73,7 @@ public class MenuModel {
         menuModel.setName(menu.getName());
         menuModel.setLanguages(menu.getLanguages());
         menuModel.setMainLanguage(menu.getMainLanguage());
-        menuModel.setAttachedVenues(menu.getVenues().stream()
-                .map(AbstractEntityModel::getId)
-                .collect(Collectors.toSet()));
+        menuModel.setVenues(VenueMenuModel.convert(menu.getVenues()));
         return menuModel;
     }
 }

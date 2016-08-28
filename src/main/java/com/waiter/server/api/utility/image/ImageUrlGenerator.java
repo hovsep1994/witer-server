@@ -20,18 +20,18 @@ public class ImageUrlGenerator {
         cdnBaseUrl = privateName;
     }
 
-    public static String getFullMainUrl(EntityType entityType, Set<GalleryImage> images) {
-        return getFullUrl(entityType, images, GalleryImageType.MAIN);
+    public static String getUrl(EntityType entityType, Set<GalleryImage> images) {
+        return getUrl(entityType, images, GalleryImageType.MAIN);
     }
 
-    public static String getFullUrl(EntityType entityType, Set<GalleryImage> images, GalleryImageType galleryImageType) {
+    public static String getUrl(EntityType entityType, Set<GalleryImage> images, GalleryImageType galleryImageType) {
         final GalleryImage galleryImage = images.stream()
                 .filter(image -> image.getGalleryImageType() == galleryImageType)
                 .findFirst().orElse(null);
-        return getFullUrl(entityType, galleryImage);
+        return getUrl(entityType, galleryImage);
     }
 
-    public static String getFullUrl(EntityType entityType, GalleryImage galleryImage) {
+    public static String getUrl(EntityType entityType, GalleryImage galleryImage) {
         final String imageUrl = galleryImage != null ? galleryImage.getUrl() : entityType.getDefaultImageUrl();
         return cdnBaseUrl + imageUrl;
     }
