@@ -33,7 +33,7 @@ public class BusinessController extends AuthenticationController {
         return "/web/business/admin";
     }
 
-    @RequestMapping(value = "/menu", method = RequestMethod.GET)
+    @RequestMapping(value = "/menu/*", method = RequestMethod.GET)
     public String menu(ModelMap model, @ModelAttribute User user) {
         model.addAttribute("user", user);
         LOGGER.info("Business controller - webiste2. ");

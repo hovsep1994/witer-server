@@ -6,9 +6,11 @@ import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.language.Language;
+import com.waiter.server.services.tag.model.Tag;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by hovsep on 3/5/16.
@@ -27,7 +29,7 @@ public class CategoryModel extends AbstractCategoryModel {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "tags")
-    private Set<TagModel> tags;
+    private Set<String> tags;
 
     public Long getId() {
         return id;
@@ -53,11 +55,11 @@ public class CategoryModel extends AbstractCategoryModel {
         this.menuId = menuId;
     }
 
-    public Set<TagModel> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<TagModel> tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
@@ -65,7 +67,7 @@ public class CategoryModel extends AbstractCategoryModel {
         final CategoryModel categoryModel = new CategoryModel();
         categoryModel.setId(category.getId());
         categoryModel.setMenuId(category.getMenu().getId());
-        categoryModel.setTags(TagModel.convertToModel(category.getTags()));
+        categoryModel.setTags(category.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
         categoryModel.setProductModels(null);
         categoryModel.setName(category.getNameTranslationByLanguage(language).getText());
         categoryModel.setLanguage(language);

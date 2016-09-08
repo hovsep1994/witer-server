@@ -121,11 +121,11 @@
                     <div class="item-list col-lg-3">
                         <ul class="nav nav-pills nav-stacked">
                             <li ng-repeat="menu in menus">
-                                <span data-toggle="pill" href="#menu{{menu.id}}">{{menu.name}}</span>
+                                <span data-toggle="pill" ng-click="selectMenu(menu)">{{menu.name}}</span>
                                 <a href="" data-toggle="modal" data-target="#deleteVenueModal">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
                                 </a>
-                                <a href="" data-toggle="modal" data-target="#editVenueModal">
+                                <a href="" data-toggle="modal" data-target="#editMenuModal">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">
                                 </a>
                             </li>
@@ -133,21 +133,14 @@
                     </div>
                     <div class="item-list col-lg-1">
                         <ul class="nav nav-pills nav-stacked">
-                            <li>
-                                <span data-toggle="pill" href="#venue1">HY</span>
+                            <li ng-repeat="language in activeMenu.languages" ng-click="selectLanguage(language)">
+                                <span>{{language}}</span>
                                 <a href="" data-toggle="modal" data-target="#deleteVenueModal">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
                                 </a>
                                 <a href="" data-toggle="modal" data-target="#editVenueModal">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">
                                 </a>
-                            </li>
-                            <li>
-                                <span data-toggle="pill" href="#venue2">EN</span>
-                                <a href=""><img
-                                        src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png"></a>
-                                <a href=""><img
-                                        src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png"></a>
                             </li>
                         </ul>
                     </div>
@@ -195,6 +188,7 @@
 <%@ include file="../footer.jsp" %>
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAW_hI04roTnEO08eq4tlKgNh4okOdMSTE"></script>
 <script src="${pageContext.request.contextPath}/scripts/services/map.srv.js"></script>
@@ -202,10 +196,13 @@
 <script src="${pageContext.request.contextPath}/scripts/services/user.srv.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/services/venue.srv.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/services/menu.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/category.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/product.srv.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/app.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/controllers/user.ctrl.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/controllers/venue.ctrl.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/controllers/menu.ctrl.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/controllers/menu-edit.ctrl.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
 integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 crossorigin="anonymous"></script>

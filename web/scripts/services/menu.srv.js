@@ -8,7 +8,8 @@ function MenuService($http, host) {
 
     this.create = create;
     this.update = update;
-    this.find = find;
+    this.findAll = findAll;
+    this.findById = findById;
 
     function create(menu, done) {
         if(!done) {
@@ -34,11 +35,19 @@ function MenuService($http, host) {
         });
     }
 
-    function find(done) {
+    function findAll(done) {
         if(!done) {
             done = function() { }
         }
         $http.get(menuUrl).then(function (response) {
+            if (response.data.status !== 'success') return done(response.data.errors);
+
+            done(null, response.data.response);
+        });
+    }
+
+    function findById(menuId, done) {
+        $http.get(menuUrl + menuId).then(function (response) {
             if (response.data.status !== 'success') return done(response.data.errors);
 
             done(null, response.data.response);

@@ -36,7 +36,7 @@ public class MenuController extends AuthenticationController {
     private VenueService venueService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity findOne(@PathVariable Long id, @RequestParam Language language) {
+    public ResponseEntity findOne(@PathVariable Long id, @RequestParam(required = false) Language language) {
         final Menu menu = menuService.getById(id);
         if (language == null) {
             language = menu.getMainLanguage();

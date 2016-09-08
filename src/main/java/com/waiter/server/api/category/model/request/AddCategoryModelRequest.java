@@ -23,7 +23,7 @@ public class AddCategoryModelRequest {
     private Language language;
 
     @JsonProperty(value = "tags")
-    private Set<TagModel> tagModels;
+    private Set<String> tags;
 
     public Long getMenuId() {
         return menuId;
@@ -49,11 +49,11 @@ public class AddCategoryModelRequest {
         this.language = language;
     }
 
-    public Set<TagModel> getTagModels() {
-        return tagModels;
+    public Set<String> getTags() {
+        return tags;
     }
 
-    public void setTagModels(Set<TagModel> tagModels) {
-        this.tagModels = tagModels;
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
     }
 }

@@ -18,6 +18,7 @@ import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
+import com.waiter.server.services.tag.model.Tag;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 /**
  * @author shahenpoghosyan
@@ -60,7 +62,7 @@ public class CategoryController extends AuthenticationController {
     public ResponseEntity addCategory(@RequestBody AddCategoryModelRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, menuService.getCompanyByMenuId(request.getMenuId()));
         final CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setTags(TagModel.convert(request.getTagModels()));
+        categoryDto.setTags(request.getTags().stream().map(Tag::new).collect(Collectors.toSet()));
         final TranslationDto translationDto = new TranslationDto(request.getName(), request.getLanguage());
         final Translation translation = translationService.create(translationDto);
         final Category category = categoryService.create(categoryDto, request.getMenuId(), translation.getId());
@@ -72,7 +74,7 @@ public class CategoryController extends AuthenticationController {
     public ResponseEntity updateCategory(@PathVariable Long categoryId, @RequestBody UpdateCategoryRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, categoryService.getCompanyById(categoryId));
         final CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setTags(TagModel.convert(request.getTagModels()));
+        categoryDto.setTags(request.getTags().stream().map(Tag::new).collect(Collectors.toSet()));
         Translation translation = null;
         if (request.getName() != null) {
             final Category category = categoryService.getCategoryOrNullByIdAndLanguage(categoryId, request.getLanguage());

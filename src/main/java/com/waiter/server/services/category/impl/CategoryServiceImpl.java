@@ -74,6 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
         final Translation translation = translationService.getById(translationId);
         final Menu menu = menuService.addLanguage(menuId, translation.getLanguage());
         final Category category = new Category();
+        category.setGallery(new Gallery());
         category.setMenu(menu);
         category.getNameSet().add(translation);
         categoryDto.updateProperties(category);

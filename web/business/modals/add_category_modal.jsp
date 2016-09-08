@@ -9,7 +9,7 @@
 <div id="addCategoryModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">Category Name</div>
+            <div class="modal-header">Category</div>
             <div class="modal-body">
                 <form>
                     <div class="image col-lg-4">
@@ -22,14 +22,14 @@
                                onchange="angular.element(this).scope().image_changed(this)"/>
                     </div>
                     <div class="inputs col-lg-8">
-                        <input class="form-control" placeholder="Name">
-                        <input class="form-control" placeholder="Tags"><br>
+                        <input class="form-control" placeholder="Name" value="{{category.name}}" ng-model="category.name">
+                        <input class="form-control" placeholder="Tags" value="{{category.tags}}" ng-model="category.tags"><br>
                     </div>
                 </form>
 
                 <div class="buttons">
                     <div class="col-lg-6">
-                        <input type="button" class="btn btn-info" value="Save">
+                        <input type="button" class="btn btn-info" value="Save" ng-click="addCategory(category)">
                     </div>
                     <div class="col-lg-6">
                         <input type="button" class="btn btn-link" value="Cancel" data-dismiss="modal">

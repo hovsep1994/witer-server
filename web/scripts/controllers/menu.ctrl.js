@@ -9,19 +9,41 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
 
     self.update = update;
     self.initEdit = initEdit;
+    self.selectMenu = selectMenu;
+    self.selectLanguage = selectLanguage;
     self.selectVenue = selectVenue;
 
     self.editMenu = {};
     self.menus = [];
 
     initVenues();
-    find();
+    initMenus();
 
-    function find() {
-        menuService.find(function(err, menus) {
+
+    function initMenus() {
+        findAll(function() {
+            self.activeMenu = self.menus[0];
+            self.activeLanguage = self.activeMenu.languages[0];
+            console.log("menus", self.menus);
+            //fetchByIndex(0);
+        });
+    }
+
+    function findAll(done) {
+        menuService.findAll(function(err, menus) {
             if(err) return console.log(err);
 
             self.menus = menus;
+            done();
+        });
+    }
+
+    function fetchByIndex(index, done) {
+        menuService.findById(self.menus[index].id, function(err, menu) {
+            if(err) return console.log(err);
+
+            self.menus[index] = menu;
+            done(menu)
         });
     }
 
@@ -79,6 +101,14 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
         venue.selected = !venue.selected;
     }
 
+    function selectMenu(menu) {
+        self.activeMenu = menu;
+    }
+
+    function selectLanguage(language) {
+        self.activeLanguage = language;
+    }
+
 
     function convertToServiceModel(menu) {
         var menuModel = {};
@@ -124,5 +154,12 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
             name: "EUR"
         }
     ];
+
+    function getLangugeName(code) {
+        var f = self.availableLanguages.filter(function(l) {
+           return l.code === code;
+        });
+        return f.length ? f[0].name : undefined;
+    }
 
 }]);

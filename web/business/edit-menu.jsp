@@ -23,7 +23,7 @@
 </head>
 <body ng-app="app">
 <%@ include file="business_header_loged_in.jsp" %>
-<div class="container-fluid admin-content edit-menu-content">
+<div ng-controller="editMenuCtrl" class="container-fluid admin-content edit-menu-content">
     <div class="edit-menu-title">
         Hi !! Let's create your menu.
     </div>
@@ -51,15 +51,16 @@
     </div>
     <div class="container" id="categories">
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#home">Drinks</a></li>
-            <li><a data-toggle="tab" href="#menu1">Appertize</a></li>
-            <li><a data-toggle="tab" href="#menu2">Soups</a></li>
+            <li ng-repeat="category in menu.categories" ng-click="selectCategory(category)" class="{{category.active ? 'active' : ''}}">
+                <a data-toggle="tab" href="#category{{category.id}}-products">{{category.name}}</a>
+            </li>
         </ul>
 
         <div class="tab-content">
-            <div id="home" class="tab-pane fade in active">
+            <div ng-repeat="category in menu.categories" id="category{{category.id}}-products" class="tab-pane fade {{category.active ? 'in active' : ''}}">
                 <div class="products-container">
-                    <div class="col-lg-6 product product-left">
+                    <div ng-repeat="product in category.products"
+                         class="col-lg-6 product {{getProductClass($index)}}">
                         <div class="product-buttons">
                             <button type="button" class="btn btn-primary delete">Delete Product</button>
                             <button type="button" class="btn btn-primary available">
@@ -72,9 +73,9 @@
                                 <img src="${pageContext.request.contextPath}/styles/resources/business/admin/image-icon.png">
                             </div>
                             <div class="col-lg-6">
-                                <input class="form-control">
-                                <textarea class="form-control" style="height: 100px"></textarea>
-                                <input class="form-control">
+                                <input class="form-control" ng-blur="checkAndUpdateProduct(product)" ng-model="product.name">
+                                <textarea class="form-control" style="height: 100px" ng-blur="checkAndUpdateProduct(product)" ng-model="product.description"></textarea>
+                                <input class="form-control" ng-blur="checkAndUpdateProduct(product)" ng-model="product.tags">
                             </div>
                             <div class="col-lg-3">
                                 <select class="form-control">
@@ -83,7 +84,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 product product-right">
+                    <div class="col-lg-6 product {{getProductClass(category.products.size)}}">
                         <div class="product-buttons">
                             <button type="button" class="btn btn-primary delete">Delete Product</button>
                             <button type="button" class="btn btn-primary not-available">
@@ -96,9 +97,9 @@
                                 <img src="${pageContext.request.contextPath}/styles/resources/business/admin/image-icon.png">
                             </div>
                             <div class="col-lg-6">
-                                <input class="form-control">
-                                <textarea class="form-control" style="height: 100px"></textarea>
-                                <input class="form-control">
+                                <input class="form-control" ng-blur="checkAndUpdateProduct(newProduct)" ng-model="newProduct.name">
+                                <textarea class="form-control" style="height: 100px" ng-blur="checkAndUpdateProduct(newProduct)" ng-model="newProduct.description"></textarea>
+                                <input class="form-control" ng-blur="checkAndUpdateProduct(newProduct)" ng-model="newProduct.tags">
                             </div>
                             <div class="col-lg-3">
                                 <select class="form-control">
@@ -112,16 +113,6 @@
                         One more product
                     </div>
                 </div>
-            </div>
-            <div id="menu1" class="tab-pane fade">
-                <h3>Menu 1</h3>
-
-                <p>Some content in menu 1.</p>
-            </div>
-            <div id="menu2" class="tab-pane fade">
-                <h3>Menu 2</h3>
-
-                <p>Some content in menu 2.</p>
             </div>
         </div>
     </div>
@@ -171,9 +162,20 @@
     });
 
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script src="${pageContext.request.contextPath}/scripts/services/user.srv.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/map.srv.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/services/helper.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/user.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/venue.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/menu.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/category.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/services/product.srv.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/app.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/controllers/user.ctrl.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/controllers/menu-edit.ctrl.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+        crossorigin="anonymous"></script>
 </html>

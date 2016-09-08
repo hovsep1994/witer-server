@@ -14,7 +14,7 @@ public abstract class AbstractCategoryModel {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "tags", required = false)
-    private Set<TagModel> tagModels;
+    private Set<String> tags;
 
     @JsonProperty(value = "name")
     private String name;
@@ -22,12 +22,12 @@ public abstract class AbstractCategoryModel {
     @JsonProperty(value = "language", required = true)
     private Language language;
 
-    public Set<TagModel> getTagModels() {
-        return tagModels;
+    public Set<String> getTags() {
+        return tags;
     }
 
-    public void setTagModels(Set<TagModel> tagModels) {
-        this.tagModels = tagModels;
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
     }
 
     public String getName() {
