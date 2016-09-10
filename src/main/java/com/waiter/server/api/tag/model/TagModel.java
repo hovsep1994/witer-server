@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.common.model.AbstractApiModel;
 import com.waiter.server.services.tag.model.Tag;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * User: hovsep
@@ -48,6 +47,20 @@ public class TagModel extends AbstractApiModel {
             tags.add(convert(tagModel));
         });
         return tags;
+    }
+
+    public static Set<Tag> convertStringsToTags(Set<String> tagStrings) {
+        if (tagStrings == null) {
+            return null;
+        }
+        return tagStrings.stream().map(Tag::new).collect(Collectors.toSet());
+    }
+
+    public static Set<String> convertTagsToStrings(Set<Tag> tags) {
+        if (tags == null) {
+            return null;
+        }
+        return tags.stream().map(Tag::getName).collect(Collectors.toSet());
     }
 
     public static Set<TagModel> convertToModel(Set<Tag> tags) {

@@ -1,5 +1,6 @@
 package com.waiter.server.api.product.model.response;
 
+import com.waiter.server.api.product.model.ProductPriceModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
@@ -15,10 +16,10 @@ public class ProductMenuModel {
     private Long id;
     private String name;
     private String description;
-    private Double price;
     private Double evaluation;
     private String image;
     private Set<TagModel> tags;
+    private Set<ProductPriceModel> productPrices;
 
     public Long getId() {
         return id;
@@ -42,14 +43,6 @@ public class ProductMenuModel {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public Double getEvaluation() {
@@ -76,6 +69,14 @@ public class ProductMenuModel {
         this.tags = tags;
     }
 
+    public Set<ProductPriceModel> getProductPrices() {
+        return productPrices;
+    }
+
+    public void setProductPrices(Set<ProductPriceModel> productPrices) {
+        this.productPrices = productPrices;
+    }
+
     public static List<ProductMenuModel> convert(List<Product> products, Language language) {
         return products.stream()
                 .map(product -> ProductMenuModel.convert(product, language))
@@ -88,7 +89,7 @@ public class ProductMenuModel {
         productMenuModel.setName(product.getNameTranslationByLanguage(language).getText());
         productMenuModel.setDescription(product.getDescriptionTextByLanguage(language));
         productMenuModel.setEvaluation(product.getAverageRating());
-        productMenuModel.setPrice(product.getPrice());
+        productMenuModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language));
         productMenuModel.setTags(TagModel.convertToModel(product.getTags()));
         return productMenuModel;
     }

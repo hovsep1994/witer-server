@@ -3,11 +3,10 @@ package com.waiter.server.services.product.model;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.evaluation.model.Evaluation;
-import com.waiter.server.services.evaluation.model.Rate;
 import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.language.Language;
-import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.tag.model.Tag;
+import com.waiter.server.services.translation.model.Translation;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -24,11 +23,11 @@ public class Product extends AbstractEntityModel {
     @JoinColumn(name = "gallery_id", nullable = false)
     private Gallery gallery;
 
-    @Column(name = "price")
-    private Double price;
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<ProductPrice> productPrices;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -63,12 +62,15 @@ public class Product extends AbstractEntityModel {
         this.gallery = gallery;
     }
 
-    public Double getPrice() {
-        return price;
+    public Set<ProductPrice> getProductPrices() {
+        if(productPrices == null){
+            productPrices = new HashSet<>();
+        }
+        return productPrices;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setProductPrices(Set<ProductPrice> productPrices) {
+        this.productPrices = productPrices;
     }
 
     public Category getCategory() {
@@ -124,20 +126,14 @@ public class Product extends AbstractEntityModel {
     }
 
     public Translation getNameTranslationByLanguage(Language language) {
-        return nameSet.stream().filter(nameTranslation ->
-                nameTranslation.getLanguage().equals(language)).findFirst().orElse(null);
+        return Translation.getTranslationByLanguage(getNameSet(), language);
     }
 
     public Translation getDescriptionByLanguage(Language language) {
-        return descriptionSet.stream()
-                .filter(nameTranslation -> nameTranslation.getLanguage().equals(language))
-                .findFirst().orElse(null);
+        return Translation.getTranslationByLanguage(getDescriptionSet(), language);
     }
 
     public String getDescriptionTextByLanguage(Language language) {
-        final Translation translation = descriptionSet.stream()
-                .filter(nameTranslation -> nameTranslation.getLanguage().equals(language))
-                .findFirst().orElse(null);
-        return translation == null ? null : translation.getText();
+        return Translation.getTranslationTextByLanguage(getDescriptionSet(), language);
     }
 }

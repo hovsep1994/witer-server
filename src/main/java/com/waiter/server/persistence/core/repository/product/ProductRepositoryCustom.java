@@ -13,6 +13,4 @@ public interface ProductRepositoryCustom {
 
     List<Product> findByIdAndCustomerToken(Long productId,String customerToken);
 
-    List<Product> search(String name, double lat, double lon);
-
 }

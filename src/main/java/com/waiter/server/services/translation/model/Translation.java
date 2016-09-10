@@ -54,4 +54,16 @@ public class Translation extends AbstractEntityModel {
     public static List<String> getListOfTexts(Collection<Translation> translations) {
         return translations.stream().map(Translation::getText).collect(Collectors.toList());
     }
+
+    public static Translation getTranslationByLanguage(Collection<Translation> translations, Language language) {
+        return translations.stream().filter(translation ->
+                translation.getLanguage().equals(language)).findFirst().orElse(null);
+    }
+
+    public static String getTranslationTextByLanguage(Collection<Translation> translations, Language language) {
+        final Translation translation = translations.stream().filter(t ->
+                t.getLanguage().equals(language)).findFirst().orElse(null);
+        return translation == null ? null : translation.getText();
+
+    }
 }

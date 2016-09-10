@@ -24,7 +24,7 @@ public class ProductModel {
     @JsonProperty(value = "category")
     private CategoryModel categoryModel;
 
-    private Double price;
+    private Set<ProductPriceModel> productPrices;
 
     private String description;
 
@@ -40,14 +40,6 @@ public class ProductModel {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public String getDescription() {
@@ -90,12 +82,20 @@ public class ProductModel {
         this.image = image;
     }
 
+    public Set<ProductPriceModel> getProductPrices() {
+        return productPrices;
+    }
+
+    public void setProductPrices(Set<ProductPriceModel> productPrices) {
+        this.productPrices = productPrices;
+    }
+
     public static ProductModel convert(Product product, Language language) {
         final ProductModel productModel = new ProductModel();
         productModel.setId(product.getId());
         productModel.setDescription(product.getDescriptionTextByLanguage(language));
         productModel.setName(product.getNameTranslationByLanguage(language).getText());
-        productModel.setPrice(product.getPrice());
+        productModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language));
         productModel.setTagModels(TagModel.convertToModel(product.getTags()));
         productModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery().getGalleryImages()));
         return productModel;

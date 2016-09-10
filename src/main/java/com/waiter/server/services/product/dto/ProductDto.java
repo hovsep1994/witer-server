@@ -12,16 +12,12 @@ import java.util.Set;
 public class ProductDto extends AbstractDtoModel<Product> {
 
     private Set<Tag> tags;
-    private Double price;
     private Boolean isAvailable;
 
     @Override
     public void updateProperties(Product product) {
         if (getTags() != null) {
             product.setTags(getTags());
-        }
-        if (getPrice() != null) {
-            product.setPrice(getPrice());
         }
         product.setAvailable(isAvailable == null ? true : isAvailable);
     }
@@ -32,14 +28,6 @@ public class ProductDto extends AbstractDtoModel<Product> {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public Boolean getAvailable() {

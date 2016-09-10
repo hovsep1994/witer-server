@@ -115,7 +115,7 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
         productDocument.setProductNameTranslations(Translation.getListOfTexts(product.getNameSet()));
         productDocument.setDescriptionTranslations(Translation.getListOfTexts(product.getDescriptionSet()));
         productDocument.setEvaluation(product.getAverageRating());
-        productDocument.setPrice(product.getPrice());
+//        productDocument.setPrice(product.get());
         productDocument.setGalleryId(product.getGallery().getId());
         productDocument.setMenuId(product.getCategory().getMenu().getId());
         //category fields

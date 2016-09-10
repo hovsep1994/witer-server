@@ -1,5 +1,6 @@
 package com.waiter.server.services.product.impl;
 
+import com.waiter.server.persistence.core.repository.product.ProductPriceRepository;
 import com.waiter.server.persistence.core.repository.product.ProductRepository;
 import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.category.model.Category;
@@ -18,13 +19,16 @@ import com.waiter.server.services.gallery.model.ImageType;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.dto.ProductDto;
+import com.waiter.server.services.product.dto.ProductPriceDto;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
+import com.waiter.server.services.product.model.ProductPrice;
 import com.waiter.server.services.translate.TranslatorService;
 import com.waiter.server.services.translate.dto.TextTranslationDto;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
+import com.waiter.server.services.translation.model.TranslationType;
 import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
@@ -35,7 +39,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
@@ -50,6 +56,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+
+    @Autowired
+    private ProductPriceRepository productPriceRepository;
 
     @Autowired
     private CategoryService categoryService;
@@ -70,7 +80,8 @@ public class ProductServiceImpl implements ProductService {
     private EvaluationService evaluationService;
 
     @Override
-    public Product create(Long categoryId, ProductDto productDto, Long nameId, Long descriptionId) {
+    public Product create(Long categoryId, ProductDto productDto, Set<ProductPriceDto> productPriceDtos,
+                          Long nameId, Long descriptionId) {
         assertCategoryId(categoryId);
         notNull(productDto);
         notNull(nameId);
@@ -86,6 +97,7 @@ public class ProductServiceImpl implements ProductService {
             final Translation description = translationService.getById(descriptionId);
             product.getDescriptionSet().add(description);
         }
+        createProductPrices(product, productPriceDtos, name.getLanguage());
         return productRepository.save(product);
     }
 
@@ -190,10 +202,43 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> search(ProductSearchParameters params) {
-        List<Product> products = productRepository.search(
-                params.getName(), params.getLatitude(), params.getLongitude());
-        return products;
+    public Set<ProductPrice> createProductPrices(Long productId, Set<ProductPriceDto> productPriceDtos, Language language) {
+        Product product = getById(productId);
+        return createProductPrices(product, productPriceDtos, language);
+    }
+
+    private Set<ProductPrice> createProductPrices(Product product, Set<ProductPriceDto> productPriceDtos, Language language) {
+        productPriceDtos.forEach(productPriceDto -> {
+            ProductPrice productPrice = getProductContainProductPrice(product, productPriceDto.getId());
+            if (productPrice != null) {
+                productPrice.setPrice(productPriceDto.getPrice());
+                Translation translation = Translation.getTranslationByLanguage(productPrice.getNames(), language);
+                final TranslationDto translationDto = new TranslationDto(productPriceDto.getName(), language, TranslationType.MANUAL);
+                if (translation == null) {
+                    translation = translationService.create(translationDto);
+                    productPrice.getNames().add(translation);
+                } else {
+                    translationService.update(translation.getId(), translationDto);
+                }
+            } else {
+                productPrice = new ProductPrice();
+                final TranslationDto translationDto = new TranslationDto(productPriceDto.getName(), language, TranslationType.MANUAL);
+                final Translation translation = translationService.create(translationDto);
+                productPrice.getNames().add(translation);
+                productPrice.setPrice(productPriceDto.getPrice());
+                product.getProductPrices().add(productPrice);
+                productPrice.setProduct(product);
+            }
+        });
+        return productRepository.save(product).getProductPrices();
+    }
+
+    private ProductPrice getProductContainProductPrice(Product product, Long productPriceId) {
+        if (productPriceId == null) {
+            return null;
+        }
+        return product.getProductPrices().stream().filter(productPrice ->
+                productPrice.getId().equals(productPriceId)).findFirst().orElse(null);
     }
 
     private void assertCategoryId(Long categoryId) {

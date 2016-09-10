@@ -56,6 +56,16 @@ public class TranslationServiceImpl implements TranslationService {
         return translationRepository.save(translation);
     }
 
+    public Translation createOrUpdateTranslation(Long translationId, TranslationDto translationDto) {
+        Translation translation;
+        if (translationId != null) {
+            translation = translationRepository.findOne(translationId);
+            return update(translation.getId(), translationDto);
+        } else {
+            return create(translationDto);
+        }
+    }
+
     public Long createOrUpdateTranslation(Translation translation, String text, Language language) {
         if (text != null) {
             final TranslationDto dto = new TranslationDto(text, language);

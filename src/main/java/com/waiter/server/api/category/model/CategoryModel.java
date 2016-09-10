@@ -67,7 +67,7 @@ public class CategoryModel extends AbstractCategoryModel {
         final CategoryModel categoryModel = new CategoryModel();
         categoryModel.setId(category.getId());
         categoryModel.setMenuId(category.getMenu().getId());
-        categoryModel.setTags(category.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
+        categoryModel.setTags(TagModel.convertTagsToStrings(category.getTags()));
         categoryModel.setProductModels(null);
         categoryModel.setName(category.getNameTranslationByLanguage(language).getText());
         categoryModel.setLanguage(language);
