@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -73,6 +74,9 @@ public class Menu extends AbstractEntityModel {
     }
 
     public Set<Language> getLanguages() {
+        if (languages == null) {
+            languages = new HashSet<>();
+        }
         return languages;
     }
 

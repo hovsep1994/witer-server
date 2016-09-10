@@ -5,6 +5,7 @@ import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.venue.model.Venue;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +48,9 @@ public class VenueMenuModel {
     }
 
     public static Set<VenueMenuModel> convert(List<Venue> venues) {
+        if (venues == null || venues.isEmpty()) {
+            return new HashSet<>();
+        }
         return venues.stream().map(venue -> {
             final VenueMenuModel model = new VenueMenuModel();
             model.setId(venue.getId());

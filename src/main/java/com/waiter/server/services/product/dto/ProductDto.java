@@ -13,6 +13,7 @@ public class ProductDto extends AbstractDtoModel<Product> {
 
     private Set<Tag> tags;
     private Double price;
+    private Boolean isAvailable;
 
     @Override
     public void updateProperties(Product product) {
@@ -22,6 +23,7 @@ public class ProductDto extends AbstractDtoModel<Product> {
         if (getPrice() != null) {
             product.setPrice(getPrice());
         }
+        product.setAvailable(isAvailable == null ? true : isAvailable);
     }
 
     public Set<Tag> getTags() {
@@ -38,5 +40,13 @@ public class ProductDto extends AbstractDtoModel<Product> {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Boolean getAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
     }
 }

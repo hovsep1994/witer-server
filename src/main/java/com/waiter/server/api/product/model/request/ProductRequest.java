@@ -23,6 +23,8 @@ public class ProductRequest extends AbstractApiLanguageModel {
     @JsonProperty(value = "name")
     private String name;
 
+    private Boolean isAvailable;
+
     public Set<TagModel> getTagModels() {
         return tagModels;
     }
@@ -55,4 +57,11 @@ public class ProductRequest extends AbstractApiLanguageModel {
         this.name = name;
     }
 
+    public Boolean getAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
+    }
 }

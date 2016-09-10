@@ -5,6 +5,7 @@ import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.model.Menu;
+import com.waiter.server.services.menu.model.MenuDto;
 
 import java.util.List;
 
@@ -15,13 +16,11 @@ public interface MenuService {
 
     Menu getById(Long id);
 
-    Menu create(String menuName, Language language, Currency currency, Long companyId);
+    Menu create(Long companyId, MenuDto menuDto);
 
-    Menu update(Long menuId, String name, Language mainLanguage, Currency currency);
+    Menu update(Long menuId, MenuDto menuDto);
 
     Menu addLanguage(Long menuId, Language language);
-
-    Menu update(Menu menu);
 
     List<Menu> getMenusByCompanyId(Long companyId);
 

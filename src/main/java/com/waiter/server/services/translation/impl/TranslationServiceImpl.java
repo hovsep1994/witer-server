@@ -58,7 +58,7 @@ public class TranslationServiceImpl implements TranslationService {
 
     public Long createOrUpdateTranslation(Translation translation, String text, Language language) {
         if (text != null) {
-            final TranslationDto dto = new TranslationDto(text, language, TranslationType.MANUAL);
+            final TranslationDto dto = new TranslationDto(text, language);
             if (translation == null) {
                 Translation createdTranslation = create(dto);
                 return createdTranslation.getId();

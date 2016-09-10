@@ -2,6 +2,7 @@ package com.waiter.server.api.menu.model.request;
 
 import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
+import com.waiter.server.services.menu.model.MenuDto;
 
 import java.util.Set;
 
@@ -16,9 +17,9 @@ public class MenuRequest {
 
     private Currency currency;
 
-    private Language mainLanguage;
+    private Language language;
 
-    private Set<Long> attachedVenues;
+    private Set<Long> venues;
 
     public String getName() {
         return name;
@@ -36,19 +37,27 @@ public class MenuRequest {
         this.currency = currency;
     }
 
-    public Language getMainLanguage() {
-        return mainLanguage;
+    public Language getLanguage() {
+        return language;
     }
 
-    public void setMainLanguage(Language mainLanguage) {
-        this.mainLanguage = mainLanguage;
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
-    public Set<Long> getAttachedVenues() {
-        return attachedVenues;
+    public Set<Long> getVenues() {
+        return venues;
     }
 
-    public void setAttachedVenues(Set<Long> attachedVenues) {
-        this.attachedVenues = attachedVenues;
+    public void setVenues(Set<Long> venues) {
+        this.venues = venues;
+    }
+
+    public static MenuDto convert(MenuRequest request) {
+        final MenuDto menuDto = new MenuDto();
+        menuDto.setLanguage(request.getLanguage());
+        menuDto.setName(request.getName());
+        menuDto.setCurrency(request.getCurrency());
+        return menuDto;
     }
 }

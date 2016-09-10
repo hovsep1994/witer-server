@@ -9,6 +9,7 @@ import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
+import com.waiter.server.services.menu.model.MenuDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,36 +51,23 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     @Transactional
-    public Menu create(String menuName, Language language, Currency currency, Long companyId) {
-        assertName(menuName);
+    public Menu create(Long companyId, MenuDto menuDto) {
+        assertName(menuDto.getName());
+        notNull(menuDto.getLanguage());
         assertCompanyId(companyId);
-        notNull(language);
         final Menu menu = new Menu();
-        menu.setCurrency(currency);
-        menu.setLanguages(new HashSet<>(1));
-        menu.getLanguages().add(language);
-        menu.setMainLanguage(language);
+        menuDto.updateProperties(menu);
         final Company company = companyService.get(companyId);
         menu.setCompany(company);
-        menu.setName(menuName);
         return menuRepository.save(menu);
     }
 
     @Override
     @Transactional
-    public Menu update(Long menuId, String name, Language mainLanguage, Currency currency) {
+    public Menu update(Long menuId, MenuDto menuDto) {
         assertMenuId(menuId);
         final Menu menu = getById(menuId);
-        if (mainLanguage != null) {
-            menu.setMainLanguage(mainLanguage);
-            menu.getLanguages().add(mainLanguage);
-        }
-        if (currency != null) {
-            menu.setCurrency(currency);
-        }
-        if (name != null) {
-            menu.setName(name);
-        }
+        menuDto.updateProperties(menu);
         menu.setUpdated(new Date());
         return menuRepository.save(menu);
     }
@@ -98,11 +86,6 @@ public class MenuServiceImpl implements MenuService {
     public List<Menu> getMenusByCompanyId(Long companyId) {
         notNull(companyId, "companyId must not be null");
         return menuRepository.findByCompanyId(companyId);
-    }
-
-    @Override
-    public Menu update(Menu menu) {
-        return menuRepository.save(menu);
     }
 
     @Override

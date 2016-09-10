@@ -94,24 +94,13 @@ public class ProductController extends AuthenticationController {
         final Product product = productService.getById(productId);
         checkUserHasAccess(user, product.getCategory().getMenu().getCompany());
         checkCategoryContainsLanguage(product.getCategory(), request.getLanguage());
-        Long nameId = null;
-        Long descriptionId = null;
-        if (request.getName() != null) {
-            Translation name = product.getNameTranslationByLanguage(request.getLanguage());
-            final TranslationDto nameDto = new TranslationDto(request.getName(), request.getLanguage());
-            name = translationService.update(name.getId(), nameDto);
-            nameId = name.getId();
-        }
-        if (request.getDescription() != null) {
-            Translation description = product.getDescriptionByLanguage(request.getLanguage());
-            final TranslationDto descriptionDto = new TranslationDto(request.getDescription(), request.getLanguage());
-            if (description == null) {
-                description = translationService.create(descriptionDto);
-            } else {
-                description = translationService.update(description.getId(), descriptionDto);
-            }
-            descriptionId = description.getId();
-        }
+        // Name
+        final Translation name = product.getNameTranslationByLanguage(request.getLanguage());
+        final Long nameId = translationService.createOrUpdateTranslation(name, request.getName(), request.getLanguage());
+        // Description
+        final Translation description = product.getDescriptionByLanguage(request.getLanguage());
+        final Long descriptionId = translationService.createOrUpdateTranslation(description, request.getName(), request.getLanguage());
+        // DTO
         final ProductDto productDto = convertToProductDto(request);
         final Product updatedProduct = productService.update(productId, productDto, nameId, descriptionId);
         final ProductModel productModel = ProductModel.convert(updatedProduct, request.getLanguage());
@@ -150,14 +139,15 @@ public class ProductController extends AuthenticationController {
     }
 
     @RequestMapping(value = "heartbeat", method = RequestMethod.GET)
-    public MenuKitResponseEntity<String> heartbeat() {
-        return MenuKitResponseEntity.success2("ok");
+    public ResponseEntity heartbeat() {
+        return MenuKitResponseEntity.success("ok");
     }
 
     private static ProductDto convertToProductDto(ProductRequest request) {
         final ProductDto productDto = new ProductDto();
         productDto.setPrice(request.getPrice());
         productDto.setTags(TagModel.convert(request.getTagModels()));
+        productDto.setAvailable(request.getAvailable());
         return productDto;
     }
 

@@ -46,6 +46,9 @@ public class Product extends AbstractEntityModel {
     @JoinTable(name = "product_name")
     private Set<Translation> nameSet;
 
+    @Column(name = "isAvailable")
+    private Boolean isAvailable = true;
+
     public Product() {
         descriptionSet = new HashSet<>();
         nameSet = new HashSet<>();
@@ -110,6 +113,14 @@ public class Product extends AbstractEntityModel {
 
     public Double getAverageRating() {
         return evaluation.getAverageRating();
+    }
+
+    public Boolean getAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
     }
 
     public Translation getNameTranslationByLanguage(Language language) {

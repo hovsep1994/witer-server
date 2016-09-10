@@ -15,7 +15,7 @@ public class TranslationDto extends AbstractDtoModel<Translation> {
 
     private String text;
     private Language language;
-    private TranslationType translationType = TranslationType.MAIN;
+    private TranslationType translationType = TranslationType.MANUAL;
 
     public TranslationDto() {
     }
