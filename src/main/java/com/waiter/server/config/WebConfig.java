@@ -36,7 +36,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         LOGGER.info("auth interceptor added. ");
         registry.addInterceptor(webAuthenticationInterceptor)
-                .addPathPatterns("/business");
+                .addPathPatterns("/business")
+                .addPathPatterns("/business/");
 //                .addPathPatterns("/business/*");
     }
 

@@ -101,7 +101,7 @@ public class ProductController extends AuthenticationController {
         final Long nameId = translationService.createOrUpdateTranslation(name, request.getName(), request.getLanguage());
         // Description
         final Translation description = product.getDescriptionByLanguage(request.getLanguage());
-        final Long descriptionId = translationService.createOrUpdateTranslation(description, request.getName(), request.getLanguage());
+        final Long descriptionId = translationService.createOrUpdateTranslation(description, request.getDescription(), request.getLanguage());
         // DTO
         final ProductDto productDto = ProductRequest.convertToProductDto(request);
         final Set<ProductPriceDto> productPriceDtos = ProductRequest.convertToProductPriceDto(request);

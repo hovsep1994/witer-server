@@ -1,7 +1,9 @@
-package com.waiter.server.utils;
+package com.waiter.server.services.email.impl;
 
 import com.sun.mail.smtp.SMTPTransport;
+import com.waiter.server.services.email.EmailService;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -15,23 +17,27 @@ import java.util.Properties;
 /**
  * @author shahenpoghosyan
  */
-public class MailClient {
+@Service
+public class EmailServiceImpl implements EmailService {
 
-    public static final String GMAIL_SMTP_HOST = "smtp.gmail.com";
-    public static final String GMAIL_SMTP_PORT = "465";
+    private static final Logger LOGGER = Logger.getLogger(EmailServiceImpl.class);
 
+    private static final String GMAIL_SMTP_HOST = "smtp.gmail.com";
+
+    private static final String GMAIL_SMTP_PORT = "465";
     private static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
-    private static final Logger LOGGER = Logger.getLogger(MailClient.class);
 
-    private final String password = "tuynparol";
-    private final String username = "testwaiter11";
-    private final String from = username + "@gmail.com";
+    private static final String password = "tuynparol";
+    private static final String username = "testwaiter11";
+    private static final String from = username + "@gmail.com";
 
-    public void send(String recipientEmail, String title, String message) throws IOException {
-        send(recipientEmail, null, title, message);
+    @Override
+    public void send(String recipientEmail, String subject, String message) throws IOException {
+        send(recipientEmail, null, subject, message);
     }
 
-    public void send(String recipientEmail, String ccEmail, String title, String message) throws IOException {
+    @Override
+    public void send(String recipientEmail, String ccEmail, String subject, String message) throws IOException {
         try {
 
             Properties props = System.getProperties();
@@ -50,7 +56,7 @@ public class MailClient {
             if (ccEmail != null && !ccEmail.isEmpty()) {
                 msg.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ccEmail, false));
             }
-            msg.setSubject(title);
+            msg.setSubject(subject);
             msg.setText(message, "utf-8");
             msg.setSentDate(new Date());
 

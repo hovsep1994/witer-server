@@ -5,6 +5,7 @@ import com.waiter.server.services.common.exception.Assert;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
+import com.waiter.server.services.email.EmailService;
 import com.waiter.server.services.user.UserService;
 import com.waiter.server.services.user.dto.UserDto;
 import com.waiter.server.services.user.model.SignUpStatus;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -27,6 +29,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public User signUp(UserDto userDto) throws ServiceException {
         Assert.isTrue(userDto.getPassword().length() > 5, "password must not be less than 6 characters");
@@ -38,7 +43,13 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         userDto.updateProperties(user);
         user.setToken(UUID.randomUUID().toString());
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        try {
+            emailService.send(user.getEmail(), "Hello", "Hello world");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     @Override
