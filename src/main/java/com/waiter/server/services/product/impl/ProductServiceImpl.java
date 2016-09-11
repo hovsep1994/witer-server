@@ -20,13 +20,11 @@ import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductPriceDto;
-import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.product.model.ProductPrice;
 import com.waiter.server.services.tag.TagService;
 import com.waiter.server.services.tag.model.Tag;
 import com.waiter.server.services.translate.TranslatorService;
-import com.waiter.server.services.translate.dto.TextTranslationDto;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
@@ -41,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -86,10 +83,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product create(Long categoryId, ProductDto productDto, Long nameId, Long descriptionId) {
+    public Product create(Long categoryId, ProductDto productDto) {
         assertCategoryId(categoryId);
         notNull(productDto);
-        notNull(nameId);
+        notNull(productDto.getName());
+        notNull(productDto.getLanguage());
         final Category category = categoryService.getById(categoryId);
         final Product product = new Product();
         productDto.updateProperties(product);
@@ -98,10 +96,12 @@ public class ProductServiceImpl implements ProductService {
         product.setEvaluation(new Evaluation());
         final Set<Tag> tags = tagService.create(productDto.getTags());
         product.setTags(tags);
-        final Translation name = translationService.getById(nameId);
+        final TranslationDto nameDto = new TranslationDto(productDto.getName(), productDto.getLanguage());
+        final Translation name = translationService.create(nameDto);
         product.getNameSet().add(name);
-        if (descriptionId != null) {
-            final Translation description = translationService.getById(descriptionId);
+        if (productDto.getDescription() != null) {
+            final TranslationDto descriptionDto = new TranslationDto(productDto.getDescription(), productDto.getLanguage());
+            final Translation description = translationService.create(descriptionDto);
             product.getDescriptionSet().add(description);
         }
         return productRepository.save(product);
@@ -109,20 +109,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product update(Long productId, ProductDto productDto, Long nameId, Long descriptionId) {
+    public Product update(Long productId, ProductDto productDto) {
         assertProductId(productId);
+        notNull(productDto);
+        notNull(productDto.getName());
+        notNull(productDto.getLanguage());
         final Product product = productRepository.findOne(productId);
-        if (productDto != null) {
-            productDto.updateProperties(product);
-            final Set<Tag> tags = tagService.create(productDto.getTags());
-            product.getTags().addAll(tags);
-        }
-        if (nameId != null) {
-            Translation name = translationService.getById(nameId);
-            product.getNameSet().add(name);
-        }
-        if (descriptionId != null) {
-            Translation description = translationService.getById(descriptionId);
+        productDto.updateProperties(product);
+        final Set<Tag> tags = tagService.create(productDto.getTags());
+        product.getTags().addAll(tags);
+        final TranslationDto nameDto = new TranslationDto(productDto.getName(), productDto.getLanguage());
+        final Translation name = translationService.create(nameDto);
+        product.getNameSet().add(name);
+        if (productDto.getDescription() != null) {
+            final TranslationDto descriptionDto = new TranslationDto(productDto.getDescription(), productDto.getLanguage());
+            final Translation description = translationService.create(descriptionDto);
             product.getDescriptionSet().add(description);
         }
         product.setUpdated(new Date());
@@ -132,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void remove(Long productId) {
         assertProductId(productId);
-        Product product = getById(productId);
+        final Product product = getById(productId);
         productRepository.delete(product);
     }
 
@@ -178,11 +179,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product addTranslation(Long productId, TranslationDto translationDto) {
+    public Product addOrUpdateTranslation(Long productId, TranslationDto nameDto, TranslationDto descriptionDto) {
         assertProductId(productId);
-        Product product = productRepository.findOne(productId);
-        Translation translation = translationService.create(translationDto);
-        product.getNameSet().add(translation);
+        final Product product = productRepository.findOne(productId);
+        if (nameDto != null) {
+            Translation name = product.getNameTranslationByLanguage(nameDto.getLanguage());
+            if (name == null) {
+                name = translationService.create(nameDto);
+            } else {
+                name = translationService.update(name.getId(), nameDto);
+            }
+            product.getNameSet().add(name);
+        }
+        if (descriptionDto != null) {
+            Translation description = product.getNameTranslationByLanguage(descriptionDto.getLanguage());
+            if (description == null) {
+                description = translationService.create(descriptionDto);
+            } else {
+                description = translationService.update(description.getId(), descriptionDto);
+            }
+            product.getDescriptionSet().add(description);
+        }
         return productRepository.save(product);
     }
 

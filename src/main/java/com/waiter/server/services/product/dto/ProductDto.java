@@ -1,6 +1,7 @@
 package com.waiter.server.services.product.dto;
 
 import com.waiter.server.services.common.model.AbstractDtoModel;
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
 
@@ -13,6 +14,9 @@ public class ProductDto extends AbstractDtoModel<Product> {
 
     private Set<String> tags;
     private Boolean isAvailable;
+    private String name;
+    private String description;
+    private Language language;
 
     @Override
     public void updateProperties(Product product) {
@@ -33,5 +37,29 @@ public class ProductDto extends AbstractDtoModel<Product> {
 
     public void setAvailable(Boolean available) {
         isAvailable = available;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }

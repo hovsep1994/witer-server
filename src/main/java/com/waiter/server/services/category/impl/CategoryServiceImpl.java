@@ -17,8 +17,10 @@ import com.waiter.server.services.gallery.model.ImageType;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
+import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
 import com.waiter.server.services.translation.TranslationService;
+import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.tag.TagService;
 import org.slf4j.Logger;
@@ -69,37 +71,36 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public Category create(CategoryDto categoryDto, Long menuId, Long translationId) {
+    public Category create(CategoryDto categoryDto, Long menuId) {
         assertCategoryDto(categoryDto);
-        notNull(translationId);
         notNull(menuId);
-        final Translation translation = translationService.getById(translationId);
-        final Menu menu = menuService.addLanguage(menuId, translation.getLanguage());
+        final Menu menu = menuService.addLanguage(menuId, categoryDto.getLanguage());
         final Category category = new Category();
         category.setGallery(new Gallery());
         category.setMenu(menu);
-        category.getNameSet().add(translation);
         categoryDto.updateProperties(category);
         final Set<Tag> tags = tagService.create(categoryDto.getTags());
         category.setTags(tags);
+        final TranslationDto translationDto = new TranslationDto(categoryDto.getName(), categoryDto.getLanguage());
+        final Translation translation = translationService.create(translationDto);
+        category.getNameSet().add(translation);
         return categoryRepository.save(category);
     }
 
     @Override
     @Transactional
-    public Category update(Long categoryId, CategoryDto categoryDto, Long translationId) {
+    public Category update(Long categoryId, CategoryDto categoryDto) {
         assertCategoryId(categoryId);
+        assertCategoryDto(categoryDto);
         final Category category = getById(categoryId);
-        if (categoryDto != null) {
-            assertCategoryDto(categoryDto);
-            categoryDto.updateProperties(category);
+        categoryDto.updateProperties(category);
+        if (category.getTags() != null) {
             final Set<Tag> tags = tagService.create(categoryDto.getTags());
             category.setTags(tags);
         }
-        if (translationId != null) {
-            Translation translation = translationService.getById(translationId);
-            category.getNameSet().add(translation);
-        }
+        final TranslationDto translationDto = new TranslationDto(categoryDto.getName(), categoryDto.getLanguage());
+        final Translation translation = translationService.create(translationDto);
+        category.getNameSet().add(translation);
         category.setUpdated(new Date());
         return categoryRepository.save(category);
     }
@@ -108,11 +109,23 @@ public class CategoryServiceImpl implements CategoryService {
     public void remove(Long categoryId) {
         assertCategoryId(categoryId);
         final Category category = getById(categoryId);
-        if (category.getProducts() != null || !category.getProducts().isEmpty()) {
-            LOGGER.error("Category -{} contains products", category.getId());
-            throw new ServiceRuntimeException(ErrorCode.CAN_NOT_BE_DELETED, "Category contains products");
-        }
         categoryRepository.delete(category);
+    }
+
+    @Override
+    public Category addOrUpdateTranslation(Long categoryId, TranslationDto nameDto) {
+        assertCategoryId(categoryId);
+        final Category category = getById(categoryId);
+        if (nameDto != null) {
+            Translation name = category.getNameTranslationByLanguage(nameDto.getLanguage());
+            if (name == null) {
+                name = translationService.create(nameDto);
+            } else {
+                name = translationService.update(name.getId(), nameDto);
+            }
+            category.getNameSet().add(name);
+        }
+        return categoryRepository.save(category);
     }
 
     @Override

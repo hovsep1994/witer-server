@@ -3,6 +3,7 @@ package com.waiter.server.api.category.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.services.category.dto.CategoryDto;
 import com.waiter.server.services.language.Language;
 
 import java.util.Set;
@@ -44,5 +45,13 @@ public abstract class AbstractCategoryModel {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public CategoryDto getCategoryDto() {
+        final CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setLanguage(getLanguage());
+        categoryDto.setName(getName());
+        categoryDto.setTags(getTags());
+        return categoryDto;
     }
 }

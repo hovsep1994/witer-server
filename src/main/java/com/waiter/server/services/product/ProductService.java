@@ -23,9 +23,9 @@ public interface ProductService {
 
     Product getById(Long id);
 
-    Product create(Long categoryId, ProductDto productDto, Long nameId, Long descriptionId);
+    Product create(Long categoryId, ProductDto productDto);
 
-    Product update(Long productId, ProductDto productDto, Long nameId, Long descriptionId);
+    Product update(Long productId, ProductDto productDto);
 
     List<Product> getByCategoryId(Long categoryId);
 
@@ -35,7 +35,7 @@ public interface ProductService {
 
     GalleryImage getImageByType(Long productId, GalleryImageType galleryImageType);
 
-    Product addTranslation(Long productId, TranslationDto translationDto);
+    Product addOrUpdateTranslation(Long productId, TranslationDto nameDto, TranslationDto descriptionDto);
 
     Product setRateByCustomerToken(Long productId, String customerToken, Integer rating);
 

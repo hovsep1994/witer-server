@@ -6,7 +6,6 @@ import com.waiter.server.api.category.model.request.CategoryTranslateRequest;
 import com.waiter.server.api.category.model.request.UpdateCategoryRequest;
 import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
-import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.category.CategoryService;
@@ -61,33 +60,17 @@ public class CategoryController extends AuthenticationController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity addCategory(@RequestBody AddCategoryModelRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, menuService.getCompanyByMenuId(request.getMenuId()));
-        final CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setTags(request.getTags().stream().map(Tag::new).collect(Collectors.toSet()));
-        final TranslationDto translationDto = new TranslationDto(request.getName(), request.getLanguage());
-        final Translation translation = translationService.create(translationDto);
-        final Category category = categoryService.create(categoryDto, request.getMenuId(), translation.getId());
-        final CategoryModel categoryModel = CategoryModel.convert(category, translationDto.getLanguage());
+        final CategoryDto categoryDto = request.getCategoryDto();
+        final Category category = categoryService.create(categoryDto, request.getMenuId());
+        final CategoryModel categoryModel = CategoryModel.convert(category, request.getLanguage());
         return MenuKitResponseEntity.success(categoryModel);
     }
 
     @RequestMapping(value = "{categoryId}", method = RequestMethod.PUT)
     public ResponseEntity updateCategory(@PathVariable Long categoryId, @RequestBody UpdateCategoryRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, categoryService.getCompanyById(categoryId));
-        final CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setTags(request.getTags().stream().map(Tag::new).collect(Collectors.toSet()));
-        Translation translation = null;
-        if (request.getName() != null) {
-            final Category category = categoryService.getCategoryOrNullByIdAndLanguage(categoryId, request.getLanguage());
-            final TranslationDto translationDto = new TranslationDto(request.getName(), request.getLanguage());
-            if (category == null) {
-                LOGGER.error("Translation with language -{} not found");
-                throw new ServiceRuntimeException(ErrorCode.BAD_REQUEST, "Translation with language not found");
-            } else {
-                translation = translationService.update(category.getNameTranslationByLanguage(translationDto.getLanguage()).getId(), translationDto);
-            }
-        }
-        Long translationId = (translation == null) ? null : translation.getId();
-        Category category = categoryService.update(categoryId, categoryDto, translationId);
+        final CategoryDto categoryDto = request.getCategoryDto();
+        Category category = categoryService.update(categoryId, categoryDto);
         CategoryModel categoryModel = CategoryModel.convert(category, request.getLanguage());
         return MenuKitResponseEntity.success(categoryModel);
     }
@@ -110,9 +93,8 @@ public class CategoryController extends AuthenticationController {
     public ResponseEntity addTranslation(@PathVariable Long categoryId, @RequestBody CategoryTranslateRequest request, @ModelAttribute User user) {
         final Category category = categoryService.getById(categoryId);
         checkUserHasAccess(user, category.getMenu().getCompany());
-        final Translation name = category.getNameTranslationByLanguage(request.getLanguage());
-        final Long nameId = translationService.createOrUpdateTranslation(name, request.getName(), request.getLanguage());
-        final Category updatedCategory = categoryService.update(categoryId, null, nameId);
+        final TranslationDto dto = new TranslationDto(request.getName(), request.getLanguage());
+        final Category updatedCategory = categoryService.addOrUpdateTranslation(categoryId, dto);
         return MenuKitResponseEntity.success(CategoryModel.convert(updatedCategory, request.getLanguage()));
     }
 

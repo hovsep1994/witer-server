@@ -21,7 +21,6 @@ import com.waiter.server.services.product.dto.ProductPriceDto;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
-import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,17 +74,9 @@ public class ProductController extends AuthenticationController {
         Category category = categoryService.getById(request.getCategoryId());
         checkUserHasAccess(user, category.getMenu().getCompany());
         checkCategoryContainsLanguage(category, request.getLanguage());
-        final TranslationDto nameDto = new TranslationDto(request.getName(), request.getLanguage());
-        final Translation name = translationService.create(nameDto);
-        Long descriptionId = null;
-        if (request.getDescription() != null) {
-            final TranslationDto descriptionDto = new TranslationDto(request.getDescription(), request.getLanguage());
-            final Translation description = translationService.create(descriptionDto);
-            descriptionId = description.getId();
-        }
         final ProductDto productDto = ProductRequest.convertToProductDto(request);
         final Set<ProductPriceDto> productPriceDtos = ProductRequest.convertToProductPriceDto(request);
-        Product product = productService.create(request.getCategoryId(), productDto, name.getId(), descriptionId);
+        Product product = productService.create(request.getCategoryId(), productDto);
         product = productService.createProductPrices(product.getId(), productPriceDtos, request.getLanguage());
         final ProductModel productModel = ProductModel.convert(product, request.getLanguage());
         return MenuKitResponseEntity.success(productModel);
@@ -96,16 +87,10 @@ public class ProductController extends AuthenticationController {
         final Product product = productService.getById(productId);
         checkUserHasAccess(user, product.getCategory().getMenu().getCompany());
         checkCategoryContainsLanguage(product.getCategory(), request.getLanguage());
-        // Name
-        final Translation name = product.getNameTranslationByLanguage(request.getLanguage());
-        final Long nameId = translationService.createOrUpdateTranslation(name, request.getName(), request.getLanguage());
-        // Description
-        final Translation description = product.getDescriptionByLanguage(request.getLanguage());
-        final Long descriptionId = translationService.createOrUpdateTranslation(description, request.getDescription(), request.getLanguage());
         // DTO
         final ProductDto productDto = ProductRequest.convertToProductDto(request);
         final Set<ProductPriceDto> productPriceDtos = ProductRequest.convertToProductPriceDto(request);
-        final Product updatedProduct = productService.update(productId, productDto, nameId, descriptionId);
+        final Product updatedProduct = productService.update(productId, productDto);
         productService.createProductPrices(updatedProduct.getId(), productPriceDtos, request.getLanguage());
         final ProductModel productModel = ProductModel.convert(updatedProduct, request.getLanguage());
         return MenuKitResponseEntity.success(productModel);
@@ -124,15 +109,21 @@ public class ProductController extends AuthenticationController {
         return MenuKitResponseEntity.success(ImageUrlGenerator.getUrl(EntityType.PRODUCT, galleryImage));
     }
 
+    @RequestMapping(value = "/{productId}", method = RequestMethod.DELETE)
+    public ResponseEntity getByProductId(@PathVariable Long productId, @ModelAttribute User user) {
+        final Product product = productService.getById(productId);
+        checkUserHasAccess(user, product.getCategory().getMenu().getCompany());
+        productService.remove(productId);
+        return MenuKitResponseEntity.success();
+    }
+
     @RequestMapping(value = "{productId}/translate", method = RequestMethod.PUT)
     public ResponseEntity addTranslation(@PathVariable Long productId, @RequestBody ProductTranslationRequest request, @ModelAttribute User user) {
         final Product product = productService.getById(productId);
         checkUserHasAccess(user, product.getCategory().getMenu().getCompany());
-        final Translation translation = product.getNameTranslationByLanguage(request.getLanguage());
-        final Long nameId = translationService.createOrUpdateTranslation(translation, request.getName(), request.getLanguage());
-        final Translation description = product.getDescriptionByLanguage(request.getLanguage());
-        final Long descriptionId = translationService.createOrUpdateTranslation(description, request.getDescription(), request.getLanguage());
-        final Product updatedProduct = productService.update(productId, null, nameId, descriptionId);
+        final TranslationDto nameDto = new TranslationDto(request.getName(), request.getLanguage());
+        final TranslationDto descriptionDto = new TranslationDto(request.getName(), request.getLanguage());
+        final Product updatedProduct = productService.addOrUpdateTranslation(productId, nameDto, descriptionDto);
         return MenuKitResponseEntity.success(ProductModel.convert(updatedProduct, request.getLanguage()));
     }
 
