@@ -62,7 +62,7 @@ public class CategoryController extends AuthenticationController {
     public ResponseEntity addCategory(@RequestBody AddCategoryModelRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, menuService.getCompanyByMenuId(request.getMenuId()));
         final CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setTags(request.getTags().stream().map(Tag::new).collect(Collectors.toSet()));
+        categoryDto.setTags(request.getTags());
         final TranslationDto translationDto = new TranslationDto(request.getName(), request.getLanguage());
         final Translation translation = translationService.create(translationDto);
         final Category category = categoryService.create(categoryDto, request.getMenuId(), translation.getId());
@@ -74,7 +74,7 @@ public class CategoryController extends AuthenticationController {
     public ResponseEntity updateCategory(@PathVariable Long categoryId, @RequestBody UpdateCategoryRequest request, @ModelAttribute User user) {
         checkUserHasAccess(user, categoryService.getCompanyById(categoryId));
         final CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setTags(request.getTags().stream().map(Tag::new).collect(Collectors.toSet()));
+        categoryDto.setTags(request.getTags());
         Translation translation = null;
         if (request.getName() != null) {
             final Category category = categoryService.getCategoryOrNullByIdAndLanguage(categoryId, request.getLanguage());
