@@ -84,7 +84,7 @@ public class ProductRequest extends AbstractApiModel {
 
     public static ProductDto convertToProductDto(ProductRequest request) {
         final ProductDto productDto = new ProductDto();
-        productDto.setTags(TagModel.convertStringsToTags(request.getTags()));
+        productDto.setTags(request.getTags());
         productDto.setAvailable(request.getAvailable());
         return productDto;
     }

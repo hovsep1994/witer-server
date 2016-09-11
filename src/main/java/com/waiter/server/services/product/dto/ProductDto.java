@@ -11,22 +11,19 @@ import java.util.Set;
  */
 public class ProductDto extends AbstractDtoModel<Product> {
 
-    private Set<Tag> tags;
+    private Set<String> tags;
     private Boolean isAvailable;
 
     @Override
     public void updateProperties(Product product) {
-        if (getTags() != null) {
-            product.setTags(getTags());
-        }
         product.setAvailable(isAvailable == null ? true : isAvailable);
     }
 
-    public Set<Tag> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 

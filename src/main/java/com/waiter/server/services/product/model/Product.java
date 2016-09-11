@@ -63,7 +63,7 @@ public class Product extends AbstractEntityModel {
     }
 
     public Set<ProductPrice> getProductPrices() {
-        if(productPrices == null){
+        if (productPrices == null) {
             productPrices = new HashSet<>();
         }
         return productPrices;
@@ -106,6 +106,9 @@ public class Product extends AbstractEntityModel {
     }
 
     public Set<Translation> getNameSet() {
+        if (nameSet == null) {
+            nameSet = new HashSet<>();
+        }
         return nameSet;
     }
 

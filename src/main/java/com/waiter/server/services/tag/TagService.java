@@ -3,13 +3,13 @@ package com.waiter.server.services.tag;
 import com.waiter.server.services.tag.model.Tag;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author shahenpoghosyan
  */
 public interface TagService {
 
-    List<Long> insertAndGetIds(List<Tag> tags);
+    Set<Tag> create(Set<String> tagNames);
 
-    List<Tag> findTagIds(List<String> tags);
 }

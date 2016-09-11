@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Table(name = "tag")
 public class Tag extends AbstractEntityModel {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     public Tag() {

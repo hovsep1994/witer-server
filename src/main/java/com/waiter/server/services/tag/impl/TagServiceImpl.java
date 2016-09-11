@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author shahenpoghosyan
@@ -19,21 +22,14 @@ public class TagServiceImpl implements TagService {
     @Autowired
     private TagRepository tagRepository;
 
-    @Override
-    public List<Long> insertAndGetIds(List<Tag> tags) {
-        Assert.notNull(tags, "Tags must not be null");
-        List<Tag> savedTags = tagRepository.save(tags);
-        List<Long> ids = new ArrayList<>(savedTags.size());
-        for (int i = 0; i < savedTags.size(); i++) {
-            ids.add(i, savedTags.get(i).getId());
-        }
-        return ids;
+    public Set<Tag> create(Set<String> tagNames) {
+        final Set<Tag> existingTags = tagRepository.findByNames(tagNames);
+        tagNames.removeAll(Tag.toStringList(existingTags));
+        final Set<Tag> tags = tagNames.stream().map(Tag::new).collect(Collectors.toSet());
+        final List<Tag> createdTags = tagRepository.save(tags);
+        existingTags.addAll(createdTags);
+        return existingTags;
     }
 
-    @Override
-    public List<Tag> findTagIds(List<String> tags) {
-        List<Tag> savedTags = tagRepository.findByNames(tags);
-        return savedTags;
-    }
 }
 
