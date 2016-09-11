@@ -2,8 +2,10 @@ package com.waiter.server.api.product.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.common.model.AbstractApiLanguageModel;
+import com.waiter.server.api.common.model.AbstractApiModel;
 import com.waiter.server.api.product.model.ProductPriceModel;
 import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductPriceDto;
 
@@ -13,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Created by hovsep on 3/6/16.
  */
-public class ProductRequest extends AbstractApiLanguageModel {
+public class ProductRequest extends AbstractApiModel {
 
     @JsonProperty(value = "tags", required = false)
     private Set<String> tags;
@@ -26,6 +28,9 @@ public class ProductRequest extends AbstractApiLanguageModel {
 
     @JsonProperty(value = "name")
     private String name;
+
+    @JsonProperty(value = "language", required = true)
+    private Language language;
 
     private Boolean isAvailable;
 
@@ -59,6 +64,14 @@ public class ProductRequest extends AbstractApiLanguageModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
     public Boolean getAvailable() {

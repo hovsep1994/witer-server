@@ -3,11 +3,9 @@ package com.waiter.server.api.product;
 import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.product.model.ProductModel;
-import com.waiter.server.api.product.model.ProductPriceModel;
 import com.waiter.server.api.product.model.request.AddProductRequest;
 import com.waiter.server.api.product.model.request.ProductRequest;
 import com.waiter.server.api.product.model.request.ProductTranslationRequest;
-import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.category.CategoryService;
@@ -20,7 +18,6 @@ import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductPriceDto;
-import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
@@ -37,7 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author shahenpoghosyan
@@ -89,7 +85,8 @@ public class ProductController extends AuthenticationController {
         }
         final ProductDto productDto = ProductRequest.convertToProductDto(request);
         final Set<ProductPriceDto> productPriceDtos = ProductRequest.convertToProductPriceDto(request);
-        final Product product = productService.create(request.getCategoryId(), productDto, productPriceDtos, name.getId(), descriptionId);
+        Product product = productService.create(request.getCategoryId(), productDto, name.getId(), descriptionId);
+        product = productService.createProductPrices(product.getId(), productPriceDtos, request.getLanguage());
         final ProductModel productModel = ProductModel.convert(product, request.getLanguage());
         return MenuKitResponseEntity.success(productModel);
     }
@@ -107,7 +104,9 @@ public class ProductController extends AuthenticationController {
         final Long descriptionId = translationService.createOrUpdateTranslation(description, request.getName(), request.getLanguage());
         // DTO
         final ProductDto productDto = ProductRequest.convertToProductDto(request);
+        final Set<ProductPriceDto> productPriceDtos = ProductRequest.convertToProductPriceDto(request);
         final Product updatedProduct = productService.update(productId, productDto, nameId, descriptionId);
+        productService.createProductPrices(updatedProduct.getId(), productPriceDtos, request.getLanguage());
         final ProductModel productModel = ProductModel.convert(updatedProduct, request.getLanguage());
         return MenuKitResponseEntity.success(productModel);
     }

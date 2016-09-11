@@ -23,7 +23,7 @@ public interface ProductService {
 
     Product getById(Long id);
 
-    Product create(Long categoryId, ProductDto productDto, Set<ProductPriceDto> productPriceDtos, Long nameId, Long descriptionId);
+    Product create(Long categoryId, ProductDto productDto, Long nameId, Long descriptionId);
 
     Product update(Long productId, ProductDto productDto, Long nameId, Long descriptionId);
 
@@ -41,6 +41,6 @@ public interface ProductService {
 
     Company getCompanyByProductId(Long productId);
 
-    Set<ProductPrice> createProductPrices(Long productId, Set<ProductPriceDto> productPriceDtos, Language language);
+    Product createProductPrices(Long productId, Set<ProductPriceDto> productPriceDtos, Language language);
 
 }

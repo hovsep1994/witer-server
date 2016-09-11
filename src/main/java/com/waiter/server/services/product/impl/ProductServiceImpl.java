@@ -80,8 +80,7 @@ public class ProductServiceImpl implements ProductService {
     private EvaluationService evaluationService;
 
     @Override
-    public Product create(Long categoryId, ProductDto productDto, Set<ProductPriceDto> productPriceDtos,
-                          Long nameId, Long descriptionId) {
+    public Product create(Long categoryId, ProductDto productDto, Long nameId, Long descriptionId) {
         assertCategoryId(categoryId);
         notNull(productDto);
         notNull(nameId);
@@ -97,7 +96,6 @@ public class ProductServiceImpl implements ProductService {
             final Translation description = translationService.getById(descriptionId);
             product.getDescriptionSet().add(description);
         }
-        createProductPrices(product, productPriceDtos, name.getLanguage());
         return productRepository.save(product);
     }
 
@@ -202,12 +200,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Set<ProductPrice> createProductPrices(Long productId, Set<ProductPriceDto> productPriceDtos, Language language) {
+    public Product createProductPrices(Long productId, Set<ProductPriceDto> productPriceDtos, Language language) {
         Product product = getById(productId);
         return createProductPrices(product, productPriceDtos, language);
     }
 
-    private Set<ProductPrice> createProductPrices(Product product, Set<ProductPriceDto> productPriceDtos, Language language) {
+    private Product createProductPrices(Product product, Set<ProductPriceDto> productPriceDtos, Language language) {
         productPriceDtos.forEach(productPriceDto -> {
             ProductPrice productPrice = getProductContainProductPrice(product, productPriceDto.getId());
             if (productPrice != null) {
@@ -230,7 +228,7 @@ public class ProductServiceImpl implements ProductService {
                 productPrice.setProduct(product);
             }
         });
-        return productRepository.save(product).getProductPrices();
+        return productRepository.save(product);
     }
 
     private ProductPrice getProductContainProductPrice(Product product, Long productPriceId) {
