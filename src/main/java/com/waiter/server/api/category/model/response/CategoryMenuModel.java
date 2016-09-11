@@ -4,6 +4,7 @@ import com.waiter.server.api.product.model.response.ProductMenuModel;
 import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.language.Language;
+import com.waiter.server.services.tag.model.Tag;
 
 import java.util.List;
 import java.util.Set;
@@ -15,7 +16,8 @@ import java.util.stream.Collectors;
 public class CategoryMenuModel {
     private Long id;
     private String name;
-    private Set<TagModel> tags;
+    private Set<String> tags;
+    private String image;
     private List<ProductMenuModel> products;
 
     public Long getId() {
@@ -34,11 +36,11 @@ public class CategoryMenuModel {
         this.name = name;
     }
 
-    public Set<TagModel> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<TagModel> tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 
@@ -60,7 +62,7 @@ public class CategoryMenuModel {
         CategoryMenuModel categoryMenuModel = new CategoryMenuModel();
         categoryMenuModel.setName(category.getNameTranslationByLanguage(language).getText());
         categoryMenuModel.setId(category.getId());
-        categoryMenuModel.setTags(TagModel.convertToModel(category.getTags()));
+        categoryMenuModel.setTags(category.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
         categoryMenuModel.setProducts(ProductMenuModel.convert(category.getProducts(), language));
         return categoryMenuModel;
     }

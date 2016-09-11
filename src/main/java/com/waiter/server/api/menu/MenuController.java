@@ -43,7 +43,7 @@ public class MenuController extends AuthenticationController {
     }
 
     @RequestMapping(value = "/{menuId}", method = RequestMethod.GET)
-    public ResponseEntity getMenu(@PathVariable Long menuId, @RequestParam Language language) {
+    public ResponseEntity getMenu(@PathVariable Long menuId, @RequestParam(required = false) Language language) {
         final Menu menu = menuService.getById(menuId);
         if (language == null) {
             language = menu.getMainLanguage();

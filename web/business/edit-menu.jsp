@@ -44,10 +44,11 @@
     <%--</div>--%>
     <div class="container" id="add-category">
         <span>Add menu category</span>&nbsp;&nbsp;&nbsp;
-        <a href="" data-toggle="modal" data-target="#addCategoryModal">
+        <a href="" data-toggle="modal" data-target="#addCategoryModal" ng-click="newCategory()">
             <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button.png">
         </a>
         <%@ include file="modals/add_category_modal.jsp" %>
+        <%@ include file="modals/delete_category_modal.jsp" %>
     </div>
     <div class="container" id="categories">
         <ul class="nav nav-tabs">
@@ -60,8 +61,7 @@
                     <img style="cursor:pointer;" data-toggle="modal" data-target="#deleteCategoryModal"
                          src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
                 </a>
-                <%--<a href="" data-toggle="modal" data-target="#deleteVenueModal" ng-click="initRemove(venue.id)">--%>
-                <%--</a>--%>
+
             </li>
             <%@ include file="modals/delete_category_modal.jsp" %>
             <%--<%@ include file="modals/edit_venue_modal.jsp" %>--%>
@@ -99,21 +99,24 @@
                                     <option selected="selected" value="single">Single Price</option>
                                     <option value="multi">Multi Price</option>
                                 </select><br>
-                                <div style="overflow-y: scroll; max-height: 130px;">
-                                    <div ng-if="product.priceType=='multi'" ng-repeat="price in product.prices" style="margin-bottom: 5px;">
+                                <div ng-if="product.priceType=='multi'" style="overflow-y: scroll; max-height: 130px;">
+                                    <div ng-repeat="price in product.prices" style="margin-bottom: 5px;">
                                         <div style="display: inline-block; width: 40%;">
-                                            <input placeholder="type" class="form-control" type="text" ng-model="price.name">
+                                            <input placeholder="type" class="form-control" type="text" ng-model="price.name" ng-blur="checkAndUpdateProduct(product)">
                                         </div>
                                         <div style="display: inline-block; width: 35%;">
-                                            <input placeholder="price" class="form-control" type="number" ng-model="price.price">
+                                            <input placeholder="price" class="form-control" type="number" ng-model="price.price" ng-blur="checkAndUpdateProduct(product)">
                                         </div>
                                         <div style="display: inline-block; width: 20%; padding-left: 2px;">
-                                            <img style="cursor: pointer" ng-click="addPrice(product)" src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button.png">
-                                        </div>
+                                            <img style="cursor: pointer" ng-click="removePrice(product, $index)" src="${pageContext.request.contextPath}/styles/resources/business/admin/minus-button.png">
+                                        </div><br>
+                                    </div>
+                                    <div align="center">
+                                        <img style="cursor: pointer" ng-click="addPrice(product)" src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button.png">
                                     </div>
                                 </div>
                                 <div ng-if="product.priceType=='single'">
-                                    <input class="form-control" type="number" ng-model="product.price" placeholder="Price">
+                                    <input class="form-control" type="number" ng-model="product.prices[0].price" placeholder="Price" ng-blur="checkAndUpdateProduct(product)">
                                 </div>
                             </div>
                         </div>

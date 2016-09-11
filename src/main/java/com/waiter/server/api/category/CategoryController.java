@@ -6,6 +6,7 @@ import com.waiter.server.api.category.model.request.CategoryTranslateRequest;
 import com.waiter.server.api.category.model.request.UpdateCategoryRequest;
 import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
+import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.category.CategoryService;
@@ -93,8 +94,9 @@ public class CategoryController extends AuthenticationController {
     public ResponseEntity addTranslation(@PathVariable Long categoryId, @RequestBody CategoryTranslateRequest request, @ModelAttribute User user) {
         final Category category = categoryService.getById(categoryId);
         checkUserHasAccess(user, category.getMenu().getCompany());
-        final TranslationDto dto = new TranslationDto(request.getName(), request.getLanguage());
-        final Category updatedCategory = categoryService.addOrUpdateTranslation(categoryId, dto);
+        final Translation name = category.getNameTranslationByLanguage(request.getLanguage());
+        final Long nameId = translationService.createOrUpdateTranslation(name, request.getName(), request.getLanguage());
+        final Category updatedCategory = categoryService.update(categoryId, null, nameId);
         return MenuKitResponseEntity.success(CategoryModel.convert(updatedCategory, request.getLanguage()));
     }
 
