@@ -89,6 +89,7 @@ public class ProductRequest extends AbstractApiModel {
         productDto.setName(request.getName());
         productDto.setDescription(request.getDescription());
         productDto.setLanguage(request.getLanguage());
+        productDto.setProductPriceDtos(convertToProductPriceDto(request));
         return productDto;
     }
 

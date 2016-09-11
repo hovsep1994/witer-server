@@ -104,6 +104,7 @@ public class ProductServiceImpl implements ProductService {
             final Translation description = translationService.create(descriptionDto);
             product.getDescriptionSet().add(description);
         }
+        createProductPrices(product, productDto.getProductPriceDtos(), productDto.getLanguage());
         return productRepository.save(product);
     }
 
@@ -127,6 +128,7 @@ public class ProductServiceImpl implements ProductService {
             product.getDescriptionSet().add(description);
         }
         product.setUpdated(new Date());
+        createProductPrices(product, productDto.getProductPriceDtos(), productDto.getLanguage());
         return productRepository.save(product);
     }
 

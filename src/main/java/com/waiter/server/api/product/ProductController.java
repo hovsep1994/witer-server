@@ -71,13 +71,11 @@ public class ProductController extends AuthenticationController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity addProduct(@RequestBody AddProductRequest request, @ModelAttribute User user) {
-        Category category = categoryService.getById(request.getCategoryId());
+        final Category category = categoryService.getById(request.getCategoryId());
         checkUserHasAccess(user, category.getMenu().getCompany());
         checkCategoryContainsLanguage(category, request.getLanguage());
         final ProductDto productDto = ProductRequest.convertToProductDto(request);
-        final Set<ProductPriceDto> productPriceDtos = ProductRequest.convertToProductPriceDto(request);
-        Product product = productService.create(request.getCategoryId(), productDto);
-        product = productService.createProductPrices(product.getId(), productPriceDtos, request.getLanguage());
+        final Product product = productService.create(request.getCategoryId(), productDto);
         final ProductModel productModel = ProductModel.convert(product, request.getLanguage());
         return MenuKitResponseEntity.success(productModel);
     }
@@ -89,9 +87,7 @@ public class ProductController extends AuthenticationController {
         checkCategoryContainsLanguage(product.getCategory(), request.getLanguage());
         // DTO
         final ProductDto productDto = ProductRequest.convertToProductDto(request);
-        final Set<ProductPriceDto> productPriceDtos = ProductRequest.convertToProductPriceDto(request);
         final Product updatedProduct = productService.update(productId, productDto);
-        productService.createProductPrices(updatedProduct.getId(), productPriceDtos, request.getLanguage());
         final ProductModel productModel = ProductModel.convert(updatedProduct, request.getLanguage());
         return MenuKitResponseEntity.success(productModel);
     }

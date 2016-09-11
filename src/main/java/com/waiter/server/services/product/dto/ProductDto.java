@@ -13,6 +13,7 @@ import java.util.Set;
 public class ProductDto extends AbstractDtoModel<Product> {
 
     private Set<String> tags;
+    private Set<ProductPriceDto> productPriceDtos;
     private Boolean isAvailable;
     private String name;
     private String description;
@@ -61,5 +62,13 @@ public class ProductDto extends AbstractDtoModel<Product> {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public Set<ProductPriceDto> getProductPriceDtos() {
+        return productPriceDtos;
+    }
+
+    public void setProductPriceDtos(Set<ProductPriceDto> productPriceDtos) {
+        this.productPriceDtos = productPriceDtos;
     }
 }
