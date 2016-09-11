@@ -19,3 +19,15 @@
     margin-right: auto;
     color: white;
 }
+
+/*------------- delete venue modal ------------- */
+
+.deleteModal .modal-dialog .modal-content {
+    background-color: #f7f7f7 !important;
+    padding: 0 5% 0 5%;
+    text-align: center !important;
+}
+
+.deleteModal .modal-dialog {
+    padding-top: 13% !important;
+}
