@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "venue")
@@ -17,6 +18,9 @@ public class Venue extends AbstractEntityModel {
 
     @Column(name = "name")
     private String name;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<VenueType> venueTypes;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", nullable = false)
@@ -74,6 +78,14 @@ public class Venue extends AbstractEntityModel {
         this.gallery = gallery;
     }
 
+    public Set<VenueType> getVenueTypes() {
+        return venueTypes;
+    }
+
+    public void setVenueTypes(Set<VenueType> venueTypes) {
+        this.venueTypes = venueTypes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -82,6 +94,7 @@ public class Venue extends AbstractEntityModel {
                 .append("company", company)
                 .append("menu", menu)
                 .append("gallery", gallery)
+                .append("venueTypes", venueTypes)
                 .toString();
     }
 

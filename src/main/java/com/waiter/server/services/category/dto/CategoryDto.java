@@ -11,20 +11,17 @@ import java.util.Set;
  */
 public class CategoryDto extends AbstractDtoModel<Category> {
 
-    private Set<Tag> tags;
+    private Set<String> tags;
 
     @Override
     public void updateProperties(Category category) {
-        if (getTags() != null) {
-            category.setTags(getTags());
-        }
     }
 
-    public Set<Tag> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 }

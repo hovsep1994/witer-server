@@ -23,6 +23,8 @@ import com.waiter.server.services.product.dto.ProductPriceDto;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.product.model.ProductPrice;
+import com.waiter.server.services.tag.TagService;
+import com.waiter.server.services.tag.model.Tag;
 import com.waiter.server.services.translate.TranslatorService;
 import com.waiter.server.services.translate.dto.TextTranslationDto;
 import com.waiter.server.services.translation.TranslationService;
@@ -79,7 +81,11 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private EvaluationService evaluationService;
 
+    @Autowired
+    private TagService tagService;
+
     @Override
+    @Transactional
     public Product create(Long categoryId, ProductDto productDto, Long nameId, Long descriptionId) {
         assertCategoryId(categoryId);
         notNull(productDto);
@@ -90,6 +96,8 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         product.setGallery(new Gallery());
         product.setEvaluation(new Evaluation());
+        final Set<Tag> tags = tagService.create(productDto.getTags());
+        product.setTags(tags);
         final Translation name = translationService.getById(nameId);
         product.getNameSet().add(name);
         if (descriptionId != null) {
@@ -106,6 +114,8 @@ public class ProductServiceImpl implements ProductService {
         final Product product = productRepository.findOne(productId);
         if (productDto != null) {
             productDto.updateProperties(product);
+            final Set<Tag> tags = tagService.create(productDto.getTags());
+            product.getTags().addAll(tags);
         }
         if (nameId != null) {
             Translation name = translationService.getById(nameId);

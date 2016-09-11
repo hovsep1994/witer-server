@@ -17,6 +17,7 @@ import com.waiter.server.services.gallery.model.ImageType;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
+import com.waiter.server.services.tag.model.Tag;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.tag.TagService;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Set;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -78,6 +80,8 @@ public class CategoryServiceImpl implements CategoryService {
         category.setMenu(menu);
         category.getNameSet().add(translation);
         categoryDto.updateProperties(category);
+        final Set<Tag> tags = tagService.create(categoryDto.getTags());
+        category.setTags(tags);
         return categoryRepository.save(category);
     }
 
@@ -89,6 +93,8 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryDto != null) {
             assertCategoryDto(categoryDto);
             categoryDto.updateProperties(category);
+            final Set<Tag> tags = tagService.create(categoryDto.getTags());
+            category.setTags(tags);
         }
         if (translationId != null) {
             Translation translation = translationService.getById(translationId);
