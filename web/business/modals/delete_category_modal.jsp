@@ -13,7 +13,7 @@
                 Are you sure you want to delete category ? <br><br>
                 <div class="buttons">
                     <input type="button" class="btn btn-link" value="Cancel" data-dismiss="modal">
-                    <input type="button" class="btn btn-info" value="Delete" ng-click="remove()">
+                    <input type="button" class="btn btn-info" value="Delete" ng-click="removeCategory(category)">
                 </div>
             </div>
         </div>

@@ -125,7 +125,7 @@ public enum Currency {
     // QAR,
     // RON,
     // RSD,
-    // RUB,
+     RUB,
     // RWF,
     // SAR,
     // SBD,

@@ -19,7 +19,8 @@ function ProductService($http, host) {
         $http.post(productUrl, product).then(function (response) {
             if (response.data.status !== 'success') return done(response.data.errors);
 
-            done(null, response.data.response);
+            updateProductImage(response.data.response, done);
+
         });
     }
 
@@ -28,11 +29,31 @@ function ProductService($http, host) {
             done = function() { }
         }
 
+        console.log("product: ", product);
+
         $http.put(productUrl + productId, product).then(function (response) {
             if (response.data.status !== 'success') return done(response.data.errors);
 
-            done(null, response.data.response);
+            updateProductImage(response.data.response, done);
         });
+    }
+
+    function updateProductImage(product, done) {
+        if(product.image) {
+            var fd = new FormData();
+            fd.append('file', product.image);
+            $http.post(productUrl + product.id + "/image", fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(function (response) {
+                if (response.data.status !== 'success') return done(response.data.errors);
+
+                done(null, product);
+            });
+        } else {
+            done(null, product);
+        }
+
     }
 
     return this;

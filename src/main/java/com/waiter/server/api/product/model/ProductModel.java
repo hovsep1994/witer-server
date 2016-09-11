@@ -8,6 +8,7 @@ import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
+import com.waiter.server.services.tag.model.Tag;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class ProductModel {
 
     private String name;
 
-    private Set<TagModel> tagModels;
+    private Set<String> tags;
 
     private String image;
 
@@ -50,12 +51,12 @@ public class ProductModel {
         this.description = description;
     }
 
-    public Set<TagModel> getTagModels() {
-        return tagModels;
+    public Set<String> getTags() {
+        return tags;
     }
 
-    public void setTagModels(Set<TagModel> tagModels) {
-        this.tagModels = tagModels;
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
     }
 
     public CategoryModel getCategoryModel() {
@@ -96,7 +97,7 @@ public class ProductModel {
         productModel.setDescription(product.getDescriptionTextByLanguage(language));
         productModel.setName(product.getNameTranslationByLanguage(language).getText());
         productModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language));
-        productModel.setTagModels(TagModel.convertToModel(product.getTags()));
+        productModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
         productModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery().getGalleryImages()));
         return productModel;
     }
