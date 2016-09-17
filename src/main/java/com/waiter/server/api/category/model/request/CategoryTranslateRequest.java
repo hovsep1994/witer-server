@@ -28,4 +28,6 @@ public class CategoryTranslateRequest {
     public void setLanguage(Language language) {
         this.language = language;
     }
+
+
 }

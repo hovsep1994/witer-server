@@ -6,7 +6,6 @@ import com.waiter.server.api.category.model.request.CategoryTranslateRequest;
 import com.waiter.server.api.category.model.request.UpdateCategoryRequest;
 import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
-import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.category.CategoryService;
@@ -14,14 +13,12 @@ import com.waiter.server.services.category.dto.CategoryDto;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
-import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
-import com.waiter.server.services.tag.model.Tag;
 import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
-import com.waiter.server.services.translation.model.Translation;
+import com.waiter.server.services.translation.model.TranslationType;
 import com.waiter.server.services.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 /**
  * @author shahenpoghosyan
@@ -94,9 +90,11 @@ public class CategoryController extends AuthenticationController {
     public ResponseEntity addTranslation(@PathVariable Long categoryId, @RequestBody CategoryTranslateRequest request, @ModelAttribute User user) {
         final Category category = categoryService.getById(categoryId);
         checkUserHasAccess(user, category.getMenu().getCompany());
-        final Translation name = category.getNameTranslationByLanguage(request.getLanguage());
-        final Long nameId = translationService.createOrUpdateTranslation(name, request.getName(), request.getLanguage());
-        final Category updatedCategory = categoryService.update(categoryId, null, nameId);
+        final TranslationDto translationDto = new TranslationDto();
+        translationDto.setText(request.getName());
+        translationDto.setLanguage(request.getLanguage());
+        translationDto.setTranslationType(TranslationType.MANUAL);
+        final Category updatedCategory = categoryService.addOrUpdateTranslation(categoryId, translationDto);
         return MenuKitResponseEntity.success(CategoryModel.convert(updatedCategory, request.getLanguage()));
     }
 
