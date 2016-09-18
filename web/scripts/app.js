@@ -46,6 +46,19 @@ app.service('menuService', ['$http', 'BASE_URL', function ($http, BASE_URL) {
     return new MenuService($http, BASE_URL);
 }]);
 
+app.directive('customOnChange', function() {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var onChangeHandler = scope.$eval(attrs.customOnChange);
+            element.bind('change', function(event) {
+                onChangeHandler(event, attrs.id);
+            });
+        }
+    };
+});
+
+
 app.run(['$http', 'helper', 'COOKIE_TOKEN', function ($http, helper, COOKIE_TOKEN) {
     var token = helper.getCookie(COOKIE_TOKEN);
     if (token) {

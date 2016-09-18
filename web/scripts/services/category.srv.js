@@ -22,12 +22,16 @@ function CategoryService($http, host) {
 
             var createdCategory = response.data.response;
             createdCategory.image = category.image;
-            updateCategoryImage(createdCategory, function (err, url) {
-                if(err) return done(err);
+            if(createdCategory.image) {
+                updateCategoryImage(createdCategory, function (err, url) {
+                    if (err) return done(err);
 
-                createdCategory.image = url;
-                done(null, createdCategory)
-            });
+                    createdCategory.image = url;
+                    done(null, createdCategory)
+                });
+            } else {
+                done(null, createdCategory);
+            }
         });
     }
 
@@ -41,12 +45,16 @@ function CategoryService($http, host) {
 
             var createdCategory = response.data.response;
             createdCategory.image = category.image;
-            updateCategoryImage(createdCategory, function (err, url) {
-                if(err) return done(err);
+            if(createdCategory.image) {
+                updateCategoryImage(createdCategory, function (err, url) {
+                    if (err) return done(err);
 
-                createdCategory.image = url;
-                done(null, createdCategory)
-            });
+                    createdCategory.image = url;
+                    done(null, createdCategory)
+                });
+            } else {
+                done(null, createdCategory);
+            }
         });
     }
 
@@ -63,21 +71,16 @@ function CategoryService($http, host) {
     }
 
     function updateCategoryImage(category, done) {
-        if (category.image) {
-            console.log("category image", category);
-            var fd = new FormData();
-            fd.append('file', category.image);
-            $http.post(categoryUrl + category.id + "/image", fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            }).then(function (response) {
-                if (response.data.status !== 'success') return done(response.data.errors);
+        var fd = new FormData();
+        fd.append('file', category.image);
+        $http.post(categoryUrl + category.id + "/image", fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).then(function (response) {
+            if (response.data.status !== 'success') return done(response.data.errors);
 
-                done(null, response.data.response);
-            });
-        } else {
-            done(null, category);
-        }
+            done(null, response.data.response);
+        });
     }
 
     return this;

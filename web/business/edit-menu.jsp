@@ -29,18 +29,18 @@
     </div>
     <hr size="5">
     <%--<div class="container" style="padding-bottom: 50px">--%>
-        <%--<div class="menu-info-inputs">--%>
-            <%--<label for="menu-name"><h4>Menu Name</h4></label><br>--%>
-            <%--<input type="text" class="form-control" id="menu-name">--%>
-        <%--</div>--%>
-        <%--<div class="menu-info-inputs">--%>
-            <%--<label for="menu-language"><h4>Menu Language</h4></label><br>--%>
-            <%--<select class="form-control" id="menu-language" disabled></select>--%>
-        <%--</div>--%>
-        <%--<div class="menu-info-inputs">--%>
-            <%--<label for="menu-currency"><h4>Menu Currency</h4></label><br>--%>
-            <%--<select class="form-control" id="menu-currency" disabled></select>--%>
-        <%--</div>--%>
+    <%--<div class="menu-info-inputs">--%>
+    <%--<label for="menu-name"><h4>Menu Name</h4></label><br>--%>
+    <%--<input type="text" class="form-control" id="menu-name">--%>
+    <%--</div>--%>
+    <%--<div class="menu-info-inputs">--%>
+    <%--<label for="menu-language"><h4>Menu Language</h4></label><br>--%>
+    <%--<select class="form-control" id="menu-language" disabled></select>--%>
+    <%--</div>--%>
+    <%--<div class="menu-info-inputs">--%>
+    <%--<label for="menu-currency"><h4>Menu Currency</h4></label><br>--%>
+    <%--<select class="form-control" id="menu-currency" disabled></select>--%>
+    <%--</div>--%>
     <%--</div>--%>
     <div class="container" id="add-category">
         <span>Add menu category</span>&nbsp;&nbsp;&nbsp;
@@ -52,7 +52,8 @@
     </div>
     <div class="container" id="categories">
         <ul class="nav nav-tabs">
-            <li ng-repeat="category in menu.categories" ng-click="selectCategory(category)" class="{{category.active ? 'active' : ''}}">
+            <li ng-repeat="category in menu.categories" ng-click="selectCategory(category)"
+                class="{{category.active ? 'active' : ''}}">
                 <a data-toggle="tab" href="#category{{category.id}}-products">
                     {{category.name}} &nbsp;&nbsp;
                     <img style="cursor:pointer;" data-toggle="modal" data-target="#addCategoryModal"
@@ -63,110 +64,129 @@
                 </a>
 
             </li>
-            <%@ include file="modals/delete_category_modal.jsp" %>
-            <%--<%@ include file="modals/edit_venue_modal.jsp" %>--%>
         </ul>
 
         <div class="tab-content">
-            <div ng-repeat="category in menu.categories" id="category{{category.id}}-products" class="tab-pane fade {{category.active ? 'in active' : ''}}">
+            <div ng-repeat="category in menu.categories" id="category{{category.id}}-products"
+                 class="tab-pane fade {{category.active ? 'in active' : ''}}">
                 <div class="products-container">
                     <div ng-repeat="product in category.products" class="col-lg-6 product {getProductClass($index)}">
                         <div class="product-buttons">
-                            <button type="button" class="btn btn-primary delete">Delete Product</button>
+                            <button ng-if="product.id" data-toggle="modal" data-target="#deleteProductModal"
+                                    type="button" class="btn btn-primary delete" ng-click="selectProduct(product)">
+                                Delete Product
+                            </button>
                             <button type="button" class="btn btn-primary not-available">
                                 <span class="text-available">Available</span>
                                 <span class="text-not-available">Not available</span>
                             </button>
                         </div>
                         <div class="product-info">
-                            <div class="grid-padding-small col-lg-3" style="width: 20%; padding-left: 10px; padding-right: 0px">
-                                <div class="image" >
-                                    <label for="file-input">
+                            <div class="grid-padding-small col-lg-3"
+                                 style="width: 20%; padding-left: 10px; padding-right: 0px">
+                                <div class="image">
+                                    <label for="pImage-{{randomId(product)}}">
                                         <img style="cursor: pointer;"
-                                             src="{{product.image}}" width="95px" height="95px">
+                                             src="{{product.displayImage}}" width="95px" height="95px">
                                     </label>
-                                    <input accept=".png,.jpg,.jpeg"  id="file-input" type="file" style="display: none"
-                                           onchange="angular.element(this).scope().image_changed(this)" />
+                                    <input accept=".png,.jpg,.jpeg"
+                                           id="pImage-{{randomId(product)}}" type="file" style="display: none"
+                                           custom-on-change="checkAndUpdateProductImage" ng-model="product.imageData"
+                                           ng-click="selectProduct(product)"/>
                                 </div>
                             </div>
-                            <div class="grid-padding-small col-lg-6" style="width: 45%; padding-left: 5px; padding-right: 0px">
-                                <input class="form-control" ng-blur="checkAndUpdateProduct(product)" ng-model="product.name">
-                                <textarea class="form-control" style="height: 100px" ng-blur="checkAndUpdateProduct(product)" ng-model="product.description"></textarea>
-                                <input class="form-control" ng-blur="checkAndUpdateProduct(product)" ng-model="product.tags">
+                            <div class="grid-padding-small col-lg-6"
+                                 style="width: 45%; padding-left: 5px; padding-right: 0px">
+                                <input class="form-control" ng-blur="checkAndUpdateProduct(product)"
+                                       ng-model="product.name">
+                                <textarea class="form-control" style="height: 100px"
+                                          ng-blur="checkAndUpdateProduct(product)"
+                                          ng-model="product.description"></textarea>
+                                <input class="form-control" ng-blur="checkAndUpdateProduct(product)"
+                                       ng-model="product.tags">
                             </div>
-                            <div class="col-lg-3 grid-padding-small" style="width: 35%; padding-left: 10px; padding-right: 10px">
+                            <div class="col-lg-3 grid-padding-small"
+                                 style="width: 35%; padding-left: 10px; padding-right: 10px">
                                 <select class="form-control" ng-model="product.priceType">
                                     <option selected="selected" value="single">Single Price</option>
                                     <option value="multi">Multi Price</option>
                                 </select><br>
+
                                 <div ng-if="product.priceType=='multi'" style="overflow-y: scroll; max-height: 130px;">
                                     <div ng-repeat="price in product.prices" style="margin-bottom: 5px;">
                                         <div style="display: inline-block; width: 40%;">
-                                            <input placeholder="type" class="form-control" type="text" ng-model="price.name" ng-blur="checkAndUpdateProduct(product)">
+                                            <input placeholder="type" class="form-control" type="text"
+                                                   ng-model="price.name" ng-blur="checkAndUpdateProduct(product)">
                                         </div>
                                         <div style="display: inline-block; width: 35%;">
-                                            <input placeholder="price" class="form-control" type="number" ng-model="price.price" ng-blur="checkAndUpdateProduct(product)">
+                                            <input placeholder="price" class="form-control" type="number"
+                                                   ng-model="price.price" ng-blur="checkAndUpdateProduct(product)">
                                         </div>
                                         <div style="display: inline-block; width: 20%; padding-left: 2px;">
-                                            <img style="cursor: pointer" ng-click="removePrice(product, $index)" src="${pageContext.request.contextPath}/styles/resources/business/admin/minus-button.png">
-                                        </div><br>
+                                            <img style="cursor: pointer" ng-click="removePrice(product, $index)"
+                                                 src="${pageContext.request.contextPath}/styles/resources/business/admin/minus-button.png">
+                                        </div>
+                                        <br>
                                     </div>
                                     <div align="center">
-                                        <img style="cursor: pointer" ng-click="addPrice(product)" src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button.png">
+                                        <img style="cursor: pointer" ng-click="addPrice(product)"
+                                             src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button.png">
                                     </div>
                                 </div>
                                 <div ng-if="product.priceType=='single'">
-                                    <input class="form-control" type="number" ng-model="product.prices[0].price" placeholder="Price" ng-blur="checkAndUpdateProduct(product)">
+                                    <input class="form-control" type="number" ng-model="product.prices[0].price"
+                                           placeholder="Price" ng-blur="checkAndUpdateProduct(product)">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 add-product">
-                        <img src="${pageContext.request.contextPath}/styles/resources/business/admin/new-product.png"><br><br>
-                        One more product
-                    </div>
+                    <%--<div class="col-lg-6 add-product">--%>
+                        <%--<img src="${pageContext.request.contextPath}/styles/resources/business/admin/new-product.png"><br><br>--%>
+                        <%--One more product--%>
+                    <%--</div>--%>
+                    <%@ include file="modals/delete_product_modal.jsp" %>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <%--<div class="desc navbar-fixed-bottom">--%>
-    <%--<div class="menu-attach">--%>
-        <%--<div>--%>
-            <%--<div class="dropup" style="max-width: 300px; display: inline-block;">--%>
-                <%--<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" style="width: 100%" >--%>
-                    <%--Choose which venues to attach menu &nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>--%>
-                <%--<ul class="dropdown-menu attach-venues">--%>
-                    <%--<li>--%>
-                        <%--<a><span>Venue 1</span><div class="image-div"></div></a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<a><span>Venue 2</span><div class="image-div"></div></a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<a><span>Venue 3</span><div class="image-div"></div></a>--%>
-                    <%--</li>--%>
-                    <%--<li>--%>
-                        <%--<a><span>Venue 4</span><div class="image-div"></div></a>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
-            <%--</div>--%>
-            <%--<div style="display: inline; float: right; right: 0;">--%>
-                <%--<input type="button" class="btn btn-info" value="Save" style="width: 80px">--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
+<%--<div class="menu-attach">--%>
+<%--<div>--%>
+<%--<div class="dropup" style="max-width: 300px; display: inline-block;">--%>
+<%--<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" style="width: 100%" >--%>
+<%--Choose which venues to attach menu &nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>--%>
+<%--<ul class="dropdown-menu attach-venues">--%>
+<%--<li>--%>
+<%--<a><span>Venue 1</span><div class="image-div"></div></a>--%>
+<%--</li>--%>
+<%--<li>--%>
+<%--<a><span>Venue 2</span><div class="image-div"></div></a>--%>
+<%--</li>--%>
+<%--<li>--%>
+<%--<a><span>Venue 3</span><div class="image-div"></div></a>--%>
+<%--</li>--%>
+<%--<li>--%>
+<%--<a><span>Venue 4</span><div class="image-div"></div></a>--%>
+<%--</li>--%>
+<%--</ul>--%>
+<%--</div>--%>
+<%--<div style="display: inline; float: right; right: 0;">--%>
+<%--<input type="button" class="btn btn-info" value="Save" style="width: 80px">--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
 <%--</div>--%>
 </body>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $(document).on('click', '.dropdown-menu', function (e) {
             e.stopPropagation();
         });
 
         $('.attach-venues li').on('click', function (event) {
-            if($(this).hasClass('selected')) {
+            if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
             } else {
                 $(this).toggleClass('selected');

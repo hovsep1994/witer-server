@@ -13,17 +13,21 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
         self.updateCategory = updateCategory;
         self.newCategory = newCategory;
         self.removeCategory = removeCategory;
-
-        self.getProductClass = getProductClass;
         self.selectCategory = selectCategory;
-        self.checkAndUpdateProduct = checkAndUpdateProduct;
-        self.addPrice = addPrice;
-        self.removePrice = removePrice;
 
-        self.image_changed = image_changed;
+        self.addProduct = addProduct;
+        self.checkAndUpdateProduct = checkAndUpdateProduct;
+        self.checkAndUpdateProductImage = checkAndUpdateProductImage;
+        self.selectProduct = selectProduct;
+        self.removeProduct = removeProduct;
+        self.removePrice = removePrice;
+        self.addPrice = addPrice;
+        self.getProductClass = getProductClass;
+        self.randomId = randomId;
 
         self.menu = {};
         self.category = {};
+        self.editProduct = {};
 
         menuService.findById(getMenuId(), function (err, menu) {
             if (err) return console.log(err);
@@ -34,12 +38,7 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
                 category.products = category.products.map(function(p) {
                     return convertToProductCtrlModel(p);
                 });
-                category.products = (category.products || []).concat({
-                    new: true,
-                    prices: [{}],
-                    priceType: 'single',
-                    image: "/styles/resources/business/admin/image-icon.png"
-                });
+                addProduct(category);
                 return category;
             });
 
@@ -71,7 +70,7 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
                     return c.id != category.id;
                 });
                 if(self.menu.categories.length) {
-                    self.category = self.menu.categories[0];
+                    selectCategory(self.menu.categories[0]);
                 }
                 $('#deleteCategoryModal').hide();
                 $('.modal-backdrop').hide();
@@ -94,20 +93,61 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
                 categoryService.update(category.id, convertToCategoryModel(category), process);
             }
             function process() {
-                $('#addCategoryModal').hide();
+                $('#addCategoryModal').modal('toggle');
                 $('.modal-backdrop').hide();
             }
+        }
+
+        function addProduct(category) {
+            category.products = (category.products || []).concat({
+                new: true,
+                prices: [{}],
+                priceType: 'single',
+                displayImage: "/styles/resources/business/admin/image-icon.png"
+            });
         }
 
         function checkAndUpdateProduct(product) {
             var productModel = convertToProductModel(product, self.category, self.menu);
             if (checkProduct(productModel)) {
-                if(productModel.new) {
-                    productService.create(productModel);
+                if(product.new) {
+                    productService.create(productModel, function(err, p) {
+                        product.id = p.id;
+                        addProduct(self.category);
+                    });
                 } else {
                     productService.update(productModel.id, productModel);
                 }
             }
+        }
+
+        function checkAndUpdateProductImage(event, id) {
+            var product = self.editProduct;
+            var files = event.target.files;
+            var photofile = files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                self.$apply(function () {
+                    product.displayImage = e.target.result;
+                    product.image = photofile;
+
+                    checkAndUpdateProduct(product);
+                });
+            };
+            reader.readAsDataURL(photofile);
+        }
+
+        function removeProduct(product) {
+            productService.remove(product.id, function(err) {
+                if(err) return console.log(err);
+
+                self.category.products = self.category.products.filter(function(p) {
+                    return p.id != product.id;
+                });
+                //$('#deleteProductModal').hide();
+                $('#deleteProductModal').modal('toggle');
+                $('.modal-backdrop').hide();
+            });
         }
 
         function addPrice(product) {
@@ -119,19 +159,9 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
             checkAndUpdateProduct(product);
         }
 
-        function image_changed(element, item) {
-            var photofile = element.files[0];
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                self.$apply(function () {
-                    item.displayImage = e.target.result;
-                    item.image = photofile;
-                    console.log("item: " , item)
-                });
-            };
-            reader.readAsDataURL(photofile);
+        function selectProduct(product) {
+            self.editProduct = product;
         }
-
 
         function convertToCategoryModel(category) {
             return {
@@ -151,16 +181,17 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
         }
 
         function convertToProductModel(product, category, menu) {
-            console.log("before convert: ", product);
             var p = {
                 id: product.id,
                 name: product.name,
                 tags: (product.tags || '').split(','),
                 description: product.description,
+                image: product.image,
                 categoryId: category.id,
                 language: menu.mainLanguage
             };
             if (product.priceType == 'single') {
+                product.prices[0].name = "";
                 p.productPrices = [product.prices[0]];
             } else {
                 p.productPrices = product.prices.filter(function (p) {
@@ -171,9 +202,9 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
         }
 
         function convertToProductCtrlModel(p) {
-            if(!p.image) {
-                p.image = "/styles/resources/business/admin/image-icon.png";
-            }
+            p.displayImage = p.image ? p.image : "/styles/resources/business/admin/image-icon.png";
+            delete p.image;
+
             p.tags = p.tags.join(",");
             if(p.productPrices.length == 1) {
                 p.priceType = 'single';
@@ -212,4 +243,10 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
             };
         }
 
+        function randomId(product) {
+            if(!product.random) {
+                product.random = "random-" + Math.floor(Math.random() * 1000) + 1;
+            }
+            return product.random;
+        }
     }]);
