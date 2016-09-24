@@ -16,7 +16,7 @@ public class Gallery extends AbstractEntityModel {
     @Column(name = "system_gallery", nullable = false)
     private boolean systemGallery;
 
-    @OneToMany(mappedBy = "gallery", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "gallery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<GalleryImage> galleryImages;
 
     public Gallery() {
