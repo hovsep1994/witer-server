@@ -35,7 +35,7 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
             self.menu = menu;
             self.menu.categories = self.menu.categories.map(function (category) {
                 category = convertToCategoryCtrlModel(category);
-                category.products = category.products.map(function(p) {
+                category.products = category.products.map(function (p) {
                     return convertToProductCtrlModel(p);
                 });
                 addProduct(category);
@@ -63,18 +63,17 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
         }
 
         function removeCategory(category) {
-            categoryService.remove(category.id, function(err) {
-                if(err) return console.log(err);
+            categoryService.remove(category.id, function (err) {
+                if (err) return console.log(err);
 
-                self.menu.categories = self.menu.categories.filter(function(c) {
+                self.menu.categories = self.menu.categories.filter(function (c) {
                     return c.id != category.id;
                 });
-                if(self.menu.categories.length) {
+                if (self.menu.categories.length) {
                     selectCategory(self.menu.categories[0]);
                 }
                 $('#deleteCategoryModal').hide();
-                $('.modal-backdrop').hide();
-            })
+            });
         }
 
         function addCategory(category, done) {
@@ -87,7 +86,7 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
         }
 
         function updateCategory(category) {
-            if(category.new) {
+            if (category.new) {
                 addCategory(category, process);
             } else {
                 categoryService.update(category.id, convertToCategoryModel(category), process);
@@ -107,21 +106,25 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
             });
         }
 
-        function checkAndUpdateProduct(product) {
+        function checkAndUpdateProduct(index) {
+            var product = self.category.products[index];
             var productModel = convertToProductModel(product, self.category, self.menu);
             if (checkProduct(productModel)) {
-                if(product.new) {
-                    productService.create(productModel, function(err, p) {
+                if (product.new) {
+                    productService.create(productModel, function (err, p) {
                         product.id = p.id;
+                        product.new = false;
                         addProduct(self.category);
                     });
                 } else {
-                    productService.update(productModel.id, productModel);
+                    productService.update(productModel.id, productModel, function(err, createdProduct) {
+                        self.category.products[index] = convertToProductCtrlModel(createdProduct);
+                    });
                 }
             }
         }
 
-        function checkAndUpdateProductImage(event, id) {
+        function checkAndUpdateProductImage(event) {
             var product = self.editProduct;
             var files = event.target.files;
             var photofile = files[0];
@@ -138,20 +141,20 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
         }
 
         function removeProduct(product) {
-            productService.remove(product.id, function(err) {
-                if(err) return console.log(err);
+            console.log("valod");
+            productService.remove(product.id, function (err) {
+                if (err) return console.log(err);
 
-                self.category.products = self.category.products.filter(function(p) {
+                self.category.products = self.category.products.filter(function (p) {
                     return p.id != product.id;
                 });
-                //$('#deleteProductModal').hide();
                 $('#deleteProductModal').modal('toggle');
-                $('.modal-backdrop').hide();
+                self.editProduct = self.category.products[0];
             });
         }
 
         function addPrice(product) {
-            product.prices = product.prices.concat({});
+            product.prices.push({});
         }
 
         function removePrice(product, index) {
@@ -206,14 +209,13 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
             delete p.image;
 
             p.tags = p.tags.join(",");
-            if(p.productPrices.length == 1) {
+            if (p.productPrices.length == 1) {
                 p.priceType = 'single';
             } else {
                 p.priceType = 'multi'
             }
             p.prices = p.productPrices;
             delete p.productPrices;
-            console.log("p: ", p);
             return p;
         }
 
@@ -230,10 +232,19 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
         }
 
         function checkProduct(product) {
-            return product.name && product.productPrices.filter(function (p) {
+            if (!product.name) return false;
 
-                    return p.price;
-                }).length;
+            if (!product.productPrices || !product.productPrices.length) return false;
+
+            if (product.productPrices.length == 1 && !product.productPrices[0].price) return false;
+
+            var multiProductCheck = product.productPrices.every(function (p) {
+                return p.name && p.price;
+            });
+            if (product.productPrices.length > 1 && !multiProductCheck) {
+                return false;
+            }
+            return true;
         }
 
         function newCategory() {
@@ -244,7 +255,7 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
         }
 
         function randomId(product) {
-            if(!product.random) {
+            if (!product.random) {
                 product.random = "random-" + Math.floor(Math.random() * 1000) + 1;
             }
             return product.random;

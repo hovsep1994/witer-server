@@ -18,6 +18,7 @@ function ProductService($http, host) {
 
         $http.post(productUrl, product).then(function (response) {
             if (response.data.status !== 'success') return done(response.data.errors);
+            console.log("produc service: ", product.productPrices);
 
             var createdProduct = response.data.response;
             createdProduct.image = product.image;

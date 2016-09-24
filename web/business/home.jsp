@@ -38,7 +38,7 @@
             <%---- -------------------- Venues Section ------------------------%>
             <div ng-controller="venueCtrl" id="venues" class="venues-panel tab-pane fade in active">
                 <div class="panel-headers-row row">
-                    <div class="col-lg-3 col-md-3 panel-headers-col-left">
+                    <div class="col-lg-3 col-md-3 panel-headers-col-left" style="padding: 8px 0 8px 0">
                         <span>VENUES</span> &nbsp;
                         <a href="" data-toggle="modal" data-target="#editVenueModal" ng-click="initEditVenue(true)">
                             <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button-black.png">
@@ -105,14 +105,14 @@
             <!-- ------------- Menu Section ------------------>
             <div ng-controller="menuCtrl" id="menus" class="tab-pane fade">
                 <div class="panel-headers-row row">
-                    <div class="col-lg-3 col-md-3 panel-headers-col-left">
-                        <span>MENUS</span>
+                    <div class="col-lg-3 col-md-3 panel-headers-col-left" style="padding: 8px 0 8px 0; width: 25%">
+                        <span>MENUS</span>  &nbsp;
                         <a href="" data-toggle="modal" data-target="#editMenuModal" ng-click="initEdit(true)">
                             <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button-black.png">
                         </a>
                     </div>
-                    <div class="col-lg-1 col-md-1 panel-headers-col-middle">LANGUAGES</div>
-                    <div class="col-lg-2 col-md-2 panel-headers-col-middle">CATEGORIES</div>
+                    <div class="col-lg-1 col-md-1 panel-headers-col-middle" style="width: 12.5%">LANGUAGES</div>
+                    <div class="col-lg-2 col-md-2 panel-headers-col-middle" style="width: 12.5%">CATEGORIES</div>
                     <div class="col-lg-6 col-md-6 panel-headers-col-right">PRODUCTS</div>
                     <%@ include file="modals/edit_menu_dialog.jsp" %>
                 </div>
@@ -121,17 +121,17 @@
                     <div class="item-list col-lg-3">
                         <ul class="nav nav-pills nav-stacked">
                             <li ng-repeat="menu in menus">
-                                <span data-toggle="pill" ng-click="selectMenu(menu)">{{menu.name}}</span>
+                                <span data-toggle="pill" ng-click="selectMenuByIndex($index)">{{menu.name}}</span>
                                 <a href="" data-toggle="modal" data-target="#deleteVenueModal">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
                                 </a>
-                                <a href="" data-toggle="modal" data-target="#editMenuModal">
+                                <a href="" data-toggle="modal" data-target="#editMenuModal" ng-click="initEdit(false, menu)">
                                     <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <div class="item-list col-lg-1">
+                    <div class="item-list col-lg-1" style="width: 12.5%">
                         <ul class="nav nav-pills nav-stacked">
                             <li ng-repeat="language in activeMenu.languages" ng-click="selectLanguage(language)">
                                 <span>{{language}}</span>
@@ -144,34 +144,36 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="item-list col-lg-2">
+                    <div class="item-list col-lg-2" style="width: 12.5%">
                         <ul class="nav nav-pills nav-stacked">
-                            <li><span data-toggle="pill" href="#venue1">All</span></li>
-                            <li><span data-toggle="pill" href="#venue2">Pizzas</span></li>
-                            <li><span data-toggle="pill" href="#venue2">Drinks</span></li>
+                            <li ng-repeat="category in activeMenu.categories" ng-click="selectCategory(category)">
+                                <span data-toggle="pill">{{category.name}}</span>
+                            </li>
                         </ul>
                     </div>
-                    <div class="col-lg-6" style="padding-left: 0; padding-right: 0; ">
+                    <div class="col-lg-6" style="padding-left: 0; padding-right: 0; max-height: 115%; overflow-y: scroll; ">
                         <ul style="list-style:none; padding-left: 0px">
-                            <li>
-                                <div class="product-item">
+                            <li ng-repeat="product in activeCategory.products">
+                                <div class="product-item" ng-style="product.style">
                                     <div class="col-lg-3">
-                                        <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-image.png"
-                                             width="120px"/>
+                                        <img src="{{product.displayImage}}" width="120px"/>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <h5>French breckfest N!</h5>
-
-                                        <p>2 fried eggs. bacon, toasts, kiwi, orange juice</p>
-
-                                        <p>breakfast meal</p>
+                                    <div class="col-lg-5">
+                                        <h5>{{product.name}}</h5>
+                                        <p>{{product.description}}</p>
+                                        <p>{{product.tags}}</p>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-4">
                                         <div class="product-prices">
-                                            <div>
-                                                <h5>2500AMD</h5>
-                                                <h5>2500AMD</h5>
-                                                <h5>2500AMD</h5>
+                                            <div ng-if="product.priceType=='multi'" class="product-multi-price">
+                                                <div ng-repeat="price in product.prices" style="margin-bottom: 5px;">
+                                                    <div style="display: inline-block; width: 50%;">{{price.name}}</div>
+                                                    <div style="display: inline-block; width: 35%;">{{price.price}}</div>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                            <div ng-if="product.priceType=='single'" style="padding-top: 30%;">
+                                                <span>{{product.prices[0].price}}</span>
                                             </div>
                                         </div>
                                     </div>
