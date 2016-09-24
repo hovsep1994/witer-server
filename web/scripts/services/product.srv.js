@@ -9,9 +9,9 @@ function ProductService($http, host) {
 
     this.create = create;
     this.update = update;
+    this.remove = remove;
 
     function create(product, done) {
-        alert(JSON.stringify(product));
         if(!done) {
             done = function() { }
         }
@@ -19,8 +19,18 @@ function ProductService($http, host) {
         $http.post(productUrl, product).then(function (response) {
             if (response.data.status !== 'success') return done(response.data.errors);
 
-            updateProductImage(response.data.response, done);
+            var createdProduct = response.data.response;
+            createdProduct.image = product.image;
+            if(createdProduct.image) {
+                updateProductImage(createdProduct, function (err, url) {
+                    if (err) return done(err);
 
+                    createdProduct.image = url;
+                    done(null, createdProduct)
+                });
+            } else {
+                done(null, createdProduct);
+            }
         });
     }
 
@@ -29,31 +39,49 @@ function ProductService($http, host) {
             done = function() { }
         }
 
-        console.log("product: ", product);
-
         $http.put(productUrl + productId, product).then(function (response) {
             if (response.data.status !== 'success') return done(response.data.errors);
 
-            updateProductImage(response.data.response, done);
+            var createdProduct = response.data.response;
+            createdProduct.image = product.image;
+
+            if(createdProduct.image) {
+                updateProductImage(createdProduct, function (err, url) {
+                    if (err) return done(err);
+
+                    createdProduct.image = url;
+                    done(null, createdProduct)
+                });
+            } else {
+                done(null, createdProduct);
+            }
         });
     }
 
-    function updateProductImage(product, done) {
-        if(product.image) {
-            var fd = new FormData();
-            fd.append('file', product.image);
-            $http.post(productUrl + product.id + "/image", fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            }).then(function (response) {
-                if (response.data.status !== 'success') return done(response.data.errors);
-
-                done(null, product);
-            });
-        } else {
-            done(null, product);
+    function remove(id, done) {
+        if (!done) {
+            done = function () {};
         }
+        $http.delete(productUrl + id).then(function (response) {
+            if (response.data.status !== 'success') return done(response.data.errors);
 
+            done(null, response.data.response);
+        });
+
+    }
+
+    function updateProductImage(product, done) {
+        var fd = new FormData();
+        fd.append('file', product.image);
+        console.log("valod: ", product.image);
+        $http.post(productUrl + product.id + "/image", fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).then(function (response) {
+            if (response.data.status !== 'success') return done(response.data.errors);
+
+            done(null, response.data.response);
+        });
     }
 
     return this;
