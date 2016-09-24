@@ -15,10 +15,6 @@
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/commons.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/commons.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-            crossorigin="anonymous"></script>
 
 </head>
 <body ng-app="app">
@@ -97,12 +93,12 @@
                             </div>
                             <div class="grid-padding-small col-lg-6"
                                  style="width: 45%; padding-left: 5px; padding-right: 0px">
-                                <input class="form-control" ng-blur="checkAndUpdateProduct(product)"
+                                <input class="form-control" ng-blur="checkAndUpdateProduct($index)"
                                        ng-model="product.name">
                                 <textarea class="form-control" style="height: 100px"
-                                          ng-blur="checkAndUpdateProduct(product)"
+                                          ng-blur="checkAndUpdateProduct($index)"
                                           ng-model="product.description"></textarea>
-                                <input class="form-control" ng-blur="checkAndUpdateProduct(product)"
+                                <input class="form-control" ng-blur="checkAndUpdateProduct($index)"
                                        ng-model="product.tags">
                             </div>
                             <div class="col-lg-3 grid-padding-small"
@@ -116,11 +112,11 @@
                                     <div ng-repeat="price in product.prices" style="margin-bottom: 5px;">
                                         <div style="display: inline-block; width: 40%;">
                                             <input placeholder="type" class="form-control" type="text"
-                                                   ng-model="price.name" ng-blur="checkAndUpdateProduct(product)">
+                                                   ng-model="price.name" ng-blur="checkAndUpdateProduct($parent.$index)">
                                         </div>
                                         <div style="display: inline-block; width: 35%;">
                                             <input placeholder="price" class="form-control" type="number"
-                                                   ng-model="price.price" ng-blur="checkAndUpdateProduct(product)">
+                                                   ng-model="price.price" ng-blur="checkAndUpdateProduct($parent.$index)">
                                         </div>
                                         <div style="display: inline-block; width: 20%; padding-left: 2px;">
                                             <img style="cursor: pointer" ng-click="removePrice(product, $index)"
@@ -135,7 +131,7 @@
                                 </div>
                                 <div ng-if="product.priceType=='single'">
                                     <input class="form-control" type="number" ng-model="product.prices[0].price"
-                                           placeholder="Price" ng-blur="checkAndUpdateProduct(product)">
+                                           placeholder="Price" ng-blur="checkAndUpdateProduct($index)">
                                 </div>
                             </div>
                         </div>

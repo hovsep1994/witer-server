@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div ng-controller="menuCtrl" id="editMenuModal" class="modal fade editMenuModal" role="dialog">
+<div id="editMenuModal" class="modal fade editMenuModal" role="dialog">
     <div class="modal-dialog" style="width: 400px">
         <div class="modal-content">
             <div class="modal-header">Menu</div>
@@ -25,11 +25,6 @@
                                 ng-model="editMenu.mainLanguage"></select>
                         </select>
                         <br>
-                        <a href="#menu/1">
-                            dsads
-                        <%--<button class="btn-link">Edit menu products </button>--%>
-                        </a>
-
                         <div class="dropdown" style="width: 100%; display: inline-block;">
                             <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button"
                                     style="width: 100%">
@@ -44,6 +39,10 @@
                                 </li>
                             </ul>
                         </div>
+                        <br><br>
+                        <a style="font-size: 16px" class="btn-link" href="${pageContext.request.contextPath}/business/menu/{{editMenu.id}}">
+                            Edit menu products
+                        </a><br>
                     </div>
                 </form>
             </div>
