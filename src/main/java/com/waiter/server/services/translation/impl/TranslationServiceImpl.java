@@ -66,20 +66,6 @@ public class TranslationServiceImpl implements TranslationService {
         }
     }
 
-    public Long createOrUpdateTranslation(Translation translation, String text, Language language) {
-        if (text != null) {
-            final TranslationDto dto = new TranslationDto(text, language);
-            if (translation == null) {
-                Translation createdTranslation = create(dto);
-                return createdTranslation.getId();
-            } else {
-                dto.updateProperties(translation);
-                translationRepository.save(translation);
-            }
-        }
-        return null;
-    }
-
     @Override
     public List<Translation> create(List<Translation> translations) {
         return translationRepository.save(translations);

@@ -2,6 +2,8 @@ package com.waiter.server.api.category.model.response;
 
 import com.waiter.server.api.product.model.response.ProductMenuModel;
 import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.api.utility.image.EntityType;
+import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.tag.model.Tag;
@@ -52,6 +54,14 @@ public class CategoryMenuModel {
         this.products = products;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public static List<CategoryMenuModel> convert(List<Category> categories, Language language) {
         return categories.stream()
                 .map(category -> CategoryMenuModel.convert(category, language))
@@ -64,6 +74,7 @@ public class CategoryMenuModel {
         categoryMenuModel.setId(category.getId());
         categoryMenuModel.setTags(category.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
         categoryMenuModel.setProducts(ProductMenuModel.convert(category.getProducts(), language));
+        categoryMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, category.getGallery()));
         return categoryMenuModel;
     }
 }

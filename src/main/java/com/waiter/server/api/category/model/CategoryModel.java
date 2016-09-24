@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.api.utility.image.EntityType;
+import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.tag.model.Tag;
@@ -30,6 +32,8 @@ public class CategoryModel extends AbstractCategoryModel {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty(value = "tags")
     private Set<String> tags;
+
+    private String image;
 
     public Long getId() {
         return id;
@@ -63,6 +67,14 @@ public class CategoryModel extends AbstractCategoryModel {
         this.tags = tags;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public static CategoryModel convert(Category category, Language language) {
         final CategoryModel categoryModel = new CategoryModel();
         categoryModel.setId(category.getId());
@@ -71,6 +83,7 @@ public class CategoryModel extends AbstractCategoryModel {
         categoryModel.setProductModels(null);
         categoryModel.setName(category.getNameTranslationByLanguage(language).getText());
         categoryModel.setLanguage(language);
+        categoryModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, category.getGallery()));
         return categoryModel;
     }
 }

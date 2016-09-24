@@ -20,7 +20,5 @@ public interface TranslationService {
 
     Translation createOrUpdateTranslation(Long translationId, TranslationDto translationDto);
 
-    Long createOrUpdateTranslation(Translation translation, String text, Language language);
-
     List<Translation> create(List<Translation> translations);
 }

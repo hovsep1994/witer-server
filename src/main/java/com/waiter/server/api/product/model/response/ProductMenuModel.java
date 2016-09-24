@@ -2,6 +2,8 @@ package com.waiter.server.api.product.model.response;
 
 import com.waiter.server.api.product.model.ProductPriceModel;
 import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.api.utility.image.EntityType;
+import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
@@ -92,6 +94,7 @@ public class ProductMenuModel {
         productMenuModel.setEvaluation(product.getAverageRating());
         productMenuModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language));
         productMenuModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
+        productMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, product.getGallery()));
         return productMenuModel;
     }
 }

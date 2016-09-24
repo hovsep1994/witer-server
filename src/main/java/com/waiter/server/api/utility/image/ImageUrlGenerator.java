@@ -1,5 +1,6 @@
 package com.waiter.server.api.utility.image;
 
+import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,11 +21,15 @@ public class ImageUrlGenerator {
         cdnBaseUrl = privateName;
     }
 
-    public static String getUrl(EntityType entityType, Set<GalleryImage> images) {
-        return getUrl(entityType, images, GalleryImageType.MAIN);
+    public static String getUrl(EntityType entityType, Gallery gallery) {
+        return getUrl(entityType, gallery.getGalleryImages(), GalleryImageType.MAIN);
     }
 
-    public static String getUrl(EntityType entityType, Set<GalleryImage> images, GalleryImageType galleryImageType) {
+    public static String getUrl(EntityType entityType, Gallery gallery, GalleryImageType galleryImageType) {
+        return getUrl(entityType, gallery.getGalleryImages(), galleryImageType);
+    }
+
+    private static String getUrl(EntityType entityType, Set<GalleryImage> images, GalleryImageType galleryImageType) {
         final GalleryImage galleryImage = images.stream()
                 .filter(image -> image.getGalleryImageType() == galleryImageType)
                 .findFirst().orElse(null);

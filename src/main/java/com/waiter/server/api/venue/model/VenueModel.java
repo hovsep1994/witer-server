@@ -88,7 +88,7 @@ public class VenueModel {
         venueModel.setMenuId(venue.getMenu() == null ? null : venue.getMenu().getId());
         venueModel.setCompanyId(venue.getCompany() == null ? null : venue.getCompany().getId());
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
-        ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery().getGalleryImages(), GalleryImageType.MAIN);
+        ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery(), GalleryImageType.MAIN);
         venueModel.setImageUrl(getFullUrl(venue.getGallery().getGalleryImages(), cdnBaseUrl));
         return venueModel;
     }
