@@ -6,7 +6,8 @@ package com.waiter.server.api.utility.image;
 public enum EntityType {
 
     VENUE("images/venue-image.png"),
-    PRODUCT("images/product-image.png");
+    PRODUCT("images/product-image.png"),
+    CATEGORY("images/category-image.png");
 
     private String defaultImageUrl;
 

@@ -55,7 +55,7 @@ public class VenueMenuModel {
             final VenueMenuModel model = new VenueMenuModel();
             model.setId(venue.getId());
             model.setName(venue.getName());
-            final String url = ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery().getGalleryImages());
+            final String url = ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery());
             model.setImage(url);
             return model;
         }).collect(Collectors.toSet());
