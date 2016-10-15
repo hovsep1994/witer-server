@@ -16,8 +16,10 @@ import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.event.VenueLocationUpdateEvent;
 import com.waiter.server.services.venue.event.VenueLocationUpdateEventListener;
 import com.waiter.server.services.venue.model.Venue;
+import com.waiter.server.solr.core.repository.common.model.SolrLocation;
 import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import com.waiter.server.solr.core.repository.product.model.ProductDocument;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.solr.core.geo.Point;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -69,7 +72,7 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
     }
 
     @Override
-    public void addOrUpdate(Long productId) {
+    public void addOrUpdate(Long productId) throws IOException {
         notNull(productId);
         LOGGER.debug("Storing product -{}", productId);
         final Product product = productService.getById(productId);
@@ -124,8 +127,8 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
         productDocument.setCategoryNameTranslations(Translation.getListOfTexts(category.getNameSet()));
         productDocument.setCategoryTags(Tag.toStringSet(category.getTags()));
         // venue fields
-        final Set<Point> points = product.getCategory().getMenu().getCompany().getVenues().stream()
-                .map(venue -> new Point(venue.getLocation().getLatitude(), venue.getLocation().getLongitude()))
+        final Set<SolrLocation> points = product.getCategory().getMenu().getCompany().getVenues().stream()
+                .map(venue -> new SolrLocation(venue.getLocation().getLatitude(), venue.getLocation().getLongitude()))
                 .collect(Collectors.toSet());
         productDocument.setLocations(points);
         // company fields
@@ -136,7 +139,11 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
     private final ProductUpdateEventListener productUpdateEventListener = new ProductUpdateEventListener() {
         @Override
         public void processProductUpdatedEvent(ProductUpdateEvent productUpdateEvent) {
-            addOrUpdate(productUpdateEvent.getProductId());
+            try {
+                addOrUpdate(productUpdateEvent.getProductId());
+            } catch (IOException e) {
+                LOGGER.error("Exception updating solr doc. ");
+            }
         }
     };
 

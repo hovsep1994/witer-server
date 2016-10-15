@@ -39,10 +39,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
@@ -237,10 +235,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private Product createProductPrices(Product product, Set<ProductPriceDto> productPriceDtos, Language language) {
-        final Set<ProductPrice> oldProductPrices = product.getProductPrices();
-        final Set<ProductPrice> newProductPrices = new HashSet<>();
         productPriceDtos.forEach(productPriceDto -> {
-            final ProductPrice productPrice = getProductContainProductPrice(oldProductPrices, productPriceDto.getId());
+            ProductPrice productPrice = getProductContainProductPrice(product, productPriceDto.getId());
             if (productPrice != null) {
                 productPrice.setPrice(productPriceDto.getPrice());
                 Translation translation = Translation.getTranslationByLanguage(productPrice.getNames(), language);
@@ -252,34 +248,24 @@ public class ProductServiceImpl implements ProductService {
                     translationService.update(translation.getId(), translationDto);
                 }
             } else {
-                ProductPrice newProductPrice = new ProductPrice();
+                productPrice = new ProductPrice();
                 final TranslationDto translationDto = new TranslationDto(productPriceDto.getName(), language, TranslationType.MANUAL);
                 final Translation translation = translationService.create(translationDto);
-                newProductPrice.getNames().add(translation);
-                newProductPrice.setPrice(productPriceDto.getPrice());
-                newProductPrice.setProduct(product);
-                newProductPrices.add(newProductPrice);
+                productPrice.getNames().add(translation);
+                productPrice.setPrice(productPriceDto.getPrice());
+                product.getProductPrices().add(productPrice);
+                productPrice.setProduct(product);
             }
         });
-        final Set<ProductPrice> removedProductPrices = removeProductPrices(oldProductPrices, productPriceDtos);
-        newProductPrices.addAll(removedProductPrices);
-        product.setProductPrices(newProductPrices);
         return productRepository.save(product);
     }
 
-    private static ProductPrice getProductContainProductPrice(Set<ProductPrice> productPrices, Long productPriceId) {
+    private ProductPrice getProductContainProductPrice(Product product, Long productPriceId) {
         if (productPriceId == null) {
             return null;
         }
-        return productPrices.stream().filter(productPrice ->
+        return product.getProductPrices().stream().filter(productPrice ->
                 productPrice.getId().equals(productPriceId)).findFirst().orElse(null);
-    }
-
-    private static Set<ProductPrice> removeProductPrices(Set<ProductPrice> productPrices, Set<ProductPriceDto> productPriceDtos) {
-        final Set<Long> ids = productPriceDtos.stream().map(ProductPriceDto::getId).collect(Collectors.toSet());
-        return productPrices.stream()
-                .filter(productPrice -> ids.contains(productPrice.getId()))
-                .collect(Collectors.toSet());
     }
 
     private void assertCategoryId(Long categoryId) {

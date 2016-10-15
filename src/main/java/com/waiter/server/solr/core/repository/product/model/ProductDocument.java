@@ -1,15 +1,13 @@
 package com.waiter.server.solr.core.repository.product.model;
 
 import com.waiter.server.solr.core.repository.common.model.AbstractSolrDocumentWithId;
+import com.waiter.server.solr.core.repository.common.model.SolrLocation;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.solr.client.solrj.beans.Field;
-import org.springframework.data.solr.core.geo.Point;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,7 +56,7 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
     private String venueName;
 
     @Field("location")
-    private Set<Point> locations;
+    private Set<SolrLocation> locations;
 
     @Field("companyId")
     private Long companyId;
@@ -168,11 +166,11 @@ public class ProductDocument extends AbstractSolrDocumentWithId {
         this.venueName = venueName;
     }
 
-    public Set<Point> getLocations() {
+    public Set<SolrLocation> getLocations() {
         return locations;
     }
 
-    public void setLocations(Set<Point> locations) {
+    public void setLocations(Set<SolrLocation> locations) {
         this.locations = locations;
     }
 
