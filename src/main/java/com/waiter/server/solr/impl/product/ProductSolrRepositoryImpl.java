@@ -1,15 +1,22 @@
 package com.waiter.server.solr.impl.product;
 
 import com.waiter.server.solr.core.repository.common.model.SolrLocation;
-import com.waiter.server.solr.core.repository.product.ProductSolrRepositoryCustom;
+import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import com.waiter.server.solr.core.repository.product.model.ProductDocument;
+import com.waiter.server.solr.core.repository.product.model.ProductInputDocument;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.Criteria;
 import org.springframework.data.solr.core.query.SimpleQuery;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -19,7 +26,11 @@ import java.util.List;
 /**
  * Created by hovsep on 8/3/16.
  */
-public class ProductSolrRepositoryImpl implements ProductSolrRepositoryCustom {
+@Component
+public class ProductSolrRepositoryImpl implements ProductSolrRepository {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductSolrRepositoryImpl.class);
+
 
     @Resource
     private SolrTemplate solrTemplate;
@@ -28,39 +39,51 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepositoryCustom {
 
     @Override
     public List<ProductDocument> findBySearchParams(String text) {
-        final Criteria criteria =
-                new Criteria("productName").contains(text).boost(1f)
-                        .or(new Criteria("productTags").isNotNull().contains(text)).boost(2f)
-                        .or(new Criteria("categoryName").contains(text)).boost(3f)
-                        .or(new Criteria("categoryTags").isNotNull().contains(text)).boost(4f);
-        final SimpleQuery query = new SimpleQuery(criteria);
+        final SimpleQuery query = new SimpleQuery(new Criteria("locations_srpt").near(new Point(50.0, 50.0), new Distance(10, Metrics.KILOMETERS)));
         Page<ProductDocument> results = solrTemplate.queryForPage(query, ProductDocument.class);
         return results.getContent();
     }
 
     @Override
-    public void save(ProductDocument product) throws IOException {
+    public void save(ProductInputDocument product) throws IOException {
         SolrInputDocument document = new SolrInputDocument();
-        document.addField("product_tags", product.getProductTags());
-        document.addField("category_tags", product.getCategoryTags());
+        document.addField("id", product.getId());
+        document.addField("product_tags_ss", product.getProductTags(), (float) product.getRating());
+        document.addField("category_tags_ss", product.getCategoryTags(), (float) product.getRating());
+        document.addField("names_t", product.getNames(), (float) product.getRating());
+        document.addField("descriptions_t", product.getDescriptions(), (float) product.getRating());
+        document.addField("menu_id_s", product.getMenuId());
+
         for (SolrLocation location : product.getLocations()) {
-            document.addField("locations_srpt", location.getLatitude() + " " + location.getLongitude());
+            document.addField("locations_srpt",
+                    location.getLatitude() + " " + location.getLongitude(), (float) product.getRating());
         }
-        try {
-            solrClient.add(document);
-        } catch (SolrServerException e) {
-            throw new IOException(e);
-        }
+        saveDoc(document);
     }
 
     @Override
-    public void save(Collection<ProductDocument> docs) {
+    public void save(Collection<ProductInputDocument> docs) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public ProductDocument findOne(String id) {
         throw new UnsupportedOperationException();
+    }
+
+
+    private void saveDoc(SolrInputDocument document) throws IOException {
+        try {
+
+            // todo
+            // collect batch before sending doc
+            // remove commit after enabling autocommit
+
+            solrClient.add(document);
+            solrClient.commit(true, true, true);
+        } catch (SolrServerException e) {
+            throw new IOException(e);
+        }
     }
 
 }

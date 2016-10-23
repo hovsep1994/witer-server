@@ -19,7 +19,7 @@ public interface ProductSearchService {
 
     void addOrUpdateByVenueId(Long venueId);
 
-//    List<ProductDocument> findProductsStartingWith(String name);
+    List<ProductDocument> findProductsStartingWith(String name);
 
 
 }

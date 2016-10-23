@@ -74,7 +74,13 @@ public class ApplicationEventBusImpl implements ApplicationEventBus {
     }
 
     private void processApplicationEvent(ApplicationEvent applicationEvent) {
-        listeners.forEach(listener -> listener.process(applicationEvent));
+        listeners.forEach(listener -> {
+            try {
+                listener.process(applicationEvent);
+            } catch (Exception e) {
+                LOGGER.error("Error processing application event. ", e);
+            }
+        });
     }
 
 }
