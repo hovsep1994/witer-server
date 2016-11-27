@@ -1,14 +1,14 @@
-package com.waiter.server.background.importer.parsers.foodera;
+package com.waiter.server.background.importer.parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.waiter.server.background.importer.parsers.foodera.model.FooderaCategory;
+import com.waiter.server.background.importer.parser.model.ParsedCategory;
 import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.model.MenuDto;
 import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductPriceDto;
-import org.jsoup.Jsoup;
+import com.waiter.server.services.venue.dto.VenueDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,21 +19,32 @@ import java.util.*;
 /**
  * @author shahenpoghosyan
  */
-public class FooderaMenuParser {
+public class FooderaMenuParser implements Parser {
 
     private static final String CATEGORY_LIST_CLASS = "menu__categories__list-wrapper";
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public List<FooderaCategory> parseCategories(Document doc, Language language) throws IOException {
+    private Language defaultLanguage;
+    private Currency defaultCurrency;
+    private String defaultMenuName;
+
+    public FooderaMenuParser(Language defaultLanguage, Currency defaultCurrency, String defaultMenuName) {
+        this.defaultLanguage = defaultLanguage;
+        this.defaultCurrency = defaultCurrency;
+        this.defaultMenuName = defaultMenuName;
+    }
+
+    @Override
+    public List<ParsedCategory> parseCategories(Document doc) throws IOException {
 
         Element element = doc.getElementsByClass(CATEGORY_LIST_CLASS).get(0);
         Elements categoryElemets = element.child(0).children();
-        List<FooderaCategory> categories = new ArrayList<>(categoryElemets.size());
+        List<ParsedCategory> categories = new ArrayList<>(categoryElemets.size());
         for (Element categoryLI : categoryElemets) {
             Element categoryA = categoryLI.child(0);
-            FooderaCategory category = new FooderaCategory();
+            ParsedCategory category = new ParsedCategory();
             category.setName(categoryA.html());
-            category.setLanguage(language);
+            category.setLanguage(defaultLanguage);
             String productsRef = categoryA.attr("href").substring(1);
             category.setProductRef(productsRef);
             categories.add(category);
@@ -41,8 +52,9 @@ public class FooderaMenuParser {
         return categories;
     }
 
-    public List<ProductDto> parseCategoryProducts(FooderaCategory category, Document doc, Language language) throws IOException {
-        Element element = doc.getElementById(category.getProductRef());
+    @Override
+    public List<ProductDto> parseCategoryProducts(Document doc, String productsRef) throws IOException {
+        Element element = doc.getElementById(productsRef);
         Element productDiv = element.nextElementSibling();
 
         List<ProductDto> products = new ArrayList<>();
@@ -52,7 +64,7 @@ public class FooderaMenuParser {
             ProductDto productDto = new ProductDto();
             productDto.setName(fooderaProduct.get("name").asText());
             productDto.setDescription(fooderaProduct.get("description").asText());
-            productDto.setLanguage(language);
+            productDto.setLanguage(defaultLanguage);
             JsonNode variations = fooderaProduct.get("product_variations");
 
             Set<ProductPriceDto> prices = new HashSet<>();
@@ -71,21 +83,24 @@ public class FooderaMenuParser {
     }
 
 
-    public MenuDto parseMenu(String menuName, Language language, Currency currency) {
+    @Override
+    public MenuDto parseMenu(Document doc) {
         MenuDto menuDto = new MenuDto();
-        menuDto.setCurrency(Currency.EUR);
-        menuDto.setName(menuName);
-        menuDto.setLanguage(language);
+        menuDto.setCurrency(defaultCurrency);
+        menuDto.setName(defaultMenuName);
+        menuDto.setLanguage(defaultLanguage);
         return menuDto;
     }
 
+    @Override
+    public VenueDto parseVenue(Document doc) {
+        VenueDto venueDto = new VenueDto();
 
-    public static void main(String[] args) throws IOException {
-        Document doc = Jsoup.connect("https://www.foodora.nl/en/restaurant/s9yt/cannibale-royale-lange-niezel")
-                .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
-                .get();
-        List<FooderaCategory> c = new FooderaMenuParser().parseCategories(doc, Language.nl);
-        List<ProductDto> p = new FooderaMenuParser().parseCategoryProducts(c.get(0), doc, Language.nl);
+        String name = doc.getElementsByClass("hero-menu__info__headline").get(0).val();
+        venueDto.setName(name);
+        //todo implement location parsing
+
+        return venueDto;
     }
 
 }
