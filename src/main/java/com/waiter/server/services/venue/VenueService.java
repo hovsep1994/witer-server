@@ -3,6 +3,7 @@ package com.waiter.server.services.venue;
 
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.gallery.model.GalleryImage;
+import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.model.Venue;
 
 import java.io.InputStream;
@@ -14,7 +15,7 @@ import java.util.Set;
  */
 public interface VenueService {
 
-    Venue create(String name, Long menuId, Long locationId, Long companyId);
+    Venue create(VenueDto venueDto);
 
     Venue update(Long id, String name, Long menuId);
 

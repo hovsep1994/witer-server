@@ -1,6 +1,7 @@
 package com.waiter.server.background.importer.parser;
 
 import com.waiter.server.background.importer.parser.model.ParsedCategory;
+import com.waiter.server.services.location.dto.LocationDto;
 import com.waiter.server.services.menu.model.MenuDto;
 import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.venue.dto.VenueDto;
@@ -18,5 +19,6 @@ public interface Parser {
     MenuDto parseMenu(Document doc) throws IOException;
     List<ProductDto> parseCategoryProducts(Document doc, String productsRef) throws IOException;
     VenueDto parseVenue(Document doc);
+    LocationDto parseLocation(Document document);
 }
 
