@@ -43,7 +43,7 @@ public class MenuServiceImpl implements MenuService {
         notNull(id, "id must not be null");
         Menu menu = menuRepository.findOne(id);
         if (menu == null) {
-            LOGGER.debug("Product with id -{} not found", id);
+            LOGGER.debug("Menu with id -{} not found", id);
             throw new ServiceRuntimeException(ErrorCode.NOT_FOUND, "Product not found");
         }
         return menu;

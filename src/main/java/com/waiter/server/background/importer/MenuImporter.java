@@ -13,10 +13,14 @@ import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.menu.model.MenuDto;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.dto.ProductDto;
+import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueDto;
+import com.waiter.server.services.venue.model.Venue;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -30,6 +34,8 @@ import java.util.List;
  */
 @Component
 public class MenuImporter {
+
+    private static final Logger logger = LoggerFactory.getLogger(MenuImporter.class);
 
     @Autowired
     private Parser parser;
@@ -55,23 +61,31 @@ public class MenuImporter {
 
         LocationDto locationDto = parser.parseLocation(doc);
         Location location = locationService.create(locationDto);
+        logger.info("Location created with id: {} ", location.getId());
 
         VenueDto venueDto = parser.parseVenue(doc);
         venueDto.setCompanyId(companyId);
         venueDto.setLocationId(location.getId());
-        venueService.create(venueDto);
+        Venue venue = venueService.create(venueDto);
+        logger.info("Venue created with id: {} ", venue.getId());
 
         MenuDto menuDto = parser.parseMenu(doc);
         Menu menu = menuService.create(companyId, menuDto);
+        logger.info("Menu created with id: {} ", menu.getId());
 
         for (ParsedCategory parsedCategory : parser.parseCategories(doc)) {
             Category category = categoryService.create(parsedCategory, menu.getId());
+            logger.info("Category created with id {} ", category.getId());
 
             List<ProductDto> productDtos = parser.parseCategoryProducts(doc, parsedCategory.getProductRef());
             for (ProductDto productDto : productDtos) {
-                productService.create(category.getId(), productDto);
+                Product product = productService.create(category.getId(), productDto);
+                logger.info("Product created with id {} ", product.getId());
             }
+
+            logger.info("Finished adding category products. category id: {} ", category.getId());
         }
+
 
     }
 
