@@ -105,14 +105,14 @@ public class FooderaMenuParser implements Parser {
     public VenueDto parseVenue(Document doc) {
         VenueDto venueDto = new VenueDto();
 
-        String name = doc.getElementsByClass("hero-menu__info__headline").get(0).val();
+        String name = doc.getElementsByClass("hero-menu__info__headline").get(0).childNode(0).toString();
         venueDto.setName(name);
-        //todo implement location parsing
 
         return venueDto;
     }
 
     public LocationDto parseLocation(Document doc) {
+        //todo implement location parsing
         LocationDto locationDto = new LocationDto();
         locationDto.setCountry("Netherlands");
         locationDto.setCity("Amsterdam");
