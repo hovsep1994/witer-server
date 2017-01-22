@@ -1,6 +1,5 @@
 package com.waiter.server.services.venue.dto;
 
-import com.waiter.server.api.venue.model.request.VenueRequest;
 
 /**
  * @author shahenpoghosyan
