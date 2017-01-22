@@ -40,7 +40,7 @@ public class ApiConfig extends WebMvcConfigurerAdapter {
         interceptorRegistration(interceptorRegistration, "categories");
         interceptorRegistration(interceptorRegistration, "products");
         interceptorRegistration(interceptorRegistration, "menus");
-        interceptorRegistration(interceptorRegistration, "heartbeat");
+//        interceptorRegistration(interceptorRegistration, "heartbeat");
     }
 
     private static void interceptorRegistration(InterceptorRegistration interceptorRegistration, String path) {

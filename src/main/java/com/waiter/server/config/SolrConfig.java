@@ -3,26 +3,19 @@ package com.waiter.server.config;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.solr.core.SolrOperations;
 import org.springframework.data.solr.core.SolrTemplate;
-import org.springframework.data.solr.core.convert.MappingSolrConverter;
-import org.springframework.data.solr.core.convert.SolrConverter;
-import org.springframework.data.solr.core.geo.GeoConverters;
-import org.springframework.data.solr.core.geo.GeoConverters.StringToPointConverter;
-import org.springframework.data.solr.core.mapping.SimpleSolrMappingContext;
-import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 
-import javax.annotation.Resource;
 import java.util.Properties;
 
 /**
  * Created by hovsep on 7/31/16.
  */
 @Configuration
-@EnableSolrRepositories(value = "com.waiter.server.solr.*", multicoreSupport = true)
+//@EnableSolrRepositories(value = "com.waiter.server.solr.*", multicoreSupport = true)
+@ComponentScan("com.waiter.server.solr.impl.*")
 public class SolrConfig {
 
     @Autowired

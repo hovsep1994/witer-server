@@ -19,14 +19,7 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset" name="Spring Application Context" removed="false">
-          <file>file://$MODULE_DIR$/src/main/java/com/waiter/server/config/ApiConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/waiter/server/config/DataAccessConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/waiter/server/config/RootConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/waiter/server/config/SolrConfig.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/com/waiter/server/config/WebConfig.java</file>
-        </fileset>
-        <fileset id="fileset2" name="Spring Application Context - Background" removed="false">
-          <file>file://$MODULE_DIR$/src/main/java/com/waiter/server/background/conf/ApplicationConf.java</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring-config.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -43,10 +36,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
-    <orderEntry type="library" name="angular" level="application" />
-    <orderEntry type="library" name="bootstrap" level="application" />
-    <orderEntry type="library" name="jquery" level="application" />
-    <orderEntry type="library" name="angular-route" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.6.4" level="project" />
@@ -111,6 +100,5 @@
     <orderEntry type="library" name="Maven: org.mockito:mockito-all:1.10.19" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.9.2" level="project" />
   </component>
 </module>

@@ -10,7 +10,7 @@ import java.util.List;
  * Created by hovsep on 7/31/16.
  */
 @Repository
-public interface ProductSolrRepository extends SolrCrudRepository<ProductDocument, String>, ProductSolrRepositoryCustom {
+public interface ProductSolrRepository extends ProductSolrRepositoryCustom {
 
 
 }

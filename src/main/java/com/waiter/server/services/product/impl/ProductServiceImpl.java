@@ -10,6 +10,7 @@ import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.evaluation.EvaluationService;
 import com.waiter.server.services.evaluation.model.Evaluation;
+import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
 import com.waiter.server.services.gallery.model.Gallery;
@@ -20,6 +21,7 @@ import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductPriceDto;
+import com.waiter.server.services.product.event.ProductUpdateEvent;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.product.model.ProductPrice;
 import com.waiter.server.services.tag.TagService;
@@ -81,6 +83,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private TagService tagService;
 
+    @Autowired
+    private ApplicationEventBus applicationEventBus;
+
     @Override
     @Transactional
     public Product create(Long categoryId, ProductDto productDto) {
@@ -129,6 +134,9 @@ public class ProductServiceImpl implements ProductService {
         }
         product.setUpdated(new Date());
         createProductPrices(product, productDto.getProductPriceDtos(), productDto.getLanguage());
+
+        applicationEventBus.publishSynchronousEvent(new ProductUpdateEvent(productId));
+
         return productRepository.save(product);
     }
 

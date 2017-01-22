@@ -55,7 +55,7 @@ public class ApiAuthenticationInterceptor extends HandlerInterceptorAdapter {
                 return null;
             }
             final User user = userService.authenticate(token);
-            LOGGER.info("Successfully get user - {} for request - {}", user, request);
+            LOGGER.info("Successfully get user - {}", user.getId());
             return user;
         } catch (SecurityException ex) {
             LOGGER.error("User not authorised for request - {}", request);

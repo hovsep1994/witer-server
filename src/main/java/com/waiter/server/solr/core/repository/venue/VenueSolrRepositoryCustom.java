@@ -10,6 +10,12 @@ import java.util.List;
  */
 public interface VenueSolrRepositoryCustom {
 
+
+    void save(VenueSolrDocument document);
+
+    VenueSolrDocument findOne(String id);
+
     List<VenueSolrDocument> findBySearchParameters(String name, Point point);
+
 
 }
