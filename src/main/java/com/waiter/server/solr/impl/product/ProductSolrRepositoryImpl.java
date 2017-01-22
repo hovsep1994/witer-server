@@ -30,7 +30,7 @@ import java.util.List;
 public class ProductSolrRepositoryImpl implements ProductSolrRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductSolrRepositoryImpl.class);
-
+    private static final String PRODUCTS_COLLECTION = "products";
 
     @Resource
     private SolrTemplate solrTemplate;
@@ -79,8 +79,8 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
             // collect batch before sending doc
             // remove commit after enabling autocommit
 
-            solrClient.add(document);
-            solrClient.commit(true, true, true);
+            solrClient.add(PRODUCTS_COLLECTION, document);
+            solrClient.commit(PRODUCTS_COLLECTION, true, true, true);
         } catch (SolrServerException e) {
             throw new IOException(e);
         }

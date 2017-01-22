@@ -21,6 +21,7 @@ import java.util.List;
 public class VenueSolrRepositoryImpl implements VenueSolrRepository {
 
     private static final double DISTANCE = 10;
+    private static final String VENUES_COLLECTION = "venues";
 
     @Autowired
     private SolrTemplate solrTemplate;
