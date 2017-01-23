@@ -3,8 +3,10 @@ package com.waiter.server.background.importer;
 import com.waiter.server.background.conf.ApplicationConf;
 import com.waiter.server.background.importer.parser.Parser;
 import com.waiter.server.background.importer.parser.model.ParsedCategory;
+import com.waiter.server.background.importer.parser.model.ParsedProduct;
 import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.location.LocationService;
 import com.waiter.server.services.location.dto.LocationDto;
 import com.waiter.server.services.location.model.Location;
@@ -12,7 +14,6 @@ import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.menu.model.MenuDto;
 import com.waiter.server.services.product.ProductService;
-import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueDto;
@@ -27,6 +28,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 /**
@@ -53,7 +56,7 @@ public class MenuImporter {
 
     public void importVenue(String uri) throws IOException {
 
-        long companyId = 1;
+        long companyId = 6;
         Document doc = Jsoup.connect(uri)
                 .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36" +
                         " (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
@@ -77,9 +80,20 @@ public class MenuImporter {
             Category category = categoryService.create(parsedCategory, menu.getId());
             logger.info("Category created with id {} ", category.getId());
 
-            List<ProductDto> productDtos = parser.parseCategoryProducts(doc, parsedCategory.getProductRef());
-            for (ProductDto productDto : productDtos) {
+            List<ParsedProduct> productDtos = parser.parseCategoryProducts(doc, parsedCategory.getProductRef());
+            for (ParsedProduct productDto : productDtos) {
                 Product product = productService.create(category.getId(), productDto);
+                if(productDto.getImageUrl() != null) {
+                    try {
+                        URLConnection connection = new URL(productDto.getImageUrl()).openConnection();
+                        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                        connection.connect();
+                        productService.addImage(product.getId(), connection.getInputStream());
+                    } catch (ServiceException e) {
+                        logger.error("Excepion adding image to product.", e);
+                    }
+                }
+
                 logger.info("Product created with id {} ", product.getId());
             }
 

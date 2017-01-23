@@ -3,18 +3,16 @@ package com.waiter.server.background.importer.parser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.waiter.server.background.importer.parser.model.ParsedCategory;
+import com.waiter.server.background.importer.parser.model.ParsedProduct;
 import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.location.dto.LocationDto;
-import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.menu.model.MenuDto;
-import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.dto.ProductPriceDto;
 import com.waiter.server.services.venue.dto.VenueDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -61,19 +59,23 @@ public class FooderaMenuParser implements Parser {
     }
 
     @Override
-    public List<ProductDto> parseCategoryProducts(Document doc, String productsRef) throws IOException {
+    public List<ParsedProduct> parseCategoryProducts(Document doc, String productsRef) throws IOException {
         Element element = doc.getElementById(productsRef);
         Element productDiv = element.nextElementSibling();
 
-        List<ProductDto> products = new ArrayList<>();
+        List<ParsedProduct> products = new ArrayList<>();
         while (productDiv != null && !"h3".equals(productDiv.tag().getName())) {
             String prodVal = productDiv.attr("data-object");
             JsonNode fooderaProduct = mapper.readTree(prodVal);
-            ProductDto productDto = new ProductDto();
+            ParsedProduct productDto = new ParsedProduct();
             productDto.setName(fooderaProduct.get("name").asText());
             productDto.setDescription(fooderaProduct.get("description").asText());
             productDto.setLanguage(defaultLanguage);
             productDto.setTags(new TreeSet<>());
+
+            if(fooderaProduct.get("file_path") != null && !fooderaProduct.get("file_path").isNull())
+                productDto.setImageUrl(fooderaProduct.get("file_path").asText().replaceAll("\\\\", "").substring(32));
+
             JsonNode variations = fooderaProduct.get("product_variations");
 
             Set<ProductPriceDto> prices = new HashSet<>();

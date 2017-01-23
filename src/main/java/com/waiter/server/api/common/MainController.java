@@ -26,6 +26,7 @@ public class MainController {
     @ExceptionHandler(ServiceException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity handleCustomException(ServiceException ex) {
+        logger.error("Error processing request. ", ex);
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         if (ex.getError().getErrorCode() == ErrorCode.UNAUTHORIZED) {
             httpStatus = HttpStatus.UNAUTHORIZED;
@@ -35,6 +36,7 @@ public class MainController {
 
     @ExceptionHandler(ServiceRuntimeException.class)
     public ResponseEntity handleCustomException(ServiceRuntimeException ex) {
+        logger.error("Error processing request. ", ex);
         return MenuKitResponseEntity.error(ex.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
