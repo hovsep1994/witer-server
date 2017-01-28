@@ -89,10 +89,10 @@
                            ng-model="user.password">
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 reg_input">
-                    <input placeholder="Company" type="text" class="form-control" id="user.companyName">
+                    <input placeholder="Company" type="text" class="form-control" ng-model="user.companyName">
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 reg_input">
-                    <input placeholder="Company Phone" type="text" class="form-control" id="user.companyPhone">
+                    <input placeholder="Company Phone" type="text" class="form-control" ng-model="user.companyPhone">
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 reg_input">
                     <input type="submit" class="btn btn-info signup_button" value="SIGN UP" ng-click="signUp(user)">

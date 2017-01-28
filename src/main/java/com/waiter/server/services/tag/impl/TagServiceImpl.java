@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -23,7 +20,7 @@ public class TagServiceImpl implements TagService {
     private TagRepository tagRepository;
 
     public Set<Tag> create(Set<String> tagNames) {
-        final Set<Tag> existingTags = tagRepository.findByNames(tagNames);
+        final Set<Tag> existingTags = tagNames.isEmpty() ? new TreeSet<>() : tagRepository.findByNames(tagNames);
         tagNames.removeAll(Tag.toStringList(existingTags));
         final Set<Tag> tags = tagNames.stream().map(Tag::new).collect(Collectors.toSet());
         final List<Tag> createdTags = tagRepository.save(tags);

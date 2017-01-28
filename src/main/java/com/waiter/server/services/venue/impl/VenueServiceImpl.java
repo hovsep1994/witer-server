@@ -16,6 +16,7 @@ import com.waiter.server.services.location.LocationService;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.venue.VenueService;
+import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.event.VenueUpdateEvent;
 import com.waiter.server.services.venue.model.Venue;
 import org.slf4j.Logger;
@@ -69,17 +70,17 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     @Transactional
-    public Venue create(String name, Long menuId, Long locationId, Long companyId) {
-        notNull(name);
-        notNull(companyId);
-        notNull(locationId);
+    public Venue create(VenueDto venueDto) {
+        notNull(venueDto.getName());
+        notNull(venueDto.getCompanyId());
+        notNull(venueDto.getLocationId());
         final Venue venue = new Venue();
-        venue.setName(name);
-        if (menuId != null) {
-            venue.setMenu(menuService.getById(menuId));
+        venue.setName(venueDto.getName());
+        if (venueDto.getMenuId() != null) {
+            venue.setMenu(menuService.getById(venueDto.getMenuId()));
         }
-        venue.setLocation(locationService.getById(locationId));
-        venue.setCompany(companyService.get(companyId));
+        venue.setLocation(locationService.getById(venueDto.getLocationId()));
+        venue.setCompany(companyService.get(venueDto.getCompanyId()));
         venue.setGallery(new Gallery());
         final Venue createdVenue = venueRepository.save(venue);
         LOGGER.debug("Venue -{} successfully stored", venue);

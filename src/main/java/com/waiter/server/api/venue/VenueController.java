@@ -18,6 +18,7 @@ import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.user.model.User;
 import com.waiter.server.services.venue.VenueSearchService;
 import com.waiter.server.services.venue.VenueService;
+import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
 import com.waiter.server.services.venue.event.VenueLocationUpdateEvent;
 import com.waiter.server.services.venue.model.Venue;
@@ -71,7 +72,11 @@ public class VenueController extends AuthenticationController {
     public ResponseEntity createVenue(@RequestBody VenueRequest venueRequest, @ModelAttribute User user) {
         final LocationDto locationDto = LocationModel.convertToDto(venueRequest.getLocation());
         final Location location = locationService.create(locationDto);
-        final Venue createdVenue = venueService.create(venueRequest.getName(), venueRequest.getMenuId(), location.getId(), user.getCompany().getId());
+
+        VenueDto venueDto = new VenueDto().setName(venueRequest.getName()).setMenuId(venueRequest.getMenuId())
+                .setLocationId(location.getId()).setCompanyId(user.getCompany().getId());
+
+        final Venue createdVenue = venueService.create(venueDto);
         final VenueModel venueModel = VenueModel.convert(createdVenue, cdnBaseUrl);
         return MenuKitResponseEntity.success(venueModel);
     }

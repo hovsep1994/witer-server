@@ -20,7 +20,6 @@ import java.util.Properties;
  * Created by hovsep on 3/27/16.
  */
 @Configuration
-@EnableWebMvc
 public class RootConfig {
 
     private static final Logger LOGGER = Logger.getLogger(RootConfig.class);
@@ -36,13 +35,6 @@ public class RootConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean(name = "multipartResolver")
-    public static CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setMaxUploadSize(10 * 1024 * 1024); // 10MB
-        return resolver;
     }
 
     @Bean
