@@ -66,8 +66,12 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
         return productSolrRepository.findOne(id.toString());
     }
 
-    @Override
-    public void addOrUpdate(Long productId) throws IOException {
+    public void addOrUpdate(Product product) throws IOException {
+        LOGGER.debug("Storing product into solr -{}", product.getId());
+        productSolrRepository.save(ProductInputDocument.convert(product));
+    }
+
+    private void addOrUpdate(Long productId) throws IOException {
         notNull(productId);
         LOGGER.debug("Storing product -{}", productId);
         final Product product = productService.getById(productId);

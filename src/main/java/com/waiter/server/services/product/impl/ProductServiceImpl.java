@@ -110,6 +110,9 @@ public class ProductServiceImpl implements ProductService {
             product.getDescriptionSet().add(description);
         }
         createProductPrices(product, productDto.getProductPriceDtos(), productDto.getLanguage());
+
+        applicationEventBus.publishSynchronousEvent(new ProductUpdateEvent(product));
+
         return productRepository.save(product);
     }
 
@@ -135,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
         product.setUpdated(new Date());
         createProductPrices(product, productDto.getProductPriceDtos(), productDto.getLanguage());
 
-        applicationEventBus.publishSynchronousEvent(new ProductUpdateEvent(productId));
+        applicationEventBus.publishSynchronousEvent(new ProductUpdateEvent(product));
 
         return productRepository.save(product);
     }

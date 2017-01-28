@@ -10,7 +10,6 @@ import org.springframework.data.solr.core.mapping.SolrDocument;
 /**
  * Created by hovsep on 7/31/16.
  */
-@SolrDocument(solrCoreName = "venues")
 public class VenueSolrDocument extends AbstractSolrDocumentWithId {
 
     private static final long serialVersionUID = -1941047069037577163L;

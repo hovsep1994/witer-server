@@ -1,5 +1,6 @@
 package com.waiter.server.services.product;
 
+import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.venue.model.Venue;
 import com.waiter.server.solr.core.repository.product.model.ProductDocument;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -14,7 +15,7 @@ public interface ProductSearchService {
 
     ProductDocument get(Long id);
 
-    void addOrUpdate(Long productId) throws IOException, SolrServerException;
+    void addOrUpdate(Product product) throws IOException, SolrServerException;
 
     void addOrUpdateByCategoryId(Long categoryId);
 

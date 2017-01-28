@@ -139,7 +139,7 @@
     <dynamicField name="*_l"  type="long"   indexed="true"  stored="true"/>
     <dynamicField name="*_ls" type="longs"   indexed="true"  stored="true"/>
     <dynamicField name="*_t"   type="text_general" indexed="true" stored="false" multiValued="true"/>
-    <dynamicField name="*_txt" type="text_general" indexed="true" stored="true"/>
+    <dynamicField name="*_txt" type="text_general" indexed="true" stored="false"/>
     <dynamicField name="*_b"  type="boolean" indexed="true" stored="true"/>
     <dynamicField name="*_bs" type="booleans" indexed="true" stored="true"/>
     <dynamicField name="*_f"  type="float"  indexed="true"  stored="true"/>
@@ -153,7 +153,8 @@
     <dynamicField name="*_dt"  type="date"    indexed="true"  stored="true"/>
     <dynamicField name="*_dts" type="date"    indexed="true"  stored="true" multiValued="true"/>
     <dynamicField name="*_p"  type="location" indexed="true" stored="true"/>
-    <dynamicField name="*_srpt"  type="location_rpt" indexed="true" stored="true" multiValued="true"/>
+    <dynamicField name="*_srpt"  type="location_rpt" indexed="true" stored="false" multiValued="true"/>
+    <dynamicField name="*_rpt"  type="location" indexed="true" stored="false"/>
 
     <!-- some trie-coded dynamic fields for faster range queries -->
     <dynamicField name="*_ti" type="tint"    indexed="true"  stored="true"/>

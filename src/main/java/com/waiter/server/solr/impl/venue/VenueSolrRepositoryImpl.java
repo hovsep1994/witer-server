@@ -39,9 +39,9 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
     public void save(VenueSolrDocument venue) {
         final SolrInputDocument document = new SolrInputDocument();
         document.addField("id", venue.getId());
-        document.addField("name", venue.getName());
+        document.addField("name_txt", venue.getName());
         document.addField("location_rpt", venue.getLocation().getLatitude() + " " + venue.getLocation().getLongitude());
-        document.addField("company_id", venue.getCompanyId());
+        document.addField("company_id_s", venue.getCompanyId());
         saveDocument(document);
     }
 
