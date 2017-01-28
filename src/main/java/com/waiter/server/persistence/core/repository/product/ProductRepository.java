@@ -18,4 +18,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     List<Product> findByCategoryId(Long groupId);
 
     Gallery findGalleryById(Long id);
+
 }

@@ -2,7 +2,9 @@ package com.waiter.server.api.venue.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.waiter.server.api.location.model.LocationModel;
-import com.waiter.server.api.menu.model.response.MenuWithProductsModel;
+import com.waiter.server.api.product.model.response.ProductMenuModel;
+
+import java.util.List;
 
 /**
  * Created by hovsep on 1/21/17.
@@ -19,7 +21,7 @@ public class VenueClientResponseModel {
     private String image;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private MenuWithProductsModel menu;
+    private List<ProductMenuModel> products;
 
     public Long getId() {
         return id;
@@ -53,11 +55,11 @@ public class VenueClientResponseModel {
         this.image = image;
     }
 
-    public MenuWithProductsModel getMenu() {
-        return menu;
+    public List<ProductMenuModel> getProducts() {
+        return products;
     }
 
-    public void setMenu(MenuWithProductsModel menu) {
-        this.menu = menu;
+    public void setProducts(List<ProductMenuModel> products) {
+        this.products = products;
     }
 }

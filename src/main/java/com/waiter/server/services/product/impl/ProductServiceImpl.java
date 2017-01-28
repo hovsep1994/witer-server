@@ -268,6 +268,12 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+    @Override
+    public List<Product> findTopProducts(Long menuId) {
+        notNull(menuId, "Menu id must not be null");
+        return productRepository.findTopProducts(menuId);
+    }
+
     private ProductPrice getProductContainProductPrice(Product product, Long productPriceId) {
         if (productPriceId == null) {
             return null;

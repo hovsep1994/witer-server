@@ -10,6 +10,7 @@ import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.menu.model.MenuDto;
+import com.waiter.server.services.product.model.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class MenuServiceImpl implements MenuService {
         }
         return menu;
     }
+
 
     @Override
     @Transactional

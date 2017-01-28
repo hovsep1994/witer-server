@@ -13,4 +13,6 @@ public interface ProductRepositoryCustom {
 
     List<Product> findByIdAndCustomerToken(Long productId,String customerToken);
 
+    List<Product> findTopProducts(Long menuId);
+
 }

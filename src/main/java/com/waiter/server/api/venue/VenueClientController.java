@@ -3,7 +3,7 @@ package com.waiter.server.api.venue;
 import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.location.model.LocationModel;
-import com.waiter.server.api.menu.model.response.MenuWithProductsModel;
+import com.waiter.server.api.product.model.response.ProductMenuModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.api.venue.model.response.VenueClientResponseModel;
@@ -11,6 +11,7 @@ import com.waiter.server.services.company.CompanyService;
 import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.location.LocationService;
+import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.venue.VenueSearchService;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
@@ -23,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +38,9 @@ public class VenueClientController extends MainController {
 
     @Autowired
     private VenueService venueService;
+
+    @Autowired
+    private ProductService productService;
 
     @Value("#{appProperties['cdn.base.url']}")
     private String cdnBaseUrl;
@@ -62,13 +67,17 @@ public class VenueClientController extends MainController {
         searchParameters.setLatitude(latitude);
         searchParameters.setLongitude(longitude);
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
+//        final List<Venue> venues = Collections.singletonList(venueService.getById(23l));
         final List<VenueClientResponseModel> modelList = new ArrayList<>(venues.size());
         venues.forEach(venue -> {
             final VenueClientResponseModel venueModel = new VenueClientResponseModel();
-            venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, venue.getGallery()));
+            venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
             venueModel.setName(venue.getName());
             venueModel.setLocation(LocationModel.convert(venue.getLocation()));
-            venueModel.setMenu(MenuWithProductsModel.convert(venue.getMenu(), language));
+            List<ProductMenuModel> products = ProductMenuModel.convert(productService.
+                    findTopProducts(venue.getMenu().getId()), language);
+            venueModel.setProducts(products);
+            modelList.add(venueModel);
         });
         return MenuKitResponseEntity.success(modelList);
     }
@@ -77,10 +86,13 @@ public class VenueClientController extends MainController {
     public ResponseEntity findOne(@PathVariable Long id, @RequestParam Language language) {
         final Venue venue = venueService.getById(id);
         final VenueClientResponseModel venueModel = new VenueClientResponseModel();
-        venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, venue.getGallery()));
+        venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
         venueModel.setName(venue.getName());
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
-        venueModel.setMenu(MenuWithProductsModel.convert(venue.getMenu(), language));
+        venueModel.setLocation(LocationModel.convert(venue.getLocation()));
+        List<ProductMenuModel> products = ProductMenuModel.convert(productService.
+                findTopProducts(venue.getMenu().getId()), language);
+        venueModel.setProducts(products);
         return MenuKitResponseEntity.success(venueModel);
     }
 

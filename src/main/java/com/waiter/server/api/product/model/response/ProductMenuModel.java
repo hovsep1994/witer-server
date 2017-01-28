@@ -94,7 +94,7 @@ public class ProductMenuModel {
         productMenuModel.setEvaluation(product.getAverageRating());
         productMenuModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language));
         productMenuModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
-        productMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, product.getGallery()));
+        productMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery()));
         return productMenuModel;
     }
 }
