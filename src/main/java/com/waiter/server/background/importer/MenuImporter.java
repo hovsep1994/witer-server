@@ -66,15 +66,18 @@ public class MenuImporter {
         Location location = locationService.create(locationDto);
         logger.info("Location created with id: {} ", location.getId());
 
-        VenueDto venueDto = parser.parseVenue(doc);
-        venueDto.setCompanyId(companyId);
-        venueDto.setLocationId(location.getId());
-        Venue venue = venueService.create(venueDto);
-        logger.info("Venue created with id: {} ", venue.getId());
+
 
         MenuDto menuDto = parser.parseMenu(doc);
         Menu menu = menuService.create(companyId, menuDto);
         logger.info("Menu created with id: {} ", menu.getId());
+
+        VenueDto venueDto = parser.parseVenue(doc);
+        venueDto.setCompanyId(companyId);
+        venueDto.setLocationId(location.getId());
+        venueDto.setMenuId(menu.getId());
+        Venue venue = venueService.create(venueDto);
+        logger.info("Venue created with id: {} ", venue.getId());
 
         for (ParsedCategory parsedCategory : parser.parseCategories(doc)) {
             Category category = categoryService.create(parsedCategory, menu.getId());
