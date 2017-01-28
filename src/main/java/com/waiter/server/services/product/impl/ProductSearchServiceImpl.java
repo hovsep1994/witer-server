@@ -82,9 +82,8 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
     }
 
     @Override
-    public void addOrUpdateByVenueId(Long venueId) {
-        notNull(venueId);
-        final Venue venue = venueService.getById(venueId);
+    public void addOrUpdateByVenueId(Venue venue) {
+        notNull(venue);
         final List<Product> products = new ArrayList<>();
         venue.getMenu().getCategories().forEach(category ->
                 category.getProducts().forEach(products::add));
@@ -126,7 +125,7 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
         public void processVenueLocationUpdatedEvent(VenueLocationUpdateEvent venueLocationUpdateEvent) {
             LOGGER.info("Venue update: ");
             try {
-                addOrUpdateByVenueId(venueLocationUpdateEvent.getVenueId());
+                addOrUpdateByVenueId(venueLocationUpdateEvent.getVenue());
             } catch (Exception e) {
                 LOGGER.error("Exception updating products: ", e);
             }

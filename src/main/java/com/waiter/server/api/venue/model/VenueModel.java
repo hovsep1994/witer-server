@@ -93,7 +93,7 @@ public class VenueModel {
         return venueModel;
     }
 
-    private static String getFullUrl(Set<GalleryImage> images, String cdnBaseUrl) {
+    public static String getFullUrl(Set<GalleryImage> images, String cdnBaseUrl) {
         final GalleryImage galleryImage = images.stream()
                 .filter(image -> image.getGalleryImageType() == GalleryImageType.MAIN)
                 .findFirst().orElse(null);

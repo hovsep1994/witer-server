@@ -1,32 +1,24 @@
 package com.waiter.server.solr.core.repository.venue.model;
 
 import com.waiter.server.solr.core.repository.common.model.AbstractSolrDocumentWithId;
+import com.waiter.server.solr.core.repository.common.model.SolrLocation;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.solr.client.solrj.beans.Field;
-import org.springframework.data.solr.core.geo.Point;
-import org.springframework.data.solr.core.mapping.Dynamic;
-import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
 /**
  * Created by hovsep on 7/31/16.
  */
-@SolrDocument(solrCoreName = "venue")
+@SolrDocument(solrCoreName = "venues")
 public class VenueSolrDocument extends AbstractSolrDocumentWithId {
 
     private static final long serialVersionUID = -1941047069037577163L;
 
-    @Field("name")
-    @Indexed
     private String name;
 
-    @Field("location")
-    @Indexed(stored = false)
-    private Point location;
+    private SolrLocation location;
 
-    @Field("companyId")
     private Long companyId;
 
     public String getName() {
@@ -37,11 +29,11 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
         this.name = name;
     }
 
-    public Point getLocation() {
+    public SolrLocation getLocation() {
         return location;
     }
 
-    public void setLocation(Point location) {
+    public void setLocation(SolrLocation location) {
         this.location = location;
     }
 

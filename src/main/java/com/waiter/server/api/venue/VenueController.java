@@ -20,7 +20,7 @@ import com.waiter.server.services.venue.VenueSearchService;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
-import com.waiter.server.services.venue.event.VenueLocationUpdateEvent;
+import com.waiter.server.services.venue.event.VenueUpdateEvent;
 import com.waiter.server.services.venue.model.Venue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +87,7 @@ public class VenueController extends AuthenticationController {
             final Location location = venueService.getById(id).getLocation();
             final LocationDto locationDto = LocationModel.convertToDto(venueRequest.getLocation());
             locationService.update(location.getId(), locationDto);
-            applicationEventBus.publishAsynchronousEvent(new VenueLocationUpdateEvent(id));
+//            applicationEventBus.publishAsynchronousEvent(new VenueLocationUpdateEvent(id));
         }
         final Venue createdVenue = venueService.update(id, venueRequest.getName(), venueRequest.getMenuId());
         final VenueModel venueModel = VenueModel.convert(createdVenue, cdnBaseUrl);
@@ -120,7 +120,6 @@ public class VenueController extends AuthenticationController {
                 .map(v -> VenueModel.convert(v, cdnBaseUrl)).collect(Collectors.toList());
         return MenuKitResponseEntity.success2(venues);
     }
-
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public MenuKitResponseEntity<List<Venue>> findVenues(@RequestBody VenueSearchParameters parameters) {

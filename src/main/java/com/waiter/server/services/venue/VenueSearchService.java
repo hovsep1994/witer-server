@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface VenueSearchService {
 
-    void addOrUpdate(Long id);
+    void addOrUpdate(Venue venue);
 
     List<Venue> getVenuesBySearchParameters(VenueSearchParameters parameters);
 

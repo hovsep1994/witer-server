@@ -84,7 +84,7 @@ public class VenueServiceImpl implements VenueService {
         venue.setGallery(new Gallery());
         final Venue createdVenue = venueRepository.save(venue);
         LOGGER.debug("Venue -{} successfully stored", venue);
-        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue.getId()));
+        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue));
         return createdVenue;
     }
 
@@ -101,7 +101,7 @@ public class VenueServiceImpl implements VenueService {
             venue.setName(name);
         }
         final Venue updatedVenue = venueRepository.save(venue);
-        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(updatedVenue.getId()));
+        applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(updatedVenue));
         return updatedVenue;
     }
 
