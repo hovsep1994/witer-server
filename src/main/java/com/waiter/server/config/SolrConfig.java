@@ -30,8 +30,17 @@ public class SolrConfig {
     }
 
     @Bean
-    public SolrOperations solrTemplate() {
-        SolrTemplate solrTemplate = new SolrTemplate(solrClient);
+    public SolrTemplate venuesSolrTemplate() {
+        SolrTemplate solrTemplate = new SolrTemplate(
+                new HttpSolrClient(appProperties.getProperty("solr.base.url") + "venues"));
+//        solrTemplate.setSolrConverter(solrConverter());
+        return solrTemplate;
+    }
+
+    @Bean
+    public SolrTemplate productsSolrTemplate() {
+        SolrTemplate solrTemplate = new SolrTemplate(
+                new HttpSolrClient(appProperties.getProperty("solr.base.url") + "products"));
 //        solrTemplate.setSolrConverter(solrConverter());
         return solrTemplate;
     }

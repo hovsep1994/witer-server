@@ -1,5 +1,6 @@
 package com.waiter.server.solr.core.repository.venue;
 
+import com.waiter.server.solr.core.repository.venue.model.VenueDocument;
 import com.waiter.server.solr.core.repository.venue.model.VenueSolrDocument;
 import org.springframework.data.solr.core.geo.Point;
 
@@ -14,6 +15,6 @@ public interface VenueSolrRepositoryCustom {
 
     VenueSolrDocument findOne(String id);
 
-    List<VenueSolrDocument> findBySearchParameters(String name, Point point);
+    List<VenueDocument> findBySearchParameters(String name, Point point);
 
 }

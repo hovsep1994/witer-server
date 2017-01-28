@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Created by hovsep on 7/31/16.
  */
-@SolrDocument(solrCoreName = "product2")
+@SolrDocument(solrCoreName = "products")
 public class ProductDocument extends AbstractSolrDocumentWithId {
 
 }

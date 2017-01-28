@@ -33,14 +33,14 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
     private static final String PRODUCTS_COLLECTION = "products";
 
     @Resource
-    private SolrTemplate solrTemplate;
+    private SolrTemplate productsSolrTemplate;
     @Resource
     private SolrClient solrClient;
 
     @Override
     public List<ProductDocument> findBySearchParams(String text) {
         final SimpleQuery query = new SimpleQuery(new Criteria("locations_srpt").near(new Point(50.0, 50.0), new Distance(10, Metrics.KILOMETERS)));
-        Page<ProductDocument> results = solrTemplate.queryForPage(query, ProductDocument.class);
+        Page<ProductDocument> results = productsSolrTemplate.queryForPage(query, ProductDocument.class);
         return results.getContent();
     }
 

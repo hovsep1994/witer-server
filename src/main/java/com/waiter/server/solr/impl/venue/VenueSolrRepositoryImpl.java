@@ -1,6 +1,7 @@
 package com.waiter.server.solr.impl.venue;
 
 import com.waiter.server.solr.core.repository.venue.VenueSolrRepository;
+import com.waiter.server.solr.core.repository.venue.model.VenueDocument;
 import com.waiter.server.solr.core.repository.venue.model.VenueSolrDocument;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -26,11 +27,11 @@ import java.util.List;
 @Repository
 public class VenueSolrRepositoryImpl implements VenueSolrRepository {
 
-    private static final double DISTANCE = 10;
+    private static final double DISTANCE = 10000;
     private static final String VENUES_COLLECTION = "venues";
 
     @Autowired
-    private SolrTemplate solrTemplate;
+    private SolrTemplate venuesSolrTemplate;
 
     @Autowired
     private SolrClient solrClient;
@@ -51,13 +52,13 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
     }
 
     @Override
-    public List<VenueSolrDocument> findBySearchParameters(String name, Point point) {
+    public List<VenueDocument> findBySearchParameters(String name, Point point) {
         final Distance distance = new Distance(DISTANCE, Metrics.KILOMETERS);
-        final Criteria criteria = new Criteria("location")
+        final Criteria criteria = new Criteria("location_rpt")
                 .near(point, distance)
-                .or(new Criteria("name").isNotNull().startsWith(name));
+                .or(new Criteria("name_txt").isNotNull().startsWith(name));
         final SimpleQuery query = new SimpleQuery(criteria);
-        final Page<VenueSolrDocument> results = solrTemplate.queryForPage(query, VenueSolrDocument.class);
+        final Page<VenueDocument> results = venuesSolrTemplate.queryForPage(query, VenueDocument.class);
         return results.getContent();
     }
 
