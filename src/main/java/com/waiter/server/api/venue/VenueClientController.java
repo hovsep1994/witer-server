@@ -61,11 +61,15 @@ public class VenueClientController extends MainController {
     public ResponseEntity findVenues(@RequestParam double latitude,
                                      @RequestParam double longitude,
                                      @RequestParam(required = false) String name,
+                                     @RequestParam(defaultValue = "0") int offset,
+                                     @RequestParam(defaultValue = "20") int limit,
                                      @RequestParam Language language) {
         final VenueSearchParameters searchParameters = new VenueSearchParameters();
         searchParameters.setName(name);
         searchParameters.setLatitude(latitude);
         searchParameters.setLongitude(longitude);
+        searchParameters.setOffset(offset);
+        searchParameters.setLimit(limit);
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
 //        final List<Venue> venues = Collections.singletonList(venueService.getById(23l));
         final List<VenueClientResponseModel> modelList = new ArrayList<>(venues.size());
@@ -75,7 +79,7 @@ public class VenueClientController extends MainController {
             venueModel.setName(venue.getName());
             venueModel.setLocation(LocationModel.convert(venue.getLocation()));
             List<ProductMenuModel> products = ProductMenuModel.convert(productService.
-                    findTopProducts(venue.getMenu().getId()), language);
+                    findTopProducts(venue.getMenu().getId(), 0, 10), language);
             venueModel.setProducts(products);
             modelList.add(venueModel);
         });
@@ -91,7 +95,7 @@ public class VenueClientController extends MainController {
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
         List<ProductMenuModel> products = ProductMenuModel.convert(productService.
-                findTopProducts(venue.getMenu().getId()), language);
+                findTopProducts(venue.getMenu().getId(), 0, 10), language);
         venueModel.setProducts(products);
         return MenuKitResponseEntity.success(venueModel);
     }

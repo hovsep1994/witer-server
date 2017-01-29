@@ -8,6 +8,8 @@ public class VenueSearchParameters {
     private String name;
     private double latitude;
     private double longitude;
+    private int offset;
+    private int limit;
 
     public String getName() {
         return name;
@@ -31,6 +33,24 @@ public class VenueSearchParameters {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public VenueSearchParameters setOffset(int offset) {
+        this.offset = offset;
+        return this;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public VenueSearchParameters setLimit(int limit) {
+        this.limit = limit;
+        return this;
     }
 
     @Override

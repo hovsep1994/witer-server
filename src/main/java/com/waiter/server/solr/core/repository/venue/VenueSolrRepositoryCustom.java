@@ -15,6 +15,6 @@ public interface VenueSolrRepositoryCustom {
 
     VenueSolrDocument findOne(String id);
 
-    List<VenueDocument> findBySearchParameters(String name, Point point);
+    List<VenueDocument> findBySearchParameters(String name, Point point, int offset, int limit);
 
 }

@@ -272,9 +272,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findTopProducts(Long menuId) {
+    public List<Product> findTopProducts(Long menuId, int offset, int limit) {
         notNull(menuId, "Menu id must not be null");
-        return productRepository.findTopProducts(menuId);
+        return productRepository.findTopProducts(menuId, offset, limit);
     }
 
     private ProductPrice getProductContainProductPrice(Product product, Long productPriceId) {

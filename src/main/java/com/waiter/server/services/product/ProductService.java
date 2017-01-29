@@ -43,5 +43,5 @@ public interface ProductService {
 
     Product createProductPrices(Long productId, Set<ProductPriceDto> productPriceDtos, Language language);
 
-    List<Product> findTopProducts(Long menuId);
+    List<Product> findTopProducts(Long menuId, int offset, int limit);
 }

@@ -52,12 +52,14 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
     }
 
     @Override
-    public List<VenueDocument> findBySearchParameters(String name, Point point) {
+    public List<VenueDocument> findBySearchParameters(String name, Point point, int offset, int limit) {
         final Distance distance = new Distance(DISTANCE, Metrics.KILOMETERS);
         final Criteria criteria = new Criteria("location_rpt")
                 .near(point, distance)
                 .or(new Criteria("name_txt").isNotNull().startsWith(name));
         final SimpleQuery query = new SimpleQuery(criteria);
+        query.setOffset(offset);
+        query.setRows(limit);
         final Page<VenueDocument> results = venuesSolrTemplate.queryForPage(query, VenueDocument.class);
         return results.getContent();
     }
