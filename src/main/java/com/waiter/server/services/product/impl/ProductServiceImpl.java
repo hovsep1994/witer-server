@@ -230,6 +230,9 @@ public class ProductServiceImpl implements ProductService {
         }
         final Evaluation evaluation = evaluationService.addRating(product.getEvaluation().getId(), customerToken, rating);
         product.setEvaluation(evaluation);
+        product.getCategory().getMenu().getVenues().forEach(venue -> {
+            evaluationService.addRating(venue.getEvaluation().getId(), customerToken, rating);
+        });
         return productRepository.save(product);
     }
 

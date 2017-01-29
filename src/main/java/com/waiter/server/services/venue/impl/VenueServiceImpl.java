@@ -5,6 +5,7 @@ import com.waiter.server.services.common.exception.ErrorCode;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.company.CompanyService;
+import com.waiter.server.services.evaluation.model.Evaluation;
 import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.gallery.GalleryImageService;
 import com.waiter.server.services.gallery.dto.GalleryImageDto;
@@ -82,6 +83,7 @@ public class VenueServiceImpl implements VenueService {
         venue.setLocation(locationService.getById(venueDto.getLocationId()));
         venue.setCompany(companyService.get(venueDto.getCompanyId()));
         venue.setGallery(new Gallery());
+        venue.setEvaluation(new Evaluation());
         final Venue createdVenue = venueRepository.save(venue);
         LOGGER.debug("Venue -{} successfully stored", venue);
         applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue));

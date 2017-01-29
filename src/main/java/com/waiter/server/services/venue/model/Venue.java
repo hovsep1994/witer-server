@@ -2,6 +2,7 @@ package com.waiter.server.services.venue.model;
 
 import com.waiter.server.services.common.model.AbstractEntityModel;
 import com.waiter.server.services.company.model.Company;
+import com.waiter.server.services.evaluation.model.Evaluation;
 import com.waiter.server.services.gallery.model.Gallery;
 import com.waiter.server.services.location.model.Location;
 import com.waiter.server.services.menu.model.Menu;
@@ -37,6 +38,10 @@ public class Venue extends AbstractEntityModel {
     @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "gallery_id", nullable = false)
     private Gallery gallery;
+
+    @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "evaluation_id", nullable = false)
+    private Evaluation evaluation;
 
     public Company getCompany() {
         return company;
@@ -84,6 +89,15 @@ public class Venue extends AbstractEntityModel {
 
     public void setVenueTypes(Set<VenueType> venueTypes) {
         this.venueTypes = venueTypes;
+    }
+
+    public Evaluation getEvaluation() {
+        return evaluation;
+    }
+
+    public Venue setEvaluation(Evaluation evaluation) {
+        this.evaluation = evaluation;
+        return this;
     }
 
     @Override

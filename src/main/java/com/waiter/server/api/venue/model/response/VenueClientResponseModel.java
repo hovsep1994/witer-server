@@ -20,6 +20,8 @@ public class VenueClientResponseModel {
 
     private String image;
 
+    private double rating;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ProductMenuModel> products;
 
@@ -61,5 +63,14 @@ public class VenueClientResponseModel {
 
     public void setProducts(List<ProductMenuModel> products) {
         this.products = products;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public VenueClientResponseModel setRating(double rating) {
+        this.rating = rating;
+        return this;
     }
 }

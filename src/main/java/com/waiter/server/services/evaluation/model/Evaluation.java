@@ -46,6 +46,9 @@ public class Evaluation extends AbstractEntityModel {
     }
 
     public Double getAverageRating() {
+        if(getRateCount() == 0) {
+            return 0d;
+        }
         return (double) getRateSum() / (double) getRateCount();
     }
 }

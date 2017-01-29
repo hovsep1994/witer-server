@@ -78,6 +78,7 @@ public class VenueClientController extends MainController {
             venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
             venueModel.setName(venue.getName());
             venueModel.setLocation(LocationModel.convert(venue.getLocation()));
+            venueModel.setRating(venue.getEvaluation().getAverageRating());
             List<ProductMenuModel> products = ProductMenuModel.convert(productService.
                     findTopProducts(venue.getMenu().getId(), 0, 10), language);
             venueModel.setProducts(products);

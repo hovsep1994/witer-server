@@ -58,15 +58,17 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     @Override
     public List<Product> findTopProducts(Long menuId, int offset, int limit) {
         String queryString = new StringBuilder()
-                .append(" SELECT p FROM Product p")
+                .append(" SELECT")
+                .append(" p FROM Product p")
                 .append(" join p.evaluation")
                 .append(" join p.category")
                 .append(" join p.category.menu")
                 .append(" WHERE p.category.menu.id = ").append(menuId)
                 .append(" ORDER BY p.evaluation.rateSum")
-                .append(" ").append(offset).append(",").append(limit)
                 .toString();
-        final TypedQuery<Product> typedQuery = entityManager.createQuery(queryString, Product.class);
+        final TypedQuery<Product> typedQuery = entityManager.createQuery(queryString, Product.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit);
         return typedQuery.getResultList();
     }
 
