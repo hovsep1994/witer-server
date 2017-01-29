@@ -68,7 +68,7 @@ public class VenueSearchServiceImpl implements VenueSearchService, InitializingB
                 .map(venueSolrDocument -> venueService.getById(Long.valueOf(venueSolrDocument.getId())))
                 .collect(Collectors.toList());
         LOGGER.debug("Successfully find venues -{} for search params -{}", venues, parameters);
-        return new ArrayList<>();
+        return venues;
     }
 
     private final VenueUpdateEventListener venueUpdateEventListener = new VenueUpdateEventListener() {
