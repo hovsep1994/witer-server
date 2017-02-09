@@ -16,6 +16,7 @@ import com.waiter.server.services.venue.VenueSearchService;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.dto.VenueSearchParameters;
 import com.waiter.server.services.venue.model.Venue;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import java.util.List;
  * Created by Admin on 12/12/2015.
  */
 @RestController
-@RequestMapping("/client/venue")
+@RequestMapping("/client/venues")
 public class VenueClientController extends MainController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VenueClientController.class);
@@ -57,17 +58,21 @@ public class VenueClientController extends MainController {
     @Autowired
     private ApplicationEventBus applicationEventBus;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity findVenues(@RequestParam double latitude,
-                                     @RequestParam double longitude,
+    @RequestMapping(value = "/nearby", method = RequestMethod.GET)
+    public ResponseEntity findVenues(@RequestParam(required = false) Double latitude,
+                                     @RequestParam(required = false) Double longitude,
                                      @RequestParam(required = false) String name,
                                      @RequestParam(defaultValue = "0") int offset,
                                      @RequestParam(defaultValue = "20") int limit,
                                      @RequestParam Language language) {
         final VenueSearchParameters searchParameters = new VenueSearchParameters();
-        searchParameters.setName(name);
-        searchParameters.setLatitude(latitude);
-        searchParameters.setLongitude(longitude);
+        if(!StringUtils.isEmpty(name)) {
+            searchParameters.setName(name);
+        }
+        if(longitude != null && latitude != null) {
+            searchParameters.setLatitude(latitude);
+            searchParameters.setLongitude(longitude);
+        }
         searchParameters.setOffset(offset);
         searchParameters.setLimit(limit);
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
@@ -87,6 +92,7 @@ public class VenueClientController extends MainController {
         return MenuKitResponseEntity.success(modelList);
     }
 
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity findOne(@PathVariable Long id, @RequestParam Language language) {
         final Venue venue = venueService.getById(id);
@@ -94,7 +100,7 @@ public class VenueClientController extends MainController {
         venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
         venueModel.setName(venue.getName());
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
-        venueModel.setLocation(LocationModel.convert(venue.getLocation()));
+        venueModel.setRating(venue.getEvaluation().getAverageRating());
         List<ProductMenuModel> products = ProductMenuModel.convert(productService.
                 findTopProducts(venue.getMenu().getId(), 0, 10), language);
         venueModel.setProducts(products);

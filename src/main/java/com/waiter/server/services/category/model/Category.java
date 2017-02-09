@@ -9,6 +9,7 @@ import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,6 +65,9 @@ public class Category extends AbstractEntityModel {
     }
 
     public List<Product> getProducts() {
+        if (products == null) {
+            products = new ArrayList<>();
+        }
         return products;
     }
 

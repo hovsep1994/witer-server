@@ -24,7 +24,7 @@ public interface CategoryService {
 
     void remove(Long groupId);
 
-    Category addOrUpdateTranslation(Long productId, TranslationDto nameDto);
+    Category addOrUpdateTranslation(Long categoryId, TranslationDto nameDto);
 
     GalleryImage addImage(Long categoryId, InputStream inputStream) throws ServiceException;
 

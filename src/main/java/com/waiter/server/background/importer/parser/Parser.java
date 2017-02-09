@@ -1,7 +1,7 @@
 package com.waiter.server.background.importer.parser;
 
-import com.waiter.server.background.importer.parser.model.ParsedCategory;
-import com.waiter.server.background.importer.parser.model.ParsedProduct;
+import com.waiter.server.background.importer.model.ParsedCategory;
+import com.waiter.server.background.importer.model.ParsedProduct;
 import com.waiter.server.services.location.dto.LocationDto;
 import com.waiter.server.services.menu.model.MenuDto;
 import com.waiter.server.services.venue.dto.VenueDto;

@@ -1,7 +1,6 @@
-package com.waiter.server.background.importer.parser.model;
+package com.waiter.server.background.importer.model;
 
 import com.waiter.server.services.product.dto.ProductDto;
-import com.waiter.server.services.product.model.Product;
 
 /**
  * @author shahenpoghosyan

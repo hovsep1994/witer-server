@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,6 +67,9 @@ public class Menu extends AbstractEntityModel {
     }
 
     public List<Category> getCategories() {
+        if (categories == null) {
+            categories = new ArrayList<>();
+        }
         return categories;
     }
 
@@ -101,6 +105,9 @@ public class Menu extends AbstractEntityModel {
     }
 
     public List<Venue> getVenues() {
+        if (venues == null) {
+            venues = new ArrayList<>();
+        }
         return venues;
     }
 

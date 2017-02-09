@@ -2,8 +2,8 @@ package com.waiter.server.background.importer.parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.waiter.server.background.importer.parser.model.ParsedCategory;
-import com.waiter.server.background.importer.parser.model.ParsedProduct;
+import com.waiter.server.background.importer.model.ParsedCategory;
+import com.waiter.server.background.importer.model.ParsedProduct;
 import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.location.dto.LocationDto;
@@ -28,17 +28,6 @@ public class FooderaMenuParser implements Parser {
     private static final String CATEGORY_LIST_CLASS = "menu__categories__list-wrapper";
     private static final ObjectMapper mapper = new ObjectMapper();
 
-
-    private Language defaultLanguage;
-    private Currency defaultCurrency;
-    private String defaultMenuName;
-
-    public FooderaMenuParser(@Value("nl") Language defaultLanguage, @Value("EUR") Currency defaultCurrency, @Value("Menu!") String defaultMenuName) {
-        this.defaultLanguage = defaultLanguage;
-        this.defaultCurrency = defaultCurrency;
-        this.defaultMenuName = defaultMenuName;
-    }
-
     @Override
     public List<ParsedCategory> parseCategories(Document doc) throws IOException {
 
@@ -49,7 +38,6 @@ public class FooderaMenuParser implements Parser {
             Element categoryA = categoryLI.child(0);
             ParsedCategory category = new ParsedCategory();
             category.setName(categoryA.html());
-            category.setLanguage(defaultLanguage);
             category.setTags(new TreeSet<>());
             String productsRef = categoryA.attr("href").substring(1);
             category.setProductRef(productsRef);
@@ -70,7 +58,6 @@ public class FooderaMenuParser implements Parser {
             ParsedProduct productDto = new ParsedProduct();
             productDto.setName(fooderaProduct.get("name").asText());
             productDto.setDescription(fooderaProduct.get("description").asText());
-            productDto.setLanguage(defaultLanguage);
             productDto.setTags(new TreeSet<>());
 
             if(fooderaProduct.get("file_path") != null && !fooderaProduct.get("file_path").isNull())
@@ -97,9 +84,7 @@ public class FooderaMenuParser implements Parser {
     @Override
     public MenuDto parseMenu(Document doc) {
         MenuDto menuDto = new MenuDto();
-        menuDto.setCurrency(defaultCurrency);
-        menuDto.setName(defaultMenuName);
-        menuDto.setLanguage(defaultLanguage);
+        menuDto.setName("Menu!");
         return menuDto;
     }
 

@@ -11,6 +11,7 @@ import com.waiter.server.solr.core.repository.common.model.SolrLocation;
 import com.waiter.server.solr.core.repository.venue.VenueSolrRepository;
 import com.waiter.server.solr.core.repository.venue.model.VenueDocument;
 import com.waiter.server.solr.core.repository.venue.model.VenueSolrDocument;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -62,7 +63,10 @@ public class VenueSearchServiceImpl implements VenueSearchService, InitializingB
     public List<Venue> getVenuesBySearchParameters(VenueSearchParameters parameters) {
         LOGGER.debug("Finding for search params -{}", parameters);
         notNull(parameters, "parameters must not be null");
-        final Point point = new Point(parameters.getLatitude(), parameters.getLongitude());
+        Point point = null;
+        if(parameters.getLatitude() != null && parameters.getLongitude() != null) {
+            point = new Point(parameters.getLatitude(), parameters.getLongitude());
+        }
         final List<VenueDocument> venueSolrDocuments = venueSolrRepository.findBySearchParameters(parameters.getName(),
                 point, parameters.getOffset(), parameters.getLimit());
         final List<Venue> venues = venueSolrDocuments.stream()

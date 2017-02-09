@@ -1,6 +1,7 @@
 package com.waiter.server.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.hibernate.SessionFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -109,6 +112,11 @@ public class DataAccessConfig implements TransactionManagementConfigurer {
         hibernateJpaVendorAdapter.setGenerateDdl(Boolean.valueOf(appProperties.getProperty("database.hibernate.generateDdl")));
         hibernateJpaVendorAdapter.setDatabasePlatform(appProperties.getProperty("database.hibernate.dialect"));
         return hibernateJpaVendorAdapter;
+    }
+
+    @Bean
+    public SessionFactory annotationSessionFactoryBean() {
+        return new LocalSessionFactoryBuilder(dataSource).buildSessionFactory();
     }
 
 }

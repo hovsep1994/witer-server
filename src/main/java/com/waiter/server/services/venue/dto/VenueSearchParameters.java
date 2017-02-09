@@ -6,8 +6,8 @@ package com.waiter.server.services.venue.dto;
 public class VenueSearchParameters {
 
     private String name;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     private int offset;
     private int limit;
 
@@ -19,7 +19,7 @@ public class VenueSearchParameters {
         this.name = name;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
@@ -27,7 +27,7 @@ public class VenueSearchParameters {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 

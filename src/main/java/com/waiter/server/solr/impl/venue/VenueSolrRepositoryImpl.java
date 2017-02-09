@@ -3,11 +3,10 @@ package com.waiter.server.solr.impl.venue;
 import com.waiter.server.solr.core.repository.venue.VenueSolrRepository;
 import com.waiter.server.solr.core.repository.venue.model.VenueDocument;
 import com.waiter.server.solr.core.repository.venue.model.VenueSolrDocument;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.common.params.SolrParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.geo.Distance;
@@ -27,7 +26,7 @@ import java.util.List;
 @Repository
 public class VenueSolrRepositoryImpl implements VenueSolrRepository {
 
-    private static final double DISTANCE = 10000;
+    private static final double DISTANCE = 100;
     private static final String VENUES_COLLECTION = "venues";
 
     @Autowired
@@ -41,7 +40,7 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
         final SolrInputDocument document = new SolrInputDocument();
         document.addField("id", venue.getId());
         document.addField("name_txt", venue.getName());
-        document.addField("location_rpt", venue.getLocation().getLatitude() + " " + venue.getLocation().getLongitude());
+        document.addField("location_rpt", venue.getLocation().getLongitude() + " " + venue.getLocation().getLatitude());
         document.addField("company_id_s", venue.getCompanyId());
         saveDocument(document);
     }
@@ -54,9 +53,17 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
     @Override
     public List<VenueDocument> findBySearchParameters(String name, Point point, int offset, int limit) {
         final Distance distance = new Distance(DISTANCE, Metrics.KILOMETERS);
-        final Criteria criteria = new Criteria("location_rpt")
-                .near(point, distance)
-                .or(new Criteria("name_txt").isNotNull().startsWith(name));
+        Criteria criteria = null;
+        if (!StringUtils.isEmpty(name)) {
+            criteria = new Criteria("name_txt").startsWith(name);
+        }
+        if(point != null) {
+            if(criteria == null) {
+                criteria = new Criteria("location_rpt").near(point, distance);
+            } else {
+                criteria = criteria.and(new Criteria("location_rpt").near(point, distance));
+            }
+        }
         final SimpleQuery query = new SimpleQuery(criteria);
         query.setOffset(offset);
         query.setRows(limit);
