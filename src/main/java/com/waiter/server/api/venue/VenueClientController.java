@@ -1,12 +1,14 @@
 package com.waiter.server.api.venue;
 
+import com.waiter.server.api.category.model.response.CategoryMenuModel;
 import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.location.model.LocationModel;
-import com.waiter.server.api.product.model.response.ProductMenuModel;
+import com.waiter.server.api.menu.model.response.MenuWithProductsModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
-import com.waiter.server.api.venue.model.response.VenueClientResponseModel;
+import com.waiter.server.api.venue.model.response.VenueClientModel;
+import com.waiter.server.api.venue.model.response.VenueSearchClientModel;
 import com.waiter.server.services.company.CompanyService;
 import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.language.Language;
@@ -25,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -75,22 +76,13 @@ public class VenueClientController extends MainController {
         }
         searchParameters.setOffset(offset);
         searchParameters.setLimit(limit);
+
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
 //        final List<Venue> venues = Collections.singletonList(venueService.getById(23l));
-        final List<VenueClientResponseModel> modelList = new ArrayList<>(venues.size());
-        venues.forEach(venue -> {
-            final VenueClientResponseModel venueModel = new VenueClientResponseModel();
-            venue.setId(venue.getId());
-            venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
-            venueModel.setName(venue.getName());
-            venueModel.setLocation(LocationModel.convert(venue.getLocation()));
-            venueModel.setRating(venue.getEvaluation().getAverageRating());
-            Language menuLanguage = venue.getMenu().getLanguages().contains(language) ? language : venue.getMenu().getMainLanguage();
-            List<ProductMenuModel> products = ProductMenuModel.convert(productService.
-                    findTopProducts(venue.getMenu().getId(), 0, 10), menuLanguage);
-            venueModel.setProducts(products);
-            modelList.add(venueModel);
-        });
+        final List<VenueSearchClientModel> modelList = new ArrayList<>(venues.size());
+        venues.forEach(venue -> modelList.add(VenueSearchClientModel
+                .convert(venue, language, productService.findTopProducts(venue.getMenu().getId(), 0, 10))));
+
         return MenuKitResponseEntity.success(modelList);
     }
 
@@ -98,15 +90,8 @@ public class VenueClientController extends MainController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity findOne(@PathVariable Long id, @RequestParam Language language) {
         final Venue venue = venueService.getById(id);
-        final VenueClientResponseModel venueModel = new VenueClientResponseModel();
-        venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
-        venueModel.setName(venue.getName());
-        venueModel.setLocation(LocationModel.convert(venue.getLocation()));
-        venueModel.setRating(venue.getEvaluation().getAverageRating());
-        List<ProductMenuModel> products = ProductMenuModel.convert(productService.
-                findTopProducts(venue.getMenu().getId(), 0, 10), language);
-        venueModel.setProducts(products);
-        return MenuKitResponseEntity.success(venueModel);
+
+        return MenuKitResponseEntity.success(VenueClientModel.convert(venue, language));
     }
 
 }
