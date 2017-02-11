@@ -80,6 +80,7 @@ public class VenueClientController extends MainController {
         final List<VenueClientResponseModel> modelList = new ArrayList<>(venues.size());
         venues.forEach(venue -> {
             final VenueClientResponseModel venueModel = new VenueClientResponseModel();
+            venue.setId(venue.getId());
             venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
             venueModel.setName(venue.getName());
             venueModel.setLocation(LocationModel.convert(venue.getLocation()));

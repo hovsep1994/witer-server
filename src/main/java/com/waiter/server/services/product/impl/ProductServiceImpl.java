@@ -205,7 +205,7 @@ public class ProductServiceImpl implements ProductService {
             product.getNameSet().add(name);
         }
         if (descriptionDto != null) {
-            Translation description = product.getNameTranslationByLanguage(descriptionDto.getLanguage());
+            Translation description = product.getDescriptionByLanguage(descriptionDto.getLanguage());
             if (description == null) {
                 description = translationService.create(descriptionDto);
             } else {

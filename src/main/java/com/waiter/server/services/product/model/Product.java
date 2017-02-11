@@ -98,6 +98,9 @@ public class Product extends AbstractEntityModel {
     }
 
     public Set<Translation> getDescriptionSet() {
+        if (descriptionSet == null) {
+            descriptionSet = new HashSet<>();
+        }
         return descriptionSet;
     }
 
