@@ -90,6 +90,7 @@ public class MenuImporter {
         Venue venue = venueService.create(venueDto);
 
         menu.getVenues().add(venue);
+        menu.getLanguages().add(orig.language);
 
         venueService.addImage(venue.getId(), makeStream(venueImage));
         logger.info("Venue created with id: {} ", venue.getId());
@@ -128,6 +129,7 @@ public class MenuImporter {
 
     @Transactional
     public void addTranslation(WebsiteTranslation translation, Menu menu) throws IOException {
+        menu.getLanguages().add(translation.language);
         List<ParsedCategory> categories = parser.parseCategories(translation.doc);
         int i = 0;
         for (ParsedCategory parsedCategory : categories) {

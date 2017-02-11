@@ -172,6 +172,10 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
         {
             code: "hy",
             name: "Armenian"
+        },
+        {
+            code: "nl",
+            name: "Dutch"
         }
     ];
 

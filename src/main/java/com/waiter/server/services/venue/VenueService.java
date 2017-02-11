@@ -21,6 +21,8 @@ public interface VenueService {
 
     Venue getById(Long id);
 
+    List<Venue> getAllByIds(List<Long> ids);
+
     GalleryImage addImage(Long venueId, InputStream inputStream) throws ServiceException;
 
     List<Venue> attacheMenuToVenues(Set<Long> venueIds, Long menuId);

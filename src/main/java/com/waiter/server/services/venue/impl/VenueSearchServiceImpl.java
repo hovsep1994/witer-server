@@ -69,9 +69,8 @@ public class VenueSearchServiceImpl implements VenueSearchService, InitializingB
         }
         final List<VenueDocument> venueSolrDocuments = venueSolrRepository.findBySearchParameters(parameters.getName(),
                 point, parameters.getOffset(), parameters.getLimit());
-        final List<Venue> venues = venueSolrDocuments.stream()
-                .map(venueSolrDocument -> venueService.getById(Long.valueOf(venueSolrDocument.getId())))
-                .collect(Collectors.toList());
+        final List<Venue> venues = venueService.getAllByIds(venueSolrDocuments.stream()
+                .map(x -> Long.valueOf(x.getId())).collect(Collectors.toList()));
         LOGGER.debug("Successfully find venues -{} for search params -{}", venues, parameters);
         return venues;
     }

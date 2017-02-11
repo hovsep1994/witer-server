@@ -70,6 +70,13 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
+    public List<Venue> getAllByIds(List<Long> ids) {
+        notNull(ids);
+        List<Venue> venues = venueRepository.findAll(ids);
+        return venues;
+    }
+
+    @Override
     @Transactional
     public Venue create(VenueDto venueDto) {
         notNull(venueDto.getName());

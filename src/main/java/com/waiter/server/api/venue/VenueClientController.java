@@ -84,8 +84,9 @@ public class VenueClientController extends MainController {
             venueModel.setName(venue.getName());
             venueModel.setLocation(LocationModel.convert(venue.getLocation()));
             venueModel.setRating(venue.getEvaluation().getAverageRating());
+            Language menuLanguage = venue.getMenu().getLanguages().contains(language) ? language : venue.getMenu().getMainLanguage();
             List<ProductMenuModel> products = ProductMenuModel.convert(productService.
-                    findTopProducts(venue.getMenu().getId(), 0, 10), language);
+                    findTopProducts(venue.getMenu().getId(), 0, 10), menuLanguage);
             venueModel.setProducts(products);
             modelList.add(venueModel);
         });
