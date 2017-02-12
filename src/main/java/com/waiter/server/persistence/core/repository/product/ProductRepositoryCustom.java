@@ -11,7 +11,7 @@ public interface ProductRepositoryCustom {
 
     Product setRatingByCustomerToken(Long productId, String customerToken, Integer rating);
 
-    List<Product> findByIdAndCustomerToken(Long productId,String customerToken);
+    Product findByIdAndCustomerToken(Long productId,String customerToken);
 
     List<Product> findTopProducts(Long menuId, int offset, int limit);
 

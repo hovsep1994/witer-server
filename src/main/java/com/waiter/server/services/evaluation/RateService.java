@@ -7,5 +7,9 @@ import com.waiter.server.services.evaluation.model.Rate;
  */
 public interface RateService {
 
-    Rate createRate(Long evaluationId, String customerToken, Integer rating);
+    Rate create(Long evaluationId, String customerToken, Integer rating);
+
+    Rate update(Long evaluationId, String customerToken, Integer rating);
+
+    Rate find(Long evaluationId, String customerToken);
 }

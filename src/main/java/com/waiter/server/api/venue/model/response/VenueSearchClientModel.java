@@ -81,7 +81,7 @@ public class VenueSearchClientModel {
 
     public static VenueSearchClientModel convert(Venue venue, Language language, List<Product> topProducts) {
         final VenueSearchClientModel venueModel = new VenueSearchClientModel();
-        venue.setId(venue.getId());
+        venueModel.setId(venue.getId());
         venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
         venueModel.setName(venue.getName());
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));

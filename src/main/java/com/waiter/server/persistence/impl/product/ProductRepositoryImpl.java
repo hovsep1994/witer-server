@@ -43,7 +43,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
     @Override
-    public List<Product> findByIdAndCustomerToken(Long productId, String customerToken) {
+    public Product findByIdAndCustomerToken(Long productId, String customerToken) {
         String queryString = new StringBuilder()
                 .append(" Select p from Product p")
                 .append(" join p.evaluation e")
@@ -52,7 +52,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .append(" and r.customerToken = '").append(customerToken).append("'")
                 .toString();
         final TypedQuery<Product> typedQuery = entityManager.createQuery(queryString, Product.class);
-        return typedQuery.getResultList();
+        List<Product> products =  typedQuery.getResultList();
+        return products.isEmpty() ? null : products.get(0);
     }
 
     @Override

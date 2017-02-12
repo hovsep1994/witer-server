@@ -223,15 +223,11 @@ public class ProductServiceImpl implements ProductService {
         notNull(customerToken);
         notNull(rating);
         isTrue(rating >= 0 && rating <= 10);
-        final Product product = getById(productId);
-        List product1 = productRepository.findByIdAndCustomerToken(productId, customerToken);
-        if (product1 != null && !product1.isEmpty()) {
-            throw new ServiceRuntimeException(ErrorCode.BAD_REQUEST, "customer can not rate twice same product");
-        }
-        final Evaluation evaluation = evaluationService.addRating(product.getEvaluation().getId(), customerToken, rating);
+        Product product = getById(productId);
+        final Evaluation evaluation = evaluationService.addOrUpdateRating(product.getEvaluation().getId(), customerToken, rating);
         product.setEvaluation(evaluation);
         product.getCategory().getMenu().getVenues().forEach(venue -> {
-            evaluationService.addRating(venue.getEvaluation().getId(), customerToken, rating);
+            evaluationService.addOrUpdateRating(venue.getEvaluation().getId(), customerToken, rating);
         });
         return productRepository.save(product);
     }

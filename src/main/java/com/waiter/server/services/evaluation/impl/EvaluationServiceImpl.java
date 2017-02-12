@@ -40,11 +40,19 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     @Transactional
-    public Evaluation addRating(Long evaluationId, String customerToken, Integer rating) {
+    public Evaluation addOrUpdateRating(Long evaluationId, String customerToken, Integer rating) {
         Evaluation evaluation = getById(evaluationId);
-        evaluation.setRateCount(evaluation.getRateCount() + 1);
-        evaluation.setRateSum(evaluation.getRateSum() + rating);
-        rateService.createRate(evaluation.getId(), customerToken, rating);
+
+        Rate rate = rateService.find(evaluationId, customerToken);
+        if (rate != null) {
+            evaluation.setRateSum(evaluation.getRateSum() + rating - rate.getRating());
+            rateService.update(evaluationId, customerToken, rating);
+        } else {
+            rateService.create(evaluation.getId(), customerToken, rating);
+            evaluation.setRateSum(evaluation.getRateSum() + rating);
+            evaluation.setRateCount(evaluation.getRateCount() + 1);
+        }
+
         return evaluationRepository.save(evaluation);
     }
 

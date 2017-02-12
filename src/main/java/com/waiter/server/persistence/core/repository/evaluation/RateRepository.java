@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by hovsep on 3/12/16.
  */
 public interface RateRepository extends JpaRepository<Rate, Long> {
+
+    Rate findByCustomerTokenAndEvaluationId(String token, Long evaluationId);
 }

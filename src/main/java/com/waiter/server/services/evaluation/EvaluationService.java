@@ -10,5 +10,5 @@ public interface EvaluationService {
 
     Evaluation getById(Long id);
 
-    Evaluation addRating(Long evaluationId, String customerToken, Integer rating);
+    Evaluation addOrUpdateRating(Long evaluationId, String customerToken, Integer rating);
 }
