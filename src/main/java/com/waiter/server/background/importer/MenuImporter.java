@@ -168,6 +168,16 @@ public class MenuImporter {
         private Document doc;
     }
 
+    public void test() {
+        for (int i = 92; i <= 120; i++)
+            try {
+        productService.remove((long)i);
+
+            }catch (Exception e) {
+
+            }
+    }
+
     public static void main(String[] args) throws IOException, ServiceException {
 
         String origUrl = "https://www.foodora.nl/en/restaurant/s9yt/cannibale-royale-lange-niezel";
@@ -183,11 +193,12 @@ public class MenuImporter {
 
         ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConf.class);
         MenuImporter importer = (MenuImporter) context.getBean("menuImporter");
+        importer.test();
 
-        WebsiteTranslation orig = new WebsiteTranslation(Language.en, Jsoup.connect(origUrl).userAgent(USER_AGENT).get());
-        WebsiteTranslation nlTranslation = new WebsiteTranslation(Language.nl, Jsoup.connect(nlUrl).userAgent(USER_AGENT).get());
-
-        importer.importVenue(orig, Collections.singletonList(nlTranslation), Currency.EUR, venueImage, locationDto);
+//        WebsiteTranslation orig = new WebsiteTranslation(Language.en, Jsoup.connect(origUrl).userAgent(USER_AGENT).get());
+//        WebsiteTranslation nlTranslation = new WebsiteTranslation(Language.nl, Jsoup.connect(nlUrl).userAgent(USER_AGENT).get());
+//
+//        importer.importVenue(orig, Collections.singletonList(nlTranslation), Currency.EUR, venueImage, locationDto);
     }
 
 }

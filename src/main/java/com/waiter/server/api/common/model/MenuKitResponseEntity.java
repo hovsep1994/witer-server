@@ -5,8 +5,9 @@ import com.waiter.server.services.common.exception.ServiceError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Collections;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
 
 /**
  * @author shahenpoghosyan
@@ -21,11 +22,26 @@ public class MenuKitResponseEntity<TResponse> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ApiError> errors;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Metadata metadata;
+
 
     public static <T> ResponseEntity<MenuKitResponseEntity<T>> success(T response) {
         MenuKitResponseEntity<T> responseEntity = new MenuKitResponseEntity<>();
         responseEntity.response = response;
         responseEntity.status = "success";
+
+
+        return new ResponseEntity<>(responseEntity, HttpStatus.OK);
+    }
+
+    public static <T> ResponseEntity<MenuKitResponseEntity<T>> success(T response, String url, Map<String, Object> params) {
+        MenuKitResponseEntity<T> responseEntity = new MenuKitResponseEntity<>();
+        responseEntity.response = response;
+        responseEntity.status = "success";
+        Metadata metadata = new Metadata();
+        metadata.setNextPage(constructUrl(url, params));
+        responseEntity.metadata = metadata;
 
 
         return new ResponseEntity<>(responseEntity, HttpStatus.OK);
@@ -84,5 +100,38 @@ public class MenuKitResponseEntity<TResponse> {
 
     public void setErrors(List<ApiError> errors) {
         this.errors = errors;
+    }
+
+    public Metadata getMetadata() {
+        return metadata;
+    }
+
+    public MenuKitResponseEntity setMetadata(Metadata metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    private static String constructUrl(String url, Map<String, Object> queryString) {
+        if(queryString == null || queryString.isEmpty())
+            return url;
+        return url + "?" + mapToQueryString(queryString);
+    }
+
+    private static String mapToQueryString(Map<String, Object> queryString) {
+        StringBuilder sb = new StringBuilder();
+        for(HashMap.Entry<String, Object> e : queryString.entrySet()){
+            if (e.getValue() != null) {
+                if (sb.length() > 0) {
+                    sb.append('&');
+                }
+                try {
+                    sb.append(URLEncoder.encode(e.getKey(), "UTF-8")).append('=').append(URLEncoder.encode(e.getValue().toString(), "UTF-8"));
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                    return null;
+                }
+            }
+        }
+        return sb.toString();
     }
 }

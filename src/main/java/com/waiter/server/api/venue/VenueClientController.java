@@ -5,6 +5,7 @@ import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.location.model.LocationModel;
 import com.waiter.server.api.menu.model.response.MenuWithProductsModel;
+import com.waiter.server.api.search.model.request.SearchParams;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.api.venue.model.response.VenueClientModel;

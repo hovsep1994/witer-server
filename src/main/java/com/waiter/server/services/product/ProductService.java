@@ -10,7 +10,6 @@ import com.waiter.server.services.product.model.ProductPrice;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.product.dto.ProductDto;
 import com.waiter.server.services.product.model.Product;
-import com.waiter.server.services.product.dto.ProductSearchParameters;
 
 import java.io.InputStream;
 import java.util.List;
@@ -26,6 +25,8 @@ public interface ProductService {
     Product create(Long categoryId, ProductDto productDto);
 
     Product update(Long productId, ProductDto productDto);
+
+    List<Product> getAllByIds(List<Long> ids);
 
     List<Product> getByCategoryId(Long categoryId);
 

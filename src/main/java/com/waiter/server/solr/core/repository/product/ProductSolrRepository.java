@@ -1,6 +1,7 @@
 package com.waiter.server.solr.core.repository.product;
 
 import com.waiter.server.solr.core.repository.product.model.ProductDocument;
+import org.springframework.data.geo.Point;
 import org.springframework.data.solr.repository.SolrCrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,5 @@ import java.util.List;
  */
 @Repository
 public interface ProductSolrRepository extends ProductSolrRepositoryCustom {
-
 
 }

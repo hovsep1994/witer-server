@@ -1,23 +1,13 @@
 package com.waiter.server.persistence.impl.product;
 
 import com.waiter.server.persistence.core.repository.product.ProductRepositoryCustom;
-import com.waiter.server.services.category.model.Category;
-import com.waiter.server.services.translation.model.Translation;
-import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
-import com.waiter.server.services.tag.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Admin on 1/3/2016.

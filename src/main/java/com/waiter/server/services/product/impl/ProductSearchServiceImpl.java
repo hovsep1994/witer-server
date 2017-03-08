@@ -7,6 +7,7 @@ import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.event.ApplicationEventBus;
 import com.waiter.server.services.product.ProductSearchService;
 import com.waiter.server.services.product.ProductService;
+import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.event.ProductUpdateEvent;
 import com.waiter.server.services.product.event.ProductUpdateEventListener;
 import com.waiter.server.services.product.model.Product;
@@ -21,11 +22,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.util.Assert.notNull;
@@ -97,7 +101,15 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
 
     @Override
     public List<ProductDocument> findProductsStartingWith(String name) {
-        return productSolrRepository.findBySearchParams(name);
+        return null;
+    }
+
+    public List<Product> findProducts(ProductSearchParameters parameters) {
+        List<ProductDocument> productDocuments = productSolrRepository.findBySearchParams(parameters.getName(),
+                new Point(parameters.getLatitude(), parameters.getLongitude()), parameters.getOffset(), parameters.getLimit());
+        List<Product> products =  productService.getAllByIds(productDocuments.stream().map(ProductDocument::getId).map(Long::valueOf)
+                .collect(Collectors.toList()));
+        return orderProducts(products);
     }
 
     private static List<ProductInputDocument> convertProductsToDocuments(List<Product> products) {
@@ -135,5 +147,35 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
             }
         }
     };
+
+
+    private List<Product> orderProducts(List<Product> products) {
+        Map<Long, Double> map = new HashMap<>();
+        List<RankedProduct> rankedProducts = new ArrayList<>();
+        for (Product product : products) {
+            Long venueId = product.getCategory().getMenu().getVenues().get(0).getId();
+            if(map.get(venueId) == null) {
+                map.put(venueId, 1.5d);
+            } else {
+                map.put(venueId, map.get(venueId) * 1.5d);
+            }
+            double score = product.getAverageRating() / map.get(venueId); // todo include distance in formula
+            rankedProducts.add(new RankedProduct(product, score));
+        }
+        rankedProducts.sort((a, b) -> (int) (b.rank - a.rank));
+        return rankedProducts.stream().map(x -> x.product).collect(Collectors.toList());
+    }
+
+
+    private static class RankedProduct {
+
+        public RankedProduct(Product product, double rank) {
+            this.product = product;
+            this.rank = rank;
+        }
+
+        public Product product;
+        public double rank;
+    }
 
 }

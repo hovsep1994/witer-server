@@ -144,6 +144,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllByIds(List<Long> ids) {
+        return productRepository.findAll(ids);
+    }
+
+    @Override
     public void remove(Long productId) {
         assertProductId(productId);
         final Product product = getById(productId);

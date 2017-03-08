@@ -1,5 +1,6 @@
 package com.waiter.server.services.product;
 
+import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.venue.model.Venue;
 import com.waiter.server.solr.core.repository.product.model.ProductDocument;
@@ -14,6 +15,8 @@ import java.util.List;
 public interface ProductSearchService {
 
     ProductDocument get(Long id);
+
+    List<Product> findProducts(ProductSearchParameters parameters);
 
     void addOrUpdate(Product product) throws IOException, SolrServerException;
 
