@@ -10,6 +10,7 @@ public class VenueDto {
     private Long menuId;
     private Long locationId;
     private Long companyId;
+    private String sourceUrl;
 
     public String getName() {
         return name;
@@ -44,6 +45,15 @@ public class VenueDto {
 
     public VenueDto setCompanyId(Long companyId) {
         this.companyId = companyId;
+        return this;
+    }
+
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public VenueDto setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
         return this;
     }
 }

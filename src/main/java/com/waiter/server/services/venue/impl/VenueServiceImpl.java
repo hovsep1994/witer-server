@@ -91,6 +91,7 @@ public class VenueServiceImpl implements VenueService {
         venue.setCompany(companyService.get(venueDto.getCompanyId()));
         venue.setGallery(new Gallery());
         venue.setEvaluation(new Evaluation());
+        venue.setSource(venueDto.getSourceUrl());
         final Venue createdVenue = venueRepository.save(venue);
         LOGGER.debug("Venue -{} successfully stored", venue);
         applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue));
@@ -115,10 +116,10 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public GalleryImage addImage(Long venueId, InputStream inputStream) throws ServiceException {
+    public GalleryImage addImage(Long venueId, InputStream inputStream, GalleryImageType galleryImageType) throws ServiceException {
         Venue venue = getById(venueId);
         final GalleryImageDto galleryImageDto = new GalleryImageDto();
-        galleryImageDto.setGalleryImageType(GalleryImageType.MAIN);
+        galleryImageDto.setGalleryImageType(galleryImageType);
         galleryImageDto.setImageType(ImageType.JPEG);
         galleryImageDto.setFileName("venue");
         if (venue.getGallery() == null) {
@@ -127,6 +128,11 @@ public class VenueServiceImpl implements VenueService {
         }
         final GalleryImage galleryImage = galleryImageService.addImage(venue.getGallery().getId(), galleryImageDto, inputStream);
         return galleryImage;
+    }
+
+    @Override
+    public GalleryImage addImage(Long venueId, InputStream inputStream) throws ServiceException {
+        return addImage(venueId, inputStream, GalleryImageType.MAIN);
     }
 
     public List<Venue> attacheMenuToVenues(Set<Long> venueIds, Long menuId) {

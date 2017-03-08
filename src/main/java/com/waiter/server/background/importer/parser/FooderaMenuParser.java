@@ -2,8 +2,14 @@ package com.waiter.server.background.importer.parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.Geometry;
+import com.google.maps.model.LatLng;
 import com.waiter.server.background.importer.model.ParsedCategory;
 import com.waiter.server.background.importer.model.ParsedProduct;
+import com.waiter.server.background.importer.model.ParsedVenue;
 import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.location.dto.LocationDto;
@@ -13,7 +19,9 @@ import com.waiter.server.services.venue.dto.VenueDto;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -25,8 +33,12 @@ import java.util.*;
 @Component
 public class FooderaMenuParser implements Parser {
 
+    private static final Logger logger = LoggerFactory.getLogger(FooderaMenuParser.class);
     private static final String CATEGORY_LIST_CLASS = "menu__categories__list-wrapper";
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    @Autowired
+    private GeoApiContext geoApiContext;
 
     @Override
     public List<ParsedCategory> parseCategories(Document doc) throws IOException {
@@ -98,15 +110,71 @@ public class FooderaMenuParser implements Parser {
         return venueDto;
     }
 
-    public LocationDto parseLocation(Document doc) {
-        //todo implement location parsing
-        LocationDto locationDto = new LocationDto();
-        locationDto.setCountry("Netherlands");
-        locationDto.setCity("Amsterdam");
-        locationDto.setCountryCode("NL");
-        locationDto.setLatitude(52.375017);
-        locationDto.setLongitude(4.898676);
-        return locationDto;
+
+    @Override
+    public List<ParsedVenue> parseVenues(Document doc) {
+        List<ParsedVenue> venueDtos = new ArrayList<>();
+        Elements hrefs = new Elements();
+        Elements open = doc.getElementsByClass("restaurants__list--open");
+        if (!open.isEmpty()) {
+            hrefs.addAll(open.get(0).children());
+        }
+        Elements closed = doc.getElementsByClass("restaurants__list--closed");
+        if(!closed.isEmpty()) {
+            hrefs.addAll(closed.get(0).children());
+        }
+
+        for (Element a : hrefs) {
+            try {
+                String url = a.attr("href");
+                JsonNode venueJson = mapper.readTree(a.getElementsByTag("div").get(0).attr("data-vendor"));
+
+                ParsedVenue venueDto = new ParsedVenue();
+                venueDto.setName(venueJson.get("name").asText());
+                venueDto.setSourceUrl(url);
+                venueDto.setImageUrl(venueJson.get("image_high_resolution").asText());
+                if(venueJson.get("logo") != null && !venueJson.get("logo").isNull()) {
+                    venueDto.setLogo(venueJson.get("logo").asText().substring(32));
+                }
+
+                LocationDto locationDto = new LocationDto();
+                locationDto.setCountry("Netherlands");
+                locationDto.setCountryCode("NL");
+                locationDto.setCity(venueJson.get("city").get("name").asText());
+                locationDto.setLatitude(venueJson.get("latitude").asDouble());
+                locationDto.setLongitude(venueJson.get("longitude").asDouble());
+                locationDto.setZip(venueJson.get("post_code").asText());
+
+                venueDto.setLocationDto(locationDto);
+                venueDtos.add(venueDto);
+
+            } catch (Exception e) {
+                logger.error("Error parsing venue. ", e);
+            }
+        }
+        return venueDtos;
     }
+
+    public LocationDto parseLocation(Document doc) {
+        Element element = doc.getElementsByClass("hero-menu__info-extra__address").get(0);
+
+        try {
+            LocationDto locationDto = new LocationDto();
+
+            locationDto.setCity(element.attr("data-city"));
+            locationDto.setStreet(element.attr("data-street"));
+            locationDto.setZip(element.attr("data-postcode"));
+
+            String locationString = locationDto.getStreet() + ", " + locationDto.getZip() + " " + locationDto.getCity();
+            GeocodingResult[] results = GeocodingApi.geocode(geoApiContext, locationString).await();
+            LatLng latLng = results[0].geometry.location;
+            locationDto.setLatitude(latLng.lat);
+            locationDto.setLongitude(latLng.lng);
+            return locationDto;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

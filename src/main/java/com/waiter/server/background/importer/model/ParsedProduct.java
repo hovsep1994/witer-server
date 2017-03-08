@@ -9,7 +9,6 @@ public class ParsedProduct extends ProductDto {
 
     private String imageUrl;
 
-
     public String getImageUrl() {
         return imageUrl;
     }

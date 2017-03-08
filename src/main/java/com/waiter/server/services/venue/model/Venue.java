@@ -39,7 +39,10 @@ public class Venue extends AbstractEntityModel {
     @JoinColumn(name = "gallery_id", nullable = false)
     private Gallery gallery;
 
-    @OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Column(name = "source")
+    private String source;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_id", nullable = false)
     private Evaluation evaluation;
 
@@ -97,6 +100,15 @@ public class Venue extends AbstractEntityModel {
 
     public Venue setEvaluation(Evaluation evaluation) {
         this.evaluation = evaluation;
+        return this;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public Venue setSource(String source) {
+        this.source = source;
         return this;
     }
 

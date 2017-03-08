@@ -197,6 +197,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product addOrUpdateTranslation(Long productId, TranslationDto nameDto, TranslationDto descriptionDto) {
         assertProductId(productId);
         final Product product = productRepository.findOne(productId);

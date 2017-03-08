@@ -113,6 +113,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public Category addOrUpdateTranslation(Long categoryId, TranslationDto nameDto) {
         assertCategoryId(categoryId);
         final Category category = getById(categoryId);

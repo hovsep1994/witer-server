@@ -1,6 +1,7 @@
 package com.waiter.server.background.importer;
 
 import com.waiter.server.background.conf.ApplicationConf;
+import com.waiter.server.background.importer.model.ParsedVenue;
 import com.waiter.server.background.importer.parser.Parser;
 import com.waiter.server.background.importer.model.ParsedCategory;
 import com.waiter.server.background.importer.model.ParsedProduct;
@@ -8,6 +9,7 @@ import com.waiter.server.services.category.CategoryService;
 import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.currency.Currency;
+import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.location.LocationService;
 import com.waiter.server.services.location.dto.LocationDto;
@@ -32,24 +34,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author shahenpoghosyan
  */
 @Component
-@Transactional
 public class MenuImporter {
 
     private static final Logger logger = LoggerFactory.getLogger(MenuImporter.class);
 
+    private static final String baseUrl = "https://www.foodora.nl";
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11";
 
     @Autowired
@@ -68,14 +74,34 @@ public class MenuImporter {
     private LocationService locationService;
 
 
+    public void importVenues(Document doc, Currency currency, String country, String countryCode,
+                             Language origLanguage, List<Language> languages) throws IOException, ServiceException {
+        List<ParsedVenue> venues = parser.parseVenues(doc);
+        for (ParsedVenue venue : venues) {
+            importVenue(venue, currency, country, countryCode, origLanguage, languages);
+        }
+    }
+
     @Transactional
-    public void importVenue(WebsiteTranslation orig, List<WebsiteTranslation> websiteTranslations, Currency currency, String venueImage, LocationDto venueLocation) throws IOException, ServiceException {
+    public void importVenue(ParsedVenue venueDto, Currency currency, String country, String countryCode,
+                            Language origLanguage, List<Language> languages) throws IOException, ServiceException {
 
         long companyId = 1;
+        WebsiteTranslation orig = new WebsiteTranslation(origLanguage, Jsoup.connect(baseUrl + venueDto.getSourceUrl()).userAgent(USER_AGENT).get());
+        List<WebsiteTranslation> websiteTranslations = languages.stream().map(l -> {
+            try {
+                return new WebsiteTranslation(l, Jsoup.connect(baseUrl + "/" + l + venueDto.getSourceUrl()).userAgent(USER_AGENT).get());
+            } catch (IOException e) {
+                return null;
+            }
+        }).collect(Collectors.toList());
 
-        Location location = locationService.create(venueLocation); //todo parse location also
+
+        LocationDto venueLocation = venueDto.getLocationDto();
+        venueLocation.setCountry(country);
+        venueLocation.setCountryCode(countryCode);
+        Location location = locationService.create(venueLocation);
         logger.info("Location created with id: {} ", location.getId());
-
 
         MenuDto menuDto = parser.parseMenu(orig.doc);
         menuDto.setLanguage(orig.language);
@@ -83,16 +109,17 @@ public class MenuImporter {
         Menu menu = menuService.create(companyId, menuDto);
         logger.info("Menu created with id: {} ", menu.getId());
 
-        VenueDto venueDto = parser.parseVenue(orig.doc);
         venueDto.setCompanyId(companyId);
         venueDto.setLocationId(location.getId());
         venueDto.setMenuId(menu.getId());
         Venue venue = venueService.create(venueDto);
+        saveDocument("venue:" + venue.getId(), orig.doc);
 
         menu.getVenues().add(venue);
         menu.getLanguages().add(orig.language);
 
-        venueService.addImage(venue.getId(), makeStream(venueImage));
+        venueService.addImage(venue.getId(), makeStream(venueDto.getImageUrl()));
+        venueService.addImage(venue.getId(), makeStream(venueDto.getImageUrl()), GalleryImageType.LOGO);
         logger.info("Venue created with id: {} ", venue.getId());
 
         for (ParsedCategory parsedCategory : parser.parseCategories(orig.doc)) {
@@ -106,7 +133,7 @@ public class MenuImporter {
                 productDto.setLanguage(orig.language);
                 Product product = productService.create(category.getId(), productDto);
                 category.getProducts().add(product);
-                if(productDto.getImageUrl() != null) {
+                if (productDto.getImageUrl() != null) {
                     try {
                         productService.addImage(product.getId(), makeStream(productDto.getImageUrl()));
                     } catch (ServiceException e) {
@@ -122,6 +149,7 @@ public class MenuImporter {
 
         logger.info("Started to add translations");
         for (WebsiteTranslation translation : websiteTranslations) {
+            saveDocument("venue:" + venue.getId() + ":" + translation.language, translation.doc);
             addTranslation(translation, menu);
         }
 
@@ -168,37 +196,29 @@ public class MenuImporter {
         private Document doc;
     }
 
-    public void test() {
-        for (int i = 92; i <= 120; i++)
-            try {
-        productService.remove((long)i);
+    private static void saveDocument(String name, Document document) throws FileNotFoundException {
+        String baseUrl = "/tmp/";
+        try(  PrintWriter out = new PrintWriter(baseUrl + name + ".out" )  ){
+            out.println(document.toString());
+        }
 
-            }catch (Exception e) {
-
-            }
     }
 
     public static void main(String[] args) throws IOException, ServiceException {
 
-        String origUrl = "https://www.foodora.nl/en/restaurant/s9yt/cannibale-royale-lange-niezel";
-        String nlUrl = "https://www.foodora.nl/restaurant/s9yt/cannibale-royale-lange-niezel";
-        String venueImage = "https://volo-images.s3.amazonaws.com/production/nl/s9yt-listing.jpg?3";
-
-        LocationDto locationDto = new LocationDto();
-        locationDto.setCountry("Netherlands");
-        locationDto.setCity("Amsterdam");
-        locationDto.setCountryCode("NL");
-        locationDto.setLatitude(52.375017);
-        locationDto.setLongitude(4.898676);
+        String country = "Netherlands";
+        String countryCode = "NL";
+        String cityVenues = "https://www.foodora.nl/city/amsterdam";
 
         ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConf.class);
         MenuImporter importer = (MenuImporter) context.getBean("menuImporter");
-        importer.test();
 
-//        WebsiteTranslation orig = new WebsiteTranslation(Language.en, Jsoup.connect(origUrl).userAgent(USER_AGENT).get());
-//        WebsiteTranslation nlTranslation = new WebsiteTranslation(Language.nl, Jsoup.connect(nlUrl).userAgent(USER_AGENT).get());
-//
-//        importer.importVenue(orig, Collections.singletonList(nlTranslation), Currency.EUR, venueImage, locationDto);
+        Document document = Jsoup.connect(cityVenues).userAgent(USER_AGENT).get();
+        saveDocument("amsterdam", document);
+        importer.importVenues(document, Currency.EUR, countryCode, country, Language.nl, Collections.singletonList(Language.en));
+
     }
+
+
 
 }
