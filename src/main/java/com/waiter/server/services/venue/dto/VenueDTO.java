@@ -6,6 +6,7 @@ package com.waiter.server.services.venue.dto;
  */
 public class VenueDto {
 
+
     private String name;
     private Long menuId;
     private Long locationId;
