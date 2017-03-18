@@ -17,8 +17,10 @@ import com.waiter.server.services.location.LocationService;
 import com.waiter.server.services.menu.MenuService;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.venue.VenueService;
+import com.waiter.server.services.venue.dto.ScheduleDto;
 import com.waiter.server.services.venue.dto.VenueDto;
 import com.waiter.server.services.venue.event.VenueUpdateEvent;
+import com.waiter.server.services.venue.model.Schedule;
 import com.waiter.server.services.venue.model.Venue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +29,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
-import java.util.List;
-import java.util.Set;
+import java.time.DayOfWeek;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -92,6 +95,8 @@ public class VenueServiceImpl implements VenueService {
         venue.setGallery(new Gallery());
         venue.setEvaluation(new Evaluation());
         venue.setSource(venueDto.getSourceUrl());
+        updateOpeningHours(venue, venueDto.getOpenHours());
+
         final Venue createdVenue = venueRepository.save(venue);
         LOGGER.debug("Venue -{} successfully stored", venue);
         applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(createdVenue));
@@ -153,6 +158,19 @@ public class VenueServiceImpl implements VenueService {
         final Menu menu = menuService.getById(menuId);
         venue.setMenu(menu);
         return venueRepository.save(venue);
+    }
+
+    private void updateOpeningHours(Venue venue, List<ScheduleDto> openHoursDto) {
+        if (openHoursDto != null) {
+            for (ScheduleDto scheduleDto : openHoursDto) {
+                Schedule schedule = new Schedule();
+                schedule.setStart(scheduleDto.getStart());
+                schedule.setEnd(scheduleDto.getEnd());
+                schedule.setDayOfWeek(scheduleDto.getDayOfWeek());
+                schedule.setVenue(venue);
+                venue.getOpenHours().add(schedule);
+            }
+        }
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.waiter.server.services.venue.dto;
 
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author shahenpoghosyan
  */
@@ -12,6 +15,7 @@ public class VenueDto {
     private Long locationId;
     private Long companyId;
     private String sourceUrl;
+    private List<ScheduleDto> openHours;
 
     public String getName() {
         return name;
@@ -56,5 +60,13 @@ public class VenueDto {
     public VenueDto setSourceUrl(String sourceUrl) {
         this.sourceUrl = sourceUrl;
         return this;
+    }
+
+    public List<ScheduleDto> getOpenHours() {
+        return openHours;
+    }
+
+    public void setOpenHours(List<ScheduleDto> openHours) {
+        this.openHours = openHours;
     }
 }

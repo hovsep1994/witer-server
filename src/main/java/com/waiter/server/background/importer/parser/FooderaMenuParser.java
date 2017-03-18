@@ -15,7 +15,10 @@ import com.waiter.server.services.language.Language;
 import com.waiter.server.services.location.dto.LocationDto;
 import com.waiter.server.services.menu.model.MenuDto;
 import com.waiter.server.services.product.dto.ProductPriceDto;
+import com.waiter.server.services.venue.dto.IntervalDto;
+import com.waiter.server.services.venue.dto.ScheduleDto;
 import com.waiter.server.services.venue.dto.VenueDto;
+import org.apache.commons.collections.map.HashedMap;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -25,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.util.*;
 
 /**
@@ -72,7 +76,7 @@ public class FooderaMenuParser implements Parser {
             productDto.setDescription(fooderaProduct.get("description").asText());
             productDto.setTags(new TreeSet<>());
 
-            if(fooderaProduct.get("file_path") != null && !fooderaProduct.get("file_path").isNull())
+            if (fooderaProduct.get("file_path") != null && !fooderaProduct.get("file_path").isNull())
                 productDto.setImageUrl(fooderaProduct.get("file_path").asText().replaceAll("\\\\", "").substring(32));
 
             JsonNode variations = fooderaProduct.get("product_variations");
@@ -100,6 +104,12 @@ public class FooderaMenuParser implements Parser {
         return menuDto;
     }
 
+    /**
+     * Used to parse venue from venue page. Not used currently
+     *
+     * @param doc
+     * @return
+     */
     @Override
     public VenueDto parseVenue(Document doc) {
         VenueDto venueDto = new VenueDto();
@@ -120,7 +130,7 @@ public class FooderaMenuParser implements Parser {
             hrefs.addAll(open.get(0).children());
         }
         Elements closed = doc.getElementsByClass("restaurants__list--closed");
-        if(!closed.isEmpty()) {
+        if (!closed.isEmpty()) {
             hrefs.addAll(closed.get(0).children());
         }
 
@@ -133,10 +143,11 @@ public class FooderaMenuParser implements Parser {
                 venueDto.setName(venueJson.get("name").asText());
                 venueDto.setSourceUrl(url);
                 venueDto.setImageUrl(venueJson.get("image_high_resolution").asText());
-                if(venueJson.get("logo") != null && !venueJson.get("logo").isNull()) {
+                if (venueJson.get("logo") != null && !venueJson.get("logo").isNull()) {
                     venueDto.setLogo(venueJson.get("logo").asText().substring(32));
                 }
 
+                //update location
                 LocationDto locationDto = new LocationDto();
                 locationDto.setCountry("Netherlands");
                 locationDto.setCountryCode("NL");
@@ -144,8 +155,22 @@ public class FooderaMenuParser implements Parser {
                 locationDto.setLatitude(venueJson.get("latitude").asDouble());
                 locationDto.setLongitude(venueJson.get("longitude").asDouble());
                 locationDto.setZip(venueJson.get("post_code").asText());
-
                 venueDto.setLocationDto(locationDto);
+
+                //update open hours
+                JsonNode schedules = venueJson.get("schedules");
+                if (schedules != null && !schedules.isNull()) {
+                    List<ScheduleDto> openHours = new ArrayList<>();
+                    for (JsonNode schedule : schedules) {
+                        ScheduleDto scheduleDto = new ScheduleDto();
+                        scheduleDto.setStart(parseToDayTime(schedule.get("opening_time").asText()));
+                        scheduleDto.setEnd(parseToDayTime(schedule.get("closing_time").asText()));
+                        scheduleDto.setDayOfWeek(DayOfWeek.of(schedule.get("weekday").asInt()));
+                        openHours.add(scheduleDto);
+                    }
+                    venueDto.setOpenHours(openHours);
+                }
+
                 venueDtos.add(venueDto);
 
             } catch (Exception e) {
@@ -174,6 +199,14 @@ public class FooderaMenuParser implements Parser {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static int parseToDayTime(String dayTime) {
+        int hour = Integer.valueOf(dayTime.split(":")[0]);
+        int minute = Integer.valueOf(dayTime.split(":")[1]);
+        int time = hour * 3600 * 1000;
+        time += minute * 60 * 1000;
+        return time;
     }
 
 

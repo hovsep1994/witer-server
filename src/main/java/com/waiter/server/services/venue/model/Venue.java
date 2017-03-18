@@ -11,7 +11,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.time.DayOfWeek;
+import java.util.*;
 
 @Entity
 @Table(name = "venue")
@@ -45,6 +46,9 @@ public class Venue extends AbstractEntityModel {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_id", nullable = false)
     private Evaluation evaluation;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}, mappedBy = "venue")
+    private List<Schedule> openHours;
 
     public Company getCompany() {
         return company;
@@ -110,6 +114,17 @@ public class Venue extends AbstractEntityModel {
     public Venue setSource(String source) {
         this.source = source;
         return this;
+    }
+
+    public List<Schedule> getOpenHours() {
+        if (openHours == null) {
+            openHours = new ArrayList<>();
+        }
+        return openHours;
+    }
+
+    public void setOpenHours(List<Schedule> openHours) {
+        this.openHours = openHours;
     }
 
     @Override
