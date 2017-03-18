@@ -8,6 +8,8 @@ import com.waiter.server.services.language.Language;
 import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.venue.model.Venue;
 
+import java.util.List;
+
 /**
  * @author shahenpoghosyan
  */
@@ -25,6 +27,8 @@ public class VenueClientModel {
 
     //todo create separate client menu model and change this
     private MenuWithProductsModel menu;
+
+    private List<ScheduleClientModel> openHours;
 
 
     public Long getId() {
@@ -81,6 +85,14 @@ public class VenueClientModel {
         return this;
     }
 
+    public List<ScheduleClientModel> getOpenHours() {
+        return openHours;
+    }
+
+    public void setOpenHours(List<ScheduleClientModel> openHours) {
+        this.openHours = openHours;
+    }
+
     public static VenueClientModel convert(Venue venue, Language language) {
         VenueClientModel venueModel = new VenueClientModel();
         venueModel.setId(venue.getId());
@@ -89,6 +101,7 @@ public class VenueClientModel {
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
         venueModel.setRating(venue.getEvaluation().getAverageRating());
         venueModel.setMenu(MenuWithProductsModel.convert(venue.getMenu(), language));
+        venueModel.setOpenHours(ScheduleClientModel.convert(venue.getOpenHours()));
         return venueModel;
     }
 }
