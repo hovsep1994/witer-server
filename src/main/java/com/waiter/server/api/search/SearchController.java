@@ -63,7 +63,7 @@ public class SearchController {
             productParams.setLatitude(latitude);
             productParams.setLongitude(longitude);
         }
-        venueParams.setOffset(offset);
+        venueParams.setOffset(0);
         venueParams.setLimit(venuesLimit);
 
         productParams.setOffset(batch * 100);
