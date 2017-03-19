@@ -29,9 +29,6 @@ public class PhotoSaverServiceImpl implements PhotoSaverService {
     @Value("#{appProperties['images.directory']}")
     private String uploadDir;
 
-    @Value("#{appProperties['images.path']}")
-    private String path;
-
     public PhotoSaverServiceImpl() {
     }
 
@@ -44,7 +41,7 @@ public class PhotoSaverServiceImpl implements PhotoSaverService {
             File sizeDir = new File(uploadDir + size + File.separator);
             createDirIfNotExist(sizeDir);
         }
-        return path + filename;
+        return filename;
     }
 
     @Override

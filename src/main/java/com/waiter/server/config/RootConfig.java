@@ -43,7 +43,7 @@ public class RootConfig {
         Resource[] resources = new Resource[3];
         resources[0] = new ClassPathResource("menukit.properties");
         resources[1] = new ClassPathResource("development.properties");
-        resources[2] = new FileSystemResource("file:${user.home}/menukit.properties");
+        resources[2] = new FileSystemResource("/opt/menukit.properties");
         propertiesFactoryBean.setLocations(resources);
         propertiesFactoryBean.setIgnoreResourceNotFound(true);
         propertiesFactoryBean.afterPropertiesSet();
