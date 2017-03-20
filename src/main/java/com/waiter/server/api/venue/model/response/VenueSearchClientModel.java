@@ -86,9 +86,15 @@ public class VenueSearchClientModel {
         venueModel.setName(venue.getName());
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
         venueModel.setRating(venue.getEvaluation().getAverageRating());
-        Language menuLanguage = venue.getMenu().getLanguages().contains(language) ? language : venue.getMenu().getMainLanguage();
-        List<ProductMenuModel> products = ProductMenuModel.convert(topProducts, menuLanguage);
-        venueModel.setProducts(products);
+        if (topProducts != null) {
+            Language menuLanguage = venue.getMenu().getLanguages().contains(language) ? language : venue.getMenu().getMainLanguage();
+            List<ProductMenuModel> products = ProductMenuModel.convert(topProducts, menuLanguage);
+            venueModel.setProducts(products);
+        }
         return venueModel;
+    }
+
+    public static VenueSearchClientModel convert(Venue venue) {
+        return convert(venue, null, null);
     }
 }

@@ -25,13 +25,13 @@ public class ProductClientController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity findProducts(Double latitude, Double longitude,
-                                       @RequestParam(required = false) String name,
+                                       @RequestParam(required = false) String query,
                                        @RequestParam(defaultValue = "0") int offset,
                                        @RequestParam(defaultValue = "20") int limit,
                                        @RequestParam Language language) {
         final ProductSearchParameters parameters = new ProductSearchParameters();
-        if (!StringUtils.isEmpty(name)) {
-            parameters.setName(name);
+        if (!StringUtils.isEmpty(query)) {
+            parameters.setName(query);
         }
         parameters.setLatitude(latitude);
         parameters.setLongitude(longitude);

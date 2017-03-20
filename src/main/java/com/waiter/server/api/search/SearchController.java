@@ -99,10 +99,7 @@ public class SearchController {
         map.put("limit", limit);
         map.put("batch", offset / ((batch + 1) * 100));
 
-
         return MenuKitResponseEntity.success(responseModel, baseUrl + "search", map);
-
-
     }
 
 

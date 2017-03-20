@@ -2,6 +2,7 @@ package com.waiter.server.api.venue.model.response;
 
 import com.waiter.server.api.location.model.LocationModel;
 import com.waiter.server.api.menu.model.response.MenuWithProductsModel;
+import com.waiter.server.api.product.model.response.ProductMenuModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.language.Language;
@@ -101,6 +102,16 @@ public class VenueClientModel {
         venueModel.setLocation(LocationModel.convert(venue.getLocation()));
         venueModel.setRating(venue.getEvaluation().getAverageRating());
         venueModel.setMenu(MenuWithProductsModel.convert(venue.getMenu(), language));
+        venueModel.getMenu().getCategories().forEach(category -> {
+            if (category.getImage() == null) {
+                for (ProductMenuModel product : category.getProducts()) {
+                    if(product.getImage() != null) {
+                        category.setImage(product.getImage());
+                        break;
+                    }
+                }
+            }
+        });
         venueModel.setOpenHours(ScheduleClientModel.convert(venue.getOpenHours()));
         return venueModel;
     }

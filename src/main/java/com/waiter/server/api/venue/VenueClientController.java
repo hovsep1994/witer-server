@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Admin on 12/12/2015.
@@ -45,39 +46,44 @@ public class VenueClientController extends MainController {
     @Autowired
     private VenueSearchService venueSearchService;
 
-    @Autowired
-    private CompanyService companyService;
-
-    @Autowired
-    private LocationService locationService;
-
-    @Autowired
-    private ApplicationEventBus applicationEventBus;
-
     @RequestMapping(value = "/nearby", method = RequestMethod.GET)
-    public ResponseEntity findVenues(@RequestParam(required = false) Double latitude,
-                                     @RequestParam(required = false) Double longitude,
-                                     @RequestParam(required = false) String name,
-                                     @RequestParam(defaultValue = "0") int offset,
-                                     @RequestParam(defaultValue = "20") int limit,
-                                     @RequestParam Language language) {
+    public ResponseEntity nearby(@RequestParam Double latitude,
+                                 @RequestParam Double longitude,
+                                 @RequestParam(defaultValue = "0") int offset,
+                                 @RequestParam(defaultValue = "20") int limit,
+                                 @RequestParam Language language) {
         final VenueSearchParameters searchParameters = new VenueSearchParameters();
-        if(!StringUtils.isEmpty(name)) {
-            searchParameters.setName(name);
-        }
-        if(longitude != null && latitude != null) {
-            searchParameters.setLatitude(latitude);
-            searchParameters.setLongitude(longitude);
-        }
+        searchParameters.setLatitude(latitude);
+        searchParameters.setLongitude(longitude);
         searchParameters.setOffset(offset);
         searchParameters.setLimit(limit);
 
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
-//        final List<Venue> venues = Collections.singletonList(venueService.getById(23l));
         final List<VenueSearchClientModel> modelList = new ArrayList<>(venues.size());
         venues.forEach(venue -> modelList.add(VenueSearchClientModel
                 .convert(venue, language, productService.findTopProducts(venue.getMenu().getId(), 0, 10))));
 
+        return MenuKitResponseEntity.success(modelList);
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResponseEntity findVenues(@RequestParam Double latitude,
+                                     @RequestParam Double longitude,
+                                     @RequestParam(required = false) String query,
+                                     @RequestParam(defaultValue = "0") int offset,
+                                     @RequestParam(defaultValue = "20") int limit) {
+
+        final VenueSearchParameters searchParameters = new VenueSearchParameters();
+        if (!StringUtils.isEmpty(query)) {
+            searchParameters.setName(query);
+        }
+        searchParameters.setLatitude(latitude);
+        searchParameters.setLongitude(longitude);
+        searchParameters.setOffset(offset);
+        searchParameters.setLimit(limit);
+
+        final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
+        final List<VenueSearchClientModel> modelList = venues.stream().map(VenueSearchClientModel::convert).collect(Collectors.toList());
         return MenuKitResponseEntity.success(modelList);
     }
 

@@ -1,8 +1,6 @@
 package com.waiter.server.api.rate;
 
-import com.waiter.server.api.common.AuthenticationController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
-import com.waiter.server.api.product.model.ProductModel;
 import com.waiter.server.api.rate.model.RateRequest;
 import com.waiter.server.api.rate.model.response.RateResponse;
 import com.waiter.server.api.utility.rating.RoundRating;
