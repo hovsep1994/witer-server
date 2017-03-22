@@ -89,7 +89,7 @@ public class SearchController {
         }
         int productsOffset = offset - batch * 100;
         responseModel.setProducts(ProductSearchModel.convertToSearchModel(products.subList(productsOffset, productsOffset + limit > products.size()
-                ? productsOffset + products.size() - 1 : productsOffset + limit), language));
+                ? products.size() : productsOffset + limit), language));
 
         Map<String, Object> map = new HashMap<>();
         map.put("latitude", latitude);

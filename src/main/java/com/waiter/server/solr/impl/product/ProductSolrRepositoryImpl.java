@@ -60,6 +60,8 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
         map.put("fq", "{!geofilt}");
         map.put("d", "1000");
         map.put("wt", "json");
+        map.put("rows", limit + "");
+        map.put("start", offset + "");
         try {
             QueryResponse queryResponse = solrClient.query(PRODUCTS_COLLECTION, new MapSolrParams(map));
             return queryResponse.getBeans(ProductDocument.class);
