@@ -150,6 +150,7 @@ public class FooderaMenuParser implements Parser {
                 locationDto.setLatitude(venueJson.get("latitude").asDouble());
                 locationDto.setLongitude(venueJson.get("longitude").asDouble());
                 locationDto.setZip(venueJson.get("post_code").asText());
+                locationDto.setStreet(venueJson.get("address").asText());
                 venueDto.setLocationDto(locationDto);
 
                 //update open hours
