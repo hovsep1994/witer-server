@@ -99,6 +99,8 @@ public class SearchController {
         map.put("limit", limit);
         map.put("batch", offset / ((batch + 1) * 100));
         map.put("language", language);
+        map.put("includeVenues", false);
+
 
         return MenuKitResponseEntity.success(responseModel, baseUrl + "search/", map);
     }
