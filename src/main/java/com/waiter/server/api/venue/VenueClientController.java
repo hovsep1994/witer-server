@@ -2,12 +2,10 @@ package com.waiter.server.api.venue;
 
 import com.waiter.server.api.common.MainController;
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
+import com.waiter.server.api.search.model.response.VenueSearchModel;
 import com.waiter.server.api.venue.model.response.VenueClientModel;
-import com.waiter.server.api.venue.model.response.VenueSearchClientModel;
-import com.waiter.server.services.company.CompanyService;
-import com.waiter.server.services.event.ApplicationEventBus;
+import com.waiter.server.api.venue.model.response.VenueClientNearbyModel;
 import com.waiter.server.services.language.Language;
-import com.waiter.server.services.location.LocationService;
 import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.venue.VenueSearchService;
 import com.waiter.server.services.venue.VenueService;
@@ -59,8 +57,8 @@ public class VenueClientController extends MainController {
         searchParameters.setLimit(limit);
 
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
-        final List<VenueSearchClientModel> modelList = new ArrayList<>(venues.size());
-        venues.forEach(venue -> modelList.add(VenueSearchClientModel
+        final List<VenueClientNearbyModel> modelList = new ArrayList<>(venues.size());
+        venues.forEach(venue -> modelList.add(VenueClientNearbyModel
                 .convert(venue, language, productService.findTopProducts(venue.getMenu().getId(), 0, 10))));
 
         return MenuKitResponseEntity.success(modelList);
@@ -83,7 +81,7 @@ public class VenueClientController extends MainController {
         searchParameters.setLimit(limit);
 
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
-        final List<VenueSearchClientModel> modelList = venues.stream().map(VenueSearchClientModel::convert).collect(Collectors.toList());
+        final List<VenueSearchModel> modelList = venues.stream().map(VenueSearchModel::convert).collect(Collectors.toList());
         return MenuKitResponseEntity.success(modelList);
     }
 

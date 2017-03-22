@@ -1,7 +1,6 @@
 package com.waiter.server.api.category.model.response;
 
-import com.waiter.server.api.product.model.response.ProductMenuModel;
-import com.waiter.server.api.tag.model.TagModel;
+import com.waiter.server.api.product.model.response.ProductClientModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.category.model.Category;
@@ -20,7 +19,7 @@ public class CategoryMenuModel {
     private String name;
     private Set<String> tags;
     private String image;
-    private List<ProductMenuModel> products;
+    private List<ProductClientModel> products;
 
     public Long getId() {
         return id;
@@ -46,11 +45,11 @@ public class CategoryMenuModel {
         this.tags = tags;
     }
 
-    public List<ProductMenuModel> getProducts() {
+    public List<ProductClientModel> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductMenuModel> products) {
+    public void setProducts(List<ProductClientModel> products) {
         this.products = products;
     }
 
@@ -73,7 +72,7 @@ public class CategoryMenuModel {
         categoryMenuModel.setName(category.getNameTranslationByLanguage(language).getText());
         categoryMenuModel.setId(category.getId());
         categoryMenuModel.setTags(category.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
-        categoryMenuModel.setProducts(ProductMenuModel.convert(category.getProducts(), language));
+        categoryMenuModel.setProducts(ProductClientModel.convert(category.getProducts(), language));
         categoryMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, category.getGallery()));
         return categoryMenuModel;
     }

@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @author shahenpoghosyan
  */
 @RestController
-@RequestMapping("/client/search")
+@RequestMapping("/client/search/")
 public class SearchController {
 
     @Autowired
@@ -88,7 +88,7 @@ public class SearchController {
             responseModel.setVenues(VenueSearchModel.convert(mainVenues));
         }
         int productsOffset = offset - batch * 100;
-        responseModel.setProducts(ProductSearchModel.convert(products.subList(productsOffset, productsOffset + limit > products.size()
+        responseModel.setProducts(ProductSearchModel.convertToSearchModel(products.subList(productsOffset, productsOffset + limit > products.size()
                 ? products.size() : productsOffset + limit), language));
 
         Map<String, Object> map = new HashMap<>();
@@ -98,8 +98,9 @@ public class SearchController {
         map.put("offset", offset + limit);
         map.put("limit", limit);
         map.put("batch", offset / ((batch + 1) * 100));
+        map.put("language", language);
 
-        return MenuKitResponseEntity.success(responseModel, baseUrl + "search", map);
+        return MenuKitResponseEntity.success(responseModel, baseUrl + "search/", map);
     }
 
 

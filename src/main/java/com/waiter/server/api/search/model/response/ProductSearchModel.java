@@ -1,7 +1,7 @@
 package com.waiter.server.api.search.model.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.waiter.server.api.product.model.ProductPriceModel;
+import com.waiter.server.api.product.model.response.ProductClientModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.common.exception.ErrorCode;
@@ -14,92 +14,52 @@ import com.waiter.server.services.venue.model.Venue;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * @author shahenpoghosyan
  */
-public class ProductSearchModel {
+public class ProductSearchModel extends ProductClientModel {
 
+    private ProductVenue venue;
 
-    @JsonProperty(value = "id")
-    private Long id;
-
-    private Set<ProductPriceModel> productPrices;
-
-    private String description;
-
-    private String name;
-
-    private Set<String> tags;
-
-    private String image;
-
-    private VenueSearchModel venueModel;
-
-    public Long getId() {
-        return id;
+    public ProductVenue getVenue() {
+        return venue;
     }
 
-    public ProductSearchModel setId(Long id) {
-        this.id = id;
-        return this;
+    public void setVenue(ProductVenue venue) {
+        this.venue = venue;
     }
 
-    public Set<ProductPriceModel> getProductPrices() {
-        return productPrices;
-    }
+    public static class ProductVenue {
 
-    public ProductSearchModel setProductPrices(Set<ProductPriceModel> productPrices) {
-        this.productPrices = productPrices;
-        return this;
-    }
+        private String name;
 
-    public String getDescription() {
-        return description;
-    }
+        private Long id;
 
-    public ProductSearchModel setDescription(String description) {
-        this.description = description;
-        return this;
-    }
+        public Long getId() {
+            return id;
+        }
 
-    public String getName() {
-        return name;
-    }
+        public void setId(Long id) {
+            this.id = id;
+        }
 
-    public ProductSearchModel setName(String name) {
-        this.name = name;
-        return this;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public Set<String> getTags() {
-        return tags;
-    }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public ProductSearchModel setTags(Set<String> tags) {
-        this.tags = tags;
-        return this;
+        public static ProductVenue convert(Venue venue) {
+            ProductVenue productVenue = new ProductVenue();
+            productVenue.setId(venue.getId());
+            productVenue.setName(venue.getName());
+            return productVenue;
+        }
     }
-
-    public String getImage() {
-        return image;
-    }
-
-    public ProductSearchModel setImage(String image) {
-        this.image = image;
-        return this;
-    }
-
-    public VenueSearchModel getVenueModel() {
-        return venueModel;
-    }
-
-    public void setVenueModel(VenueSearchModel venueModel) {
-        this.venueModel = venueModel;
-    }
-
 
     public static ProductSearchModel convert(Product product, Language language) {
         final ProductSearchModel productModel = new ProductSearchModel();
@@ -116,13 +76,14 @@ public class ProductSearchModel {
         productModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language));
         productModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
         productModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery()));
+        productModel.setRating(product.getAverageRating());
 
         Venue venue = product.getCategory().getMenu().getVenues().get(0);
-        productModel.setVenueModel(VenueSearchModel.convert(venue));
+        productModel.setVenue(ProductVenue.convert(venue));
         return productModel;
     }
 
-    public static List<ProductSearchModel> convert(Collection<Product> products, Language language) {
+    public static List<ProductSearchModel> convertToSearchModel(Collection<Product> products, Language language) {
         return products.stream().map(product -> convert(product, language)).collect(Collectors.toList());
     }
 }

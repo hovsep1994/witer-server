@@ -1,13 +1,13 @@
 package com.waiter.server.api.product.model.response;
 
 import com.waiter.server.api.product.model.ProductPriceModel;
-import com.waiter.server.api.tag.model.TagModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 /**
  * Created by hovsep on 8/19/16.
  */
-public class ProductMenuModel {
+public class ProductClientModel {
     private Long id;
     private String name;
     private String description;
-    private Double evaluation;
+    private Double rating;
     private String image;
     private Set<String> tags;
     private Set<ProductPriceModel> productPrices;
@@ -48,12 +48,12 @@ public class ProductMenuModel {
         this.description = description;
     }
 
-    public Double getEvaluation() {
-        return evaluation;
+    public Double getRating() {
+        return rating;
     }
 
-    public void setEvaluation(Double evaluation) {
-        this.evaluation = evaluation;
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 
     public String getImage() {
@@ -80,21 +80,21 @@ public class ProductMenuModel {
         this.productPrices = productPrices;
     }
 
-    public static List<ProductMenuModel> convert(List<Product> products, Language language) {
+    public static List<ProductClientModel> convert(Collection<Product> products, Language language) {
         return products.stream()
-                .map(product -> ProductMenuModel.convert(product, language))
+                .map(product -> ProductClientModel.convert(product, language))
                 .collect(Collectors.toList());
     }
 
-    public static ProductMenuModel convert(Product product, Language language) {
-        ProductMenuModel productMenuModel = new ProductMenuModel();
-        productMenuModel.setId(product.getId());
-        productMenuModel.setName(product.getNameTranslationByLanguage(language).getText());
-        productMenuModel.setDescription(product.getDescriptionTextByLanguage(language));
-        productMenuModel.setEvaluation(product.getAverageRating());
-        productMenuModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language));
-        productMenuModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
-        productMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery()));
-        return productMenuModel;
+    public static ProductClientModel convert(Product product, Language language) {
+        ProductClientModel productClientModel = new ProductClientModel();
+        productClientModel.setId(product.getId());
+        productClientModel.setName(product.getNameTranslationByLanguage(language).getText());
+        productClientModel.setDescription(product.getDescriptionTextByLanguage(language));
+        productClientModel.setRating(product.getAverageRating());
+        productClientModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language));
+        productClientModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
+        productClientModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery()));
+        return productClientModel;
     }
 }

@@ -2,6 +2,7 @@ package com.waiter.server.api.product;
 
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.product.model.ProductModel;
+import com.waiter.server.api.search.model.response.ProductSearchModel;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.ProductSearchService;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
@@ -39,7 +40,7 @@ public class ProductClientController {
         parameters.setLimit(limit);
 
         final List<Product> products = productSearchService.findProducts(parameters);
-        final List<ProductModel> modelList = ProductModel.convert(products, language);
+        final List<ProductSearchModel> modelList = ProductSearchModel.convertToSearchModel(products, language);
 
         return MenuKitResponseEntity.success(modelList);
     }

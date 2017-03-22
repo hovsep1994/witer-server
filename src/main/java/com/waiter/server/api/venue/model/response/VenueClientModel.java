@@ -1,12 +1,12 @@
 package com.waiter.server.api.venue.model.response;
 
+import com.waiter.server.api.location.model.LocationClientModel;
 import com.waiter.server.api.location.model.LocationModel;
 import com.waiter.server.api.menu.model.response.MenuWithProductsModel;
-import com.waiter.server.api.product.model.response.ProductMenuModel;
+import com.waiter.server.api.product.model.response.ProductClientModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.language.Language;
-import com.waiter.server.services.menu.model.Menu;
 import com.waiter.server.services.venue.model.Venue;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class VenueClientModel {
 
     private String name;
 
-    private LocationModel location;
+    private LocationClientModel location;
 
     private String image;
 
@@ -50,11 +50,11 @@ public class VenueClientModel {
         return this;
     }
 
-    public LocationModel getLocation() {
+    public LocationClientModel getLocation() {
         return location;
     }
 
-    public VenueClientModel setLocation(LocationModel location) {
+    public VenueClientModel setLocation(LocationClientModel location) {
         this.location = location;
         return this;
     }
@@ -99,12 +99,12 @@ public class VenueClientModel {
         venueModel.setId(venue.getId());
         venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
         venueModel.setName(venue.getName());
-        venueModel.setLocation(LocationModel.convert(venue.getLocation()));
+        venueModel.setLocation(LocationClientModel.convert(venue.getLocation()));
         venueModel.setRating(venue.getEvaluation().getAverageRating());
         venueModel.setMenu(MenuWithProductsModel.convert(venue.getMenu(), language));
         venueModel.getMenu().getCategories().forEach(category -> {
             if (category.getImage() == null) {
-                for (ProductMenuModel product : category.getProducts()) {
+                for (ProductClientModel product : category.getProducts()) {
                     if(product.getImage() != null) {
                         category.setImage(product.getImage());
                         break;
