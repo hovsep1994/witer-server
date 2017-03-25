@@ -96,7 +96,7 @@ public class VenueClientController extends MainController {
         map.put("latitude", latitude);
         map.put("longitude", longitude);
 
-        return MenuKitResponseEntity.success(modelList,  baseUrl + "client/venues/", map);
+        return MenuKitResponseEntity.success(modelList,  baseUrl + "venues/search/", map);
 
     }
 

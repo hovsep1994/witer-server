@@ -55,7 +55,7 @@ public class ProductClientController {
         map.put("longitude", longitude);
         map.put("language", language);
 
-        return MenuKitResponseEntity.success(modelList,  baseUrl + "client/products/", map);
+        return MenuKitResponseEntity.success(modelList,  baseUrl + "products/search/", map);
     }
 
 }
