@@ -61,19 +61,34 @@ public class CategoryMenuModel {
         this.image = image;
     }
 
-    public static List<CategoryMenuModel> convert(List<Category> categories, Language language) {
+    public static List<CategoryMenuModel> convert(List<Category> categories, Language language, boolean useProductImage) {
         return categories.stream()
-                .map(category -> CategoryMenuModel.convert(category, language))
+                .map(category -> CategoryMenuModel.convert(category, language, useProductImage))
                 .collect(Collectors.toList());
     }
 
-    public static CategoryMenuModel convert(Category category, Language language) {
+    public static List<CategoryMenuModel> convert(List<Category> categories, Language language) {
+        return categories.stream()
+                .map(category -> CategoryMenuModel.convert(category, language, false))
+                .collect(Collectors.toList());
+    }
+
+    public static CategoryMenuModel convert(Category category, Language language, boolean useProductImage) {
         CategoryMenuModel categoryMenuModel = new CategoryMenuModel();
         categoryMenuModel.setName(category.getNameTranslationByLanguage(language).getText());
         categoryMenuModel.setId(category.getId());
         categoryMenuModel.setTags(category.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
         categoryMenuModel.setProducts(ProductClientModel.convert(category.getProducts(), language));
-        categoryMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, category.getGallery()));
+
+        categoryMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, category.getGallery(), !useProductImage));
+        if(categoryMenuModel.getImage() == null) {
+            ProductClientModel bestProduct = categoryMenuModel.getProducts().stream().filter(p -> p.getImage() != null)
+                    .max((p1, p2) -> (int) (p2.getRating() - p1.getRating())).orElse(null);
+            if (bestProduct != null) {
+                categoryMenuModel.setImage(bestProduct.getImage());
+            }
+        }
         return categoryMenuModel;
     }
+
 }

@@ -48,7 +48,7 @@ public class MenuController extends AuthenticationController {
         if (language == null) {
             language = menu.getMainLanguage();
         }
-        final MenuWithProductsModel model = MenuWithProductsModel.convert(menu, language);
+        final MenuWithProductsModel model = MenuWithProductsModel.convertForCustomer(menu, language);
         return MenuKitResponseEntity.success(model);
     }
 

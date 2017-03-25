@@ -101,17 +101,7 @@ public class VenueClientModel {
         venueModel.setName(venue.getName());
         venueModel.setLocation(LocationClientModel.convert(venue.getLocation()));
         venueModel.setRating(venue.getEvaluation().getAverageRating());
-        venueModel.setMenu(MenuWithProductsModel.convert(venue.getMenu(), language));
-        venueModel.getMenu().getCategories().forEach(category -> {
-            if (category.getImage() == null) {
-                for (ProductClientModel product : category.getProducts()) {
-                    if(product.getImage() != null) {
-                        category.setImage(product.getImage());
-                        break;
-                    }
-                }
-            }
-        });
+        venueModel.setMenu(MenuWithProductsModel.convertForClient(venue.getMenu(), language));
         venueModel.setOpenHours(ScheduleClientModel.convert(venue.getOpenHours()));
         return venueModel;
     }

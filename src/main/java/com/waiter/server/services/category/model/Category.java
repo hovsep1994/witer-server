@@ -22,9 +22,6 @@ import java.util.stream.Collectors;
 @Table(name = "category")
 public class Category extends AbstractEntityModel {
 
-    @Column(name = "image")
-    private String image;
-
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
@@ -54,14 +51,6 @@ public class Category extends AbstractEntityModel {
 
     public void setMenu(Menu menu) {
         this.menu = menu;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public List<Product> getProducts() {

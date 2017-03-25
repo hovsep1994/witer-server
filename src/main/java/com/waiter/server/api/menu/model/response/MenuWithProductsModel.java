@@ -59,13 +59,21 @@ public class MenuWithProductsModel {
         this.currency = currency;
     }
 
-    public static MenuWithProductsModel convert(Menu menu, Language language) {
+    private static MenuWithProductsModel convert(Menu menu, Language language, boolean useProductImages) {
         MenuWithProductsModel menuModel = new MenuWithProductsModel();
         menuModel.setId(menu.getId());
         menuModel.setName(menu.getName());
         menuModel.setMainLanguage(language);
         menuModel.setCurrency(menu.getCurrency());
-        menuModel.setCategories(CategoryMenuModel.convert(menu.getCategories(), language));
+        menuModel.setCategories(CategoryMenuModel.convert(menu.getCategories(), language, useProductImages));
         return menuModel;
+    }
+
+    public static MenuWithProductsModel convertForClient(Menu menu, Language language) {
+        return convert(menu, language, true);
+    }
+
+    public static MenuWithProductsModel convertForCustomer(Menu menu, Language language) {
+        return convert(menu, language, false);
     }
 }
