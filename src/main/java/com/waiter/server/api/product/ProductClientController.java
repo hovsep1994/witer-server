@@ -9,10 +9,13 @@ import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author shahenpoghosyan
@@ -23,6 +26,8 @@ public class ProductClientController {
 
     @Autowired
     private ProductSearchService productSearchService;
+    @Value("#{appProperties['api.base.url']}")
+    private String baseUrl;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity findProducts(Double latitude, Double longitude,
@@ -42,7 +47,15 @@ public class ProductClientController {
         final List<Product> products = productSearchService.findProducts(parameters);
         final List<ProductSearchModel> modelList = ProductSearchModel.convertToSearchModel(products, language);
 
-        return MenuKitResponseEntity.success(modelList);
+        Map<String, Object> map = new HashMap<>();
+        map.put("query", query);
+        map.put("offset", offset + limit);
+        map.put("limit", limit);
+        map.put("latitude", latitude);
+        map.put("longitude", longitude);
+        map.put("language", language);
+
+        return MenuKitResponseEntity.success(modelList,  baseUrl + "client/products/", map);
     }
 
 }

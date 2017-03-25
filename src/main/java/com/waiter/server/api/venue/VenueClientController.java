@@ -20,7 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +42,9 @@ public class VenueClientController extends MainController {
 
     @Value("#{appProperties['cdn.base.url']}")
     private String cdnBaseUrl;
+    @Value("#{appProperties['api.base.url']}")
+    private String baseUrl;
+
 
     @Autowired
     private VenueSearchService venueSearchService;
@@ -82,7 +87,17 @@ public class VenueClientController extends MainController {
 
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
         final List<VenueSearchModel> modelList = venues.stream().map(VenueSearchModel::convert).collect(Collectors.toList());
-        return MenuKitResponseEntity.success(modelList);
+
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("query", query);
+        map.put("offset", offset + limit);
+        map.put("limit", limit);
+        map.put("latitude", latitude);
+        map.put("longitude", longitude);
+
+        return MenuKitResponseEntity.success(modelList,  baseUrl + "client/venues/", map);
+
     }
 
 
