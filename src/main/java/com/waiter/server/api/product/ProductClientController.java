@@ -47,15 +47,19 @@ public class ProductClientController {
         final List<Product> products = productSearchService.findProducts(parameters);
         final List<ProductSearchModel> modelList = ProductSearchModel.convertToSearchModel(products, language);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("query", query);
-        map.put("offset", offset + limit);
-        map.put("limit", limit);
-        map.put("latitude", latitude);
-        map.put("longitude", longitude);
-        map.put("language", language);
+        if (modelList.size() == limit) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("query", query);
+            map.put("offset", offset + limit);
+            map.put("limit", limit);
+            map.put("latitude", latitude);
+            map.put("longitude", longitude);
+            map.put("language", language);
 
-        return MenuKitResponseEntity.success(modelList,  baseUrl + "products/search/", map);
+            return MenuKitResponseEntity.success(modelList,  baseUrl + "products/search/", map);
+        }
+
+        return MenuKitResponseEntity.success(modelList);
     }
 
 }

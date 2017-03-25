@@ -89,14 +89,17 @@ public class VenueClientController extends MainController {
         final List<VenueSearchModel> modelList = venues.stream().map(VenueSearchModel::convert).collect(Collectors.toList());
 
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("query", query);
-        map.put("offset", offset + limit);
-        map.put("limit", limit);
-        map.put("latitude", latitude);
-        map.put("longitude", longitude);
+        if (modelList.size() == limit) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("query", query);
+            map.put("offset", offset + limit);
+            map.put("limit", limit);
+            map.put("latitude", latitude);
+            map.put("longitude", longitude);
 
-        return MenuKitResponseEntity.success(modelList,  baseUrl + "venues/search/", map);
+            return MenuKitResponseEntity.success(modelList, baseUrl + "venues/search/", map);
+        }
+        return MenuKitResponseEntity.success(modelList);
 
     }
 
