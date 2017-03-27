@@ -24,6 +24,7 @@ public class ProductClientModel {
     private String image;
     private Set<String> tags;
     private Set<ProductPriceModel> productPrices;
+    private Integer rated;
 
     public Long getId() {
         return id;
@@ -79,6 +80,14 @@ public class ProductClientModel {
 
     public void setProductPrices(Set<ProductPriceModel> productPrices) {
         this.productPrices = productPrices;
+    }
+
+    public Integer getRated() {
+        return rated;
+    }
+
+    public void setRated(Integer rated) {
+        this.rated = rated;
     }
 
     public static List<ProductClientModel> convert(Collection<Product> products, Language language) {

@@ -2,9 +2,13 @@ package com.waiter.server.api.product;
 
 import com.waiter.server.api.common.model.MenuKitResponseEntity;
 import com.waiter.server.api.product.model.ProductModel;
+import com.waiter.server.api.product.model.response.ProductClientModel;
 import com.waiter.server.api.search.model.response.ProductSearchModel;
+import com.waiter.server.services.evaluation.RateService;
+import com.waiter.server.services.evaluation.model.Rate;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.ProductSearchService;
+import com.waiter.server.services.product.ProductService;
 import com.waiter.server.services.product.dto.ProductSearchParameters;
 import com.waiter.server.services.product.model.Product;
 import org.apache.commons.lang3.StringUtils;
@@ -26,8 +30,15 @@ public class ProductClientController {
 
     @Autowired
     private ProductSearchService productSearchService;
+
+    @Autowired
+    private ProductService productService;
+
     @Value("#{appProperties['api.base.url']}")
     private String baseUrl;
+
+    @Autowired
+    private RateService rateService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity findProducts(Double latitude, Double longitude,
@@ -60,6 +71,19 @@ public class ProductClientController {
         }
 
         return MenuKitResponseEntity.success(modelList);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity findOne(@PathVariable Long id, @RequestParam Language language, @RequestParam String token) {
+        final Product product = productService.getById(id);
+        ProductClientModel productClientModel = ProductClientModel.convert(product, language);
+
+        Rate rate = rateService.find(product.getEvaluation().getId(), token);
+        if (rate != null) {
+            productClientModel.setRated(rate.getRating());
+        }
+
+        return MenuKitResponseEntity.success(productClientModel);
     }
 
 }
