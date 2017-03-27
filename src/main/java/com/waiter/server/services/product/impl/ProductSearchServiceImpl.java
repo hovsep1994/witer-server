@@ -159,7 +159,8 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
             } else {
                 map.put(venueId, map.get(venueId) * 1.5d);
             }
-            double score = product.getAverageRating() / map.get(venueId); // todo include distance in formula
+            double ratingScore = product.getAverageRating() == 0 ? 0.0001 : product.getAverageRating();
+            double score = ratingScore / map.get(venueId); // todo include distance in formula
             rankedProducts.add(new RankedProduct(product, score));
         }
         rankedProducts.sort((a, b) -> (int) (b.rank - a.rank));
