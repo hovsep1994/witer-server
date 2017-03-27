@@ -1,5 +1,6 @@
 package com.waiter.server.api.product.model;
 
+import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.ProductPrice;
 
@@ -13,6 +14,7 @@ public class ProductPriceModel {
     private Long id;
     private String name;
     private Double price;
+    private String currency;
 
     public Long getId() {
         return id;
@@ -38,16 +40,31 @@ public class ProductPriceModel {
         this.price = price;
     }
 
-    public static ProductPriceModel convert(ProductPrice productPrice, Language language) {
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public static ProductPriceModel convert(ProductPrice productPrice, Language language, Currency currency) {
         final ProductPriceModel productPriceModel = new ProductPriceModel();
         productPriceModel.setId(productPrice.getId());
         productPriceModel.setName(productPrice.getNameByLangauge(language));
         productPriceModel.setPrice(productPrice.getPrice());
+        if (currency != null) {
+            productPriceModel.setCurrency(currency.getSymbol());
+        }
         return productPriceModel;
     }
 
+    public static Set<ProductPriceModel> convert(Set<ProductPrice> productPrices, Language language, Currency currency) {
+        return productPrices.stream().map(productPrice -> convert(productPrice, language, currency)).collect(Collectors.toSet());
+    }
+
     public static Set<ProductPriceModel> convert(Set<ProductPrice> productPrices, Language language) {
-        return productPrices.stream().map(productPrice -> convert(productPrice, language)).collect(Collectors.toSet());
+        return convert(productPrices, language, null);
     }
 
 }

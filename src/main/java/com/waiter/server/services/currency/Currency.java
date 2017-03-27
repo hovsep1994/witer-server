@@ -7,7 +7,7 @@ public enum Currency {
     // AED,
     // AFN,
     // ALL,
-    AMD,
+    AMD(""),
     // ANG,
     // AOA,
     // ARS,
@@ -48,10 +48,10 @@ public enum Currency {
     // EGP,
     // ERN,
     // ETB,
-    EUR,
+    EUR("€"),
     // FJD,
     // FKP,
-    GBP,
+    GBP(""),
     // GEL,
     // GGP,
     // GHS,
@@ -125,7 +125,7 @@ public enum Currency {
     // QAR,
     // RON,
     // RSD,
-     RUB,
+     RUB(""),
     // RWF,
     // SAR,
     // SBD,
@@ -155,7 +155,7 @@ public enum Currency {
     // TZS,
     // UAH,
     // UGX,
-    USD,
+    USD("$"),
     // UYU,
     // UZS,
     // VEB,
@@ -176,4 +176,16 @@ public enum Currency {
     // ZAR,
     // ZMK,
     // ZWD
+    ;
+
+    private String symbol;
+
+    Currency(String symbol) {
+        this.symbol = symbol;
+
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
 }

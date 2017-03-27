@@ -105,7 +105,8 @@ public class ProductModel {
             throw new ServiceRuntimeException(ErrorCode.FAILD_TRANSLATION, "Valodikkkkkkk.  " + product.getNameSet().size());
         }
         productModel.setName(product.getNameTranslationByLanguage(language).getText());
-        productModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language));
+        productModel.setProductPrices(ProductPriceModel.convert(product.getProductPrices(), language,
+                product.getCategory().getMenu().getCurrency()));
         productModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
         productModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery()));
         return productModel;
