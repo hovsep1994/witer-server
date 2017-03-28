@@ -72,6 +72,7 @@ public class VenueClientController extends MainController {
             map.put("limit", limit);
             map.put("latitude", latitude);
             map.put("longitude", longitude);
+            map.put("language", language);
 
             return MenuKitResponseEntity.success(modelList, baseUrl + "venues/nearby/", map);
         }
