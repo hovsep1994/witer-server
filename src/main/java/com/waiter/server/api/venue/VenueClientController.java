@@ -66,6 +66,16 @@ public class VenueClientController extends MainController {
         venues.forEach(venue -> modelList.add(VenueClientNearbyModel
                 .convert(venue, language, productService.findTopProducts(venue.getMenu().getId(), 0, 10))));
 
+        if (modelList.size() == limit) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("offset", offset + limit);
+            map.put("limit", limit);
+            map.put("latitude", latitude);
+            map.put("longitude", longitude);
+
+            return MenuKitResponseEntity.success(modelList, baseUrl + "venues/nearby/", map);
+        }
+
         return MenuKitResponseEntity.success(modelList);
     }
 
