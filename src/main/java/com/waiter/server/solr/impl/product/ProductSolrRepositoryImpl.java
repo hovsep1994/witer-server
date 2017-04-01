@@ -58,7 +58,7 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
         map.put("pt", point.getX() + "," + point.getY());
         map.put("sfield", LOCATION);
         map.put("fq", "{!geofilt}");
-        map.put("d", "1000");
+        map.put("d", "10000");
         map.put("wt", "json");
         map.put("rows", limit + "");
         map.put("start", offset + "");
