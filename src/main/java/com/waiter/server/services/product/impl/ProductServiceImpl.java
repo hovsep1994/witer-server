@@ -46,6 +46,7 @@ import java.util.Set;
 
 import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
+import static com.waiter.server.services.evaluation.EvaluationService.RateMode;
 
 /**
  * @author shahenpoghosyan
@@ -230,11 +231,11 @@ public class ProductServiceImpl implements ProductService {
         notNull(rating);
         isTrue(rating >= 0 && rating <= 10);
         Product product = getById(productId);
-        final Evaluation evaluation = evaluationService.addOrUpdateRating(product.getEvaluation().getId(), customerToken, rating);
+        final Evaluation evaluation = evaluationService.addOrUpdateRating(product.getEvaluation().getId(),
+                customerToken, rating, RateMode.OVERRIDE);
         product.setEvaluation(evaluation);
-        product.getCategory().getMenu().getVenues().forEach(venue -> {
-            evaluationService.addOrUpdateRating(venue.getEvaluation().getId(), customerToken, rating);
-        });
+        product.getCategory().getMenu().getVenues().forEach(venue -> evaluationService
+                .addOrUpdateRating(venue.getEvaluation().getId(), customerToken, rating, RateMode.ADD));
         return productRepository.save(product);
     }
 
