@@ -78,7 +78,12 @@ public class MenuImporter {
                              Language origLanguage, List<Language> languages) throws IOException, ServiceException {
         List<ParsedVenue> venues = parser.parseVenues(doc);
         for (ParsedVenue venue : venues) {
-            importVenue(venue, currency, country, countryCode, origLanguage, languages);
+            try {
+                logger.info("Start importing venue; ");
+                importVenue(venue, currency, country, countryCode, origLanguage, languages);
+            } catch (Exception e) {
+                logger.error("Failed to import venue. ", e);
+            }
         }
     }
 
