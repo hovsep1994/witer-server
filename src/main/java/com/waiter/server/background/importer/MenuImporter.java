@@ -125,7 +125,9 @@ public class MenuImporter {
         menu.getLanguages().add(orig.language);
 
         venueService.addImage(venue.getId(), makeStream(venueDto.getImageUrl()));
-        venueService.addImage(venue.getId(), makeStream(venueDto.getLogo()), GalleryImageType.LOGO);
+        if (venueDto.getLogo() != null) {
+            venueService.addImage(venue.getId(), makeStream(venueDto.getLogo()), GalleryImageType.LOGO);
+        }
         logger.info("Venue created with id: {} ", venue.getId());
 
         for (ParsedCategory parsedCategory : parser.parseCategories(orig.doc)) {
