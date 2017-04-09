@@ -32,7 +32,7 @@ public class VenueClientNearbyModel extends VenueSearchModel {
     public static VenueClientNearbyModel convert(Venue venue, Language language, List<Product> topProducts) {
         final VenueClientNearbyModel venueModel = new VenueClientNearbyModel();
         venueModel.setId(venue.getId());
-        venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery(), GalleryImageType.LOGO));
+        venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery(), GalleryImageType.LOGO, false));
         if (venueModel.getImage() == null) {
             venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
         }
