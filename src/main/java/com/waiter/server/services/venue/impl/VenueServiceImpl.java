@@ -121,11 +121,11 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public GalleryImage addImage(Long venueId, InputStream inputStream, GalleryImageType galleryImageType) throws ServiceException {
+    public GalleryImage addImage(Long venueId, InputStream inputStream, GalleryImageType galleryImageType, ImageType imageType) throws ServiceException {
         Venue venue = getById(venueId);
         final GalleryImageDto galleryImageDto = new GalleryImageDto();
         galleryImageDto.setGalleryImageType(galleryImageType);
-        galleryImageDto.setImageType(ImageType.JPEG);
+        galleryImageDto.setImageType(imageType);
         galleryImageDto.setFileName("venue");
         if (venue.getGallery() == null) {
             venue.setGallery(new Gallery());
@@ -137,7 +137,7 @@ public class VenueServiceImpl implements VenueService {
 
     @Override
     public GalleryImage addImage(Long venueId, InputStream inputStream) throws ServiceException {
-        return addImage(venueId, inputStream, GalleryImageType.MAIN);
+        return addImage(venueId, inputStream, GalleryImageType.MAIN, ImageType.JPEG);
     }
 
     public List<Venue> attacheMenuToVenues(Set<Long> venueIds, Long menuId) {

@@ -10,6 +10,7 @@ import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.common.exception.ServiceException;
 import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.gallery.model.GalleryImageType;
+import com.waiter.server.services.gallery.model.ImageType;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.location.LocationService;
 import com.waiter.server.services.location.dto.LocationDto;
@@ -126,7 +127,7 @@ public class MenuImporter {
 
         venueService.addImage(venue.getId(), makeStream(venueDto.getImageUrl()));
         if (venueDto.getLogo() != null) {
-            venueService.addImage(venue.getId(), makeStream(venueDto.getLogo()), GalleryImageType.LOGO);
+            venueService.addImage(venue.getId(), makeStream(venueDto.getLogo()), GalleryImageType.LOGO, ImageType.PNG);
         }
         logger.info("Venue created with id: {} ", venue.getId());
 
