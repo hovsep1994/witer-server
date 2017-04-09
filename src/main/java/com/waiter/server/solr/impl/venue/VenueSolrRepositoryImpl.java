@@ -68,9 +68,9 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
         final SimpleQuery query = new SimpleQuery(criteria);
         query.setOffset(offset);
         query.setRows(limit);
-        if (!StringUtils.isEmpty(name)) {
-            query.addSort(new Sort(Sort.Direction.ASC, sort));
-        }
+//        if (!StringUtils.isEmpty(sort)) {
+//            query.addSort(new Sort(Sort.Direction.ASC, sort));
+//        }
         final Page<VenueDocument> results = venuesSolrTemplate.queryForPage(query, VenueDocument.class);
         return results.getContent();
     }
