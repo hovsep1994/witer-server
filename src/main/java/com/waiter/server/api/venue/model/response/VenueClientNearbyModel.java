@@ -6,6 +6,7 @@ import com.waiter.server.api.product.model.response.ProductClientModel;
 import com.waiter.server.api.search.model.response.VenueSearchModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
+import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.venue.model.Venue;
@@ -31,7 +32,10 @@ public class VenueClientNearbyModel extends VenueSearchModel {
     public static VenueClientNearbyModel convert(Venue venue, Language language, List<Product> topProducts) {
         final VenueClientNearbyModel venueModel = new VenueClientNearbyModel();
         venueModel.setId(venue.getId());
-        venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
+        venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery(), GalleryImageType.LOGO));
+        if (venueModel.getImage() == null) {
+            venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
+        }
         venueModel.setName(venue.getName());
         venueModel.setLocation(LocationClientModel.convert(venue.getLocation()));
         venueModel.setRating(venue.getEvaluation().getAverageRating());
