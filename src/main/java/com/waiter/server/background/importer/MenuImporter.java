@@ -206,7 +206,7 @@ public class MenuImporter {
     }
 
     private static void saveDocument(String name, Document document) throws FileNotFoundException {
-        String baseUrl = "/tmp/";
+        String baseUrl = "/tmp/paris1";
         try(  PrintWriter out = new PrintWriter(baseUrl + name + ".out" )  ){
             out.println(document.toString());
         }
@@ -217,14 +217,14 @@ public class MenuImporter {
 
         String country = "Netherlands";
         String countryCode = "NL";
-        String cityVenues = "https://www.foodora.nl/city/amsterdam";
+        String cityVenues = "https://www.foodora.fr/city/paris";
 
         ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConf.class);
         MenuImporter importer = (MenuImporter) context.getBean("menuImporter");
 
         Document document = Jsoup.connect(cityVenues).userAgent(USER_AGENT).get();
-        saveDocument("amsterdam", document);
-        importer.importVenues(document, Currency.EUR, countryCode, country, Language.nl, Collections.singletonList(Language.en));
+        saveDocument("paris", document);
+        importer.importVenues(document, Currency.EUR, countryCode, country, Language.fr, Collections.singletonList(Language.en));
 
     }
 

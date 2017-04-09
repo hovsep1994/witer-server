@@ -5,7 +5,7 @@ package com.waiter.server.services.language;
  */
 public enum Language {
 
-    en("english"), hy("armenian"), ru("russian"), nl("dutch");
+    en("english"), hy("armenian"), ru("russian"), nl("dutch"), fr("french");
 
     private String nativeName;
 
