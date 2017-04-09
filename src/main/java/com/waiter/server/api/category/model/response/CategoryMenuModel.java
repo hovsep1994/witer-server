@@ -7,6 +7,7 @@ import com.waiter.server.services.category.model.Category;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.tag.model.Tag;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,19 +64,33 @@ public class CategoryMenuModel {
 
     public static List<CategoryMenuModel> convert(List<Category> categories, Language language, boolean useProductImage) {
         return categories.stream()
-                .map(category -> CategoryMenuModel.convert(category, language, useProductImage))
+                .map(category -> {
+                    try {
+                        return CategoryMenuModel.convert(category, language, useProductImage);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                })
+                .filter(x -> x != null)
                 .collect(Collectors.toList());
     }
 
     public static List<CategoryMenuModel> convert(List<Category> categories, Language language) {
         return categories.stream()
-                .map(category -> CategoryMenuModel.convert(category, language, false))
+                .map(category -> {
+                    try {
+                        return CategoryMenuModel.convert(category, language, false);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                })
+                .filter(x -> x != null)
                 .collect(Collectors.toList());
     }
 
     public static CategoryMenuModel convert(Category category, Language language, boolean useProductImage) {
         CategoryMenuModel categoryMenuModel = new CategoryMenuModel();
-        categoryMenuModel.setName(category.getNameTranslationByLanguage(language).getText());
+        categoryMenuModel.setName(category.getNameTranslationByLanguages(Arrays.asList(language, Language.en)).getText());
         categoryMenuModel.setId(category.getId());
         categoryMenuModel.setTags(category.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
         categoryMenuModel.setProducts(ProductClientModel.convert(category.getProducts(), language));

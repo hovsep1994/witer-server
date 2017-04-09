@@ -93,6 +93,10 @@ public class Category extends AbstractEntityModel {
                 nameTranslation.getLanguage().equals(language)).findFirst().orElse(null);
     }
 
+    public Translation getNameTranslationByLanguages(List<Language> languages) {
+        return Translation.getTranslationByLanguages(nameSet, languages);
+    }
+
     public Set<Language> getLanguages() {
         return nameSet.stream().map(Translation::getLanguage).collect(Collectors.toSet());
     }
