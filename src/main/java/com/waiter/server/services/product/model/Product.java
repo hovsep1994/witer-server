@@ -10,6 +10,7 @@ import com.waiter.server.services.translation.model.Translation;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -133,6 +134,14 @@ public class Product extends AbstractEntityModel {
 
     public Translation getNameTranslationByLanguage(Language language) {
         return Translation.getTranslationByLanguage(getNameSet(), language);
+    }
+
+    public Translation getNameTranslation(List<Language> languages) {
+        return Translation.getTranslationByLanguages(getNameSet(), languages);
+    }
+
+    public Translation getDescriptionTranslation(List<Language> languages) {
+        return Translation.getTranslationByLanguages(getDescriptionSet(), languages);
     }
 
     public Translation getDescriptionByLanguage(Language language) {

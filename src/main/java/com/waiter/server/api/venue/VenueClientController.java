@@ -60,6 +60,7 @@ public class VenueClientController extends MainController {
         searchParameters.setLongitude(longitude);
         searchParameters.setOffset(offset);
         searchParameters.setLimit(limit);
+        searchParameters.setSort(VenueSearchParameters.Sort.GEODIST);
 
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
         final List<VenueClientNearbyModel> modelList = new ArrayList<>(venues.size());

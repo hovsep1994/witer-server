@@ -10,6 +10,7 @@ public class VenueSearchParameters {
     private Double longitude;
     private int offset;
     private int limit;
+    private Sort sort;
 
     public String getName() {
         return name;
@@ -53,6 +54,14 @@ public class VenueSearchParameters {
         return this;
     }
 
+    public Sort getSort() {
+        return sort;
+    }
+
+    public void setSort(Sort sort) {
+        this.sort = sort;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,5 +94,19 @@ public class VenueSearchParameters {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 '}';
+    }
+
+    public enum Sort {
+        GEODIST("geodist()");
+
+        private String value;
+
+        Sort(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 }

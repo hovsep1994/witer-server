@@ -4,14 +4,14 @@ import com.waiter.server.api.product.model.ProductPriceModel;
 import com.waiter.server.api.product.model.response.ProductClientModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
-import com.waiter.server.services.common.exception.ErrorCode;
-import com.waiter.server.services.common.exception.ServiceRuntimeException;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
-import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.venue.model.Venue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
  * @author shahenpoghosyan
  */
 public class ProductSearchModel extends ProductClientModel {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductSearchModel.class);
 
     private ProductVenue venue;
 
@@ -64,15 +66,8 @@ public class ProductSearchModel extends ProductClientModel {
     public static ProductSearchModel convert(Product product, Language language) {
         final ProductSearchModel productModel = new ProductSearchModel();
         productModel.setId(product.getId());
-        productModel.setDescription(product.getDescriptionTextByLanguage(language));
-        Translation translation = product.getNameTranslationByLanguage(language);
-        if(translation == null) {
-            product.getNameTranslationByLanguage(product.getCategory().getMenu().getMainLanguage());
-        }
-        if(translation == null) {
-            throw new ServiceRuntimeException(ErrorCode.FAILD_TRANSLATION, "Valodikkkkkkk.  " + product.getNameSet().size());
-        }
-        productModel.setName(product.getNameTranslationByLanguage(language).getText());
+        productModel.setDescription(product.getDescriptionTranslation(Arrays.asList(language, Language.en)).getText());
+        productModel.setName(product.getNameTranslation(Arrays.asList(language, Language.en)).getText());
         productModel.setProductPrices(ProductPriceModel
                 .convert(product.getProductPrices(), language, product.getCategory().getMenu().getCurrency()));
         productModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
@@ -85,6 +80,13 @@ public class ProductSearchModel extends ProductClientModel {
     }
 
     public static List<ProductSearchModel> convertToSearchModel(Collection<Product> products, Language language) {
-        return products.stream().map(product -> convert(product, language)).collect(Collectors.toList());
+        return products.stream().map(product -> {
+            try {
+                return convert(product, language);
+            } catch (Exception e) {
+                LOGGER.error("Failed to covert product. {} ", product.getId());
+                return null;
+            }
+        }).filter(x -> x != null).collect(Collectors.toList());
     }
 }

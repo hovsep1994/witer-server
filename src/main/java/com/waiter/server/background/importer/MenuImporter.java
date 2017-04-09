@@ -77,6 +77,7 @@ public class MenuImporter {
     public void importVenues(Document doc, Currency currency, String country, String countryCode,
                              Language origLanguage, List<Language> languages) throws IOException, ServiceException {
         List<ParsedVenue> venues = parser.parseVenues(doc);
+        logger.info("Venues size: " + venues.size());
         for (ParsedVenue venue : venues) {
             try {
                 logger.info("Start importing venue; ");

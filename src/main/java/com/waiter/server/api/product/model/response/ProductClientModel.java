@@ -3,11 +3,13 @@ package com.waiter.server.api.product.model.response;
 import com.waiter.server.api.product.model.ProductPriceModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
-import com.waiter.server.services.currency.Currency;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +19,9 @@ import java.util.stream.Collectors;
  * Created by hovsep on 8/19/16.
  */
 public class ProductClientModel {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductClientModel.class);
+
     private Long id;
     private String name;
     private String description;
@@ -91,22 +96,27 @@ public class ProductClientModel {
     }
 
     public static List<ProductClientModel> convert(Collection<Product> products, Language language) {
-        return products.stream()
-                .map(product -> ProductClientModel.convert(product, language))
-                .collect(Collectors.toList());
+        return products.stream().map(product -> {
+            try {
+                return convert(product, language);
+            } catch (Exception e) {
+                LOGGER.error("Failed to covert product. {} ", product.getId());
+                return null;
+            }
+        }).filter(x -> x != null).collect(Collectors.toList());
     }
 
     public static ProductClientModel convert(Product product, Language language) {
-        ProductClientModel productClientModel = new ProductClientModel();
-        productClientModel.setId(product.getId());
-        productClientModel.setName(product.getNameTranslationByLanguage(language).getText());
-        productClientModel.setDescription(product.getDescriptionTextByLanguage(language));
-        productClientModel.setRating(product.getAverageRating());
-
-        productClientModel.setProductPrices(ProductPriceModel
+        final ProductClientModel productModel = new ProductClientModel();
+        productModel.setId(product.getId());
+        productModel.setDescription(product.getDescriptionTranslation(Arrays.asList(language, Language.en)).getText());
+        productModel.setName(product.getNameTranslation(Arrays.asList(language, Language.en)).getText());
+        productModel.setProductPrices(ProductPriceModel
                 .convert(product.getProductPrices(), language, product.getCategory().getMenu().getCurrency()));
-        productClientModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
-        productClientModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery()));
-        return productClientModel;
+        productModel.setTags(product.getTags().stream().map(Tag::getName).collect(Collectors.toSet()));
+        productModel.setImage(ImageUrlGenerator.getUrl(EntityType.PRODUCT, product.getGallery()));
+        productModel.setRating(product.getAverageRating());
+
+        return productModel;
     }
 }

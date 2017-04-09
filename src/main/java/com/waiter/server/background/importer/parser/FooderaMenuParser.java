@@ -119,24 +119,15 @@ public class FooderaMenuParser implements Parser {
     @Override
     public List<ParsedVenue> parseVenues(Document doc) {
         List<ParsedVenue> venueDtos = new ArrayList<>();
-        Elements hrefs = new Elements();
-        Elements open = doc.getElementsByClass("restaurants__list--open");
-        if (!open.isEmpty()) {
-            hrefs.addAll(open.get(0).children());
-        }
-        Elements closed = doc.getElementsByClass("restaurants__list--closed");
-        if (!closed.isEmpty()) {
-            hrefs.addAll(closed.get(0).children());
-        }
 
-        for (Element a : hrefs) {
+        Elements venueItems = doc.getElementsByClass("restaurants__list__item");
+        for (Element div : venueItems) {
             try {
-                String url = a.attr("href");
-                JsonNode venueJson = mapper.readTree(a.getElementsByTag("div").get(0).attr("data-vendor"));
+                JsonNode venueJson = mapper.readTree(div.attr("data-vendor"));
 
                 ParsedVenue venueDto = new ParsedVenue();
                 venueDto.setName(venueJson.get("name").asText());
-                venueDto.setSourceUrl(url);
+                venueDto.setSourceUrl(div.parent().attr("href"));
                 venueDto.setImageUrl(venueJson.get("image_high_resolution").asText());
                 if (venueJson.get("logo") != null && !venueJson.get("logo").isNull()) {
                     venueDto.setLogo(venueJson.get("logo").asText().substring(32));

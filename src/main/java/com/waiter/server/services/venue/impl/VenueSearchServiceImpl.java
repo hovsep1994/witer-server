@@ -64,11 +64,13 @@ public class VenueSearchServiceImpl implements VenueSearchService, InitializingB
         LOGGER.debug("Finding for search params -{}", parameters);
         notNull(parameters, "parameters must not be null");
         Point point = null;
-        if(parameters.getLatitude() != null && parameters.getLongitude() != null) {
+        if (parameters.getLatitude() != null && parameters.getLongitude() != null) {
             point = new Point(parameters.getLatitude(), parameters.getLongitude());
         }
-        final List<VenueDocument> venueSolrDocuments = venueSolrRepository.findBySearchParameters(parameters.getName(),
-                point, parameters.getOffset(), parameters.getLimit());
+        final List<VenueDocument> venueSolrDocuments = venueSolrRepository.findBySearchParameters(
+                parameters.getName(),
+                point, parameters.getSort() != null ? parameters.getSort().getValue() : null,
+                parameters.getOffset(), parameters.getLimit());
         final List<Venue> venues = venueService.getAllByIds(venueSolrDocuments.stream()
                 .map(x -> Long.valueOf(x.getId())).collect(Collectors.toList()));
         LOGGER.debug("Successfully find venues -{} for search params -{}", venues, parameters);

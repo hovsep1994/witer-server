@@ -31,6 +31,7 @@ import com.waiter.server.services.translation.TranslationService;
 import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.translation.model.Translation;
 import com.waiter.server.services.translation.model.TranslationType;
+import com.waiter.server.services.venue.event.VenueUpdateEvent;
 import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
@@ -234,8 +235,12 @@ public class ProductServiceImpl implements ProductService {
         final Evaluation evaluation = evaluationService.addOrUpdateRating(product.getEvaluation().getId(),
                 customerToken, rating, RateMode.OVERRIDE);
         product.setEvaluation(evaluation);
-        product.getCategory().getMenu().getVenues().forEach(venue -> evaluationService
-                .addOrUpdateRating(venue.getEvaluation().getId(), customerToken, rating, RateMode.ADD));
+        applicationEventBus.publishAsynchronousEvent(new ProductUpdateEvent(product));
+
+        product.getCategory().getMenu().getVenues().forEach(venue -> {
+            evaluationService.addOrUpdateRating(venue.getEvaluation().getId(), customerToken, rating, RateMode.ADD);
+            applicationEventBus.publishAsynchronousEvent(new VenueUpdateEvent(venue));
+        });
         return productRepository.save(product);
     }
 

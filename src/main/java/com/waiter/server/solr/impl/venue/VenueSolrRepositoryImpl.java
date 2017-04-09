@@ -9,6 +9,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.solr.core.SolrTemplate;
@@ -51,7 +52,7 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
     }
 
     @Override
-    public List<VenueDocument> findBySearchParameters(String name, Point point, int offset, int limit) {
+    public List<VenueDocument> findBySearchParameters(String name, Point point, String sort, int offset, int limit) {
         final Distance distance = new Distance(DISTANCE, Metrics.KILOMETERS);
         Criteria criteria = null;
         if (!StringUtils.isEmpty(name)) {
@@ -67,6 +68,9 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
         final SimpleQuery query = new SimpleQuery(criteria);
         query.setOffset(offset);
         query.setRows(limit);
+        if (!StringUtils.isEmpty(name)) {
+            query.addSort(new Sort(Sort.Direction.ASC, sort));
+        }
         final Page<VenueDocument> results = venuesSolrTemplate.queryForPage(query, VenueDocument.class);
         return results.getContent();
     }

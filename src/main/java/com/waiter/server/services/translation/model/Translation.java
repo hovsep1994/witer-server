@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Table(name = "translation")
 public class Translation extends AbstractEntityModel {
 
-    @Column(name = "text", nullable = false)
+    @Column(name = "text", nullable = false, length = 65000)
     private String text;
 
     @Column(name = "language", nullable = false)
@@ -58,6 +58,16 @@ public class Translation extends AbstractEntityModel {
     public static Translation getTranslationByLanguage(Collection<Translation> translations, Language language) {
         return translations.stream().filter(translation ->
                 translation.getLanguage().equals(language)).findFirst().orElse(null);
+    }
+
+    public static Translation getTranslationByLanguages(Collection<Translation> translations, List<Language> languages) {
+        for (Language language : languages) {
+            Translation translation = getTranslationByLanguage(translations, language);
+            if (translation != null) {
+                return translation;
+            }
+        }
+        return translations.stream().findAny().get();
     }
 
     public static String getTranslationTextByLanguage(Collection<Translation> translations, Language language) {
