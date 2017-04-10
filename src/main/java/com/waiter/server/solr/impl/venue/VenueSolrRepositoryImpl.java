@@ -19,7 +19,9 @@ import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by hovsep on 8/6/16.
@@ -56,7 +58,14 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
         final Distance distance = new Distance(DISTANCE, Metrics.KILOMETERS);
         Criteria criteria = null;
         if (!StringUtils.isEmpty(name)) {
-            criteria = new Criteria("name_txt").startsWith(name);
+            List<String> terms = Arrays.asList(name.split(" ")).stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
+            for (String term : terms) {
+                if(criteria == null) {
+                    criteria = new Criteria("name_txt").startsWith(term);
+                } else {
+                    criteria = criteria.and("name_txt").startsWith(term);
+                }
+            }
         }
         if(point != null) {
             if(criteria == null) {
