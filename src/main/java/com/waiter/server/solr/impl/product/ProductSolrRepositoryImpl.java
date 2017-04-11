@@ -21,10 +21,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by hovsep on 8/3/16.
@@ -51,7 +49,10 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
     public List<ProductDocument> findBySearchParams(String text, Point point, int offset, int limit)  {
         Map<String, String> map = new HashMap<>();
         if (text != null) {
-            map.put("q", "+names_t:" + text + "*");
+            StringBuilder queryBuilder = new StringBuilder();
+            Arrays.asList(text.split(" ")).stream().filter(s -> !s.isEmpty()).forEach(term ->
+                    queryBuilder.append(" +names_t:").append(term).append("*"));
+            map.put("q", queryBuilder.toString());
         } else {
             map.put("q", "*:*");
         }
