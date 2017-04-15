@@ -230,7 +230,7 @@ public class ProductServiceImpl implements ProductService {
         assertProductId(productId);
         notNull(customerToken);
         notNull(rating);
-        isTrue(rating >= 0 && rating <= 10);
+        isTrue(rating >= 0 && rating <= 5);
         Product product = getById(productId);
         final Evaluation evaluation = evaluationService.addOrUpdateRating(product.getEvaluation().getId(),
                 customerToken, rating, RateMode.OVERRIDE);
