@@ -206,7 +206,7 @@ public class MenuImporter {
     }
 
     private static void saveDocument(String name, Document document) throws FileNotFoundException {
-        String baseUrl = "/tmp/paris1";
+        String baseUrl = "/tmp/paris1/";
         try(  PrintWriter out = new PrintWriter(baseUrl + name + ".out" )  ){
             out.println(document.toString());
         }
