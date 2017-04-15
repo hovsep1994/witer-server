@@ -20,7 +20,9 @@ import org.springframework.data.solr.core.geo.Point;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.util.Assert.notNull;
@@ -71,8 +73,10 @@ public class VenueSearchServiceImpl implements VenueSearchService, InitializingB
                 parameters.getName(),
                 point, parameters.getSort() != null ? parameters.getSort().getValue() : null,
                 parameters.getOffset(), parameters.getLimit());
-        final List<Venue> venues = venueService.getAllByIds(venueSolrDocuments.stream()
-                .map(x -> Long.valueOf(x.getId())).collect(Collectors.toList()));
+        List<Long> venueIds = venueSolrDocuments.stream().map(x -> Long.valueOf(x.getId())).collect(Collectors.toList());
+
+        final List<Venue> venues = venueService.getAllByIds(venueIds);
+        venues.sort((v1, v2) -> venueIds.indexOf(v1.getId()) - venueIds.indexOf(v2.getId()));
         LOGGER.debug("Successfully find venues -{} for search params -{}", venues, parameters);
         return venues;
     }
