@@ -58,7 +58,7 @@ public class ProductClientController {
         final List<Product> products = productSearchService.findProducts(parameters);
         final List<ProductSearchModel> modelList = ProductSearchModel.convertToSearchModel(products, language);
 
-        if (modelList.size() == limit) {
+        if (modelList.size() > limit / 2) {
             Map<String, Object> map = new HashMap<>();
             map.put("query", query);
             map.put("offset", offset + limit);
