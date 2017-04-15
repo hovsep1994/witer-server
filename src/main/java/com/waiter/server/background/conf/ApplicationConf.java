@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Import;
 @Import({DataAccessConfig.class, RootConfig.class, SolrConfig.class})
 @ComponentScan(value = {
         "com.waiter.server.background.importer",
+        "com.waiter.server.background.reindexer",
         "com.waiter.server.services",
         "com.waiter.server.externalclients"})
 public class ApplicationConf {

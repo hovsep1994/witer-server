@@ -11,7 +11,6 @@ import com.waiter.server.solr.core.repository.common.model.SolrLocation;
 import com.waiter.server.solr.core.repository.venue.VenueSolrRepository;
 import com.waiter.server.solr.core.repository.venue.model.VenueDocument;
 import com.waiter.server.solr.core.repository.venue.model.VenueSolrDocument;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.solr.core.geo.Point;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.util.Assert.notNull;
@@ -56,6 +52,7 @@ public class VenueSearchServiceImpl implements VenueSearchService, InitializingB
         venueSolrDocument.setId(venue.getId().toString());
         venueSolrDocument.setName(venue.getName());
         venueSolrDocument.setCompanyId(venue.getCompany().getId());
+        venueSolrDocument.setRating(venue.getEvaluation().getAverageRating());
         final SolrLocation location = new SolrLocation(venue.getLocation().getLatitude(), venue.getLocation().getLongitude());
         venueSolrDocument.setLocation(location);
         venueSolrRepository.save(venueSolrDocument);

@@ -20,6 +20,8 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
 
     private Long companyId;
 
+    private double rating;
+
     public String getName() {
         return name;
     }
@@ -42,6 +44,14 @@ public class VenueSolrDocument extends AbstractSolrDocumentWithId {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     @Override
