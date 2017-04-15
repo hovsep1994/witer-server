@@ -67,7 +67,7 @@ public class VenueClientController extends MainController {
         venues.forEach(venue -> modelList.add(VenueClientNearbyModel
                 .convert(venue, language, productService.findTopProducts(venue.getMenu().getId(), 0, 10))));
 
-        if (modelList.size() == limit) {
+        if (modelList.size() > limit / 2) {
             Map<String, Object> map = new HashMap<>();
             map.put("offset", offset + limit);
             map.put("limit", limit);
@@ -101,7 +101,7 @@ public class VenueClientController extends MainController {
         final List<VenueSearchModel> modelList = venues.stream().map(VenueSearchModel::convert).collect(Collectors.toList());
 
 
-        if (modelList.size() == limit) {
+        if (modelList.size() > limit / 2) {
             Map<String, Object> map = new HashMap<>();
             map.put("query", query);
             map.put("offset", offset + limit);
