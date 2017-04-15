@@ -215,8 +215,8 @@ public class MenuImporter {
 
     public static void main(String[] args) throws IOException, ServiceException {
 
-        String country = "Netherlands";
-        String countryCode = "NL";
+        String country = "France";
+        String countryCode = "FR";
         String cityVenues = "https://www.foodora.fr/city/paris";
 
         ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConf.class);
