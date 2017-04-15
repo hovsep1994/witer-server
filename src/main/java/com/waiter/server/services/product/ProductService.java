@@ -5,11 +5,10 @@ import com.waiter.server.services.company.model.Company;
 import com.waiter.server.services.gallery.model.GalleryImage;
 import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.language.Language;
-import com.waiter.server.services.product.dto.ProductPriceDto;
-import com.waiter.server.services.product.model.ProductPrice;
-import com.waiter.server.services.translation.dto.TranslationDto;
 import com.waiter.server.services.product.dto.ProductDto;
+import com.waiter.server.services.product.dto.ProductPriceDto;
 import com.waiter.server.services.product.model.Product;
+import com.waiter.server.services.translation.dto.TranslationDto;
 
 import java.io.InputStream;
 import java.util.List;
@@ -45,4 +44,6 @@ public interface ProductService {
     Product createProductPrices(Long productId, Set<ProductPriceDto> productPriceDtos, Language language);
 
     List<Product> findTopProducts(Long menuId, int offset, int limit);
+
+    List<Product> getProducts(int numberOfProducts);
 }

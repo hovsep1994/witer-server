@@ -37,6 +37,7 @@ import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +46,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import static com.waiter.server.services.evaluation.EvaluationService.RateMode;
 import static org.springframework.util.Assert.isTrue;
 import static org.springframework.util.Assert.notNull;
-import static com.waiter.server.services.evaluation.EvaluationService.RateMode;
 
 /**
  * @author shahenpoghosyan
@@ -286,6 +287,11 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findTopProducts(Long menuId, int offset, int limit) {
         notNull(menuId, "Menu id must not be null");
         return productRepository.findTopProducts(menuId, offset, limit);
+    }
+
+    public List<Product> getProducts(int numberOfProducts) {
+        PageRequest pageRequest = new PageRequest(0, numberOfProducts);
+        return productRepository.findAll(pageRequest).getContent();
     }
 
     private ProductPrice getProductContainProductPrice(Product product, Long productPriceId) {
