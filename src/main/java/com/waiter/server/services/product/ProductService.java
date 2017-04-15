@@ -45,5 +45,5 @@ public interface ProductService {
 
     List<Product> findTopProducts(Long menuId, int offset, int limit);
 
-    List<Product> getProducts(int numberOfProducts);
+    List<Product> getProducts(int page, int size);
 }

@@ -290,8 +290,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts(int numberOfProducts) {
-        PageRequest pageRequest = new PageRequest(0, numberOfProducts);
+    public List<Product> getProducts(int page, int size) {
+        PageRequest pageRequest = new PageRequest(page, size);
         return productRepository.findAll(pageRequest).getContent();
     }
 
