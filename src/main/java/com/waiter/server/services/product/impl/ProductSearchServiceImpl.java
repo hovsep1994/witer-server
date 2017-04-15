@@ -26,10 +26,7 @@ import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.util.Assert.notNull;
@@ -110,7 +107,7 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
 
         List<Long> productIds = productDocuments.stream().map(ProductDocument::getId).map(Long::valueOf).collect(Collectors.toList());
         List<Product> products =  productService.getAllByIds(productIds);
-        products.sort((p1, p2) ->  productIds.indexOf(p1.getId()) - productIds.indexOf(p2.getId()));
+        products.sort(Comparator.comparingInt(p -> productIds.indexOf(p.getId())));
         return orderProducts(products);
     }
 
