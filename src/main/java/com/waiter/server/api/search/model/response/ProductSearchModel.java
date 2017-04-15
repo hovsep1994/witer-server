@@ -1,5 +1,6 @@
 package com.waiter.server.api.search.model.response;
 
+import com.waiter.server.api.location.model.LocationClientModel;
 import com.waiter.server.api.product.model.ProductPriceModel;
 import com.waiter.server.api.product.model.response.ProductClientModel;
 import com.waiter.server.api.utility.image.EntityType;
@@ -39,6 +40,8 @@ public class ProductSearchModel extends ProductClientModel {
 
         private Long id;
 
+        private LocationClientModel location;
+
         public Long getId() {
             return id;
         }
@@ -55,10 +58,19 @@ public class ProductSearchModel extends ProductClientModel {
             this.name = name;
         }
 
+        public LocationClientModel getLocation() {
+            return location;
+        }
+
+        public void setLocation(LocationClientModel location) {
+            this.location = location;
+        }
+
         public static ProductVenue convert(Venue venue) {
             ProductVenue productVenue = new ProductVenue();
             productVenue.setId(venue.getId());
             productVenue.setName(venue.getName());
+            productVenue.setLocation(LocationClientModel.convert(venue.getLocation()));
             return productVenue;
         }
     }
