@@ -1,12 +1,15 @@
 package com.waiter.server.solr.impl.venue;
 
+import com.waiter.server.solr.core.repository.product.model.ProductDocument;
 import com.waiter.server.solr.core.repository.venue.VenueSolrRepository;
 import com.waiter.server.solr.core.repository.venue.model.VenueDocument;
 import com.waiter.server.solr.core.repository.venue.model.VenueSolrDocument;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.params.MapSolrParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -20,7 +23,9 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -55,33 +60,32 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
 
     @Override
     public List<VenueDocument> findBySearchParameters(String name, Point point, String sort, int offset, int limit) {
-        final Distance distance = new Distance(DISTANCE, Metrics.KILOMETERS);
-        Criteria criteria = null;
+        Map<String, String> map = new HashMap<>();
         if (!StringUtils.isEmpty(name)) {
-            List<String> terms = Arrays.asList(name.split(" ")).stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
-            for (String term : terms) {
-                if(criteria == null) {
-                    criteria = new Criteria("name_txt").startsWith(term);
-                } else {
-                    criteria = criteria.and("name_txt").startsWith(term);
-                }
-            }
+            StringBuilder queryBuilder = new StringBuilder();
+            Arrays.asList(name.split(" ")).stream().filter(s -> !s.isEmpty()).forEach(term ->
+                    queryBuilder.append(" +name_txt:").append(term).append("*"));
+            map.put("q", queryBuilder.toString());
+        } else {
+            map.put("q", "*:*");
         }
-        if(point != null) {
-            if(criteria == null) {
-                criteria = new Criteria("location_rpt").near(point, distance);
-            } else {
-                criteria = criteria.and(new Criteria("location_rpt").near(point, distance));
-            }
+        map.put("pt", point.getX() + "," + point.getY());
+        map.put("sfield", "location_rpt");
+        map.put("fq", "{!geofilt}");
+        map.put("d", DISTANCE + "");
+        map.put("wt", "json");
+        map.put("rows", limit + "");
+        map.put("start", offset + "");
+
+        if (!StringUtils.isEmpty(sort)) {
+            map.put("sort", sort);
         }
-        final SimpleQuery query = new SimpleQuery(criteria);
-        query.setOffset(offset);
-        query.setRows(limit);
-//        if (!StringUtils.isEmpty(sort)) {
-//            query.addSort(new Sort(Sort.Direction.ASC, sort));
-//        }
-        final Page<VenueDocument> results = venuesSolrTemplate.queryForPage(query, VenueDocument.class);
-        return results.getContent();
+        try {
+            QueryResponse queryResponse = solrClient.query(VENUES_COLLECTION, new MapSolrParams(map));
+            return queryResponse.getBeans(VenueDocument.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Solr exception. ",  e);
+        }
     }
 
     private void saveDocument(SolrInputDocument document) {

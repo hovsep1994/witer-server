@@ -97,7 +97,7 @@ public class VenueSearchParameters {
     }
 
     public enum Sort {
-        GEODIST("geodist()");
+        GEODIST("geodist() asc");
 
         private String value;
 
