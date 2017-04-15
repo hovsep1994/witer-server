@@ -289,6 +289,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findTopProducts(menuId, offset, limit);
     }
 
+    @Override
     public List<Product> getProducts(int numberOfProducts) {
         PageRequest pageRequest = new PageRequest(0, numberOfProducts);
         return productRepository.findAll(pageRequest).getContent();
