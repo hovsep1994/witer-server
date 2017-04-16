@@ -36,13 +36,13 @@
 <div class="container-fluid desc">
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 desc_cell" style="background-color:#1D1E22;">
-            You can get restaurant's menu and information in <span style="color: #74c220;">any language.</span>
+            You can get restaurant's menu and information in <span style="color: #74c220;">your native language.</span>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 desc_cell" style="background-color:#18191D;">
             With our <span style="color: #ffcc00;">smart search.</span> tool you can quickly find your preferred food.
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 desc_cell" style="background-color:#1D1E22;">
-            You can get restaurant's menu and information in <span style="color: #1b9caf;">any language.</span>
+            <span style="color: #1b9caf;">Find top rated</span> restaurants and dishes in your city.
         </div>
     </div>
 </div>
