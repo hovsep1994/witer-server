@@ -34,4 +34,6 @@ public interface VenueService {
     Venue updateAttachmentOfMenu(Long venueId, Long menuId);
 
     void delete(Long venueId);
+
+    List<Venue> getVenues(int page, int size);
 }

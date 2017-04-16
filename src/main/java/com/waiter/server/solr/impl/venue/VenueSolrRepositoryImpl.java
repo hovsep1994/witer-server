@@ -36,6 +36,7 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
 
     private static final double DISTANCE = 10000;
     private static final String VENUES_COLLECTION = "venues";
+    private static final float ZERO_BOOST = 0.0001f;
 
     @Autowired
     private SolrTemplate venuesSolrTemplate;
@@ -47,7 +48,7 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
     public void save(VenueSolrDocument venue) {
         final SolrInputDocument document = new SolrInputDocument();
         document.addField("id", venue.getId());
-        document.addField("name_txt", venue.getName());
+        document.addField("name_txt", venue.getName(), venue.getRating() == 0 ? ZERO_BOOST : (float) venue.getRating());
         document.addField("location_rpt", venue.getLocation().getLongitude() + " " + venue.getLocation().getLatitude());
         document.addField("company_id_s", venue.getCompanyId());
         saveDocument(document);

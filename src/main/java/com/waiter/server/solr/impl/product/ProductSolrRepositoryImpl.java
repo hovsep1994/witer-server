@@ -39,6 +39,7 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
     private static final String CATEGORY_TAGS = "category_tags_ss";
     private static final String DESCRIPTIONS = "descriptions_t";
     private static final String MENUE_ID = "menu_id_s";
+    private static final float ZERO_BOOST = 0.0001f;
 
     @Resource
     private SolrTemplate productsSolrTemplate;
@@ -75,10 +76,10 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
     public void save(ProductInputDocument product) throws IOException {
         SolrInputDocument document = new SolrInputDocument();
         document.addField(ID, product.getId());
-        document.addField(PRODUCT_TAGS, product.getProductTags(), (float) product.getRating());
-        document.addField(CATEGORY_TAGS, product.getCategoryTags(), (float) product.getRating());
-        document.addField(NAMES, product.getNames(), (float) product.getRating());
-        document.addField(DESCRIPTIONS, product.getDescriptions(), (float) product.getRating());
+        document.addField(PRODUCT_TAGS, product.getProductTags(), getBoostFromRating(product.getRating()));
+        document.addField(CATEGORY_TAGS, product.getCategoryTags(), getBoostFromRating(product.getRating()));
+        document.addField(NAMES, product.getNames(), getBoostFromRating(product.getRating()));
+        document.addField(DESCRIPTIONS, product.getDescriptions(), getBoostFromRating(product.getRating()));
         document.addField(MENUE_ID, product.getMenuId());
 
         for (SolrLocation location : product.getLocations()) {
@@ -111,6 +112,10 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
         } catch (SolrServerException e) {
             throw new IOException(e);
         }
+    }
+
+    private float getBoostFromRating(double rating) {
+        return rating == 0 ? ZERO_BOOST : (float) rating;
     }
 
 }

@@ -25,6 +25,7 @@ import com.waiter.server.services.venue.model.Venue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -177,6 +178,12 @@ public class VenueServiceImpl implements VenueService {
     public void delete(Long venueId) {
         final Venue venue = getById(venueId);
         venueRepository.delete(venue);
+    }
+
+    @Override
+    public List<Venue> getVenues(int page, int size) {
+        PageRequest pageRequest = new PageRequest(page, size);
+        return venueRepository.findAll(pageRequest).getContent();
     }
 
     private void assertVenueId(Long id) {
