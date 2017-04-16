@@ -223,7 +223,7 @@ public class MenuImporter {
 
         String country = "France";
         String countryCode = "FR";
-        String cityVenues = "https://www.foodora.fr/city/paris";
+        String cityVenues = "https://www.foodora.fr/city/paris?dasdasf=afa";
 
         ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConf.class);
         MenuImporter importer = (MenuImporter) context.getBean("menuImporter");
