@@ -54,6 +54,7 @@ public class ProductClientController {
         parameters.setLongitude(longitude);
         parameters.setOffset(offset);
         parameters.setLimit(limit);
+        parameters.setSort(ProductSearchParameters.Sort.RATING);
 
         final List<Product> products = productSearchService.findProducts(parameters);
         final List<ProductSearchModel> modelList = ProductSearchModel.convertToSearchModel(products, language);

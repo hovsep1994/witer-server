@@ -4,6 +4,7 @@ import com.waiter.server.solr.core.repository.common.model.SolrLocation;
 import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import com.waiter.server.solr.core.repository.product.model.ProductDocument;
 import com.waiter.server.solr.core.repository.product.model.ProductInputDocument;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -43,7 +44,7 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
     private SolrClient solrClient;
 
     @Override
-    public List<ProductDocument> findBySearchParams(String text, Point point, int offset, int limit)  {
+    public List<ProductDocument> findBySearchParams(String text, Point point, String sort, int offset, int limit)  {
         Map<String, String> map = new HashMap<>();
         if (text != null) {
             StringBuilder queryBuilder = new StringBuilder();
@@ -60,6 +61,10 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
         map.put("wt", "json");
         map.put("rows", limit + "");
         map.put("start", offset + "");
+        if (!StringUtils.isEmpty(sort)) {
+            map.put("sort", sort);
+        }
+
         try {
             QueryResponse queryResponse = solrClient.query(PRODUCTS_COLLECTION, new MapSolrParams(map));
             return queryResponse.getBeans(ProductDocument.class);

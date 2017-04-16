@@ -103,7 +103,9 @@ public class ProductSearchServiceImpl implements ProductSearchService, Initializ
 
     public List<Product> findProducts(ProductSearchParameters parameters) {
         List<ProductDocument> productDocuments = productSolrRepository.findBySearchParams(parameters.getName(),
-                new Point(parameters.getLongitude(), parameters.getLatitude()), parameters.getOffset(), parameters.getLimit());
+                new Point(parameters.getLongitude(), parameters.getLatitude()),
+                parameters.getSort() != null ? parameters.getSort().getValue() : null,
+                parameters.getOffset(), parameters.getLimit());
 
         List<Long> productIds = productDocuments.stream().map(ProductDocument::getId).map(Long::valueOf).collect(Collectors.toList());
         List<Product> products =  productService.getAllByIds(productIds);

@@ -69,6 +69,7 @@ public class SearchController {
 
         productParams.setOffset(batch * 100);
         productParams.setLimit(100);
+        productParams.setSort(ProductSearchParameters.Sort.RATING);
 
         SearchResponseModel responseModel = new SearchResponseModel();
         List<Product> products = productSearchService.findProducts(productParams);

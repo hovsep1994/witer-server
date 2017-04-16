@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface ProductSolrRepositoryCustom {
 
-    List<ProductDocument> findBySearchParams(String text, Point point, int offset, int limit);
+    List<ProductDocument> findBySearchParams(String text, Point point, String sort, int offset, int limit);
 
     void save(ProductInputDocument doc) throws IOException;
 
