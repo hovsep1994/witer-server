@@ -93,6 +93,12 @@ public class MenuImporter {
     public void importVenue(ParsedVenue venueDto, Currency currency, String country, String countryCode,
                             Language origLanguage, List<Language> languages) throws IOException, ServiceException {
 
+        Venue venueToImport = venueService.getBySourceUrl(venueDto.getSourceUrl());
+        if (venueToImport != null) {
+            logger.info("Venue has been imported already. {} ", venueToImport.getName());
+            return;
+        }
+
         long companyId = 1;
         WebsiteTranslation orig = new WebsiteTranslation(origLanguage, Jsoup.connect(baseUrl + venueDto.getSourceUrl()).userAgent(USER_AGENT).get());
         List<WebsiteTranslation> websiteTranslations = languages.stream().map(l -> {

@@ -74,6 +74,12 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
+    public Venue getBySourceUrl(String sourceUrl) {
+        notNull(sourceUrl);
+        return venueRepository.findBySource(sourceUrl);
+    }
+
+    @Override
     public List<Venue> getAllByIds(List<Long> ids) {
         notNull(ids);
         List<Venue> venues = venueRepository.findAll(ids);

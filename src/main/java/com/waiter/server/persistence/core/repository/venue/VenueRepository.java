@@ -14,4 +14,5 @@ import java.util.Set;
 @Repository
 public interface VenueRepository extends JpaRepository<Venue, Long>, VenueRepositoryCustom {
 
+    Venue findBySource(String source);
 }
