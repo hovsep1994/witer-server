@@ -56,7 +56,7 @@ public class MenuImporter {
 
     private static final Logger logger = LoggerFactory.getLogger(MenuImporter.class);
 
-    private static final String baseUrl = "https://www.foodora.nl";
+    private static final String baseUrl = "https://www.foodora.fr";
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11";
 
     @Autowired
