@@ -65,8 +65,11 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
         Map<String, String> map = new HashMap<>();
         if (!StringUtils.isEmpty(name)) {
             StringBuilder queryBuilder = new StringBuilder();
-            Arrays.asList(name.split(" ")).stream().filter(s -> !s.isEmpty()).forEach(term ->
-                    queryBuilder.append(" +name_txt:").append(term).append("*"));
+            Arrays.stream(name.split(" "))
+                    .filter(s -> !s.isEmpty())
+                    .forEach(term ->
+                            queryBuilder.append(" +name_txt:").append(term).append("*")
+                    );
             map.put("q", queryBuilder.toString());
         } else {
             map.put("q", "*:*");
@@ -86,7 +89,7 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
             QueryResponse queryResponse = solrClient.query(VENUES_COLLECTION, new MapSolrParams(map));
             return queryResponse.getBeans(VenueDocument.class);
         } catch (Exception e) {
-            throw new RuntimeException("Solr exception. ",  e);
+            throw new RuntimeException("Solr exception. ", e);
         }
     }
 
