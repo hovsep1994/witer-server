@@ -12,6 +12,7 @@ import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -105,11 +106,7 @@ public class CategoryMenuModel {
             Product bestProduct = category.getProducts().stream().filter(p -> {
                 String url = ImageUrlGenerator.getUrl(EntityType.PRODUCT, p.getGallery(), false);
                 return url != null;
-            }).max((p1, p2) -> {
-                if (p2.getAverageRating() - p1.getAverageRating() > 0) return 1;
-                if (p2.getAverageRating() - p1.getAverageRating() < 0) return -1;
-                return 0;
-            }).orElse(null);
+            }).max(Comparator.comparingDouble(p -> -p.getAverageRating())).orElse(null);
 
             if (bestProduct != null) {
                 categoryMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, bestProduct.getGallery()));
