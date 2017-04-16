@@ -4,7 +4,11 @@ import com.waiter.server.api.product.model.response.ProductClientModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
 import com.waiter.server.services.category.model.Category;
+import com.waiter.server.services.gallery.model.Gallery;
+import com.waiter.server.services.gallery.model.GalleryImage;
+import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.language.Language;
+import com.waiter.server.services.product.model.Product;
 import com.waiter.server.services.tag.model.Tag;
 
 import java.util.Arrays;
@@ -97,10 +101,20 @@ public class CategoryMenuModel {
 
         categoryMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, category.getGallery(), !useProductImage));
         if(categoryMenuModel.getImage() == null) {
-            ProductClientModel bestProduct = categoryMenuModel.getProducts().stream().filter(p -> p.getImage() != null)
-                    .max((p1, p2) -> (int) (p2.getRating() - p1.getRating())).orElse(null);
+
+            Product bestProduct = category.getProducts().stream().filter(p -> {
+                String url = ImageUrlGenerator.getUrl(EntityType.PRODUCT, p.getGallery(), false);
+                return url != null;
+            }).max((p1, p2) -> {
+                if (p2.getAverageRating() - p1.getAverageRating() > 0) return 1;
+                if (p2.getAverageRating() - p1.getAverageRating() < 0) return -1;
+                return 0;
+            }).orElse(null);
+
             if (bestProduct != null) {
-                categoryMenuModel.setImage(bestProduct.getImage());
+                categoryMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, bestProduct.getGallery()));
+            } else {
+                categoryMenuModel.setImage(ImageUrlGenerator.getDefaultUrl(EntityType.CATEGORY));
             }
         }
         return categoryMenuModel;

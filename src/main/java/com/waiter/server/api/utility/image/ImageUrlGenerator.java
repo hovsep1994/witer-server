@@ -52,6 +52,10 @@ public class ImageUrlGenerator {
         return cdnBaseUrl + imageUrl;
     }
 
+    public static String getDefaultUrl(EntityType entityType) {
+        return cdnBaseUrl + entityType.getDefaultImageUrl();
+    }
+
     public static String getUrl(EntityType entityType, GalleryImage galleryImage) {
         return getUrl(entityType, galleryImage, true);
     }
