@@ -65,6 +65,7 @@ public class SearchController {
         }
         venueParams.setOffset(0);
         venueParams.setLimit(venuesLimit);
+        venueParams.setSort(VenueSearchParameters.Sort.RATING);
 
         productParams.setOffset(batch * 100);
         productParams.setLimit(100);
