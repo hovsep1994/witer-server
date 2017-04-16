@@ -22,7 +22,7 @@
         Discover hidden tasty world
     </div>
     <div class="subtitle">
-        Ut pharetra nisl nulla, nec porta urna fringilla in. Nam placer
+        Explore top restaurants and their dishes around you
     </div>
     <div class="store_images">
         <a href="">
