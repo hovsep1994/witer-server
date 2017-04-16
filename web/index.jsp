@@ -42,7 +42,7 @@
             With our <span style="color: #ffcc00;">smart search.</span> tool you can quickly find your preferred food.
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 desc_cell" style="background-color:#1D1E22;">
-            <span style="color: #1b9caf;">Find top rated</span> restaurants and dishes in your city.
+            <span style="color: #1b9caf;">Find top rated</span> restaurants and dishes <br> in your city.
         </div>
     </div>
 </div>
