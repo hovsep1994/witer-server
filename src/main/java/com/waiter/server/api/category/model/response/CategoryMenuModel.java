@@ -106,7 +106,7 @@ public class CategoryMenuModel {
             Product bestProduct = category.getProducts().stream().filter(p -> {
                 String url = ImageUrlGenerator.getUrl(EntityType.PRODUCT, p.getGallery(), false);
                 return url != null;
-            }).max(Comparator.comparingDouble(p -> -p.getAverageRating())).orElse(null);
+            }).max(Comparator.comparingDouble(Product::getAverageRating)).orElse(null);
 
             if (bestProduct != null) {
                 categoryMenuModel.setImage(ImageUrlGenerator.getUrl(EntityType.CATEGORY, bestProduct.getGallery()));
