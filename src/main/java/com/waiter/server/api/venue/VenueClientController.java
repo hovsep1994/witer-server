@@ -132,7 +132,7 @@ public class VenueClientController extends MainController {
         searchParameters.setLatitude(latitude);
         searchParameters.setLongitude(longitude);
         searchParameters.setSort(VenueSearchParameters.Sort.GEODIST);
-        searchParameters.setDistance(1.0);
+        searchParameters.setDistance(10.0);
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
         final List<VenueClientNearbyModel> modelList = venues.stream()
                 .map(venue -> VenueClientNearbyModel.convert(venue, language, null))
