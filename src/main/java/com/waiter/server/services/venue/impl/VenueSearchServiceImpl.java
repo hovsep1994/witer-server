@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.solr.core.geo.Point;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,8 @@ import static org.springframework.util.Assert.notNull;
 public class VenueSearchServiceImpl implements VenueSearchService, InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VenueSearchServiceImpl.class);
+
+    private static final double DISTANCE = 10000;
 
     @Autowired
     private VenueSolrRepository venueSolrRepository;
@@ -68,12 +71,16 @@ public class VenueSearchServiceImpl implements VenueSearchService, InitializingB
         }
         final List<VenueDocument> venueSolrDocuments = venueSolrRepository.findBySearchParameters(
                 parameters.getName(),
-                point, parameters.getSort() != null ? parameters.getSort().getValue() : null,
-                parameters.getOffset(), parameters.getLimit());
+                point,
+                parameters.getSort() != null ? parameters.getSort().getValue() : null,
+                parameters.getOffset(),
+                parameters.getLimit(),
+                parameters.getDistance() == null ? DISTANCE : parameters.getDistance()
+        );
         List<Long> venueIds = venueSolrDocuments.stream().map(x -> Long.valueOf(x.getId())).collect(Collectors.toList());
 
         final List<Venue> venues = venueService.getAllByIds(venueIds);
-        venues.sort((v1, v2) -> venueIds.indexOf(v1.getId()) - venueIds.indexOf(v2.getId()));
+        venues.sort(Comparator.comparingInt(v -> venueIds.indexOf(v.getId())));
         LOGGER.debug("Successfully find venues -{} for search params -{}", venues, parameters);
         return venues;
     }

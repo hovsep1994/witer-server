@@ -11,6 +11,7 @@ public class VenueSearchParameters {
     private int offset;
     private int limit;
     private Sort sort;
+    private Double distance;
 
     public String getName() {
         return name;
@@ -60,6 +61,14 @@ public class VenueSearchParameters {
 
     public void setSort(Sort sort) {
         this.sort = sort;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     @Override

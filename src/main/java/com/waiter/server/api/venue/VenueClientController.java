@@ -123,4 +123,22 @@ public class VenueClientController extends MainController {
         return MenuKitResponseEntity.success(VenueClientModel.convert(venue, language));
     }
 
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    public ResponseEntity currentVenue(@RequestParam Double latitude,
+                                       @RequestParam Double longitude,
+                                       @RequestParam Language language) {
+        final VenueSearchParameters searchParameters = new VenueSearchParameters();
+        searchParameters.setLatitude(latitude);
+        searchParameters.setLongitude(longitude);
+        searchParameters.setSort(VenueSearchParameters.Sort.GEODIST);
+        searchParameters.setDistance(1.0);
+        final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
+        final List<VenueClientNearbyModel> modelList = venues.stream()
+                .map(venue -> VenueClientNearbyModel.convert(venue, language, null))
+                .collect(Collectors.toList());
+
+        return MenuKitResponseEntity.success(modelList);
+    }
+
+
 }

@@ -1,6 +1,5 @@
 package com.waiter.server.solr.impl.venue;
 
-import com.waiter.server.solr.core.repository.product.model.ProductDocument;
 import com.waiter.server.solr.core.repository.venue.VenueSolrRepository;
 import com.waiter.server.solr.core.repository.venue.model.VenueDocument;
 import com.waiter.server.solr.core.repository.venue.model.VenueSolrDocument;
@@ -11,14 +10,8 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.MapSolrParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Metrics;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.geo.Point;
-import org.springframework.data.solr.core.query.Criteria;
-import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -26,7 +19,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by hovsep on 8/6/16.
@@ -34,7 +26,6 @@ import java.util.stream.Collectors;
 @Repository
 public class VenueSolrRepositoryImpl implements VenueSolrRepository {
 
-    private static final double DISTANCE = 10000;
     private static final String VENUES_COLLECTION = "venues";
     private static final float ZERO_BOOST = 0.0001f;
 
@@ -60,7 +51,12 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
     }
 
     @Override
-    public List<VenueDocument> findBySearchParameters(String name, Point point, String sort, int offset, int limit) {
+    public List<VenueDocument> findBySearchParameters(String name,
+                                                      Point point,
+                                                      String sort,
+                                                      int offset,
+                                                      int limit,
+                                                      Double distance) {
         Map<String, String> map = new HashMap<>();
         if (!StringUtils.isEmpty(name)) {
             StringBuilder queryBuilder = new StringBuilder();
@@ -76,7 +72,7 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
         map.put("pt", point.getX() + "," + point.getY());
         map.put("sfield", "location_rpt");
         map.put("fq", "{!geofilt}");
-        map.put("d", DISTANCE + "");
+        map.put("d", distance + "");
         map.put("wt", "json");
         map.put("rows", limit + "");
         map.put("start", offset + "");
