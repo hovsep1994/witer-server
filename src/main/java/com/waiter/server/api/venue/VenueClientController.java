@@ -139,7 +139,7 @@ public class VenueClientController extends MainController {
                 .map(venue -> VenueClientNearbyModel.convert(venue, language, null))
                 .collect(Collectors.toList());
 
-        return MenuKitResponseEntity.success(modelList);
+        return MenuKitResponseEntity.success(venues);
     }
 
 
