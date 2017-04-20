@@ -10,6 +10,7 @@ public class ProductSearchParameters {
     private double longitude;
     private int offset;
     private int limit;
+    private Sort sort;
 
     public String getName() {
         return name;
@@ -39,6 +40,14 @@ public class ProductSearchParameters {
         return offset;
     }
 
+    public Sort getSort() {
+        return sort;
+    }
+
+    public void setSort(Sort sort) {
+        this.sort = sort;
+    }
+
     public ProductSearchParameters setOffset(int offset) {
         this.offset = offset;
         return this;
@@ -51,6 +60,20 @@ public class ProductSearchParameters {
     public ProductSearchParameters setLimit(int limit) {
         this.limit = limit;
         return this;
+    }
+
+    public enum Sort {
+        RATING("rating_f desc");
+
+        private String value;
+
+        Sort(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 
     @Override

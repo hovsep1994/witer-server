@@ -7,7 +7,7 @@ public enum EntityType {
 
     VENUE("images/venue-image.png"),
     PRODUCT("product/product-image.png"),
-    CATEGORY("images/category-image.png");
+    CATEGORY("product/product-image.png");
 
     private String defaultImageUrl;
 

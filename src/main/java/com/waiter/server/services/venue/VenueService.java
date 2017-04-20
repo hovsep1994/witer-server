@@ -23,6 +23,8 @@ public interface VenueService {
 
     Venue getById(Long id);
 
+    Venue getBySourceUrl(String sourceUrl);
+
     List<Venue> getAllByIds(List<Long> ids);
 
     GalleryImage addImage(Long venueId, InputStream inputStream, GalleryImageType galleryImageType, ImageType imageType) throws ServiceException;

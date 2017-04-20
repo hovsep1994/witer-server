@@ -9,6 +9,6 @@
                  style="margin-top: -10px; margin-right: -5px;">
             Menu <span style="color:#ffcc00">Kit</span>
         </a>
-        <a class="navbar_bussiness" href="./business" >Business</a>
+        <a class="navbar_bussiness" href="./business/" >Business</a>
     </div>
 </nav>

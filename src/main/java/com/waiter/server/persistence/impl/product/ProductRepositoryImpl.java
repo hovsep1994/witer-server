@@ -58,7 +58,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .append(" left join p.gallery.galleryImages gi")
                 .append(" WHERE p.category.menu.id = ").append(menuId)
                 .append(" AND gi != NULL")
-                .append(" ORDER BY p.evaluation.rateSum")
+                .append(" ORDER BY p.evaluation.rateSum DESC")
                 .toString();
         final TypedQuery<Product> typedQuery = entityManager.createQuery(queryString, Product.class)
                 .setFirstResult(offset)

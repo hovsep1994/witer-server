@@ -42,6 +42,7 @@ public class VenueSolrRepositoryImpl implements VenueSolrRepository {
         document.addField("name_txt", venue.getName(), venue.getRating() == 0 ? ZERO_BOOST : (float) venue.getRating());
         document.addField("location_rpt", venue.getLocation().getLongitude() + " " + venue.getLocation().getLatitude());
         document.addField("company_id_s", venue.getCompanyId());
+        document.addField("rating_f", venue.getRating());
         saveDocument(document);
     }
 

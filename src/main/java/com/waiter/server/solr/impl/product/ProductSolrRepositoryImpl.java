@@ -4,6 +4,7 @@ import com.waiter.server.solr.core.repository.common.model.SolrLocation;
 import com.waiter.server.solr.core.repository.product.ProductSolrRepository;
 import com.waiter.server.solr.core.repository.product.model.ProductDocument;
 import com.waiter.server.solr.core.repository.product.model.ProductInputDocument;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -11,18 +12,13 @@ import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.MapSolrParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.data.solr.core.SolrTemplate;
-import org.springframework.data.solr.core.query.Criteria;
-import org.springframework.data.solr.core.query.SimpleQuery;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by hovsep on 8/3/16.
@@ -38,7 +34,8 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
     private static final String PRODUCT_TAGS = "product_tags_ss";
     private static final String CATEGORY_TAGS = "category_tags_ss";
     private static final String DESCRIPTIONS = "descriptions_t";
-    private static final String MENUE_ID = "menu_id_s";
+    private static final String MENU_ID = "menu_id_s";
+    private static final String RATING = "rating_f";
     private static final float ZERO_BOOST = 0.0001f;
 
     @Resource
@@ -47,7 +44,7 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
     private SolrClient solrClient;
 
     @Override
-    public List<ProductDocument> findBySearchParams(String text, Point point, int offset, int limit)  {
+    public List<ProductDocument> findBySearchParams(String text, Point point, String sort, int offset, int limit)  {
         Map<String, String> map = new HashMap<>();
         if (text != null) {
             StringBuilder queryBuilder = new StringBuilder();
@@ -64,6 +61,10 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
         map.put("wt", "json");
         map.put("rows", limit + "");
         map.put("start", offset + "");
+        if (!StringUtils.isEmpty(sort)) {
+            map.put("sort", sort);
+        }
+
         try {
             QueryResponse queryResponse = solrClient.query(PRODUCTS_COLLECTION, new MapSolrParams(map));
             return queryResponse.getBeans(ProductDocument.class);
@@ -80,7 +81,8 @@ public class ProductSolrRepositoryImpl implements ProductSolrRepository {
         document.addField(CATEGORY_TAGS, product.getCategoryTags(), getBoostFromRating(product.getRating()));
         document.addField(NAMES, product.getNames(), getBoostFromRating(product.getRating()));
         document.addField(DESCRIPTIONS, product.getDescriptions(), getBoostFromRating(product.getRating()));
-        document.addField(MENUE_ID, product.getMenuId());
+        document.addField(MENU_ID, product.getMenuId());
+        document.addField(RATING, product.getRating());
 
         for (SolrLocation location : product.getLocations()) {
             document.addField(LOCATION,

@@ -96,6 +96,7 @@ public class VenueClientController extends MainController {
         searchParameters.setLongitude(longitude);
         searchParameters.setOffset(offset);
         searchParameters.setLimit(limit);
+        searchParameters.setSort(VenueSearchParameters.Sort.RATING);
 
         final List<Venue> venues = venueSearchService.getVenuesBySearchParameters(searchParameters);
         final List<VenueSearchModel> modelList = venues.stream().map(VenueSearchModel::convert).collect(Collectors.toList());

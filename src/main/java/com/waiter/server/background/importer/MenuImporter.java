@@ -56,7 +56,7 @@ public class MenuImporter {
 
     private static final Logger logger = LoggerFactory.getLogger(MenuImporter.class);
 
-    private static final String baseUrl = "https://www.foodora.nl";
+    private static final String baseUrl = "https://www.foodora.fr";
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11";
 
     @Autowired
@@ -92,6 +92,12 @@ public class MenuImporter {
     @Transactional
     public void importVenue(ParsedVenue venueDto, Currency currency, String country, String countryCode,
                             Language origLanguage, List<Language> languages) throws IOException, ServiceException {
+
+        Venue venueToImport = venueService.getBySourceUrl(venueDto.getSourceUrl());
+        if (venueToImport != null) {
+            logger.info("Venue has been imported already. {} ", venueToImport.getName());
+            return;
+        }
 
         long companyId = 1;
         WebsiteTranslation orig = new WebsiteTranslation(origLanguage, Jsoup.connect(baseUrl + venueDto.getSourceUrl()).userAgent(USER_AGENT).get());
@@ -217,7 +223,7 @@ public class MenuImporter {
 
         String country = "France";
         String countryCode = "FR";
-        String cityVenues = "https://www.foodora.fr/city/paris";
+        String cityVenues = "https://www.foodora.fr/city/paris?dasdasf=afa";
 
         ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConf.class);
         MenuImporter importer = (MenuImporter) context.getBean("menuImporter");
