@@ -5,7 +5,7 @@
 <%%>
 <nav class="navbar navbar-fixed-top navbar_custom">
     <div class="container-fluid">
-        <a class="brand brand-responsive" href="#">
+        <a class="brand brand-responsive" href="/">
             <img src="${pageContext.request.contextPath}/styles/resources/commons/logo.png" width="55px"
                  style="margin-top: -10px; margin-right: -5px;">
             Menu <span style="color:#ffcc00">Kit</span>
