@@ -25,7 +25,7 @@
         Explore top restaurants and their dishes around you
     </div>
     <div class="store_images">
-        <a href="">
+        <a href="https://play.google.com/store/apps/details?id=com.menukit.android">
             <img src="${pageContext.request.contextPath}/styles/resources/commons/google_play.png" class="left"/>
         </a>
         <a href="">
