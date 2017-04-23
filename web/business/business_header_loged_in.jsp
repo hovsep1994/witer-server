@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <nav ng-controller="userCtrl" class="navbar navbar-fixed-top navbar_custom">
     <div class="container">
-        <a class="brand brand-fixed" href="#">
+        <a class="brand brand-fixed" href="/business/">
             <img src="${pageContext.request.contextPath}/styles/resources/commons/logo.png" width="55px"
                  style="margin-top: -10px; margin-right: -5px;">
             Menu Kit <span style="color:#3cbad3">Business</span>
