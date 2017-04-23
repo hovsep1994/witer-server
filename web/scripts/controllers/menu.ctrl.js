@@ -155,6 +155,7 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
         }
         p.prices = p.productPrices;
         delete p.productPrices;
+        p.description = p.description.substring(0, 120);
 
         p.style = i % 2 ? {'background-color' : 'white'} :  {'background-color': '#f4f6f7'};
         return p;
