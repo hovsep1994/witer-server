@@ -19,13 +19,13 @@
                 ${user.name} &nbsp;&nbsp;<span class="caret"></span>
             </span> <br>
             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1">
-                <li ng-init="setting_src = '/styles/resources/business/account-settings.png'"
-                    ng-mouseenter="setting_src='/styles/resources/business/account-settings-active.png'"
-                    ng-mouseleave="setting_src = '/styles/resources/business/account-settings.png'">
-                    <a href="#">
-                        <img src="{{setting_src}}" style="margin-right: 10px"/>Settings
-                    </a>
-                </li>
+                <%--<li ng-init="setting_src = '/styles/resources/business/account-settings.png'"--%>
+                    <%--ng-mouseenter="setting_src='/styles/resources/business/account-settings-active.png'"--%>
+                    <%--ng-mouseleave="setting_src = '/styles/resources/business/account-settings.png'">--%>
+                    <%--<a href="#">--%>
+                        <%--<img src="{{setting_src}}" style="margin-right: 10px"/>Settings--%>
+                    <%--</a>--%>
+                <%--</li>--%>
                 <li ng-init="logout_src = '/styles/resources/business/account-logout.png'"
                     ng-mouseenter="logout_src='/styles/resources/business/account-logout-active.png'"
                     ng-mouseleave="logout_src = '/styles/resources/business/account-logout.png'">

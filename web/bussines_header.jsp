@@ -27,7 +27,7 @@
                     <input type="password" class="form-control" placeholder="Password" id="password"
                            ng-model="user.password">
 
-                    <div><a href="#">Forgot password?</a></div>
+                    <%--<div><a href="#">Forgot password?</a></div>--%>
                 </div>
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-info signup_button" value="SIGN IN" ng-click="signIn(user)"><br>

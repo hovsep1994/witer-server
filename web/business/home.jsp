@@ -21,8 +21,8 @@
 <%@ include file="business_header_loged_in.jsp" %>
 <div class="container admin-content">
     <div class="company-header">
-        <h2>Paris Night Restaurant</h2>
-        <h6> ivamus consequat ex ligula, a faucibus ex placerat sit amet.</h6>
+        <h2>${user.company.name}</h2>
+        <%--<h6> ivamus consequat ex ligula, a faucibus ex placerat sit amet.</h6>--%>
     </div>
 
 
@@ -69,7 +69,7 @@
                                 <div class="container-fluid">
                                     <div class="row">
                                         <img src="{{venue.image}}"
-                                             style="margin-right: 30px" class="img-circle" align="center" width="100px" height="100px">
+                                             style="margin-right: 30px" align="center" width="100px">
                                         <span style="font-weight: bold">{{venue.name}}</span>
                                     </div>
                                     <br><br>
