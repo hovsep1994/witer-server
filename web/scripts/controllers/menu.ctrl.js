@@ -33,7 +33,7 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
         menuService.findAll(function(err, menus) {
             if(err) return console.log(err);
 
-            self.menus = menus;
+            self.menus = menus.slice(0, 10);
             done();
         });
     }
