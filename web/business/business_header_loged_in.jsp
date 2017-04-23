@@ -15,7 +15,7 @@
         </a>
 
         <div class="navbar-account">
-            <span class="dropdown-toggle" data-toggle="dropdown">
+            <span class="dropdown-toggle" style="cursor: pointer" data-toggle="dropdown">
                 ${user.name} &nbsp;&nbsp;<span class="caret"></span>
             </span> <br>
             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1">
