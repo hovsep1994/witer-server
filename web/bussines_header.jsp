@@ -8,7 +8,7 @@
         <a class="brand brand-responsive" href="/">
             <img src="${pageContext.request.contextPath}/styles/resources/commons/logo.png" width="55px"
                  style="margin-top: -10px; margin-right: -5px;">
-            Menu <span style="color:#ffcc00">Kit</span>
+            Menu<span style="color:#ffcc00">Kit</span>
         </a>
         <span data-toggle="modal" data-target="#signInModal" class="navbar_bussiness">Sign In</span>
     </div>

@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/commons.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/business-admin.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/edit-menu.css">
+    <link rel="shortcut icon" href="/styles/resources/favicon.ico" />
 </head>
 <body ng-app="app">
 <%@ include file="business_header_loged_in.jsp" %>

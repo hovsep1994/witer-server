@@ -11,7 +11,7 @@
         <a class="brand brand-fixed" href="/business/">
             <img src="${pageContext.request.contextPath}/styles/resources/commons/logo.png" width="55px"
                  style="margin-top: -10px; margin-right: -5px;">
-            Menu Kit <span style="color:#3cbad3">Business</span>
+            MenuKit <span style="color:#3cbad3">Business</span>
         </a>
 
         <div class="navbar-account">
