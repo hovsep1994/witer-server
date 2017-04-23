@@ -83,7 +83,7 @@
                                 <div class="image">
                                     <label for="pImage-{{randomId(product)}}">
                                         <img style="cursor: pointer;"
-                                             src="{{product.displayImage}}" width="95px" height="95px">
+                                             src="{{product.displayImage}}" width="95px">
                                     </label>
                                     <input accept=".png,.jpg,.jpeg"
                                            id="pImage-{{randomId(product)}}" type="file" style="display: none"
