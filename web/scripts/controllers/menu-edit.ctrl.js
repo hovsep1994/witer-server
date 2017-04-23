@@ -205,7 +205,7 @@ app.controller('editMenuCtrl', ['$scope', 'menuService', 'categoryService', 'pro
         }
 
         function convertToProductCtrlModel(p) {
-            p.displayImage = p.image + "/r200/" ? p.image : "/styles/resources/business/admin/image-icon.png";
+            p.displayImage = p.image + "/r200" ? p.image : "/styles/resources/business/admin/image-icon.png";
             delete p.image;
 
             p.tags = p.tags.join(",");

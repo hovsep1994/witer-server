@@ -144,7 +144,7 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
     }
 
     function convertToProductCtrlModel(p, i) {
-        p.displayImage = p.image ? p.image + "/r200/" : "/styles/resources/business/admin/image-icon.png";
+        p.displayImage = p.image ? p.image + "/r200" : "/styles/resources/business/admin/image-icon.png";
         delete p.image;
 
         p.tags = p.tags.join(",");
