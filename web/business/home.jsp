@@ -112,8 +112,8 @@
                             <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button-black.png">
                         </a>
                     </div>
-                    <div class="col-lg-1 col-md-1 panel-headers-col-middle" style="width: 12.5%">LANGUAGES</div>
-                    <div class="col-lg-2 col-md-2 panel-headers-col-middle" style="width: 12.5%">CATEGORIES</div>
+                    <%--<div class="col-lg-1 col-md-1 panel-headers-col-middle" style="width: 12.5%">LANGUAGES</div>--%>
+                    <div class="col-lg-2 col-md-2 panel-headers-col-middle" style="width: 25%">CATEGORIES</div>
                     <div class="col-lg-6 col-md-6 panel-headers-col-right">PRODUCTS</div>
                     <%@ include file="modals/edit_menu_dialog.jsp" %>
                 </div>
@@ -132,20 +132,20 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="item-list col-lg-1" style="width: 12.5%">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li ng-repeat="language in activeMenu.languages" ng-click="selectLanguage(language)">
-                                <span>{{language}}</span>
-                                <a href="" data-toggle="modal" data-target="#deleteVenueModal">
-                                    <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
-                                </a>
-                                <a href="" data-toggle="modal" data-target="#editVenueModal">
-                                    <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="item-list col-lg-2" style="width: 12.5%">
+                    <%--<div class="item-list col-lg-1" style="width: 12.5%">--%>
+                        <%--<ul class="nav nav-pills nav-stacked">--%>
+                            <%--<li ng-repeat="language in activeMenu.languages" ng-click="selectLanguage(language)">--%>
+                                <%--<span>{{language}}</span>--%>
+                                <%--<a href="" data-toggle="modal" data-target="#deleteVenueModal">--%>
+                                    <%--<img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">--%>
+                                <%--</a>--%>
+                                <%--<a href="" data-toggle="modal" data-target="#editVenueModal">--%>
+                                    <%--<img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</div>--%>
+                    <div class="item-list col-lg-2" style="width: 25%">
                         <ul class="nav nav-pills nav-stacked">
                             <li ng-repeat="category in activeMenu.categories" ng-click="selectCategory(category)">
                                 <span data-toggle="pill">{{category.name}}</span>
