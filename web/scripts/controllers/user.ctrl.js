@@ -24,7 +24,7 @@ app.controller('userCtrl', ['$scope', '$http', 'userService', function ($scope, 
             if(err) return alert(JSON.stringify(err)); //todo
 
             $scope.user = user;
-            window.location.href = "/business";
+            window.location.href = "/business/";
         });
     };
 

@@ -5,10 +5,10 @@
 <%%>
 <nav class="navbar navbar-fixed-top navbar_custom">
     <div class="container-fluid">
-        <a class="brand brand-responsive" href="#">
+        <a class="brand brand-responsive" href="/">
             <img src="${pageContext.request.contextPath}/styles/resources/commons/logo.png" width="55px"
                  style="margin-top: -10px; margin-right: -5px;">
-            Menu <span style="color:#ffcc00">Kit</span>
+            Menu<span style="color:#ffcc00">Kit</span>
         </a>
         <span data-toggle="modal" data-target="#signInModal" class="navbar_bussiness">Sign In</span>
     </div>
@@ -27,7 +27,7 @@
                     <input type="password" class="form-control" placeholder="Password" id="password"
                            ng-model="user.password">
 
-                    <div><a href="#">Forgot password?</a></div>
+                    <%--<div><a href="#">Forgot password?</a></div>--%>
                 </div>
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-info signup_button" value="SIGN IN" ng-click="signIn(user)"><br>

@@ -24,11 +24,9 @@ public class WebAuthenticationInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         LOGGER.info("Web interceptor is working ... ");
-
-        if(!request.getRequestURI().contains("/business/landing")) {
-            User user = getUserByOauthToken(request);
-            if (user != null) {
-                request.setAttribute("user", user);
+        User user = getUserByOauthToken(request);
+        if (user == null) {
+            if (request.getRequestURI().contains("/business/landing")) {
                 return true;
             }
 
@@ -36,6 +34,13 @@ public class WebAuthenticationInterceptor extends HandlerInterceptorAdapter {
             response.sendRedirect("/business/landing");
             return false;
         }
+
+        if(request.getRequestURI().contains("/business/landing")) {
+            response.sendRedirect("/business/");
+            return false;
+        }
+
+        request.setAttribute("user", user);
         return true;
     }
 

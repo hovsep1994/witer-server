@@ -33,7 +33,7 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
         menuService.findAll(function(err, menus) {
             if(err) return console.log(err);
 
-            self.menus = menus;
+            self.menus = menus.slice(0, 10);
             done();
         });
     }
@@ -144,7 +144,7 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
     }
 
     function convertToProductCtrlModel(p, i) {
-        p.displayImage = p.image ? p.image : "/styles/resources/business/admin/image-icon.png";
+        p.displayImage = p.image ? p.image + "/r200" : "/styles/resources/business/admin/image-icon.png";
         delete p.image;
 
         p.tags = p.tags.join(",");
@@ -155,6 +155,7 @@ app.controller('menuCtrl', ['$scope', 'menuService', 'venueService', function ($
         }
         p.prices = p.productPrices;
         delete p.productPrices;
+        p.description = p.description.substring(0, 120);
 
         p.style = i % 2 ? {'background-color' : 'white'} :  {'background-color': '#f4f6f7'};
         return p;

@@ -74,7 +74,6 @@ function ProductService($http, host) {
     function updateProductImage(product, done) {
         var fd = new FormData();
         fd.append('file', product.image);
-        console.log("valod: ", product.image);
         $http.post(productUrl + product.id + "/image", fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}

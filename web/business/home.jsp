@@ -16,13 +16,14 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/commons.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/business-admin.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/edit-menu.css">
+    <link rel="shortcut icon" href="/styles/resources/favicon.ico" />
 </head>
 <body ng-app="app">
 <%@ include file="business_header_loged_in.jsp" %>
 <div class="container admin-content">
     <div class="company-header">
-        <h2>Paris Night Restaurant</h2>
-        <h6> ivamus consequat ex ligula, a faucibus ex placerat sit amet.</h6>
+        <h2>${user.company.name}</h2>
+        <%--<h6> ivamus consequat ex ligula, a faucibus ex placerat sit amet.</h6>--%>
     </div>
 
 
@@ -69,7 +70,7 @@
                                 <div class="container-fluid">
                                     <div class="row">
                                         <img src="{{venue.image}}"
-                                             style="margin-right: 30px" class="img-circle" align="center" width="100px" height="100px">
+                                             style="margin-right: 30px" align="center" width="100px">
                                         <span style="font-weight: bold">{{venue.name}}</span>
                                     </div>
                                     <br><br>
@@ -111,8 +112,8 @@
                             <img src="${pageContext.request.contextPath}/styles/resources/business/admin/plus-button-black.png">
                         </a>
                     </div>
-                    <div class="col-lg-1 col-md-1 panel-headers-col-middle" style="width: 12.5%">LANGUAGES</div>
-                    <div class="col-lg-2 col-md-2 panel-headers-col-middle" style="width: 12.5%">CATEGORIES</div>
+                    <%--<div class="col-lg-1 col-md-1 panel-headers-col-middle" style="width: 12.5%">LANGUAGES</div>--%>
+                    <div class="col-lg-2 col-md-2 panel-headers-col-middle" style="width: 25%">CATEGORIES</div>
                     <div class="col-lg-6 col-md-6 panel-headers-col-right">PRODUCTS</div>
                     <%@ include file="modals/edit_menu_dialog.jsp" %>
                 </div>
@@ -131,20 +132,20 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="item-list col-lg-1" style="width: 12.5%">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li ng-repeat="language in activeMenu.languages" ng-click="selectLanguage(language)">
-                                <span>{{language}}</span>
-                                <a href="" data-toggle="modal" data-target="#deleteVenueModal">
-                                    <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">
-                                </a>
-                                <a href="" data-toggle="modal" data-target="#editVenueModal">
-                                    <img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="item-list col-lg-2" style="width: 12.5%">
+                    <%--<div class="item-list col-lg-1" style="width: 12.5%">--%>
+                        <%--<ul class="nav nav-pills nav-stacked">--%>
+                            <%--<li ng-repeat="language in activeMenu.languages" ng-click="selectLanguage(language)">--%>
+                                <%--<span>{{language}}</span>--%>
+                                <%--<a href="" data-toggle="modal" data-target="#deleteVenueModal">--%>
+                                    <%--<img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-delete-icon.png">--%>
+                                <%--</a>--%>
+                                <%--<a href="" data-toggle="modal" data-target="#editVenueModal">--%>
+                                    <%--<img src="${pageContext.request.contextPath}/styles/resources/business/admin/venue-edit-icon.png">--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</div>--%>
+                    <div class="item-list col-lg-2" style="width: 25%">
                         <ul class="nav nav-pills nav-stacked">
                             <li ng-repeat="category in activeMenu.categories" ng-click="selectCategory(category)">
                                 <span data-toggle="pill">{{category.name}}</span>

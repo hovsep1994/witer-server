@@ -35,7 +35,7 @@ app.controller('venueCtrl', ['$scope', '$http', 'venueService', 'mapService', fu
                     v.active = true;
                 }
                 return v;
-            });
+            }).slice(0, 10);
             google.maps.event.addDomListener(window, "load", function() {
                 self.venues.forEach(function(v, i) {
                     v.displayMap = new google.maps.Map(document.getElementById('map' + v.id), {

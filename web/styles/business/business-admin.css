@@ -184,7 +184,7 @@ body {
     width: 500px;
     height: 330px;
     margin-top: 30px;
-    margin-left: -50%;
+    /*margin-left: 0%;*/
 }
 
 #editVenueModal .modal-dialog .modal-content .modal-body div.inputs input {

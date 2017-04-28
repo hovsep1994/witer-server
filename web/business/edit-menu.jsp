@@ -15,6 +15,7 @@
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/commons.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/business/commons.css">
+    <link rel="shortcut icon" href="/styles/resources/favicon.ico" />
 
 </head>
 <body ng-app="app">
@@ -83,7 +84,7 @@
                                 <div class="image">
                                     <label for="pImage-{{randomId(product)}}">
                                         <img style="cursor: pointer;"
-                                             src="{{product.displayImage}}" width="95px" height="95px">
+                                             src="{{product.displayImage}}" width="95px">
                                     </label>
                                     <input accept=".png,.jpg,.jpeg"
                                            id="pImage-{{randomId(product)}}" type="file" style="display: none"

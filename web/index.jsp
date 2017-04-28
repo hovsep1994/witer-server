@@ -14,6 +14,8 @@
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styles/home.css">
     <link rel="stylesheet" type="text/css" href="styles/commons.css">
+    <link rel="shortcut icon" href="/styles/resources/favicon.ico" />
+
 </head>
 <body>
 <%@ include file="header.jsp" %>
@@ -25,7 +27,7 @@
         Explore top restaurants and their dishes around you
     </div>
     <div class="store_images">
-        <a href="">
+        <a href="https://play.google.com/store/apps/details?id=com.menukit.android">
             <img src="${pageContext.request.contextPath}/styles/resources/commons/google_play.png" class="left"/>
         </a>
         <a href="">
