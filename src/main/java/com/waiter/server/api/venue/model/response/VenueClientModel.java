@@ -6,6 +6,7 @@ import com.waiter.server.api.menu.model.response.MenuWithProductsModel;
 import com.waiter.server.api.product.model.response.ProductClientModel;
 import com.waiter.server.api.utility.image.EntityType;
 import com.waiter.server.api.utility.image.ImageUrlGenerator;
+import com.waiter.server.services.gallery.model.GalleryImageType;
 import com.waiter.server.services.language.Language;
 import com.waiter.server.services.venue.model.Venue;
 
@@ -23,6 +24,8 @@ public class VenueClientModel {
     private LocationClientModel location;
 
     private String image;
+
+    private String logo;
 
     private double rating;
 
@@ -94,10 +97,19 @@ public class VenueClientModel {
         this.openHours = openHours;
     }
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
     public static VenueClientModel convert(Venue venue, Language language) {
         VenueClientModel venueModel = new VenueClientModel();
         venueModel.setId(venue.getId());
         venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
+        venueModel.setLogo(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery(), GalleryImageType.LOGO));
         venueModel.setName(venue.getName());
         venueModel.setLocation(LocationClientModel.convert(venue.getLocation()));
         venueModel.setRating(venue.getEvaluation().getAverageRating());

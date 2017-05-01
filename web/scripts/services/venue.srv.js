@@ -9,8 +9,10 @@ function VenueService($http, host) {
     this.findUserVenues = findUserVenues;
     this.remove = remove;
     this.update = update;
+    this.findVenueWithMenu = findVenueWithMenu;
 
     var venueUrl = host + '/api/venue/';
+    var venueClientUrl = host + '/api/client/venues/';
 
     function create(venue, done) {
         venue = convertToVenueModel(venue);
@@ -74,6 +76,18 @@ function VenueService($http, host) {
         }
         venue = convertToVenueModel(venue);
         $http.put(venueUrl + id, venue).then(function (response) {
+            if (response.data.status !== 'success') return done(response.data.errors);
+
+            done(null, response.data.response);
+        });
+    }
+
+    function findVenueWithMenu(id, done) {
+        if (!done) {
+            done = function () {};
+        }
+        $http.get(venueClientUrl + id + '?language=en').then(function (response) {
+        console.log("valod112", response.data);
             if (response.data.status !== 'success') return done(response.data.errors);
 
             done(null, response.data.response);

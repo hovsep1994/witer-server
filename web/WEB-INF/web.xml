@@ -24,6 +24,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>venue-page</servlet-name>
+        <jsp-file>/Template/profile.html</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>venue-page</servlet-name>
+        <url-pattern>/web/venues/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>business-admin</servlet-name>
         <jsp-file>/business/home.jsp</jsp-file>
     </servlet>
@@ -84,6 +93,15 @@
     <servlet-mapping>
         <servlet-name>add_menu</servlet-name>
         <url-pattern>/menus/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>venue</servlet-name>
+        <jsp-file>/venue.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>venue</servlet-name>
+        <url-pattern>/venue</url-pattern>
     </servlet-mapping>
 
 </web-app>
