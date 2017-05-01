@@ -27,22 +27,23 @@ import java.io.File;
 @Transactional
 public class SitemapGenerator {
 
+    private static final String CHARFREQ = "monthly";
+
     @Value("#{appProperties['sitemap.file.path']}")
-    private String FILE_PATH;
+    private String filePath;
 
     @Autowired
     private VenueService venueService;
 
     public void processGeneration() {
         final UrlSetModel urlSetModel = new UrlSetModel();
-        venueService.getVenues(0, 1000).forEach(venue -> {
-            venue.getMenu().getLanguages().forEach(language -> {
-                final UrlModel urlModel = new UrlModel();
-                urlModel.setLoc(getUrlFromVenue(venue, language.name()));
-                urlModel.setChangefreq("always");
-                urlSetModel.getUrl().add(urlModel);
-            });
-        });
+        urlSetModel.getUrl().add(new UrlModel("http://menuk.it", CHARFREQ));
+        urlSetModel.getUrl().add(new UrlModel("http://menuk.it/business/landing", CHARFREQ));
+        venueService.getVenues(0, 1000).forEach(venue ->
+                venue.getMenu().getLanguages().forEach(language ->
+                        urlSetModel.getUrl().add(
+                                new UrlModel(getUrlFromVenue(venue, language.name()), CHARFREQ)
+                        )));
         generateFile(urlSetModel);
     }
 
@@ -51,7 +52,7 @@ public class SitemapGenerator {
             final JAXBContext jaxbContext = JAXBContext.newInstance(UrlSetModel.class);
             final Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(urlSetModel, new File(FILE_PATH));
+            jaxbMarshaller.marshal(urlSetModel, new File(filePath));
         } catch (JAXBException e) {
             e.printStackTrace();
         }
