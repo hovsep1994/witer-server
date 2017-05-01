@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(value = {
         "com.waiter.server.background.importer",
         "com.waiter.server.background.reindexer",
+        "com.waiter.server.background.exporter",
         "com.waiter.server.services",
         "com.waiter.server.externalclients"})
 public class ApplicationConf {
