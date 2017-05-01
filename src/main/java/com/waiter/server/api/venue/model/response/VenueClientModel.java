@@ -109,7 +109,7 @@ public class VenueClientModel {
         VenueClientModel venueModel = new VenueClientModel();
         venueModel.setId(venue.getId());
         venueModel.setImage(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery()));
-        venueModel.setLogo(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery(), GalleryImageType.LOGO));
+        venueModel.setLogo(ImageUrlGenerator.getUrl(EntityType.VENUE, venue.getGallery(), GalleryImageType.LOGO, false));
         venueModel.setName(venue.getName());
         venueModel.setLocation(LocationClientModel.convert(venue.getLocation()));
         venueModel.setRating(venue.getEvaluation().getAverageRating());
