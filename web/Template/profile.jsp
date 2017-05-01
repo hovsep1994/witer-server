@@ -330,6 +330,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
     <script src="/scripts/app.js"></script>
     <script src="/scripts/controllers/venue-page.ctrl.js" type="text/javascript"></script>
+    <%@ include file="../google-analytics.jsp" %>
 </body>
 
 </html>
