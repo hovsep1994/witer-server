@@ -17,7 +17,7 @@ app.controller('venuePageCtrl', ['$scope', '$http', 'venueService', 'mapService'
 
 
     function getVenueIdFromUrl() {
-        return 2;
+        return 3;
         //todo
     }
 }]);
