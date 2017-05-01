@@ -27,7 +27,9 @@ app.service('userService', ['$http', 'helper', 'BASE_URL', 'COOKIE_TOKEN', funct
 }]);
 
 app.service('mapService', function () {
-    return new MapService(new google.maps.Geocoder());
+    if (typeof google === 'object' && typeof google.maps === 'object') {
+        return new MapService(new google.maps.Geocoder());
+    }
 });
 
 app.service('categoryService', ['$http', 'BASE_URL', function ($http, BASE_URL) {
