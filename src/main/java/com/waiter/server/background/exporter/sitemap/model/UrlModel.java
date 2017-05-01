@@ -10,6 +10,11 @@ public class UrlModel {
     private String loc;
     private String changefreq;
 
+    public UrlModel(String loc, String changefreq) {
+        this.loc = loc;
+        this.changefreq = changefreq;
+    }
+
     public String getLoc() {
         return loc;
     }
