@@ -5,11 +5,12 @@ import com.waiter.server.background.exporter.sitemap.model.UrlModel;
 import com.waiter.server.background.exporter.sitemap.model.UrlSetModel;
 import com.waiter.server.services.venue.VenueService;
 import com.waiter.server.services.venue.model.Venue;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -23,9 +24,11 @@ import java.io.File;
  * @author Hovsep Harutyunyan
  */
 @Component
+@Transactional
 public class SitemapGenerator {
 
-    private static String FILE_PATH = "/home/hovsep/file.xml";
+    @Value("#{appProperties['sitemap.file.path']}")
+    private String FILE_PATH;
 
     @Autowired
     private VenueService venueService;
@@ -60,9 +63,6 @@ public class SitemapGenerator {
     }
 
     public static void main(String... args) {
-        if (args != null && args.length != 0 && StringUtils.isNotEmpty(args[0])) {
-            FILE_PATH = args[0];
-        }
         final ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConf.class);
         final SitemapGenerator sitemapGenerator = (SitemapGenerator) context.getBean("sitemapGenerator");
         sitemapGenerator.processGeneration();
