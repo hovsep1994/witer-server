@@ -56,7 +56,7 @@ public class SitemapGenerator {
 
     private String getUrlFromVenue(Venue venue, String language) {
         String name = venue.getName().replace(" ", "-");
-        return "http://menuk.it/" + name + "/v/" + venue.getId() + "/" + language;
+        return "http://menuk.it/v/" + name + "/" + venue.getId() + "/" + language;
     }
 
     public static void main(String... args) {
