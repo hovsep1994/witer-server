@@ -33,10 +33,12 @@ public class SitemapGenerator {
     private void processGeneration() {
         final UrlSetModel urlSetModel = new UrlSetModel();
         venueService.getVenues(0, 1000).forEach(venue -> {
-            final UrlModel urlModel = new UrlModel();
-            urlModel.setLoc(getUrlFromVenue(venue));
-            urlModel.setChangefreq("always");
-            urlSetModel.getUrl().add(urlModel);
+            venue.getMenu().getLanguages().forEach(language -> {
+                final UrlModel urlModel = new UrlModel();
+                urlModel.setLoc(getUrlFromVenue(venue, language.name()));
+                urlModel.setChangefreq("always");
+                urlSetModel.getUrl().add(urlModel);
+            });
         });
         generateFile(urlSetModel);
     }
@@ -52,10 +54,9 @@ public class SitemapGenerator {
         }
     }
 
-    private String getUrlFromVenue(Venue venue) {
-        String name = venue.getName();
-        name = name.replace(" ", "-");
-        return "http://menuk.it/" + name + "/v/" + venue.getId();
+    private String getUrlFromVenue(Venue venue, String language) {
+        String name = venue.getName().replace(" ", "-");
+        return "http://menuk.it/" + name + "/v/" + venue.getId() + "/" + language;
     }
 
     public static void main(String... args) {
