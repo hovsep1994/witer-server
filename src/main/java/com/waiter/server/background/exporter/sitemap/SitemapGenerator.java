@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -23,6 +24,7 @@ import java.io.File;
  * @author Hovsep Harutyunyan
  */
 @Component
+@Transactional
 public class SitemapGenerator {
 
     @Value("#{appProperties['sitemap.file.path']}")
