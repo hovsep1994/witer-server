@@ -11,7 +11,9 @@ app.controller('venuePageCtrl', ['$scope', '$http', 'venueService', 'mapService'
 
     venueService.findVenueWithMenu(venueId, function (err, venue) {
         self.venue = venue;
-        venue.logo += "/r300";
+        if(venue.logo) {
+            venue.logo += "/r300";
+        }
         self.venue.menu.categories.forEach(function (category) {
             category.products.forEach(function (product) {
                 product.image += "/r200";
