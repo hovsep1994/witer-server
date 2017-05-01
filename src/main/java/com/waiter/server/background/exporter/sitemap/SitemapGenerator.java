@@ -33,7 +33,7 @@ public class SitemapGenerator {
     @Autowired
     private VenueService venueService;
 
-    private void processGeneration() {
+    public void processGeneration() {
         final UrlSetModel urlSetModel = new UrlSetModel();
         venueService.getVenues(0, 1000).forEach(venue -> {
             venue.getMenu().getLanguages().forEach(language -> {
