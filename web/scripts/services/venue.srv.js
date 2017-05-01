@@ -82,11 +82,11 @@ function VenueService($http, host) {
         });
     }
 
-    function findVenueWithMenu(id, done) {
+    function findVenueWithMenu(id, language, done) {
         if (!done) {
             done = function () {};
         }
-        $http.get(venueClientUrl + id + '?language=en').then(function (response) {
+        $http.get(venueClientUrl + id + '?language=' + language).then(function (response) {
         console.log("valod112", response.data);
             if (response.data.status !== 'success') return done(response.data.errors);
 
