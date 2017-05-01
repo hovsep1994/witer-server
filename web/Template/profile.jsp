@@ -40,11 +40,11 @@
             <nav class="navbar navbar-dark">
                 <div class="container">
                     <a class="brand" href="/">
-                        <img src="http://localhost:8081/styles/resources/commons/logo.png" width="60px"
+                        <img src="/styles/resources/commons/logo.png" width="60px"
                              style="margin: -20px -5px -10px -10px;">
                         Menu<span style="color:#ffcc00">Kit</span>
                     </a>
-                    <a class="navbar_bussiness_template" href="./business/" >Business</a>
+                    <a class="navbar_bussiness_template" href="/business/" >Business</a>
                 </div>
             </nav>
             <!-- /.navbar -->
@@ -63,21 +63,21 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 profile-desc">
                                 <div class="pull-left right-text white-txt">
-                                    <h6><a href="#">{{venue.name}}</a></h6> <a class="btn btn-small btn-green">Open</a>
+                                    <h6><a href="#">{{venue.name}}</a></h6>
                                     <p>{{venue.location.address}}</p>
-                                    <ul class="nav nav-inline">
-                                        <li class="nav-item"> <a class="nav-link active" href="#"><i class="fa fa-check"></i> Min $ 10,00</a> </li>
-                                        <li class="nav-item"> <a class="nav-link" href="#"><i class="fa fa-motorcycle"></i> 30 min</a> </li>
-                                        <li class="nav-item ratings">
-                                            <a class="nav-link" href="#"> <span>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    </span> </a>
-                                        </li>
-                                    </ul>
+                                    <!--<ul class="nav nav-inline">-->
+                                        <!--<li class="nav-item"> <a class="nav-link active" href="#"><i class="fa fa-check"></i> Min $ 10,00</a> </li>-->
+                                        <!--<li class="nav-item"> <a class="nav-link" href="#"><i class="fa fa-motorcycle"></i> 30 min</a> </li>-->
+                                        <!--<li class="nav-item ratings">-->
+                                            <!--<a class="nav-link" href="#"> <span>-->
+                                    <!--<i class="fa fa-star"></i>-->
+                                    <!--<i class="fa fa-star"></i>-->
+                                    <!--<i class="fa fa-star"></i>-->
+                                    <!--<i class="fa fa-star"></i>-->
+                                    <!--<i class="fa fa-star-o"></i>-->
+                                    <!--</span> </a>-->
+                                        <!--</li>-->
+                                    <!--</ul>-->
                                 </div>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                         <div ng-repeat="category in venue.menu.categories" class="menu-widget m-b-30">
                             <div class="widget-heading">
-                                <h3 class="widget-title text-dark">
+                                <h3 class="widget-title text-dark" id="category_{{category.id}}">
                               {{category.name}} <a class="btn btn-link pull-right" data-toggle="collapse" href="#popular" aria-expanded="true">
                               <i class="fa fa-angle-right pull-right"></i>
                               <i class="fa fa-angle-down pull-right"></i>
@@ -112,16 +112,16 @@
                            </h3>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="collapse in" id="category_{{category.id}}">
+                            <div class="collapse in">
                                 <div ng-repeat="product in category.products" class="food-item {{$index%2 ? '' : 'white'}}">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-12 col-lg-8">
                                             <div class="rest-logo pull-left">
-                                                <a class="restaurant-logo pull-left" href="#"><img src="{{product.image}}" alt="Food logo"></a>
+                                                <a class="restaurant-logo pull-left"><img src="{{product.image}}" alt="Food logo"></a>
                                             </div>
                                             <!-- end:Logo -->
                                             <div class="rest-descr">
-                                                <h6><a href="#">{{product.name}}</a></h6>
+                                                <h6><a>{{product.name}}</a></h6>
                                                 <p>{{product.description}}</p>
                                             </div>
                                             <!-- end:Description -->
@@ -154,7 +154,7 @@
                                     <h3>The Best Food Delivery App</h3>
                                     <p>Now you can make food happen pretty much wherever you are thanks to the free easy-to-use Food Delivery &amp; Takeout App.</p>
                                     <div class="social-btns">
-                                        <a href="#" class="app-btn android-button clearfix">
+                                        <a href="https://play.google.com/store/apps/details?id=com.menukit.android" class="app-btn android-button clearfix">
                                             <div class="pull-left"><i class="fa fa-android"></i> </div>
                                             <div class="pull-right"> <span class="text">Available on the</span> <span class="text-2">Play store</span> </div>
                                         </a>
@@ -330,6 +330,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
     <script src="/scripts/app.js"></script>
     <script src="/scripts/controllers/venue-page.ctrl.js" type="text/javascript"></script>
+    <%@ include file="../google-analytics.jsp" %>
 </body>
 
 </html>
