@@ -63,7 +63,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 profile-desc">
                                 <div class="pull-left right-text white-txt">
-                                    <h6><a href="#">{{venue.name}}</a></h6> <a class="btn btn-small btn-green">Open</a>
+                                    <h6><a href="#">{{venue.name}}</a></h6>
                                     <p>{{venue.location.address}}</p>
                                     <!--<ul class="nav nav-inline">-->
                                         <!--<li class="nav-item"> <a class="nav-link active" href="#"><i class="fa fa-check"></i> Min $ 10,00</a> </li>-->
