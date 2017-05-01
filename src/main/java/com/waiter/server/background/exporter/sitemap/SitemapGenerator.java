@@ -28,7 +28,7 @@ import java.io.File;
 public class SitemapGenerator {
 
     @Value("#{appProperties['sitemap.file.path']}")
-    private String FILE_PATH;
+    private String filePath;
 
     @Autowired
     private VenueService venueService;
@@ -51,7 +51,7 @@ public class SitemapGenerator {
             final JAXBContext jaxbContext = JAXBContext.newInstance(UrlSetModel.class);
             final Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(urlSetModel, new File(FILE_PATH));
+            jaxbMarshaller.marshal(urlSetModel, new File(filePath));
         } catch (JAXBException e) {
             e.printStackTrace();
         }
