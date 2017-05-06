@@ -19,7 +19,7 @@ public class UrlSetModel {
     private List<UrlModel> url;
 
     @XmlAttribute
-    private String xmlns = "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd";
+    private String xmlns = "http://www.sitemaps.org/schemas/sitemap/0.9";
 
     public List<UrlModel> getUrl() {
         if (url == null) {
