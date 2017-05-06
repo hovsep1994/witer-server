@@ -14,6 +14,8 @@ import java.util.List;
 @XmlRootElement(name = "urlset")
 public class UrlSetModel {
 
+    private static final String XMLNS_VALUE = "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd";
+
     @XmlElement
     private List<UrlModel> url;
 
@@ -22,5 +24,9 @@ public class UrlSetModel {
             url = new ArrayList<>();
         }
         return url;
+    }
+
+    public String getXmlns() {
+        return XMLNS_VALUE;
     }
 }
