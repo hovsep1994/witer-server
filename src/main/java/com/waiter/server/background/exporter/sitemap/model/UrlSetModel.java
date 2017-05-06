@@ -1,5 +1,6 @@
 package com.waiter.server.background.exporter.sitemap.model;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -14,19 +15,16 @@ import java.util.List;
 @XmlRootElement(name = "urlset")
 public class UrlSetModel {
 
-    private static final String XMLNS_VALUE = "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd";
-
     @XmlElement
     private List<UrlModel> url;
+
+    @XmlAttribute
+    private String xmlns = "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd";
 
     public List<UrlModel> getUrl() {
         if (url == null) {
             url = new ArrayList<>();
         }
         return url;
-    }
-
-    public String getXmlns() {
-        return XMLNS_VALUE;
     }
 }
