@@ -8,8 +8,9 @@ app.controller('venuePageCtrl', ['$scope', '$http', 'venueService', 'mapService'
     var self = $scope;
 
     var venueId = getVenueId();
+    var language = getLanguage();
 
-    venueService.findVenueWithMenu(venueId, function (err, venue) {
+    venueService.findVenueWithMenu(venueId, language, function (err, venue) {
         self.venue = venue;
         if(venue.logo) {
             venue.logo += "/r300";
@@ -25,6 +26,11 @@ app.controller('venuePageCtrl', ['$scope', '$http', 'venueService', 'mapService'
 
     function getVenueId() {
         var tokens = location.pathname.split("/");
-        return tokens[2];
+        return tokens[3];
+    }
+
+    function getLanguage() {
+        var tokens = location.pathname.split("/");
+        return tokens[4];
     }
 }]);

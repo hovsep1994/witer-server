@@ -52,7 +52,7 @@
         <div class="page-wrapper">
             <!-- end:Top links -->
             <!-- start: Inner page hero -->
-            <section class="inner-page-hero" data-image-src="{{venue.image}}" style="background: url('http://cdn.menuk.it/venue/83.JPEG') center center / cover no-repeat;">
+            <section class="inner-page-hero" data-image-src="{{venue.image}}" style="background: url('{{venue.image}}') center center / cover no-repeat;">
                 <div class="profile">
                     <div class="container">
                         <div class="row">
