@@ -7,6 +7,7 @@ package com.waiter.server.background.exporter.sitemap.model;
  * @author Hovsep Harutyunyan
  */
 public class UrlModel {
+
     private String loc;
     private String changefreq;
 

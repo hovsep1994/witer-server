@@ -1,5 +1,6 @@
 package com.waiter.server.background.exporter.sitemap.model;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ public class UrlSetModel {
 
     @XmlElement
     private List<UrlModel> url;
+
+    @XmlAttribute
+    private String xmlns = "http://www.sitemaps.org/schemas/sitemap/0.9";
 
     public List<UrlModel> getUrl() {
         if (url == null) {
