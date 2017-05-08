@@ -24,7 +24,7 @@ public class BusinessController extends AuthenticationController {
         return "/web/business/landing";
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String business(ModelMap model, @ModelAttribute User user) {
 
 
